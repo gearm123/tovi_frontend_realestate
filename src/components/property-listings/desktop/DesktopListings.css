@@ -1,0 +1,13 @@
+.desktop-listings {
+  background: var(--paper);
+  padding: var(--section-padding) 0 0;
+  width: 100%;
+}
+
+.desktop-listings__stack {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 2.5rem;
+  gap: 2.75rem;
+}
