@@ -1,5 +1,6 @@
 import type { Property } from '../../../types/property'
 import PropertyCardBody from '../shared/PropertyCardBody'
+import PropertyImage from '../shared/PropertyImage'
 import './DesktopPropertyCard.css'
 
 interface DesktopPropertyCardProps {
@@ -18,12 +19,11 @@ export default function DesktopPropertyCard({
     >
       <div className="desktop-property__image-wrap">
         <div className="desktop-property__image-frame">
-          <img
-            src={property.image}
+          <PropertyImage
+            imagePath={property.image}
             alt={property.title}
             className="desktop-property__image"
-            loading="lazy"
-            decoding="async"
+            priority={index < 2}
           />
           {property.featured && (
             <span className="desktop-property__badge">Featured</span>

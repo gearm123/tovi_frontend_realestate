@@ -1,5 +1,6 @@
 import type { Property } from '../../../types/property'
 import PropertyCardBody from '../shared/PropertyCardBody'
+import PropertyImage from '../shared/PropertyImage'
 import './MobilePropertyCard.css'
 
 interface MobilePropertyCardProps {
@@ -18,12 +19,11 @@ export default function MobilePropertyCard({
     >
       <div className="mobile-property__image-wrap">
         <div className="mobile-property__image-frame">
-          <img
-            src={property.image}
+          <PropertyImage
+            imagePath={property.image}
             alt={property.title}
             className="mobile-property__image"
-            loading="lazy"
-            decoding="async"
+            priority={index < 2}
           />
           {property.featured && (
             <span className="mobile-property__badge">Featured</span>
