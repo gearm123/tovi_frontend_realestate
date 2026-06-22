@@ -1,0 +1,42 @@
+.sellers-package__list {
+  list-style: none;
+  margin: 1.5rem 0 2rem;
+  padding: 0;
+}
+
+.sellers-package__list li {
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  padding: 0.5rem 0 0.5rem 1.25rem;
+  position: relative;
+}
+
+.sellers-package__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.95rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.sellers-package__cta {
+  display: inline-block;
+  font-family: var(--font-button);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--accent);
+  padding: 0.75rem 1.75rem;
+  border-radius: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.sellers-package__cta:hover {
+  opacity: 0.9;
+}

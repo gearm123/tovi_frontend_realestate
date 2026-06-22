@@ -29,7 +29,7 @@
   bottom: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
-  font-family: var(--font-body);
+  font-family: var(--font-primary);
   font-size: 0.65rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -62,7 +62,7 @@
 
   .hero__scroll-hint {
     bottom: 0.75rem;
-    background: rgba(253, 251, 247, 0.75);
+    background: rgba(239, 235, 229, 0.85);
     padding: 0.35rem 0.6rem;
     border-radius: 999px;
   }

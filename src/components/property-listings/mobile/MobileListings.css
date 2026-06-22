@@ -11,3 +11,17 @@
   margin-top: 2rem;
   gap: 2rem;
 }
+
+.mobile-listings__count,
+.mobile-listings__empty {
+  font-family: var(--font-primary);
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--ink-muted);
+  padding: 0 clamp(1rem, 5vw, 1.5rem);
+}
+
+.mobile-listings__empty {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}

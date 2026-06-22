@@ -7,25 +7,25 @@
 }
 
 :root {
-  --paper: #fdfbf7;
-  --paper-warm: #f7f3eb;
-  --ink: #1c1c1c;
-  --ink-soft: #3d3d3d;
-  --ink-muted: #6b6560;
-  --rule: #d9d2c6;
-  --rule-light: #ebe6dc;
-  --accent: #7a6348;
-  --accent-light: #a89272;
+  --white: #ffffff;
+  --paper: #efebe5;
+  --paper-warm: #e8e2d9;
+  --ink: #000000;
+  --ink-soft: #1a1a1a;
+  --ink-muted: #4a4a4a;
+  --rule: #d4cec4;
+  --rule-light: #ddd8cf;
+  --accent: #f05a24;
 
-  --font-display: 'Cormorant Garamond', 'Georgia', serif;
-  --font-body: 'Libre Baskerville', 'Times New Roman', serif;
+  --font-primary: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  --font-button: 'Cormorant SC', 'Georgia', serif;
 
   --max-width: 1120px;
   --property-image-max-width: min(var(--max-width), 720px);
   --property-image-gutter: clamp(1.5rem, 9vw, 6rem);
   --property-radius: clamp(1rem, 2vw, 1.35rem);
   --property-frame-padding: 0.4rem;
-  --property-frame-shadow: 0 10px 36px rgba(122, 99, 72, 0.07);
+  --property-frame-shadow: 0 10px 36px rgba(0, 0, 0, 0.08);
   --section-padding: clamp(2.5rem, 5vw, 4.5rem);
   --mobile-max-width: 768px;
 }
@@ -37,7 +37,7 @@ html {
 
 body {
   overflow-x: hidden;
-  font-family: var(--font-body);
+  font-family: var(--font-primary);
   font-size: 15px;
   line-height: 1.7;
   color: var(--ink);
@@ -58,7 +58,8 @@ a {
 }
 
 button {
-  font-family: inherit;
+  font-family: var(--font-button);
+  font-weight: 700;
   cursor: pointer;
   border: none;
   background: none;

@@ -1,22 +1,50 @@
-import { properties } from '../../../data/properties'
+import type { Property } from '../../../types/property'
 import ListingsHeader from '../shared/ListingsHeader'
 import DesktopPropertyCard from './DesktopPropertyCard'
 import './DesktopListings.css'
 
-export default function DesktopListings() {
+interface DesktopListingsProps {
+  properties: Property[]
+  sectionLabel: string
+  title: string
+  intro?: string
+  showHeader: boolean
+}
+
+export default function DesktopListings({
+  properties,
+  sectionLabel,
+  title,
+  intro,
+  showHeader,
+}: DesktopListingsProps) {
   return (
     <section id="listings" className="desktop-listings" aria-label="Property listings">
-      <ListingsHeader />
+      {showHeader && (
+        <ListingsHeader
+          sectionLabel={sectionLabel}
+          title={title}
+          intro={intro}
+        />
+      )}
 
-      <div className="desktop-listings__stack">
-        {properties.map((property, index) => (
-          <DesktopPropertyCard
-            key={property.id}
-            property={property}
-            index={index}
-          />
-        ))}
-      </div>
+      {!showHeader && properties.length > 0 && (
+        <p className="desktop-listings__count">{sectionLabel}</p>
+      )}
+
+      {properties.length === 0 ? (
+        <p className="desktop-listings__empty">No properties match your filters.</p>
+      ) : (
+        <div className="desktop-listings__stack">
+          {properties.map((property, index) => (
+            <DesktopPropertyCard
+              key={property.id}
+              property={property}
+              index={index}
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }

@@ -29,8 +29,8 @@
   aspect-ratio: 4 / 3;
   padding: var(--property-frame-padding);
   border-radius: var(--property-radius);
-  background: linear-gradient(145deg, var(--paper-warm), var(--paper));
-  border: 1px solid rgba(217, 210, 198, 0.55);
+  background: var(--white);
+  border: 1px solid var(--rule);
   box-shadow: var(--property-frame-shadow);
   overflow: hidden;
 }
@@ -43,14 +43,15 @@
   position: absolute;
   top: calc(1rem + var(--property-frame-padding));
   left: calc(1rem + var(--property-frame-padding));
-  font-family: var(--font-body);
+  font-family: var(--font-primary);
   font-size: 0.65rem;
-  letter-spacing: 0.15em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  background: rgba(253, 251, 247, 0.92);
+  background: var(--white);
   color: var(--ink);
   padding: 0.4rem 0.85rem;
-  border: 1px solid rgba(217, 210, 198, 0.8);
+  border: 1px solid var(--rule);
   border-radius: 999px;
 }
 
@@ -64,19 +65,27 @@
 }
 
 .desktop-property__neighborhood {
-  font-family: var(--font-body);
+  font-family: var(--font-primary);
   font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 0.5rem;
 }
 
 .desktop-property__title {
-  font-family: var(--font-display);
-  font-size: clamp(1.65rem, 2.8vw, 2.15rem);
+  font-family: var(--font-primary);
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
   font-weight: 600;
   line-height: 1.15;
+  margin-bottom: 0.35rem;
+}
+
+.desktop-property__address {
+  font-family: var(--font-primary);
+  font-size: 0.8rem;
+  color: var(--ink-muted);
   margin-bottom: 0.75rem;
 }
 
@@ -84,12 +93,12 @@
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  font-family: var(--font-body);
+  font-family: var(--font-primary);
   font-size: 0.8rem;
-  letter-spacing: 0.06em;
   color: var(--ink-muted);
   padding-bottom: 1rem;
   margin-bottom: 1rem;
+  border-bottom: 1px solid var(--rule-light);
 }
 
 .desktop-property__spec-divider {
@@ -100,6 +109,7 @@
 }
 
 .desktop-property__description {
+  font-family: var(--font-primary);
   font-size: clamp(0.92rem, 1.2vw, 1rem);
   color: var(--ink-soft);
   line-height: 1.8;
@@ -115,22 +125,25 @@
 }
 
 .desktop-property__price {
-  font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-family: var(--font-primary);
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
   font-weight: 600;
 }
 
 .desktop-property__link {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  font-family: var(--font-button);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--accent);
-  padding: 0.5rem 0;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .desktop-property__link:hover {
-  border-bottom-color: var(--accent);
+  background: var(--accent);
+  color: var(--white);
 }

@@ -1,13 +1,44 @@
+import type { Property } from '../types/property'
 import { useViewport } from '../hooks/useViewport'
 import DesktopListings from './property-listings/desktop/DesktopListings'
 import MobileListings from './property-listings/mobile/MobileListings'
 
-export default function PropertyListings() {
+interface PropertyListingsProps {
+  properties: Property[]
+  sectionLabel?: string
+  title?: string
+  intro?: string
+  showHeader?: boolean
+}
+
+export default function PropertyListings({
+  properties,
+  sectionLabel = "This week's selection",
+  title = 'Properties for You',
+  intro,
+  showHeader = true,
+}: PropertyListingsProps) {
   const viewport = useViewport()
 
   if (viewport === 'mobile') {
-    return <MobileListings />
+    return (
+      <MobileListings
+        properties={properties}
+        sectionLabel={sectionLabel}
+        title={title}
+        intro={intro}
+        showHeader={showHeader}
+      />
+    )
   }
 
-  return <DesktopListings />
+  return (
+    <DesktopListings
+      properties={properties}
+      sectionLabel={sectionLabel}
+      title={title}
+      intro={intro}
+      showHeader={showHeader}
+    />
+  )
 }

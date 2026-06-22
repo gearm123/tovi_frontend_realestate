@@ -11,3 +11,17 @@
   margin-top: 2.5rem;
   gap: 2.75rem;
 }
+
+.desktop-listings__count,
+.desktop-listings__empty {
+  font-family: var(--font-primary);
+  font-size: 0.8rem;
+  text-align: center;
+  color: var(--ink-muted);
+  padding: 0 clamp(1.25rem, 4vw, 2rem);
+}
+
+.desktop-listings__empty {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
