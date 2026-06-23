@@ -6,9 +6,9 @@
 }
 
 .listings-header__section-label {
-  font-family: var(--font-primary);
-  font-size: 0.7rem;
-  font-weight: 500;
+  font-family: var(--font-subheading);
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-regular);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--ink-muted);
@@ -18,13 +18,14 @@
 .listings-header__title {
   font-family: var(--font-primary);
   font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   line-height: 1.15;
   margin-bottom: 1rem;
 }
 
 .listings-header__intro {
   font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
   font-size: clamp(0.95rem, 2vw, 1.05rem);
   color: var(--ink-soft);
   line-height: 1.65;

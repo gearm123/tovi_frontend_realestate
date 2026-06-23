@@ -28,6 +28,7 @@ export default function DesktopPropertyCard({
           {property.featured && (
             <span className="desktop-property__badge">Featured</span>
           )}
+          <span className="desktop-property__price">{property.price}</span>
         </div>
       </div>
 

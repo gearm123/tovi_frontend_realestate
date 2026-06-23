@@ -31,6 +31,7 @@
   transform: translateX(-50%);
   font-family: var(--font-primary);
   font-size: 0.65rem;
+  font-weight: var(--font-weight-regular);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-muted);

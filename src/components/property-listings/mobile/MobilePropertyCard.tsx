@@ -28,6 +28,7 @@ export default function MobilePropertyCard({
           {property.featured && (
             <span className="mobile-property__badge">Featured</span>
           )}
+          <span className="mobile-property__price">{property.price}</span>
         </div>
       </div>
 

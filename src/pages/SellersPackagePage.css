@@ -6,6 +6,7 @@
 
 .sellers-package__list li {
   font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
   font-size: 0.95rem;
   color: var(--ink-soft);
   padding: 0.5rem 0 0.5rem 1.25rem;

@@ -43,9 +43,9 @@
   position: absolute;
   top: calc(1rem + var(--property-frame-padding));
   left: calc(1rem + var(--property-frame-padding));
-  font-family: var(--font-primary);
-  font-size: 0.65rem;
-  font-weight: 600;
+  font-family: var(--font-subheading);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-regular);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   background: var(--white);
@@ -53,6 +53,19 @@
   padding: 0.4rem 0.85rem;
   border: 1px solid var(--rule);
   border-radius: 999px;
+}
+
+.desktop-property__price {
+  position: absolute;
+  bottom: calc(1rem + var(--property-frame-padding));
+  left: calc(1rem + var(--property-frame-padding));
+  font-family: var(--font-primary);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: var(--font-weight-medium);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  padding: 0.45rem 0.85rem;
+  border-radius: 4px;
 }
 
 .desktop-property__body {
@@ -65,9 +78,9 @@
 }
 
 .desktop-property__neighborhood {
-  font-family: var(--font-primary);
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-family: var(--font-subheading);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-regular);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
@@ -77,7 +90,7 @@
 .desktop-property__title {
   font-family: var(--font-primary);
   font-size: clamp(1.4rem, 2.5vw, 1.85rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   line-height: 1.15;
   margin-bottom: 0.35rem;
 }
@@ -85,6 +98,7 @@
 .desktop-property__address {
   font-family: var(--font-primary);
   font-size: 0.8rem;
+  font-weight: var(--font-weight-regular);
   color: var(--ink-muted);
   margin-bottom: 0.75rem;
 }
@@ -94,6 +108,7 @@
   align-items: center;
   gap: 0.85rem;
   font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
   font-size: 0.8rem;
   color: var(--ink-muted);
   padding-bottom: 1rem;
@@ -110,6 +125,7 @@
 
 .desktop-property__description {
   font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
   font-size: clamp(0.92rem, 1.2vw, 1rem);
   color: var(--ink-soft);
   line-height: 1.8;
@@ -119,15 +135,9 @@
 
 .desktop-property__footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding-top: 0.5rem;
-}
-
-.desktop-property__price {
-  font-family: var(--font-primary);
-  font-size: clamp(1.15rem, 2vw, 1.4rem);
-  font-weight: 600;
 }
 
 .desktop-property__link {

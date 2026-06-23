@@ -15,6 +15,7 @@
 .mobile-listings__count,
 .mobile-listings__empty {
   font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
   font-size: 0.75rem;
   text-align: center;
   color: var(--ink-muted);

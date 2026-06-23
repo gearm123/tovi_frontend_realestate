@@ -15,6 +15,7 @@
 .desktop-listings__count,
 .desktop-listings__empty {
   font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
   font-size: 0.8rem;
   text-align: center;
   color: var(--ink-muted);

@@ -32,7 +32,6 @@ export default function PropertyCardBody({
       <p className={`${classPrefix}__description`}>{property.description}</p>
 
       <div className={`${classPrefix}__footer`}>
-        <span className={`${classPrefix}__price`}>{property.price}</span>
         <Link to={detailPath} className={`${classPrefix}__link`}>
           View details
         </Link>

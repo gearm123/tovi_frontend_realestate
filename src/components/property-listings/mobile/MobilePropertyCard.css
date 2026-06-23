@@ -43,9 +43,9 @@
   position: absolute;
   top: calc(0.85rem + var(--property-frame-padding));
   left: calc(0.85rem + var(--property-frame-padding));
-  font-family: var(--font-primary);
-  font-size: 0.6rem;
-  font-weight: 600;
+  font-family: var(--font-subheading);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-regular);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   background: var(--white);
@@ -53,6 +53,19 @@
   padding: 0.3rem 0.65rem;
   border: 1px solid var(--rule);
   border-radius: 999px;
+}
+
+.mobile-property__price {
+  position: absolute;
+  bottom: calc(0.85rem + var(--property-frame-padding));
+  left: calc(0.85rem + var(--property-frame-padding));
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: var(--font-weight-medium);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  padding: 0.35rem 0.7rem;
+  border-radius: 4px;
 }
 
 .mobile-property__body {
@@ -63,9 +76,9 @@
 }
 
 .mobile-property__neighborhood {
-  font-family: var(--font-primary);
-  font-size: 0.65rem;
-  font-weight: 500;
+  font-family: var(--font-subheading);
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-regular);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
@@ -75,7 +88,7 @@
 .mobile-property__title {
   font-family: var(--font-primary);
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   line-height: 1.2;
   margin-bottom: 0.3rem;
 }
@@ -83,6 +96,7 @@
 .mobile-property__address {
   font-family: var(--font-primary);
   font-size: 0.75rem;
+  font-weight: var(--font-weight-regular);
   color: var(--ink-muted);
   margin-bottom: 0.55rem;
 }
@@ -93,6 +107,7 @@
   flex-wrap: wrap;
   gap: 0.65rem;
   font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
   font-size: 0.7rem;
   color: var(--ink-muted);
   padding-bottom: 0.75rem;
@@ -109,6 +124,7 @@
 
 .mobile-property__description {
   font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
   font-size: 0.875rem;
   color: var(--ink-soft);
   line-height: 1.7;
@@ -117,16 +133,10 @@
 
 .mobile-property__footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding-top: 0.25rem;
   padding-bottom: 0.5rem;
-}
-
-.mobile-property__price {
-  font-family: var(--font-primary);
-  font-size: 1.15rem;
-  font-weight: 600;
 }
 
 .mobile-property__link {

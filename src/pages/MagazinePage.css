@@ -11,9 +11,9 @@
 }
 
 .magazine__date {
-  font-family: var(--font-primary);
-  font-size: 0.65rem;
-  font-weight: 500;
+  font-family: var(--font-subheading);
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-regular);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-muted);
@@ -22,12 +22,13 @@
 .magazine__title {
   font-family: var(--font-primary);
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin: 0.5rem 0 0.75rem;
 }
 
 .magazine__excerpt {
   font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
   font-size: 0.9rem;
   color: var(--ink-soft);
   line-height: 1.7;

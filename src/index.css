@@ -18,7 +18,11 @@
   --accent: #f05a24;
 
   --font-primary: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  --font-subheading: 'Cormorant', 'Georgia', serif;
   --font-button: 'Cormorant SC', 'Georgia', serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
 
   --max-width: 1120px;
   --property-image-max-width: min(var(--max-width), 720px);
@@ -38,6 +42,7 @@ html {
 body {
   overflow-x: hidden;
   font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
   font-size: 15px;
   line-height: 1.7;
   color: var(--ink);

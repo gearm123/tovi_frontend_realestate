@@ -23,7 +23,7 @@
 .property-filters__label {
   font-family: var(--font-primary);
   font-size: 0.65rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-regular);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-muted);
@@ -32,6 +32,8 @@
 .property-filters select {
   font-family: var(--font-primary);
   font-size: 0.85rem;
+  font-weight: var(--font-weight-regular);
+  text-transform: uppercase;
   padding: 0.55rem 0.75rem;
   border: 1px solid var(--rule);
   border-radius: 4px;
@@ -75,6 +77,9 @@
   gap: 0.4rem;
   font-family: var(--font-primary);
   font-size: 0.8rem;
+  font-weight: var(--font-weight-regular);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   cursor: pointer;
 }
 
