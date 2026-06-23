@@ -1,31 +1,24 @@
 import { Link } from 'react-router-dom'
 import PageShell from '../components/PageShell'
+import { useLanguage } from '../context/LanguageContext'
 import './SellersPackagePage.css'
 
 export default function SellersPackagePage() {
+  const { t } = useLanguage()
+
   return (
-    <PageShell
-      title="Sellers Exclusive Package"
-      subtitle="A premium, end-to-end service for homeowners who expect more."
-    >
+    <PageShell title={t.sellersPackage.title} subtitle={t.sellersPackage.subtitle}>
       <div className="sellers-package">
-        <p>
-          The PROPERTLV Sellers Exclusive Package is designed for property owners
-          who want a discreet, high-touch sale experience. From professional
-          staging and photography to targeted marketing and qualified buyer
-          screening, we handle every detail.
-        </p>
+        <p>{t.sellersPackage.intro}</p>
 
         <ul className="sellers-package__list">
-          <li>Professional photography and video tour</li>
-          <li>Curated listing across premium channels</li>
-          <li>Dedicated agent and weekly progress reports</li>
-          <li>Negotiation support and legal coordination</li>
-          <li>Exclusive buyer network access</li>
+          {t.sellersPackage.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
         </ul>
 
         <Link to="/contact" className="sellers-package__cta">
-          Enquire about the package
+          {t.sellersPackage.cta}
         </Link>
       </div>
     </PageShell>

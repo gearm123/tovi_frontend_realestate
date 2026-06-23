@@ -42,7 +42,7 @@
 .desktop-property__badge {
   position: absolute;
   top: calc(1rem + var(--property-frame-padding));
-  left: calc(1rem + var(--property-frame-padding));
+  inset-inline-start: calc(1rem + var(--property-frame-padding));
   font-family: var(--font-subheading);
   font-size: 0.75rem;
   font-weight: var(--font-weight-regular);
@@ -58,7 +58,7 @@
 .desktop-property__price {
   position: absolute;
   bottom: calc(1rem + var(--property-frame-padding));
-  left: calc(1rem + var(--property-frame-padding));
+  inset-inline-start: calc(1rem + var(--property-frame-padding));
   font-family: var(--font-primary);
   font-size: clamp(1rem, 2vw, 1.25rem);
   font-weight: var(--font-weight-medium);

@@ -1,4 +1,5 @@
 import { neighborhoods, propertyTypes } from '../data/properties'
+import { useLanguage } from '../context/LanguageContext'
 import type { PropertyFilters } from '../types/filters'
 import './PropertyFilters.css'
 
@@ -12,14 +13,14 @@ interface PropertyFiltersBarProps {
 
 const bedroomOptions = ['', '1', '2', '3', '4', '5'] as const
 
-const featureOptions = [
-  { key: 'balcony' as const, label: 'Balcony' },
-  { key: 'parking' as const, label: 'Parking' },
-  { key: 'elevator' as const, label: 'Elevator' },
-  { key: 'mamad' as const, label: 'Mamad' },
-  { key: 'miklat' as const, label: 'Miklat' },
-  { key: 'petsAllowed' as const, label: 'Pets allowed' },
-]
+const featureKeys = [
+  'balcony',
+  'parking',
+  'elevator',
+  'mamad',
+  'miklat',
+  'petsAllowed',
+] as const
 
 export default function PropertyFiltersBar({
   filters,
@@ -28,6 +29,8 @@ export default function PropertyFiltersBar({
   priceMax,
   isRental = false,
 }: PropertyFiltersBarProps) {
+  const { t, format, locale } = useLanguage()
+
   const update = <K extends keyof PropertyFilters>(
     key: K,
     value: PropertyFilters[K],
@@ -36,45 +39,55 @@ export default function PropertyFiltersBar({
   }
 
   const priceStep = isRental ? 1000 : 100000
-  const priceLabel = isRental ? 'Monthly rent' : 'Price'
+  const priceLabel = isRental ? t.filters.monthlyRent : t.filters.price
+
+  const neighborhoodLabel = (name: string) => {
+    const labels = t.neighborhoods as Record<string, string>
+    return labels[name] ?? name
+  }
+
+  const propertyTypeLabel = (value: string) => {
+    const labels = t.propertyTypes as Record<string, string>
+    return labels[value] ?? value
+  }
 
   return (
-    <div className="property-filters" role="search" aria-label="Property search filters">
+    <div className="property-filters" role="search" aria-label={t.filters.aria}>
       <div className="property-filters__row">
         <label className="property-filters__field">
-          <span className="property-filters__label">Neighbourhood</span>
+          <span className="property-filters__label">{t.filters.neighborhood}</span>
           <select
             value={filters.neighborhood}
             onChange={(e) => update('neighborhood', e.target.value)}
           >
-            <option value="">All neighbourhoods</option>
+            <option value="">{t.filters.allNeighborhoods}</option>
             {neighborhoods.map((n) => (
               <option key={n} value={n}>
-                {n}
+                {neighborhoodLabel(n)}
               </option>
             ))}
           </select>
         </label>
 
         <label className="property-filters__field">
-          <span className="property-filters__label">Property type</span>
+          <span className="property-filters__label">{t.filters.propertyType}</span>
           <select
             value={filters.propertyType}
             onChange={(e) =>
               update('propertyType', e.target.value as PropertyFilters['propertyType'])
             }
           >
-            <option value="">All types</option>
-            {propertyTypes.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
+            <option value="">{t.filters.allTypes}</option>
+            {propertyTypes.map((type) => (
+              <option key={type.value} value={type.value}>
+                {propertyTypeLabel(type.value)}
               </option>
             ))}
           </select>
         </label>
 
         <label className="property-filters__field">
-          <span className="property-filters__label">Rooms / beds</span>
+          <span className="property-filters__label">{t.filters.roomsBeds}</span>
           <select
             value={filters.bedrooms === '' ? '' : String(filters.bedrooms)}
             onChange={(e) =>
@@ -86,7 +99,7 @@ export default function PropertyFiltersBar({
           >
             {bedroomOptions.map((b) => (
               <option key={b || 'any'} value={b}>
-                {b === '' ? 'Any' : `${b}+`}
+                {b === '' ? t.filters.any : format(t.filters.roomsPlus, { count: b })}
               </option>
             ))}
           </select>
@@ -96,8 +109,11 @@ export default function PropertyFiltersBar({
       <div className="property-filters__row property-filters__row--price">
         <div className="property-filters__field property-filters__field--range">
           <span className="property-filters__label">
-            {priceLabel}: ₪{filters.priceMin.toLocaleString()} – ₪
-            {filters.priceMax.toLocaleString()}
+            {format(t.filters.priceRange, {
+              label: priceLabel,
+              min: filters.priceMin.toLocaleString(locale === 'he' ? 'he-IL' : 'en-US'),
+              max: filters.priceMax.toLocaleString(locale === 'he' ? 'he-IL' : 'en-US'),
+            })}
           </span>
           <div className="property-filters__sliders">
             <input
@@ -107,7 +123,7 @@ export default function PropertyFiltersBar({
               step={priceStep}
               value={filters.priceMin}
               onChange={(e) => update('priceMin', Number(e.target.value))}
-              aria-label="Minimum price"
+              aria-label={t.filters.minPrice}
             />
             <input
               type="range"
@@ -116,30 +132,30 @@ export default function PropertyFiltersBar({
               step={priceStep}
               value={filters.priceMax}
               onChange={(e) => update('priceMax', Number(e.target.value))}
-              aria-label="Maximum price"
+              aria-label={t.filters.maxPrice}
             />
           </div>
         </div>
       </div>
 
       <fieldset className="property-filters__extras">
-        <legend className="property-filters__label">Extra filters</legend>
+        <legend className="property-filters__label">{t.filters.extraFilters}</legend>
         <div className="property-filters__checkboxes">
-          {featureOptions.map(({ key, label }) => (
+          {featureKeys.map((key) => (
             <label key={key} className="property-filters__checkbox">
               <input
                 type="checkbox"
                 checked={filters[key]}
                 onChange={(e) => update(key, e.target.checked)}
               />
-              <span>{label}</span>
+              <span>{t.filters.features[key]}</span>
             </label>
           ))}
         </div>
       </fieldset>
 
       <button type="button" className="property-filters__reset" onClick={onReset}>
-        Clear filters
+        {t.filters.clear}
       </button>
     </div>
   )

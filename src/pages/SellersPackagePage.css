@@ -9,14 +9,15 @@
   font-weight: var(--font-weight-regular);
   font-size: 0.95rem;
   color: var(--ink-soft);
-  padding: 0.5rem 0 0.5rem 1.25rem;
+  padding: 0.5rem 0;
+  padding-inline-start: 1.25rem;
   position: relative;
 }
 
 .sellers-package__list li::before {
   content: '';
   position: absolute;
-  left: 0;
+  inset-inline-start: 0;
   top: 0.95rem;
   width: 6px;
   height: 6px;

@@ -1,17 +1,16 @@
 import ContactForm from '../components/ContactForm'
 import PageShell from '../components/PageShell'
+import { useLanguage } from '../context/LanguageContext'
 
 export default function ContactPage() {
+  const { t } = useLanguage()
+
   return (
-    <PageShell
-      title="Contact Us"
-      subtitle="Tell us what you are looking for and we will get back to you."
-    >
+    <PageShell title={t.contact.title} subtitle={t.contact.subtitle}>
       <p>
-        Reach us at{' '}
-        <a href="mailto:hello@propertlv.com">hello@propertlv.com</a> or{' '}
-        <a href="tel:+97235551234">+972 3 555 1234</a>. Rothschild Blvd 45,
-        Tel Aviv.
+        {t.contact.reachUs}{' '}
+        <a href="mailto:hello@propertlv.com">hello@propertlv.com</a> {t.contact.or}{' '}
+        <a href="tel:+97235551234">+972 3 555 1234</a>. {t.contact.address}
       </p>
       <ContactForm />
     </PageShell>

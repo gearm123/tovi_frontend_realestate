@@ -1,32 +1,38 @@
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
+import LanguageToggle from './LanguageToggle'
 import './Header.css'
 
-const navItems = [
-  { to: '/about', label: 'About' },
-  { to: '/sales', label: 'All Sales' },
-  { to: '/rentals', label: 'All Rentals' },
-  { to: '/sellers-package', label: 'Sellers Exclusive Package' },
-  { to: '/contact', label: 'Contact Us' },
-  { to: '/magazine', label: 'PROPERTLV Magazine' },
+const navKeys = [
+  { to: '/about', key: 'about' as const },
+  { to: '/sales', key: 'sales' as const },
+  { to: '/rentals', key: 'rentals' as const },
+  { to: '/sellers-package', key: 'sellersPackage' as const },
+  { to: '/contact', key: 'contact' as const },
+  { to: '/magazine', key: 'magazine' as const },
 ]
 
 export default function Header() {
+  const { t } = useLanguage()
+
   return (
     <header className="header">
+      <LanguageToggle />
+
       <div className="header__masthead">
         <Link to="/" className="header__brand">
           <h1 className="header__title">PROPERTLV</h1>
-          <p className="header__tagline">Tel Aviv Real Estate</p>
+          <p className="header__tagline">{t.header.tagline}</p>
         </Link>
       </div>
 
-      <nav className="header__nav" aria-label="Main navigation">
-        {navItems.map((item, index) => (
+      <nav className="header__nav" aria-label={t.header.navAria}>
+        {navKeys.map((item, index) => (
           <span key={item.to} className="header__nav-item">
             {index > 0 && (
               <span className="header__nav-dot" aria-hidden="true" />
             )}
-            <Link to={item.to}>{item.label}</Link>
+            <Link to={item.to}>{t.header.nav[item.key]}</Link>
           </span>
         ))}
       </nav>

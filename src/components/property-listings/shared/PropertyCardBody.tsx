@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import type { Property } from '../../../types/property'
+import { useLanguage } from '../../../context/LanguageContext'
+import { getLocalizedProperty } from '../../../i18n/propertyTranslations'
 
 interface PropertyCardBodyProps {
   property: Property
@@ -10,6 +12,20 @@ export default function PropertyCardBody({
   property,
   classPrefix,
 }: PropertyCardBodyProps) {
+  const { t, locale } = useLanguage()
+
+  const localized = getLocalizedProperty(property.id, locale, {
+    title: property.title,
+    address: property.address,
+    description: property.description,
+    price: property.price,
+    neighborhood: property.neighborhood,
+  })
+
+  const neighborhoodLabel =
+    (t.neighborhoods as Record<string, string>)[property.neighborhood] ??
+    property.neighborhood
+
   const detailPath =
     property.listingType === 'sale'
       ? `/property/sale/${property.id}`
@@ -17,23 +33,27 @@ export default function PropertyCardBody({
 
   return (
     <div className={`${classPrefix}__body`}>
-      <p className={`${classPrefix}__neighborhood`}>{property.neighborhood}</p>
-      <h3 className={`${classPrefix}__title`}>{property.title}</h3>
-      <p className={`${classPrefix}__address`}>{property.address}</p>
+      <p className={`${classPrefix}__neighborhood`}>{neighborhoodLabel}</p>
+      <h3 className={`${classPrefix}__title`}>{localized.title}</h3>
+      <p className={`${classPrefix}__address`}>{localized.address}</p>
 
       <div className={`${classPrefix}__specs`}>
-        <span>{property.bedrooms} bed</span>
+        <span>
+          {property.bedrooms} {t.property.bed}
+        </span>
         <span className={`${classPrefix}__spec-divider`} aria-hidden="true" />
-        <span>{property.bathrooms} bath</span>
+        <span>
+          {property.bathrooms} {t.property.bath}
+        </span>
         <span className={`${classPrefix}__spec-divider`} aria-hidden="true" />
         <span>{property.area} m²</span>
       </div>
 
-      <p className={`${classPrefix}__description`}>{property.description}</p>
+      <p className={`${classPrefix}__description`}>{localized.description}</p>
 
       <div className={`${classPrefix}__footer`}>
         <Link to={detailPath} className={`${classPrefix}__link`}>
-          View details
+          {t.property.viewDetails}
         </Link>
       </div>
     </div>

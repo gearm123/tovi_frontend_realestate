@@ -1,8 +1,10 @@
 import HeroVideo from '../components/HeroVideo'
 import PropertyListings from '../components/PropertyListings'
+import { useLanguage } from '../context/LanguageContext'
 import { properties } from '../data/properties'
 
 export default function HomePage() {
+  const { t } = useLanguage()
   const featured = properties.filter((p) => p.featured)
 
   return (
@@ -10,9 +12,9 @@ export default function HomePage() {
       <HeroVideo />
       <PropertyListings
         properties={featured}
-        sectionLabel="This week's selection"
-        title="Properties for You"
-        intro="Handpicked apartments and homes across Tel Aviv — each one chosen for its light, its neighborhood, and the life you might build there."
+        sectionLabel={t.home.sectionLabel}
+        title={t.home.title}
+        intro={t.home.intro}
       />
     </>
   )

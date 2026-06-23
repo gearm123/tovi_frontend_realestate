@@ -73,3 +73,18 @@ button {
 #root {
   min-height: 100vh;
 }
+
+[dir='rtl'] body {
+  font-family: 'Heebo', var(--font-primary);
+}
+
+[dir='rtl'] .header__title,
+[dir='rtl'] .lang-toggle__option--en {
+  letter-spacing: 0.04em;
+}
+
+[dir='rtl'] .header__tagline,
+[dir='rtl'] .header__nav,
+[dir='rtl'] .lang-toggle__label {
+  letter-spacing: 0.08em;
+}

@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import PropertyFiltersBar from '../components/PropertyFilters'
 import PropertyListings from '../components/PropertyListings'
 import PageShell from '../components/PageShell'
+import { useLanguage } from '../context/LanguageContext'
 import { properties } from '../data/properties'
 import { usePropertyFilters } from '../hooks/usePropertyFilters'
 import { defaultFilters } from '../types/filters'
@@ -9,6 +10,7 @@ import { defaultFilters } from '../types/filters'
 const SALE_PRICE_MAX = 10000000
 
 export default function AllSalesPage() {
+  const { t, format } = useLanguage()
   const sales = useMemo(
     () => properties.filter((p) => p.listingType === 'sale'),
     [],
@@ -22,10 +24,7 @@ export default function AllSalesPage() {
 
   return (
     <>
-      <PageShell
-        title="All Sales"
-        subtitle="Browse every property currently for sale across Tel Aviv."
-      >
+      <PageShell title={t.sales.title} subtitle={t.sales.subtitle}>
         <PropertyFiltersBar
           filters={activeFilters}
           onChange={setFilters}
@@ -37,8 +36,8 @@ export default function AllSalesPage() {
       </PageShell>
       <PropertyListings
         properties={filtered}
-        sectionLabel={`${filtered.length} properties`}
-        title="Properties for Sale"
+        sectionLabel={format(t.sales.countLabel, { count: filtered.length })}
+        title={t.sales.listingsTitle}
         showHeader={false}
       />
     </>

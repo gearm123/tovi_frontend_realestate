@@ -1,9 +1,12 @@
 import { HERO_IMAGE } from '../utils/propertyImages'
+import { useLanguage } from '../context/LanguageContext'
 import './HeroVideo.css'
 
 export default function HeroVideo() {
+  const { t } = useLanguage()
+
   return (
-    <section className="hero" aria-label="Tel Aviv introduction">
+    <section className="hero" aria-label={t.hero.aria}>
       <picture className="hero__picture">
         <source
           media="(max-width: 768px)"
@@ -13,7 +16,7 @@ export default function HeroVideo() {
         <source srcSet={HERO_IMAGE.desktopWebp} type="image/webp" />
         <img
           src={HERO_IMAGE.fallback}
-          alt="Tel Aviv — animation coming soon"
+          alt={t.hero.alt}
           className="hero__image"
           decoding="async"
           fetchPriority="high"
@@ -21,7 +24,7 @@ export default function HeroVideo() {
       </picture>
 
       <a href="#listings" className="hero__scroll-hint">
-        Scroll to listings
+        {t.hero.scrollHint}
       </a>
     </section>
   )
