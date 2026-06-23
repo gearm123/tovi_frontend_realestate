@@ -28,7 +28,7 @@
 .sellers-package__cta {
   display: inline-block;
   font-family: var(--font-button);
-  font-weight: 700;
+  font-weight: 400;
   font-size: 1rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;

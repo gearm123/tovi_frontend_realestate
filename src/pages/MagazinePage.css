@@ -37,7 +37,7 @@
 
 .magazine__read-more {
   font-family: var(--font-button);
-  font-weight: 700;
+  font-weight: 400;
   font-size: 0.9rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;

@@ -61,7 +61,7 @@
   z-index: 1;
   font-family: var(--font-primary);
   font-size: 0.62rem;
-  font-weight: var(--font-weight-semibold);
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-align: center;
   color: var(--ink-muted);
@@ -81,7 +81,7 @@
 .lang-toggle__label {
   font-family: var(--font-primary);
   font-size: 0.58rem;
-  font-weight: var(--font-weight-medium);
+  font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-muted);

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+
 *,
 *::before,
 *::after {
@@ -17,12 +19,14 @@
   --rule-light: #ddd8cf;
   --accent: #f05a24;
 
-  --font-primary: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
-  --font-subheading: 'Cormorant', 'Georgia', serif;
-  --font-button: 'Cormorant SC', 'Georgia', serif;
+  font-family: 'Cormorant Garamond', serif;
+
+  --font-primary: 'Cormorant Garamond', serif;
+  --font-subheading: 'Cormorant Garamond', serif;
+  --font-button: 'Cormorant Garamond', serif;
   --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
+  --font-weight-medium: 400;
+  --font-weight-semibold: 400;
 
   --max-width: 1120px;
   --property-image-max-width: min(var(--max-width), 720px);
@@ -34,6 +38,44 @@
   --mobile-max-width: 768px;
 }
 
+html,
+body,
+button,
+input,
+textarea,
+select,
+a,
+p,
+span,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+h1,
+h2,
+h3,
+.section-title,
+.hero-title {
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+p,
+li,
+button,
+input,
+textarea {
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
@@ -41,8 +83,6 @@ html {
 
 body {
   overflow-x: hidden;
-  font-family: var(--font-primary);
-  font-weight: var(--font-weight-regular);
   font-size: 15px;
   line-height: 1.7;
   color: var(--ink);
@@ -63,8 +103,6 @@ a {
 }
 
 button {
-  font-family: var(--font-button);
-  font-weight: 700;
   cursor: pointer;
   border: none;
   background: none;
@@ -74,17 +112,13 @@ button {
   min-height: 100vh;
 }
 
-[dir='rtl'] body {
-  font-family: 'Heebo', var(--font-primary);
-}
-
 [dir='rtl'] .header__title,
 [dir='rtl'] .lang-toggle__option--en {
-  letter-spacing: 0.04em;
+  letter-spacing: 0.12em;
 }
 
 [dir='rtl'] .header__tagline,
 [dir='rtl'] .header__nav,
 [dir='rtl'] .lang-toggle__label {
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
 }
