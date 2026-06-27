@@ -7,7 +7,11 @@ export default function SellersPackagePage() {
   const { t } = useLanguage()
 
   return (
-    <PageShell title={t.sellersPackage.title} subtitle={t.sellersPackage.subtitle}>
+    <PageShell
+      title={t.sellersPackage.title}
+      accent={t.sellersPackage.accent}
+      subtitle={t.sellersPackage.subtitle}
+    >
       <div className="sellers-package">
         <p>{t.sellersPackage.intro}</p>
 

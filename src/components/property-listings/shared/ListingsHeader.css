@@ -6,13 +6,7 @@
 }
 
 .listings-header__section-label {
-  font-family: var(--font-subheading);
-  font-size: 0.85rem;
-  font-weight: var(--font-weight-regular);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.35rem;
 }
 
 .listings-header__title {

@@ -24,7 +24,7 @@ export default function AllRentalsPage() {
 
   return (
     <>
-      <PageShell title={t.rentals.title} subtitle={t.rentals.subtitle}>
+      <PageShell title={t.rentals.title} accent={t.rentals.accent} subtitle={t.rentals.subtitle}>
         <PropertyFiltersBar
           filters={activeFilters}
           onChange={setFilters}

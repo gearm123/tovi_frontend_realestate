@@ -22,7 +22,9 @@ export default function Header() {
       <div className="header__masthead">
         <Link to="/" className="header__brand">
           <h1 className="header__title">PROPERTLV</h1>
-          <p className="header__tagline">{t.header.tagline}</p>
+          <p className="header__tagline orange-cursive-title orange-cursive-title--tagline">
+            {t.header.tagline}
+          </p>
         </Link>
       </div>
 

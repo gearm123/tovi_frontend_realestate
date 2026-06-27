@@ -24,7 +24,7 @@ export default function AllSalesPage() {
 
   return (
     <>
-      <PageShell title={t.sales.title} subtitle={t.sales.subtitle}>
+      <PageShell title={t.sales.title} accent={t.sales.accent} subtitle={t.sales.subtitle}>
         <PropertyFiltersBar
           filters={activeFilters}
           onChange={setFilters}

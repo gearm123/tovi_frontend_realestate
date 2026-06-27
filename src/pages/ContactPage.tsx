@@ -6,7 +6,7 @@ export default function ContactPage() {
   const { t } = useLanguage()
 
   return (
-    <PageShell title={t.contact.title} subtitle={t.contact.subtitle}>
+    <PageShell title={t.contact.title} accent={t.contact.accent} subtitle={t.contact.subtitle}>
       <p>
         {t.contact.reachUs}{' '}
         <a href="mailto:hello@propertlv.com">hello@propertlv.com</a> {t.contact.or}{' '}

@@ -13,7 +13,9 @@ export default function ListingsHeader({
 }: ListingsHeaderProps) {
   return (
     <header className="listings-header">
-      <p className="listings-header__section-label">{sectionLabel}</p>
+      <p className="listings-header__section-label orange-cursive-title orange-cursive-title--label">
+        {sectionLabel}
+      </p>
       <h2 className="listings-header__title">{title}</h2>
       {intro && <p className="listings-header__intro">{intro}</p>}
     </header>

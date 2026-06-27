@@ -47,6 +47,7 @@ const en = {
       'Handpicked apartments and homes across Tel Aviv — each one chosen for its light, its neighborhood, and the life you might build there.',
   },
   about: {
+    accent: 'Our Story',
     title: 'About PROPERTLV',
     subtitle: 'Finding a home should feel personal — not transactional.',
     p1: 'PROPERTLV connects people with thoughtfully selected properties across Tel Aviv, from Bauhaus gems on Rothschild to quiet family streets in Ramat Aviv. We believe every home has a story, and every search deserves patience, expertise, and care.',
@@ -54,6 +55,7 @@ const en = {
     p3: 'Whether you are looking for a sea-view penthouse, a garden-level duplex, or a rental near the park, PROPERTLV is here to help you find the right fit.',
   },
   contact: {
+    accent: 'Hello',
     title: 'Contact Us',
     subtitle: 'Tell us what you are looking for and we will get back to you.',
     reachUs: 'Reach us at',
@@ -74,6 +76,7 @@ const en = {
     submit: 'Send message',
   },
   sellersPackage: {
+    accent: 'Exclusive',
     title: 'Sellers Exclusive Package',
     subtitle: 'A premium, end-to-end service for homeowners who expect more.',
     intro:
@@ -88,6 +91,7 @@ const en = {
     cta: 'Enquire about the package',
   },
   magazine: {
+    accent: 'Stories',
     title: 'PROPERTLV Magazine',
     subtitle: "Stories, guides, and insights from Tel Aviv's property scene.",
     readMore: 'Read more',
@@ -113,12 +117,14 @@ const en = {
     ],
   },
   sales: {
+    accent: 'Discover',
     title: 'All Sales',
     subtitle: 'Browse every property currently for sale across Tel Aviv.',
     countLabel: '{count} properties',
     listingsTitle: 'Properties for Sale',
   },
   rentals: {
+    accent: 'Explore',
     title: 'All Rentals',
     subtitle: 'Discover apartments and homes available for rent in Tel Aviv.',
     countLabel: '{count} properties',
@@ -230,6 +236,7 @@ const he: TranslationTree = {
       'דירות ובתים נבחרים ברחבי תל אביב — כל אחד נבחר בזכות האור, השכונה והחיים שאפשר לבנות בו.',
   },
   about: {
+    accent: 'הסיפור שלנו',
     title: 'אודות PROPERTLV',
     subtitle: 'מציאת בית צריכה להרגיש אישית — לא עסקית.',
     p1: 'PROPERTLV מחברת בין אנשים לנכסים נבחרים ברחבי תל אביב, מפנינות באוהאוס ברוטשילד ועד רחובות משפחתיים שקטים ברמת אביב. אנחנו מאמינים שלכל בית יש סיפור, ולכל חיפוש מגיעים סבלנות, מומחיות ודאגה.',
@@ -237,6 +244,7 @@ const he: TranslationTree = {
     p3: 'בין אם אתם מחפשים פנטהאוז עם נוף לים, דופלקס בקומת גן או דירה להשכרה ליד הפארק — PROPERTLV כאן כדי לעזור לכם למצוא את ההתאמה הנכונה.',
   },
   contact: {
+    accent: 'שלום',
     title: 'צור קשר',
     subtitle: 'ספרו לנו מה אתם מחפשים ונחזור אליכם.',
     reachUs: 'ניתן ליצור קשר ב',
@@ -257,6 +265,7 @@ const he: TranslationTree = {
     submit: 'שליחת הודעה',
   },
   sellersPackage: {
+    accent: 'בלעדי',
     title: 'חבילת מוכרים בלעדית',
     subtitle: 'שירות פרימיום מקצה לקצה לבעלי בתים שמצפים ליותר.',
     intro:
@@ -271,6 +280,7 @@ const he: TranslationTree = {
     cta: 'לפרטים על החבילה',
   },
   magazine: {
+    accent: 'סיפורים',
     title: 'מגזין PROPERTLV',
     subtitle: 'סיפורים, מדריכים ותובנות מעולם הנדל״ן בתל אביב.',
     readMore: 'קראו עוד',
@@ -296,12 +306,14 @@ const he: TranslationTree = {
     ],
   },
   sales: {
+    accent: 'גלו',
     title: 'כל הנכסים למכירה',
     subtitle: 'עיינו בכל הנכסים הנמצאים כעת למכירה ברחבי תל אביב.',
     countLabel: '{count} נכסים',
     listingsTitle: 'נכסים למכירה',
   },
   rentals: {
+    accent: 'גלו',
     title: 'כל הנכסים להשכרה',
     subtitle: 'גלו דירות ובתים זמינים להשכרה בתל אביב.',
     countLabel: '{count} נכסים',

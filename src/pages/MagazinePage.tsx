@@ -6,7 +6,7 @@ export default function MagazinePage() {
   const { t } = useLanguage()
 
   return (
-    <PageShell title={t.magazine.title} subtitle={t.magazine.subtitle}>
+    <PageShell title={t.magazine.title} accent={t.magazine.accent} subtitle={t.magazine.subtitle}>
       <div className="magazine">
         {t.magazine.articles.map((article) => (
           <article key={article.title} className="magazine__card">
