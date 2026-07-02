@@ -7,10 +7,9 @@ import {
   useState,
   type ReactNode,
 } from 'react'
+import { persistLocaleChoice, readInitialLocale } from '../i18n/locale'
 import { getDir, interpolate, translations, type TranslationTree } from '../i18n/translations'
 import type { Locale, TranslationParams } from '../i18n/types'
-
-const STORAGE_KEY = 'propertlv-locale'
 
 type LanguageContextValue = {
   locale: Locale
@@ -24,26 +23,12 @@ type LanguageContextValue = {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null)
 
-function readStoredLocale(): Locale {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored === 'he' || stored === 'en') return stored
-  } catch {
-    /* ignore */
-  }
-  return 'he'
-}
-
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(readStoredLocale)
+  const [locale, setLocaleState] = useState<Locale>(readInitialLocale)
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next)
-    try {
-      localStorage.setItem(STORAGE_KEY, next)
-    } catch {
-      /* ignore */
-    }
+    persistLocaleChoice(next)
   }, [])
 
   const toggleLocale = useCallback(() => {

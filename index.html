@@ -1,6 +1,41 @@
 <!doctype html>
 <html lang="he" dir="rtl">
   <head>
+    <script>
+      (function () {
+        var localeKey = 'propertlv-locale'
+        var explicitKey = 'propertlv-locale-explicit'
+        var locale = 'he'
+
+        try {
+          var explicit = localStorage.getItem(explicitKey) === '1'
+          var stored = localStorage.getItem(localeKey)
+          if (explicit && (stored === 'he' || stored === 'en')) {
+            locale = stored
+          } else {
+            var langs =
+              navigator.languages && navigator.languages.length
+                ? navigator.languages
+                : [navigator.language || 'he']
+            for (var i = 0; i < langs.length; i++) {
+              var lang = langs[i].toLowerCase()
+              if (lang.indexOf('he') === 0 || lang.indexOf('iw') === 0) {
+                locale = 'he'
+                break
+              }
+              if (lang.indexOf('en') === 0) {
+                locale = 'en'
+                break
+              }
+            }
+          }
+        } catch (e) {}
+
+        var html = document.documentElement
+        html.lang = locale
+        html.dir = locale === 'he' ? 'rtl' : 'ltr'
+      })()
+    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
