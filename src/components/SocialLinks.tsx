@@ -5,6 +5,8 @@ interface SocialLinksProps {
   social: BusinessSocial
   instagramLabel: string
   facebookLabel: string
+  /** When true, icons are shown without external links */
+  linksDisabled?: boolean
 }
 
 function InstagramIcon() {
@@ -47,7 +49,21 @@ export default function SocialLinks({
   social,
   instagramLabel,
   facebookLabel,
+  linksDisabled = false,
 }: SocialLinksProps) {
+  if (linksDisabled) {
+    return (
+      <div className="social-links">
+        <span className="social-links__item social-links__item--disabled" aria-label={instagramLabel}>
+          <InstagramIcon />
+        </span>
+        <span className="social-links__item social-links__item--disabled" aria-label={facebookLabel}>
+          <FacebookIcon />
+        </span>
+      </div>
+    )
+  }
+
   return (
     <div className="social-links">
       <a

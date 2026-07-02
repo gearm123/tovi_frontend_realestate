@@ -7,7 +7,7 @@ import {
 
 /**
  * ProperTLV business contact — single source of truth.
- * Update this file when the client provides final contact details.
+ * TODO(client): Update when final contact details are confirmed.
  */
 export const business: BusinessContact = {
   name: 'ProperTLV',

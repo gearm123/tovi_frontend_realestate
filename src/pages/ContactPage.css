@@ -1,0 +1,6 @@
+.contact-page__placeholder-tag {
+  font-family: var(--font-primary);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--ink-muted);
+}

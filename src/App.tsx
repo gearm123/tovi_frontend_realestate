@@ -7,6 +7,7 @@ import AllRentalsPage from './pages/AllRentalsPage'
 import SellersPackagePage from './pages/SellersPackagePage'
 import ContactPage from './pages/ContactPage'
 import MagazinePage from './pages/MagazinePage'
+import MagazineArticlePage from './pages/MagazineArticlePage'
 import PropertiesSearchPage from './pages/PropertiesSearchPage'
 import ServicesPage from './pages/ServicesPage'
 import PropertyDetailPage from './pages/PropertyDetailPage'
@@ -25,6 +26,7 @@ function App() {
           <Route path="sellers-package" element={<SellersPackagePage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="magazine" element={<MagazinePage />} />
+          <Route path="magazine/:slug" element={<MagazineArticlePage />} />
           <Route path="property/sale/:id" element={<PropertyDetailPage />} />
           <Route path="property/rental/:id" element={<PropertyDetailPage />} />
         </Route>

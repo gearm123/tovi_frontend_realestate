@@ -37,6 +37,7 @@ export default function PropertySearchSection({
 
   return (
     <section id={id} className="property-search-section" aria-label={t.search.sectionAria}>
+      <p className="property-search-section__demo-note">{t.search.demoListingsNote}</p>
       <PropertyFiltersBar
         filters={filters}
         onChange={setFilters}

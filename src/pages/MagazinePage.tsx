@@ -1,24 +1,37 @@
 import PageShell from '../components/PageShell'
-import { useLanguage } from '../context/LanguageContext'
+import ArticleCard from '../components/magazine/ArticleCard'
+import MagazineCtaBanner from '../components/magazine/MagazineCtaBanner'
+import { useSiteContent } from '../hooks/useSiteContent'
+import { getMagazineArticles } from '../services/magazineService'
 import './MagazinePage.css'
 
 export default function MagazinePage() {
-  const { t } = useLanguage()
+  const { content, locale } = useSiteContent()
+  const { magazinePage } = content
+  const articles = getMagazineArticles(locale)
 
   return (
-    <PageShell title={t.magazine.title} accent={t.magazine.accent} subtitle={t.magazine.subtitle}>
-      <div className="magazine">
-        {t.magazine.articles.map((article) => (
-          <article key={article.title} className="magazine__card">
-            <time className="magazine__date">{article.date}</time>
-            <h2 className="magazine__title">{article.title}</h2>
-            <p className="magazine__excerpt">{article.excerpt}</p>
-            <button type="button" className="magazine__read-more">
-              {t.magazine.readMore}
-            </button>
-          </article>
-        ))}
+    <>
+      <PageShell
+        title={magazinePage.title}
+        accent={magazinePage.accent}
+        subtitle={magazinePage.subtitle}
+      />
+      <div className="magazine-page">
+        <div className="magazine-page__grid">
+          {articles.map((article) => (
+            <ArticleCard
+              key={article.id}
+              article={article}
+              readMoreLabel={magazinePage.readMore}
+              watchVideoLabel={magazinePage.watchVideo}
+              videoBadgeLabel={magazinePage.videoLabel}
+              placeholderLabel={magazinePage.placeholderLabel}
+            />
+          ))}
+        </div>
+        <MagazineCtaBanner cta={magazinePage.cta} />
       </div>
-    </PageShell>
+    </>
   )
 }

@@ -1,10 +1,13 @@
 import { Link, useParams } from 'react-router-dom'
+import ConversionSections from '../components/conversion/ConversionSections'
+import VideoEmbed from '../components/shared/VideoEmbed'
 import { getPropertyById } from '../services/propertyService'
 import ListingTypeBadge from '../components/property-listings/shared/ListingTypeBadge'
 import PropertyImage from '../components/property-listings/shared/PropertyImage'
 import { useLanguage } from '../context/LanguageContext'
 import { useViewport } from '../hooks/useViewport'
 import { getLocalizedProperty } from '../i18n/propertyTranslations'
+import { isPlayableVideoUrl } from '../utils/propertyVideo'
 import './PropertyDetailPage.css'
 
 const featureKeys = [
@@ -46,6 +49,9 @@ export default function PropertyDetailPage() {
   const neighborhoodLabel =
     (t.neighborhoods as Record<string, string>)[property.neighborhood] ??
     property.neighborhood
+
+  const showVideoTour =
+    property.videoUrl && isPlayableVideoUrl(property.videoUrl)
 
   return (
     <article className={`property-detail property-detail--${viewport}`}>
@@ -91,6 +97,16 @@ export default function PropertyDetailPage() {
         </p>
         <p className="property-detail__description">{localized.description}</p>
 
+        {showVideoTour && (
+          <section className="property-detail__video" aria-labelledby="property-video-title">
+            <h2 id="property-video-title">{t.property.videoTour}</h2>
+            <VideoEmbed
+              videoUrl={property.videoUrl!}
+              title={`${localized.title} — ${t.property.videoTour}`}
+            />
+          </section>
+        )}
+
         <div className="property-detail__features">
           <h2>{t.property.features}</h2>
           <ul>
@@ -119,6 +135,8 @@ export default function PropertyDetailPage() {
             {t.property.backToListings}
           </Link>
         </div>
+
+        <ConversionSections variant="stacked" compact />
       </div>
     </article>
   )

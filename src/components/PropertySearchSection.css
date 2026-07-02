@@ -3,6 +3,17 @@
   padding: 0 clamp(1rem, 4vw, 2rem) var(--section-padding);
 }
 
+.property-search-section__demo-note {
+  max-width: var(--max-width);
+  margin: 0 auto clamp(1rem, 3vw, 1.5rem);
+  font-family: var(--font-primary);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--ink-muted);
+  line-height: 1.55;
+  text-align: center;
+}
+
 .property-search-section .property-filters {
   margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
 }

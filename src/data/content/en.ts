@@ -152,19 +152,62 @@ export const siteContentEn: SiteContent = {
     },
   },
 
+  // PLACEHOLDER_COPY: Magazine page chrome and CTA
+  magazinePage: {
+    accent: 'Stories',
+    title: 'ProperTLV Magazine',
+    subtitle: "Stories, guides, and insights from Tel Aviv's property scene.",
+    readMore: 'Read article',
+    watchVideo: 'Watch video',
+    videoLabel: 'Video',
+    backToMagazine: 'Back to magazine',
+    articleNotFound: 'Article not found',
+    placeholderLabel: 'Sample',
+    cta: {
+      title: 'Thinking about buying or selling in Tel Aviv?',
+      description:
+        'Speak with Lee Cohen for personal guidance on properties, neighbourhoods, and next steps.',
+      buttonLabel: 'Contact ProperTLV',
+      href: '/contact',
+    },
+  },
+
   newsletter: {
-    title: 'Stay in the Loop',
+    accent: 'Early Access',
+    title: 'Get new properties before everyone else',
     description:
-      'Tel Aviv market updates and new listings from ProperTLV. Mailing list integration to be connected when ready.',
+      'Join ProperTLV’s list for fresh listings, neighbourhood notes, and market updates — delivered discreetly to your inbox.',
+    nameLabel: 'Name',
+    emailLabel: 'Email',
     buttonLabel: 'Subscribe',
     footnote: 'We respect your privacy. Unsubscribe anytime.',
+    successMessage:
+      'Thank you — you’re on the list. We’ll be in touch when new properties match what you’re looking for.',
+    errorMessage: 'Something went wrong. Please try again.',
   },
 
   booking: {
-    title: 'Book a Viewing or Consultation',
+    accent: 'Schedule',
+    title: 'Book a viewing or consultation',
     description:
-      'Ready to see a property or talk through your search? Get in touch with Lee Cohen to arrange a call or viewing.',
-    buttonLabel: 'Book now',
+      'Ready to see a property or talk through your search? Pick a time that suits you for a call or viewing with Lee Cohen.',
+    buttonLabel: 'Schedule a visit',
     footnote: 'You can also reach us by phone or WhatsApp.',
+    placeholderNote: 'Online scheduling link coming soon — use Contact to book a visit.',
+  },
+
+  mapSection: {
+    accent: 'Tel Aviv',
+    title: 'Properties across the city',
+    subtitle:
+      'Explore ProperTLV listings by neighbourhood. Select a pin to view details — interactive map integration coming soon.',
+    placeholderNote:
+      'Preview map — connect Google Maps or Mapbox when API credentials are ready.',
+    viewProperty: 'View property',
+    allNeighborhoods: 'All neighbourhoods',
+    listingsCount: '{count} listings',
+    saleLabel: 'For sale',
+    rentalLabel: 'For rent',
+    neighborhoodFallback: 'Approximate neighbourhood pin',
   },
 }

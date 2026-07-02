@@ -1,4 +1,5 @@
 import type { Locale } from '../i18n/types'
+import type { MagazinePageContent } from './magazine'
 
 /** Reusable page section with title and body paragraphs */
 export interface ContentSection {
@@ -70,6 +71,33 @@ export interface CtaSection {
   footnote?: string
 }
 
+export interface NewsletterSection extends CtaSection {
+  accent?: string
+  nameLabel: string
+  emailLabel: string
+  successMessage: string
+  errorMessage: string
+}
+
+export interface BookingSection extends CtaSection {
+  accent?: string
+  /** Shown when booking URL is still a placeholder */
+  placeholderNote?: string
+}
+
+export interface MapSectionContent {
+  accent?: string
+  title: string
+  subtitle?: string
+  placeholderNote: string
+  viewProperty: string
+  allNeighborhoods: string
+  listingsCount: string
+  saleLabel: string
+  rentalLabel: string
+  neighborhoodFallback: string
+}
+
 export interface SiteContent {
   about: AboutContent
   servicesPage: ServicesPageContent
@@ -77,8 +105,10 @@ export interface SiteContent {
   buyerServices: ServiceSection
   sellerServices: ServiceSection
   reviews: ReviewsSection
-  newsletter: CtaSection
-  booking: CtaSection
+  magazinePage: MagazinePageContent
+  newsletter: NewsletterSection
+  booking: BookingSection
+  mapSection: MapSectionContent
 }
 
 export type LocalizedSiteContent = Record<Locale, SiteContent>

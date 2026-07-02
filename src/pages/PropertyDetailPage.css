@@ -124,6 +124,20 @@
   margin-bottom: 2rem;
 }
 
+.property-detail__video {
+  margin-bottom: 2rem;
+}
+
+.property-detail__video h2 {
+  font-family: var(--font-subheading);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.85rem;
+}
+
 .property-detail__features h2 {
   font-family: var(--font-subheading);
   font-size: 0.9rem;

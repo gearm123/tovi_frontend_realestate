@@ -1,9 +1,11 @@
 import type { Property } from '../../../types/property'
 import { useLanguage } from '../../../context/LanguageContext'
 import { getLocalizedProperty } from '../../../i18n/propertyTranslations'
+import { hasPropertyVideoTour } from '../../../utils/propertyVideo'
 import ListingTypeBadge from '../shared/ListingTypeBadge'
 import PropertyCardBody from '../shared/PropertyCardBody'
 import PropertyImage from '../shared/PropertyImage'
+import VideoTourBadge from '../shared/VideoTourBadge'
 import './MobilePropertyCard.css'
 
 interface MobilePropertyCardProps {
@@ -47,6 +49,11 @@ export default function MobilePropertyCard({
           <span className="mobile-property__price">
             {localized.price ?? property.price}
           </span>
+          {hasPropertyVideoTour(property.videoUrl) && (
+            <span className="mobile-property__video-tour">
+              <VideoTourBadge label={t.property.videoTour} />
+            </span>
+          )}
         </div>
       </div>
 

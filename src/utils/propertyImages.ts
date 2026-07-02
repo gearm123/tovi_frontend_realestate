@@ -1,3 +1,5 @@
+import { PLACEHOLDER_PROPERTY_IMAGE } from '../data/placeholders'
+
 const PROPERTY_IMAGE_PATTERN = /\/assets\/properties\/(\d+)\.jpg$/
 
 export interface PropertyImageSources {
@@ -5,6 +7,7 @@ export interface PropertyImageSources {
   desktopWebp: string
   desktopJpg: string
   mobileWebp: string
+  fallback: string
 }
 
 export function getPropertyImageSources(imagePath: string): PropertyImageSources {
@@ -17,19 +20,23 @@ export function getPropertyImageSources(imagePath: string): PropertyImageSources
       desktopWebp: imagePath,
       desktopJpg: imagePath,
       mobileWebp: imagePath,
+      fallback: imagePath,
     }
   }
 
+  const jpg = `/assets/properties/${id}.jpg`
+
   return {
     id,
-    desktopWebp: `/assets/properties/${id}.webp`,
-    desktopJpg: `/assets/properties/${id}.jpg`,
-    mobileWebp: `/assets/properties/mobile/${id}.webp`,
+    desktopWebp: jpg,
+    desktopJpg: jpg,
+    mobileWebp: jpg,
+    fallback: PLACEHOLDER_PROPERTY_IMAGE,
   }
 }
 
 export const HERO_IMAGE = {
-  mobileWebp: '/assets/stub-mobile.webp',
-  desktopWebp: '/assets/stub.webp',
-  fallback: '/assets/stub.png',
+  fallback: '/assets/hero.jpg',
+  /** Secondary Tel Aviv skyline if primary hero asset fails */
+  fallbackAlt: '/assets/hero-tel-aviv.jpg',
 } as const

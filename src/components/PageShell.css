@@ -48,3 +48,7 @@
 .page-shell__content p:last-child {
   margin-bottom: 0;
 }
+
+.page-shell__content .conversion-sections--compact {
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+}

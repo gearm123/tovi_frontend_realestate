@@ -1,4 +1,5 @@
 import PageShell from '../components/PageShell'
+import PropertyMapSection from '../components/map/PropertyMapSection'
 import PropertySearchSection from '../components/PropertySearchSection'
 import { useLanguage } from '../context/LanguageContext'
 
@@ -12,6 +13,7 @@ export default function PropertiesSearchPage() {
         accent={t.search.accent}
         subtitle={t.search.subtitle}
       />
+      <PropertyMapSection />
       <PropertySearchSection showListingsHeader={false} />
     </>
   )

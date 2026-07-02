@@ -1,3 +1,4 @@
+import { CONTACT_PLACEHOLDERS } from '../../data/placeholders'
 import { useSiteContent } from '../../hooks/useSiteContent'
 import ReviewCard from './ReviewCard'
 import './ReviewsSection.css'
@@ -7,6 +8,8 @@ export default function ReviewsSection() {
   const { content } = useSiteContent()
   const { reviews } = content
   const { googleReviews } = reviews
+  const showGoogleButton =
+    googleReviews.showButton && !CONTACT_PLACEHOLDERS.googleReviews
 
   return (
     <section className="reviews-section" aria-labelledby="reviews-section-title">
@@ -32,7 +35,7 @@ export default function ReviewsSection() {
         ))}
       </div>
 
-      {googleReviews.showButton && (
+      {showGoogleButton ? (
         <div className="reviews-section__google">
           <a
             href={googleReviews.url}
@@ -44,6 +47,12 @@ export default function ReviewsSection() {
           </a>
           <p className="reviews-section__google-note">{googleReviews.note}</p>
         </div>
+      ) : (
+        googleReviews.showButton && (
+          <p className="reviews-section__google-note reviews-section__google-note--only">
+            {googleReviews.note}
+          </p>
+        )
       )}
     </section>
   )

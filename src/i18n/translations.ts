@@ -52,6 +52,7 @@ const en = {
   hero: {
     aria: 'Tel Aviv introduction',
     alt: 'Tel Aviv — animation coming soon',
+    animationPlaceholder: 'here will be your animation',
     scrollHint: 'Scroll to listings',
   },
   home: {
@@ -88,6 +89,22 @@ const en = {
     phone: 'Phone',
     message: 'Message',
     submit: 'Send message',
+  },
+  accessibility: {
+    openMenu: 'Accessibility',
+    closeMenu: 'Close',
+    title: 'Accessibility options',
+    textSize: 'Text size',
+    increaseText: 'Increase text size',
+    decreaseText: 'Decrease text size',
+    highContrast: 'High contrast',
+    underlineLinks: 'Underline links',
+    readableFont: 'Readable font',
+    reset: 'Reset settings',
+    on: 'On',
+    off: 'Off',
+    disclaimer:
+      'These tools are provided to improve browsing comfort. They do not by themselves ensure compliance with accessibility laws or standards.',
   },
   sellersPackage: {
     accent: 'Exclusive',
@@ -153,6 +170,8 @@ const en = {
     resultsTitle: 'Matching properties',
     resultsIntro: 'Listings update instantly as you adjust the filters below.',
     resultsCount: '{count} properties found',
+    demoListingsNote:
+      'Sample listings for demonstration — final properties will be supplied by ProperTLV.',
     emptyTitle: 'No properties match your search',
     emptyText:
       'Try broadening your filters — change the status, neighbourhood, or price range, or clear all filters to start again.',
@@ -211,6 +230,7 @@ const en = {
     forSale: 'For Sale',
     forRent: 'For Rent',
     featured: 'Featured',
+    videoTour: 'Video tour',
     features: 'Features',
     contactCta: 'Contact us about this property',
     backToListings: 'Back to listings',
@@ -273,6 +293,7 @@ const he: TranslationTree = {
   hero: {
     aria: 'היכרות עם תל אביב',
     alt: 'תל אביב — אנימציה בקרוב',
+    animationPlaceholder: 'here will be your animation',
     scrollHint: 'גלילה לרשימת הנכסים',
   },
   home: {
@@ -309,6 +330,22 @@ const he: TranslationTree = {
     phone: 'טלפון',
     message: 'הודעה',
     submit: 'שליחת הודעה',
+  },
+  accessibility: {
+    openMenu: 'נגישות',
+    closeMenu: 'סגירה',
+    title: 'אפשרויות נגישות',
+    textSize: 'גודל טקסט',
+    increaseText: 'הגדלת טקסט',
+    decreaseText: 'הקטנת טקסט',
+    highContrast: 'ניגודיות גבוהה',
+    underlineLinks: 'קו תחתון לקישורים',
+    readableFont: 'גופן קריא',
+    reset: 'איפוס הגדרות',
+    on: 'פעיל',
+    off: 'כבוי',
+    disclaimer:
+      'כלים אלה נועדו לשפר את נוחות הגלישה. הם אינם מהווים בפני עצמם עמידה מלאה בדרישות נגישות לפי חוק או תקן.',
   },
   sellersPackage: {
     accent: 'בלעדי',
@@ -374,6 +411,8 @@ const he: TranslationTree = {
     resultsTitle: 'נכסים תואמים',
     resultsIntro: 'הרשימה מתעדכנת מיד כשמשנים את המסננים.',
     resultsCount: 'נמצאו {count} נכסים',
+    demoListingsNote:
+      'נכסים לדוגמה להמחשה — הנכסים הסופיים יסופקו על ידי ProperTLV.',
     emptyTitle: 'לא נמצאו נכסים תואמים',
     emptyText:
       'נסו להרחיב את המסננים — שנו סטטוס, שכונה או טווח מחירים, או נקו את כל המסננים להתחלה מחדש.',
@@ -432,6 +471,7 @@ const he: TranslationTree = {
     forSale: 'למכירה',
     forRent: 'להשכרה',
     featured: 'נבחר',
+    videoTour: 'סיור וידאו',
     features: 'מאפיינים',
     contactCta: 'צרו קשר לגבי נכס זה',
     backToListings: 'חזרה לרשימה',

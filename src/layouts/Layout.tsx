@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom'
+import AccessibilityWidget from '../components/accessibility/AccessibilityWidget'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import WhatsAppButton from '../components/WhatsAppButton'
@@ -11,6 +12,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <AccessibilityWidget />
       <WhatsAppButton />
     </>
   )

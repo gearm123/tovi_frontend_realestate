@@ -1,0 +1,41 @@
+.video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--ink);
+  border-radius: var(--property-radius);
+  overflow: hidden;
+  border: 1px solid var(--rule);
+}
+
+.video-embed__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-embed__native {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--ink);
+}
+
+.video-embed--unavailable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  aspect-ratio: 16 / 9;
+}
+
+.video-embed--unavailable p {
+  font-family: var(--font-primary);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ink-muted);
+  padding: 1rem;
+  text-align: center;
+}

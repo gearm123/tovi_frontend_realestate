@@ -1,0 +1,36 @@
+.property-map-section {
+  padding: var(--section-padding) clamp(1.25rem, 4vw, 2rem);
+  background: var(--paper);
+  border-block: 1px solid var(--rule);
+}
+
+.property-map-section__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.property-map-section__header {
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto clamp(1.5rem, 4vw, 2.25rem);
+}
+
+.property-map-section__accent {
+  margin-bottom: 0.15rem;
+}
+
+.property-map-section__title {
+  font-family: var(--font-primary);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.property-map-section__subtitle {
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}

@@ -85,6 +85,14 @@
   line-height: 1.3;
 }
 
+.desktop-property__video-tour {
+  position: absolute;
+  bottom: calc(1rem + var(--property-frame-padding));
+  inset-inline-end: calc(1rem + var(--property-frame-padding));
+  z-index: 1;
+  max-width: calc(100% - 2rem);
+}
+
 .desktop-property__body {
   width: 100%;
   max-width: var(--property-image-max-width);

@@ -13,6 +13,7 @@ export function useSiteContent() {
   return useMemo(
     () => ({
       business,
+      locale,
       content: getSiteContent(locale),
     }),
     [locale],

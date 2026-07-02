@@ -1,6 +1,8 @@
 import HeroVideo from '../components/HeroVideo'
 import PropertyListings from '../components/PropertyListings'
+import PropertyMapSection from '../components/map/PropertyMapSection'
 import PropertySearchSection from '../components/PropertySearchSection'
+import ConversionSections from '../components/conversion/ConversionSections'
 import ServicesOverview from '../components/services/ServicesOverview'
 import AboutSection from '../components/trust/AboutSection'
 import ReviewsSection from '../components/trust/ReviewsSection'
@@ -23,6 +25,8 @@ export default function HomePage() {
       <AboutSection />
       <ServicesOverview />
       <ReviewsSection />
+      <ConversionSections variant="split" />
+      <PropertyMapSection />
       <PropertySearchSection id="search" showListingsHeader listingsTitle={t.search.resultsTitle} />
     </>
   )

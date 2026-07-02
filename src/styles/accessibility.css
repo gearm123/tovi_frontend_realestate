@@ -1,0 +1,48 @@
+:root {
+  --a11y-font-scale: 1;
+}
+
+html {
+  font-size: calc(100% * var(--a11y-font-scale));
+}
+
+/* High contrast — stronger separation without replacing the brand entirely */
+html[data-a11y-high-contrast='true'] {
+  --paper: #ffffff;
+  --paper-warm: #f5f5f5;
+  --white: #ffffff;
+  --ink: #000000;
+  --ink-soft: #000000;
+  --ink-muted: #1a1a1a;
+  --rule: #000000;
+  --rule-light: #333333;
+  --accent: #c43d00;
+}
+
+html[data-a11y-high-contrast='true'] .whatsapp-button {
+  border-color: #000000;
+  color: #0d6b60;
+}
+
+html[data-a11y-underline-links='true'] a:not(.accessibility-widget__trigger):not(.accessibility-widget__action) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+html[data-a11y-readable-font='true'] {
+  --font-primary: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-subheading: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-button: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html[dir='rtl'][data-a11y-readable-font='true'] {
+  --font-primary: var(--font-hebrew);
+  --font-subheading: var(--font-hebrew);
+  --font-button: var(--font-hebrew);
+}
+
+html[data-a11y-readable-font='true'] .orange-cursive-title {
+  font-family: var(--font-primary);
+  letter-spacing: 0.04em;
+}

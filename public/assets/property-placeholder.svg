@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 690" role="img" aria-label="Property image placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4f1eb"/>
+      <stop offset="100%" stop-color="#e8e2d9"/>
+    </linearGradient>
+  </defs>
+  <rect width="920" height="690" fill="url(#bg)"/>
+  <rect x="310" y="200" width="300" height="290" rx="8" fill="#efebe5" stroke="#d4cec4" stroke-width="2"/>
+  <rect x="350" y="380" width="60" height="110" rx="4" fill="#e0dbd3" stroke="#d4cec4" stroke-width="1.5"/>
+  <rect x="340" y="240" width="50" height="50" rx="3" fill="#faf8f5" stroke="#d4cec4" stroke-width="1.5"/>
+  <rect x="410" y="240" width="50" height="50" rx="3" fill="#faf8f5" stroke="#d4cec4" stroke-width="1.5"/>
+  <rect x="480" y="240" width="50" height="50" rx="3" fill="#faf8f5" stroke="#d4cec4" stroke-width="1.5"/>
+  <rect x="340" y="310" width="50" height="50" rx="3" fill="#faf8f5" stroke="#d4cec4" stroke-width="1.5"/>
+  <rect x="410" y="310" width="50" height="50" rx="3" fill="#faf8f5" stroke="#d4cec4" stroke-width="1.5"/>
+  <rect x="480" y="310" width="50" height="50" rx="3" fill="#faf8f5" stroke="#d4cec4" stroke-width="1.5"/>
+  <text x="460" y="560" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#8a8278" letter-spacing="0.2em">PROPERTLV</text>
+</svg>

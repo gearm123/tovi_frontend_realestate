@@ -36,3 +36,14 @@
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+.social-links__item--disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.social-links__item--disabled:hover {
+  color: var(--ink-soft);
+  border-color: var(--rule);
+  background: var(--paper);
+}

@@ -152,19 +152,62 @@ export const siteContentHe: SiteContent = {
     },
   },
 
+  // PLACEHOLDER_COPY: מגזין — כותרות וקריאה לפעולה
+  magazinePage: {
+    accent: 'סיפורים',
+    title: 'מגזין ProperTLV',
+    subtitle: 'סיפורים, מדריכים ותובנות מעולם הנדל״ן בתל אביב.',
+    readMore: 'למאמר',
+    watchVideo: 'לצפייה',
+    videoLabel: 'וידאו',
+    backToMagazine: 'חזרה למגזין',
+    articleNotFound: 'המאמר לא נמצא',
+    placeholderLabel: 'לדוגמה',
+    cta: {
+      title: 'חושבים על קנייה או מכירה בתל אביב?',
+      description:
+        'דברו עם לי כהן לקבלת הכוונה אישית על נכסים, שכונות והמשך הדרך.',
+      buttonLabel: 'צרו קשר עם ProperTLV',
+      href: '/contact',
+    },
+  },
+
   newsletter: {
-    title: 'הישארו מעודכנים',
+    accent: 'גישה מוקדמת',
+    title: 'קבלו נכסים חדשים לפני כולם',
     description:
-      'עדכוני שוק ונכסים חדשים מ-ProperTLV. חיבור לרשימת תפוצה יתווסף בהמשך.',
+      'הצטרפו לרשימת ProperTLV לעדכוני נכסים, הערות על שכונות ומגמות שוק — ישירות לתיבת הדואר.',
+    nameLabel: 'שם',
+    emailLabel: 'אימייל',
     buttonLabel: 'הרשמה',
     footnote: 'אנחנו מכבדים את הפרטיות שלכם. ניתן לבטל בכל עת.',
+    successMessage:
+      'תודה — נרשמתם בהצלחה. ניצור קשר כשיתווספו נכסים שמתאימים לכם.',
+    errorMessage: 'משהו השתבש. אנא נסו שוב.',
   },
 
   booking: {
+    accent: 'תיאום',
     title: 'קביעת צפייה או פגישת ייעוץ',
     description:
-      'מוכנים לראות נכס או לדבר על החיפוש? צרו קשר עם לי כהן לתיאום שיחה או צפייה.',
-    buttonLabel: 'קבעו עכשיו',
+      'מוכנים לראות נכס או לדבר על החיפוש? בחרו זמן שנוח לכם לשיחה או לצפייה עם לי כהן.',
+    buttonLabel: 'קבעו ביקור',
     footnote: 'ניתן גם ליצור קשר בטלפון או בוואטסאפ.',
+    placeholderNote: 'קישור לתיאום אונליין יתווסף בקרוב — צרו קשר לקביעת ביקור.',
+  },
+
+  mapSection: {
+    accent: 'תל אביב',
+    title: 'נכסים ברחבי העיר',
+    subtitle:
+      'גלו את נכסי ProperTLV לפי שכונה. לחצו על סיכה לפרטים — מפת אינטראקטיבית מלאה תתווסף בקרוב.',
+    placeholderNote:
+      'מפת תצוגה מקדימה — חיבור ל-Google Maps או Mapbox כשמפתחות API יהיו מוכנים.',
+    viewProperty: 'לפרטי הנכס',
+    allNeighborhoods: 'כל השכונות',
+    listingsCount: '{count} נכסים',
+    saleLabel: 'למכירה',
+    rentalLabel: 'להשכרה',
+    neighborhoodFallback: 'סיכת שכונה משוערת',
   },
 }

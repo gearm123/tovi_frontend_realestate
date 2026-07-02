@@ -1,0 +1,41 @@
+.video-tour-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-subheading);
+  font-weight: var(--font-weight-regular);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.video-tour-badge--overlay {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  backdrop-filter: blur(4px);
+}
+
+.video-tour-badge--inline {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.video-tour-badge__icon {
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-inline-start: 6px solid currentColor;
+  flex-shrink: 0;
+}
+
+.video-tour-badge--overlay .video-tour-badge__icon {
+  border-top-width: 3.5px;
+  border-bottom-width: 3.5px;
+  border-inline-start-width: 5.5px;
+}

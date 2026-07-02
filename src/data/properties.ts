@@ -1,8 +1,8 @@
 import type { Property, PropertyCoordinates } from '../types/property'
 import {
   PLACEHOLDER_COORD_OFFSETS,
+  PLACEHOLDER_DEMO_VIDEO_URL,
   PLACEHOLDER_MAP_CENTER,
-  PLACEHOLDER_PROPERTY_IMAGE,
   PLACEHOLDER_VIDEO_URL,
 } from './placeholders'
 
@@ -34,9 +34,15 @@ function demoCoordinates(index: number): PropertyCoordinates {
   }
 }
 
+/** Demo listing photo — maps to /public/assets/properties/{id}.jpg */
+function demoListingImage(stubId: number): string {
+  return `/assets/properties/${stubId}.jpg`
+}
+
 /**
  * Demo property listings — replace titles, images, coordinates, and copy
  * when final client materials are available.
+ * TODO(client): Replace demo listings with live CRM / MLS data.
  */
 export const properties: Property[] = [
   {
@@ -54,8 +60,8 @@ export const properties: Property[] = [
     area: 98,
     description:
       'A restored 1930s apartment with tall ceilings, original terrazzo floors, and a quiet balcony overlooking the boulevard.',
-    image: PLACEHOLDER_PROPERTY_IMAGE,
-    videoUrl: PLACEHOLDER_VIDEO_URL || undefined,
+    image: demoListingImage(1),
+    videoUrl: PLACEHOLDER_VIDEO_URL || PLACEHOLDER_DEMO_VIDEO_URL,
     coordinates: demoCoordinates(0),
     featured: true,
     features: {
@@ -82,7 +88,7 @@ export const properties: Property[] = [
     area: 142,
     description:
       'Two levels opening onto a private courtyard. Warm stone, soft plaster walls, and a kitchen made for long dinners.',
-    image: PLACEHOLDER_PROPERTY_IMAGE,
+    image: demoListingImage(2),
     coordinates: demoCoordinates(1),
     featured: true,
     features: {
@@ -109,7 +115,7 @@ export const properties: Property[] = [
     area: 115,
     description:
       'Top-floor residence with wraparound terrace. Mediterranean views from your own rooftop garden.',
-    image: PLACEHOLDER_PROPERTY_IMAGE,
+    image: demoListingImage(3),
     coordinates: demoCoordinates(2),
     features: {
       balcony: true,
@@ -135,7 +141,7 @@ export const properties: Property[] = [
     area: 72,
     description:
       'A gentle, tree-lined street minutes from the beach. Recently renovated with oak floors and a light-filled living space.',
-    image: PLACEHOLDER_PROPERTY_IMAGE,
+    image: demoListingImage(4),
     coordinates: demoCoordinates(3),
     features: {
       balcony: false,
@@ -161,7 +167,7 @@ export const properties: Property[] = [
     area: 68,
     description:
       'Exposed brick, steel beams, and a wall of windows in one of the city\'s most beloved quarters.',
-    image: PLACEHOLDER_PROPERTY_IMAGE,
+    image: demoListingImage(5),
     coordinates: demoCoordinates(4),
     features: {
       balcony: true,
@@ -187,7 +193,7 @@ export const properties: Property[] = [
     area: 128,
     description:
       'Spacious and serene — parks, schools, and the sea within easy reach.',
-    image: PLACEHOLDER_PROPERTY_IMAGE,
+    image: demoListingImage(6),
     coordinates: demoCoordinates(5),
     features: {
       balcony: true,
@@ -213,7 +219,7 @@ export const properties: Property[] = [
     area: 75,
     description:
       'Elegant Bauhaus apartment with high ceilings and a shared rooftop terrace. Steps from cafés and galleries.',
-    image: PLACEHOLDER_PROPERTY_IMAGE,
+    image: demoListingImage(1),
     coordinates: demoCoordinates(0),
     featured: true,
     features: {
@@ -240,7 +246,8 @@ export const properties: Property[] = [
     area: 95,
     description:
       'Brand-new tower apartment overlooking the Sarona gardens. Floor-to-ceiling windows and underground parking.',
-    image: PLACEHOLDER_PROPERTY_IMAGE,
+    image: demoListingImage(3),
+    videoUrl: PLACEHOLDER_DEMO_VIDEO_URL,
     coordinates: demoCoordinates(1),
     features: {
       balcony: true,
@@ -266,7 +273,7 @@ export const properties: Property[] = [
     area: 42,
     description:
       'Compact and bright studio in the creative heart of Florentin. Walkable nightlife and culture.',
-    image: PLACEHOLDER_PROPERTY_IMAGE,
+    image: demoListingImage(5),
     coordinates: demoCoordinates(2),
     features: {
       balcony: false,
@@ -292,7 +299,7 @@ export const properties: Property[] = [
     area: 88,
     description:
       'Ground-floor apartment with a private garden. Quiet street, minutes from the beach and schools.',
-    image: PLACEHOLDER_PROPERTY_IMAGE,
+    image: demoListingImage(4),
     coordinates: demoCoordinates(3),
     features: {
       balcony: true,

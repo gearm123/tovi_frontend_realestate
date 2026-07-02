@@ -1,0 +1,58 @@
+.magazine-cta {
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
+
+.magazine-cta__inner {
+  text-align: center;
+  padding: clamp(2rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.5rem);
+  background: linear-gradient(
+    135deg,
+    var(--white) 0%,
+    rgba(240, 90, 36, 0.06) 100%
+  );
+  border: 1px solid var(--rule);
+  border-radius: var(--property-radius);
+}
+
+.magazine-cta__title {
+  font-family: var(--font-primary);
+  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+}
+
+.magazine-cta__text {
+  font-family: var(--font-primary);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  max-width: 36rem;
+  margin: 0 auto 1.5rem;
+}
+
+.magazine-cta__button {
+  display: inline-block;
+  font-family: var(--font-button);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--accent);
+  padding: 0.7rem 1.6rem;
+  border-radius: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.magazine-cta__button:hover {
+  opacity: 0.92;
+}
+
+@media (max-width: 768px) {
+  .magazine-cta__button {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}

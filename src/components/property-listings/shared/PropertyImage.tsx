@@ -1,4 +1,5 @@
 import { getPropertyImageSources } from '../../../utils/propertyImages'
+import { PLACEHOLDER_PROPERTY_IMAGE } from '../../../data/placeholders'
 import './PropertyImage.css'
 
 interface PropertyImageProps {
@@ -33,6 +34,11 @@ export default function PropertyImage({
         fetchPriority={priority ? 'high' : 'auto'}
         width={920}
         height={690}
+        onError={(event) => {
+          const img = event.currentTarget
+          if (img.src.includes('property-placeholder')) return
+          img.src = PLACEHOLDER_PROPERTY_IMAGE
+        }}
       />
     </picture>
   )

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { Property } from '../../../types/property'
 import { useLanguage } from '../../../context/LanguageContext'
 import { getLocalizedProperty } from '../../../i18n/propertyTranslations'
+import { getPropertyDetailPath } from '../../../utils/propertyPath'
 
 interface PropertyCardBodyProps {
   property: Property
@@ -26,11 +27,7 @@ export default function PropertyCardBody({
     (t.neighborhoods as Record<string, string>)[property.neighborhood] ??
     property.neighborhood
 
-  const detailPath =
-    property.listingType === 'sale'
-      ? `/property/sale/${property.id}`
-      : `/property/rental/${property.id}`
-
+  const detailPath = getPropertyDetailPath(property)
   return (
     <div className={`${classPrefix}__body`}>
       <p className={`${classPrefix}__neighborhood`}>{neighborhoodLabel}</p>
