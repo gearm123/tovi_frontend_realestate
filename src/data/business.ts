@@ -11,7 +11,7 @@ import {
  */
 export const business: BusinessContact = {
   name: 'ProperTLV',
-  contactPerson: 'Lee Cohen',
+  contactPerson: 'Tovi',
   phone: {
     display: '058-6270099',
     tel: '+972586270099',

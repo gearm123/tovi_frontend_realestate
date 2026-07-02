@@ -12,7 +12,7 @@ export const siteContentEn: SiteContent = {
     title: 'About ProperTLV',
     subtitle: 'Boutique real estate guidance rooted in Tel Aviv.',
     paragraphs: [
-      'ProperTLV is led by Lee Cohen — a focused, local service for buyers and sellers who want clear advice and personal attention, not a call centre experience.',
+      'ProperTLV is led by Tovi — a focused, local service for buyers and sellers who want clear advice and personal attention, not a call centre experience.',
       'With deep familiarity across Tel Aviv’s neighbourhoods, we help you understand where to look, what to compare, and how to move forward with confidence. Every conversation starts with listening.',
       'Whether you are buying your first apartment, selling a family home, or renting near the sea, ProperTLV offers discreet support tailored to your pace and priorities.',
     ],
@@ -43,7 +43,7 @@ export const siteContentEn: SiteContent = {
     subtitle: 'A focused, premium service for sellers who want careful handling from start to finish.',
     paragraphs: [
       'The Exclusivity Package is ProperTLV’s dedicated selling service for homeowners who prefer a discreet, well-managed sale. Rather than a high-volume approach, the focus is on presenting your property clearly, reaching the right audience, and guiding the process with steady communication.',
-      'Lee Cohen works with you directly — from preparing the listing through viewings, offers, and coordination with the professionals involved in the sale. The scope below reflects our standard premium package; final details are agreed with each client.',
+      'Tovi works with you directly — from preparing the listing through viewings, offers, and coordination with the professionals involved in the sale. The scope below reflects our standard premium package; final details are agreed with each client.',
     ],
     bullets: [
       'Property positioning and pricing guidance tailored to your home',
@@ -108,7 +108,7 @@ export const siteContentEn: SiteContent = {
         author: 'Sample client — Buyer',
         role: 'Buyer',
         quote:
-          'Lee guided us through every step of buying in Tel Aviv. Patient, knowledgeable, and always available — we felt supported from the first call to the signing.',
+          'Tovi guided us through every step of buying in Tel Aviv. Patient, knowledgeable, and always available — we felt supported from the first call to the signing.',
         rating: 5,
         date: 'Placeholder',
         isPlaceholder: true,
@@ -166,7 +166,7 @@ export const siteContentEn: SiteContent = {
     cta: {
       title: 'Thinking about buying or selling in Tel Aviv?',
       description:
-        'Speak with Lee Cohen for personal guidance on properties, neighbourhoods, and next steps.',
+        'Speak with Tovi for personal guidance on properties, neighbourhoods, and next steps.',
       buttonLabel: 'Contact ProperTLV',
       href: '/contact',
     },
@@ -190,7 +190,7 @@ export const siteContentEn: SiteContent = {
     accent: 'Schedule',
     title: 'Book a viewing or consultation',
     description:
-      'Ready to see a property or talk through your search? Pick a time that suits you for a call or viewing with Lee Cohen.',
+      'Ready to see a property or talk through your search? Pick a time that suits you for a call or viewing with Tovi.',
     buttonLabel: 'Schedule a visit',
     footnote: 'You can also reach us by phone or WhatsApp.',
     placeholderNote: 'Online scheduling link coming soon — use Contact to book a visit.',
