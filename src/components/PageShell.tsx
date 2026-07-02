@@ -5,7 +5,7 @@ interface PageShellProps {
   title: string
   accent?: string
   subtitle?: string
-  children: ReactNode
+  children?: ReactNode
 }
 
 export default function PageShell({
@@ -25,7 +25,7 @@ export default function PageShell({
         <h1 className="page-shell__title">{title}</h1>
         {subtitle && <p className="page-shell__subtitle">{subtitle}</p>}
       </header>
-      <div className="page-shell__content">{children}</div>
+      {children && <div className="page-shell__content">{children}</div>}
     </div>
   )
 }

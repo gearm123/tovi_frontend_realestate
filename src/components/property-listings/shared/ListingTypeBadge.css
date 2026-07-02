@@ -1,0 +1,31 @@
+.listing-type-badge {
+  display: inline-block;
+  font-family: var(--font-subheading);
+  font-weight: var(--font-weight-regular);
+  text-transform: uppercase;
+}
+
+/* Shared overlay shell — sizing is owned by each UI layer (desktop/mobile cards, detail page) */
+.listing-type-badge--overlay {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.listing-type-badge--sale.listing-type-badge--overlay {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.listing-type-badge--rental.listing-type-badge--overlay {
+  color: var(--ink);
+  border-color: var(--rule);
+}
+
+.listing-type-badge--inline {
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}

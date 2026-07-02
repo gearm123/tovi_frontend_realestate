@@ -1,0 +1,122 @@
+.service-block {
+  padding: clamp(2rem, 4vw, 2.75rem);
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--property-radius);
+}
+
+.service-block--premium {
+  border-color: var(--accent);
+  box-shadow: var(--property-frame-shadow);
+  background: linear-gradient(
+    180deg,
+    var(--white) 0%,
+    rgba(240, 90, 36, 0.04) 100%
+  );
+}
+
+.service-block__header {
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto 1.5rem;
+}
+
+.service-block__accent {
+  margin-bottom: 0.15rem;
+}
+
+.service-block__title {
+  font-family: var(--font-primary);
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+}
+
+.service-block__subtitle {
+  font-family: var(--font-primary);
+  font-size: clamp(0.92rem, 2vw, 1.02rem);
+  font-weight: var(--font-weight-regular);
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.service-block__body {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.service-block__body p {
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-regular);
+  color: var(--ink-soft);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.service-block__list {
+  list-style: none;
+  margin: 1.25rem 0 1.75rem;
+  padding: 0;
+}
+
+.service-block__list li {
+  font-family: var(--font-primary);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  padding: 0.45rem 0;
+  padding-inline-start: 1.2rem;
+  position: relative;
+}
+
+.service-block__list li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.9rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.service-block__cta {
+  display: inline-block;
+  font-family: var(--font-button);
+  font-weight: 400;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--accent);
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.service-block__cta:hover {
+  opacity: 0.92;
+}
+
+.service-block--premium .service-block__cta {
+  border: 1px solid var(--accent);
+}
+
+@media (max-width: 768px) {
+  .service-block {
+    padding: 1.5rem clamp(1rem, 4vw, 1.25rem);
+  }
+
+  .service-block__header {
+    text-align: start;
+  }
+
+  .service-block__cta {
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+}

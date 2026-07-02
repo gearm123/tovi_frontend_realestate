@@ -7,6 +7,8 @@ import AllRentalsPage from './pages/AllRentalsPage'
 import SellersPackagePage from './pages/SellersPackagePage'
 import ContactPage from './pages/ContactPage'
 import MagazinePage from './pages/MagazinePage'
+import PropertiesSearchPage from './pages/PropertiesSearchPage'
+import ServicesPage from './pages/ServicesPage'
 import PropertyDetailPage from './pages/PropertyDetailPage'
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
           <Route path="about" element={<AboutPage />} />
           <Route path="sales" element={<AllSalesPage />} />
           <Route path="rentals" element={<AllRentalsPage />} />
+          <Route path="properties" element={<PropertiesSearchPage />} />
+          <Route path="services" element={<ServicesPage />} />
           <Route path="sellers-package" element={<SellersPackagePage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="magazine" element={<MagazinePage />} />

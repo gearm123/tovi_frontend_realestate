@@ -1,4 +1,5 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import './ContactForm.css'
 
@@ -15,13 +16,25 @@ const interestKeys: { value: ContactInterest; key: 'selling' | 'buying' | 'renti
   { value: 'general', key: 'general' },
 ]
 
+function parseInterest(value: string | null): ContactInterest | null {
+  if (value === 'selling' || value === 'buying' || value === 'renting' || value === 'general') {
+    return value
+  }
+  return null
+}
+
 export default function ContactForm() {
   const { t } = useLanguage()
+  const [searchParams] = useSearchParams()
   const [interest, setInterest] = useState<ContactInterest>('general')
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  useEffect(() => {
+    const fromUrl = parseInterest(searchParams.get('interest'))
+    if (fromUrl) setInterest(fromUrl)
+  }, [searchParams])
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {    e.preventDefault()
     setSubmitted(true)
   }
 

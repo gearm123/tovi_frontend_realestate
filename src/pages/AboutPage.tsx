@@ -1,14 +1,38 @@
 import PageShell from '../components/PageShell'
-import { useLanguage } from '../context/LanguageContext'
+import { useSiteContent } from '../hooks/useSiteContent'
+import './AboutPage.css'
 
 export default function AboutPage() {
-  const { t } = useLanguage()
+
+  const { content } = useSiteContent()
+
+  const { about } = content
+
+
 
   return (
-    <PageShell title={t.about.title} accent={t.about.accent} subtitle={t.about.subtitle}>
-      <p>{t.about.p1}</p>
-      <p>{t.about.p2}</p>
-      <p>{t.about.p3}</p>
+
+    <PageShell title={about.title} accent={about.accent} subtitle={about.subtitle}>
+
+      {about.paragraphs.map((paragraph) => (
+
+        <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+
+      ))}
+
+      <ul className="about-page__highlights">
+
+        {about.highlights.map((item) => (
+
+          <li key={item}>{item}</li>
+
+        ))}
+
+      </ul>
+
     </PageShell>
+
   )
+
 }
+

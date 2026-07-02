@@ -1,4 +1,10 @@
-import type { Property } from '../types/property'
+import type { Property, PropertyCoordinates } from '../types/property'
+import {
+  PLACEHOLDER_COORD_OFFSETS,
+  PLACEHOLDER_MAP_CENTER,
+  PLACEHOLDER_PROPERTY_IMAGE,
+  PLACEHOLDER_VIDEO_URL,
+} from './placeholders'
 
 export const neighborhoods = [
   'Lev HaIr',
@@ -19,6 +25,19 @@ export const propertyTypes = [
   { value: 'loft', label: 'Loft' },
 ] as const
 
+/** Demo coordinate — Tel Aviv center + per-listing offset until real addresses are set */
+function demoCoordinates(index: number): PropertyCoordinates {
+  const offset = PLACEHOLDER_COORD_OFFSETS[index % PLACEHOLDER_COORD_OFFSETS.length]
+  return {
+    lat: PLACEHOLDER_MAP_CENTER.lat + offset.lat,
+    lng: PLACEHOLDER_MAP_CENTER.lng + offset.lng,
+  }
+}
+
+/**
+ * Demo property listings — replace titles, images, coordinates, and copy
+ * when final client materials are available.
+ */
 export const properties: Property[] = [
   {
     id: '1',
@@ -29,12 +48,15 @@ export const properties: Property[] = [
     priceNumeric: 4850000,
     listingType: 'sale',
     propertyType: 'apartment',
+    rooms: 4,
     bedrooms: 3,
     bathrooms: 2,
     area: 98,
     description:
-      'A restored 1930s apartment with tall ceilings, original terrazzo floors, and a quiet balcony overlooking the boulevard. Morning light fills every room.',
-    image: '/assets/properties/1.jpg',
+      'A restored 1930s apartment with tall ceilings, original terrazzo floors, and a quiet balcony overlooking the boulevard.',
+    image: PLACEHOLDER_PROPERTY_IMAGE,
+    videoUrl: PLACEHOLDER_VIDEO_URL || undefined,
+    coordinates: demoCoordinates(0),
     featured: true,
     features: {
       balcony: true,
@@ -54,12 +76,14 @@ export const properties: Property[] = [
     priceNumeric: 6200000,
     listingType: 'sale',
     propertyType: 'duplex',
+    rooms: 5,
     bedrooms: 4,
     bathrooms: 3,
     area: 142,
     description:
-      'Two levels opening onto a private courtyard. Warm stone, soft plaster walls, and a kitchen made for long dinners with friends.',
-    image: '/assets/properties/2.jpg',
+      'Two levels opening onto a private courtyard. Warm stone, soft plaster walls, and a kitchen made for long dinners.',
+    image: PLACEHOLDER_PROPERTY_IMAGE,
+    coordinates: demoCoordinates(1),
     featured: true,
     features: {
       balcony: true,
@@ -74,17 +98,19 @@ export const properties: Property[] = [
     id: '3',
     title: 'Sea-Breeze Penthouse, Tel Aviv Port',
     neighborhood: 'Namal',
-    address: 'HaTa\'arucha St 3, Tel Aviv',
+    address: "HaTa'arucha St 3, Tel Aviv",
     price: '₪8,950,000',
     priceNumeric: 8950000,
     listingType: 'sale',
     propertyType: 'penthouse',
+    rooms: 4,
     bedrooms: 3,
     bathrooms: 2,
     area: 115,
     description:
-      'Top-floor residence with wraparound terrace. Watch the city wake up over the Mediterranean from your own rooftop garden.',
-    image: '/assets/properties/3.jpg',
+      'Top-floor residence with wraparound terrace. Mediterranean views from your own rooftop garden.',
+    image: PLACEHOLDER_PROPERTY_IMAGE,
+    coordinates: demoCoordinates(2),
     features: {
       balcony: true,
       parking: true,
@@ -103,12 +129,14 @@ export const properties: Property[] = [
     priceNumeric: 3650000,
     listingType: 'sale',
     propertyType: 'apartment',
+    rooms: 3,
     bedrooms: 2,
     bathrooms: 1,
     area: 72,
     description:
-      'A gentle, tree-lined street just minutes from the beach. Recently renovated with oak floors and a calm, light-filled living space.',
-    image: '/assets/properties/4.jpg',
+      'A gentle, tree-lined street minutes from the beach. Recently renovated with oak floors and a light-filled living space.',
+    image: PLACEHOLDER_PROPERTY_IMAGE,
+    coordinates: demoCoordinates(3),
     features: {
       balcony: false,
       parking: false,
@@ -127,12 +155,14 @@ export const properties: Property[] = [
     priceNumeric: 2980000,
     listingType: 'sale',
     propertyType: 'loft',
+    rooms: 3,
     bedrooms: 2,
     bathrooms: 1,
     area: 68,
     description:
-      'Exposed brick, steel beams, and a wall of windows. Creative energy meets everyday comfort in one of the city\'s most beloved quarters.',
-    image: '/assets/properties/5.jpg',
+      'Exposed brick, steel beams, and a wall of windows in one of the city\'s most beloved quarters.',
+    image: PLACEHOLDER_PROPERTY_IMAGE,
+    coordinates: demoCoordinates(4),
     features: {
       balcony: true,
       parking: false,
@@ -151,12 +181,14 @@ export const properties: Property[] = [
     priceNumeric: 5400000,
     listingType: 'sale',
     propertyType: 'house',
+    rooms: 5,
     bedrooms: 4,
     bathrooms: 2,
     area: 128,
     description:
-      'Spacious and serene — a home for growing families who want parks, schools, and the sea within easy reach.',
-    image: '/assets/properties/6.jpg',
+      'Spacious and serene — parks, schools, and the sea within easy reach.',
+    image: PLACEHOLDER_PROPERTY_IMAGE,
+    coordinates: demoCoordinates(5),
     features: {
       balcony: true,
       parking: true,
@@ -175,12 +207,14 @@ export const properties: Property[] = [
     priceNumeric: 12500,
     listingType: 'rental',
     propertyType: 'apartment',
+    rooms: 3,
     bedrooms: 2,
     bathrooms: 1,
     area: 75,
     description:
-      'Elegant Bauhaus apartment with high ceilings and a shared rooftop terrace. Steps from cafés, galleries, and the heart of the city.',
-    image: '/assets/properties/1.jpg',
+      'Elegant Bauhaus apartment with high ceilings and a shared rooftop terrace. Steps from cafés and galleries.',
+    image: PLACEHOLDER_PROPERTY_IMAGE,
+    coordinates: demoCoordinates(0),
     featured: true,
     features: {
       balcony: true,
@@ -200,12 +234,14 @@ export const properties: Property[] = [
     priceNumeric: 18000,
     listingType: 'rental',
     propertyType: 'apartment',
+    rooms: 4,
     bedrooms: 3,
     bathrooms: 2,
     area: 95,
     description:
-      'Brand-new tower apartment overlooking the Sarona gardens. Floor-to-ceiling windows, concierge, and underground parking.',
-    image: '/assets/properties/3.jpg',
+      'Brand-new tower apartment overlooking the Sarona gardens. Floor-to-ceiling windows and underground parking.',
+    image: PLACEHOLDER_PROPERTY_IMAGE,
+    coordinates: demoCoordinates(1),
     features: {
       balcony: true,
       parking: true,
@@ -224,12 +260,14 @@ export const properties: Property[] = [
     priceNumeric: 6800,
     listingType: 'rental',
     propertyType: 'apartment',
+    rooms: 2,
     bedrooms: 1,
     bathrooms: 1,
     area: 42,
     description:
-      'Compact and bright studio in the creative heart of Florentin. Perfect for professionals who want walkable nightlife and culture.',
-    image: '/assets/properties/5.jpg',
+      'Compact and bright studio in the creative heart of Florentin. Walkable nightlife and culture.',
+    image: PLACEHOLDER_PROPERTY_IMAGE,
+    coordinates: demoCoordinates(2),
     features: {
       balcony: false,
       parking: false,
@@ -248,12 +286,14 @@ export const properties: Property[] = [
     priceNumeric: 14200,
     listingType: 'rental',
     propertyType: 'apartment',
+    rooms: 4,
     bedrooms: 3,
     bathrooms: 2,
     area: 88,
     description:
-      'Ground-floor apartment with a private garden, ideal for families. Quiet street, minutes from the beach and top schools.',
-    image: '/assets/properties/4.jpg',
+      'Ground-floor apartment with a private garden. Quiet street, minutes from the beach and schools.',
+    image: PLACEHOLDER_PROPERTY_IMAGE,
+    coordinates: demoCoordinates(3),
     features: {
       balcony: true,
       parking: true,
@@ -267,4 +307,12 @@ export const properties: Property[] = [
 
 export function getPropertyById(id: string): Property | undefined {
   return properties.find((p) => p.id === id)
+}
+
+export function getPropertiesByStatus(status: Property['listingType']): Property[] {
+  return properties.filter((p) => p.listingType === status)
+}
+
+export function getFeaturedProperties(): Property[] {
+  return properties.filter((p) => p.featured)
 }

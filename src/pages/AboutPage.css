@@ -1,0 +1,29 @@
+.about-page__highlights {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 1.5rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--property-radius);
+}
+
+.about-page__highlights li {
+  font-family: var(--font-primary);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  padding: 0.45rem 0;
+  padding-inline-start: 1.1rem;
+  position: relative;
+}
+
+.about-page__highlights li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.9rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}

@@ -1,6 +1,7 @@
 import type { Property } from '../../../types/property'
 import { useLanguage } from '../../../context/LanguageContext'
 import { getLocalizedProperty } from '../../../i18n/propertyTranslations'
+import ListingTypeBadge from '../shared/ListingTypeBadge'
 import PropertyCardBody from '../shared/PropertyCardBody'
 import PropertyImage from '../shared/PropertyImage'
 import './DesktopPropertyCard.css'
@@ -37,9 +38,12 @@ export default function DesktopPropertyCard({
             className="desktop-property__image"
             priority={index < 2}
           />
-          {property.featured && (
-            <span className="desktop-property__badge">{t.property.featured}</span>
-          )}
+          <div className="desktop-property__badges">
+            <ListingTypeBadge listingType={property.listingType} />
+            {property.featured && (
+              <span className="desktop-property__badge">{t.property.featured}</span>
+            )}
+          </div>
           <span className="desktop-property__price">
             {localized.price ?? property.price}
           </span>

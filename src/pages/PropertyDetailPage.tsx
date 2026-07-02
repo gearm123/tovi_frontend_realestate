@@ -1,7 +1,9 @@
 import { Link, useParams } from 'react-router-dom'
-import { getPropertyById } from '../data/properties'
+import { getPropertyById } from '../services/propertyService'
+import ListingTypeBadge from '../components/property-listings/shared/ListingTypeBadge'
 import PropertyImage from '../components/property-listings/shared/PropertyImage'
 import { useLanguage } from '../context/LanguageContext'
+import { useViewport } from '../hooks/useViewport'
 import { getLocalizedProperty } from '../i18n/propertyTranslations'
 import './PropertyDetailPage.css'
 
@@ -17,6 +19,7 @@ const featureKeys = [
 export default function PropertyDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { t, locale } = useLanguage()
+  const viewport = useViewport()
   const property = id ? getPropertyById(id) : undefined
 
   if (!property) {
@@ -44,11 +47,8 @@ export default function PropertyDetailPage() {
     (t.neighborhoods as Record<string, string>)[property.neighborhood] ??
     property.neighborhood
 
-  const listingLabel =
-    property.listingType === 'sale' ? t.property.forSale : t.property.forRent
-
   return (
-    <article className="property-detail">
+    <article className={`property-detail property-detail--${viewport}`}>
       <div className="property-detail__image-wrap">
         <PropertyImage
           imagePath={property.image}
@@ -56,13 +56,18 @@ export default function PropertyDetailPage() {
           className="property-detail__image"
           priority
         />
-        {property.featured && (
-          <span className="property-detail__badge">{t.property.featured}</span>
-        )}
+        <div className="property-detail__badges">
+          <ListingTypeBadge listingType={property.listingType} />
+          {property.featured && (
+            <span className="property-detail__badge">{t.property.featured}</span>
+          )}
+        </div>
       </div>
 
       <div className="property-detail__body">
-        <p className="property-detail__listing-type">{listingLabel}</p>
+        {viewport === 'desktop' && (
+          <ListingTypeBadge listingType={property.listingType} variant="inline" />
+        )}
         <p className="property-detail__neighborhood">{neighborhoodLabel}</p>
         <h1 className="property-detail__title">{localized.title}</h1>
         <p className="property-detail__address">{localized.address}</p>

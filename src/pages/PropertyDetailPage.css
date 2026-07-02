@@ -35,10 +35,18 @@
   object-fit: cover;
 }
 
-.property-detail__badge {
+.property-detail__badges {
   position: absolute;
   top: 1rem;
   inset-inline-start: 1rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.property-detail__badge {
   font-family: var(--font-subheading);
   font-size: 0.75rem;
   font-weight: var(--font-weight-regular);
@@ -48,20 +56,11 @@
   color: var(--ink);
   padding: 0.4rem 0.85rem;
   border-radius: 999px;
+  border: 1px solid var(--rule);
 }
 
 .property-detail__body {
   max-width: 720px;
-}
-
-.property-detail__listing-type {
-  font-family: var(--font-subheading);
-  font-size: 0.85rem;
-  font-weight: var(--font-weight-regular);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 0.35rem;
 }
 
 .property-detail__neighborhood {
@@ -191,4 +190,84 @@
 
 .property-detail__back:hover {
   border-bottom-color: var(--accent);
+}
+
+/* Desktop detail — wider hero, roomier badges (matches desktop property cards) */
+.property-detail--desktop .property-detail__image-wrap {
+  aspect-ratio: 16 / 10;
+}
+
+.property-detail--desktop .property-detail__badges {
+  top: 1rem;
+  inset-inline-start: 1rem;
+  gap: 0.4rem;
+  max-width: calc(100% - 2rem);
+}
+
+.property-detail--desktop .property-detail__badges .listing-type-badge--overlay {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  padding: 0.4rem 0.85rem;
+}
+
+.property-detail--desktop .property-detail__badge {
+  font-size: 0.75rem;
+  padding: 0.4rem 0.85rem;
+}
+
+/* Mobile detail — tighter layout aligned with mobile property cards */
+.property-detail--mobile {
+  padding: clamp(1.5rem, 4vw, 2rem) clamp(1rem, 5vw, 1.5rem);
+}
+
+.property-detail--mobile .property-detail__image-wrap {
+  aspect-ratio: 4 / 3;
+  margin-bottom: 1.25rem;
+}
+
+.property-detail--mobile .property-detail__badges {
+  top: 0.75rem;
+  inset-inline-start: 0.75rem;
+  gap: 0.3rem;
+  max-width: min(11rem, calc(100% - 1.5rem));
+}
+
+.property-detail--mobile .property-detail__badges .listing-type-badge--overlay {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  padding: 0.28rem 0.58rem;
+}
+
+.property-detail--mobile .property-detail__badge {
+  font-size: 0.62rem;
+  padding: 0.28rem 0.58rem;
+  letter-spacing: 0.1em;
+}
+
+.property-detail--mobile .property-detail__title {
+  font-size: 1.35rem;
+}
+
+.property-detail--mobile .property-detail__price {
+  font-size: 1.35rem;
+}
+
+.property-detail--mobile .property-detail__description {
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.property-detail--mobile .property-detail__actions {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.property-detail--mobile .property-detail__cta {
+  text-align: center;
+  width: 100%;
+}
+
+.property-detail--mobile .property-detail__back {
+  text-align: center;
+  width: 100%;
 }

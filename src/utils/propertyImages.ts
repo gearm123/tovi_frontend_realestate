@@ -9,7 +9,16 @@ export interface PropertyImageSources {
 
 export function getPropertyImageSources(imagePath: string): PropertyImageSources {
   const match = imagePath.match(PROPERTY_IMAGE_PATTERN)
-  const id = match?.[1] ?? '1'
+  const id = match?.[1] ?? 'placeholder'
+
+  if (!match) {
+    return {
+      id,
+      desktopWebp: imagePath,
+      desktopJpg: imagePath,
+      mobileWebp: imagePath,
+    }
+  }
 
   return {
     id,

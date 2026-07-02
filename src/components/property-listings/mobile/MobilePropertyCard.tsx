@@ -1,6 +1,7 @@
 import type { Property } from '../../../types/property'
 import { useLanguage } from '../../../context/LanguageContext'
 import { getLocalizedProperty } from '../../../i18n/propertyTranslations'
+import ListingTypeBadge from '../shared/ListingTypeBadge'
 import PropertyCardBody from '../shared/PropertyCardBody'
 import PropertyImage from '../shared/PropertyImage'
 import './MobilePropertyCard.css'
@@ -37,9 +38,12 @@ export default function MobilePropertyCard({
             className="mobile-property__image"
             priority={index < 2}
           />
-          {property.featured && (
-            <span className="mobile-property__badge">{t.property.featured}</span>
-          )}
+          <div className="mobile-property__badges">
+            <ListingTypeBadge listingType={property.listingType} />
+            {property.featured && (
+              <span className="mobile-property__badge">{t.property.featured}</span>
+            )}
+          </div>
           <span className="mobile-property__price">
             {localized.price ?? property.price}
           </span>

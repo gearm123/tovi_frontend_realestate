@@ -1,0 +1,30 @@
+import type { BusinessContact } from '../types/business'
+import {
+  PLACEHOLDER_ADDRESS,
+  PLACEHOLDER_EMAIL,
+  PLACEHOLDER_SOCIAL,
+} from './placeholders'
+
+/**
+ * ProperTLV business contact — single source of truth.
+ * Update this file when the client provides final contact details.
+ */
+export const business: BusinessContact = {
+  name: 'ProperTLV',
+  contactPerson: 'Lee Cohen',
+  phone: {
+    display: '058-6270099',
+    tel: '+972586270099',
+    whatsapp: '972586270099',
+  },
+  email: PLACEHOLDER_EMAIL,
+  address: {
+    display: PLACEHOLDER_ADDRESS,
+    line1: PLACEHOLDER_ADDRESS,
+    city: 'Tel Aviv',
+  },
+  social: {
+    instagram: PLACEHOLDER_SOCIAL.instagram,
+    facebook: PLACEHOLDER_SOCIAL.facebook,
+  },
+}

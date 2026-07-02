@@ -1,5 +1,12 @@
-import { neighborhoods, propertyTypes } from '../data/properties'
+import { neighborhoods, propertyTypes } from '../services/propertyService'
+import {
+  getPriceMaxForStatus,
+  getPriceStepForStatus,
+  isRentalPriceContext,
+  type ListingStatusFilter,
+} from '../constants/propertySearch'
 import { useLanguage } from '../context/LanguageContext'
+import { useViewport } from '../hooks/useViewport'
 import type { PropertyFilters } from '../types/filters'
 import './PropertyFilters.css'
 
@@ -7,11 +14,10 @@ interface PropertyFiltersBarProps {
   filters: PropertyFilters
   onChange: (filters: PropertyFilters) => void
   onReset: () => void
-  priceMax: number
-  isRental?: boolean
+  onStatusChange?: (status: ListingStatusFilter) => void
 }
 
-const bedroomOptions = ['', '1', '2', '3', '4', '5'] as const
+const roomOptions = ['', '2', '3', '4', '5', '6'] as const
 
 const featureKeys = [
   'balcony',
@@ -22,14 +28,19 @@ const featureKeys = [
   'petsAllowed',
 ] as const
 
+const statusOptions: ListingStatusFilter[] = ['all', 'sale', 'rental']
+
 export default function PropertyFiltersBar({
   filters,
   onChange,
   onReset,
-  priceMax,
-  isRental = false,
+  onStatusChange,
 }: PropertyFiltersBarProps) {
   const { t, format, locale } = useLanguage()
+  const viewport = useViewport()
+  const priceMax = getPriceMaxForStatus(filters.listingStatus)
+  const priceStep = getPriceStepForStatus(filters.listingStatus)
+  const isRental = isRentalPriceContext(filters.listingStatus)
 
   const update = <K extends keyof PropertyFilters>(
     key: K,
@@ -38,8 +49,24 @@ export default function PropertyFiltersBar({
     onChange({ ...filters, [key]: value })
   }
 
-  const priceStep = isRental ? 1000 : 100000
-  const priceLabel = isRental ? t.filters.monthlyRent : t.filters.price
+  const handleStatus = (status: ListingStatusFilter) => {
+    if (onStatusChange) {
+      onStatusChange(status)
+      return
+    }
+    const nextMax = getPriceMaxForStatus(status)
+    onChange({
+      ...filters,
+      listingStatus: status,
+      priceMax: Math.min(filters.priceMax, nextMax),
+    })
+  }
+
+  const priceLabel = isRental
+    ? t.filters.monthlyRent
+    : filters.listingStatus === 'all'
+      ? t.filters.priceOrRent
+      : t.filters.price
 
   const neighborhoodLabel = (name: string) => {
     const labels = t.neighborhoods as Record<string, string>
@@ -51,8 +78,60 @@ export default function PropertyFiltersBar({
     return labels[value] ?? value
   }
 
+  const statusLabel = (status: ListingStatusFilter) => {
+    const labels: Record<ListingStatusFilter, string> = {
+      all: t.filters.statusAll,
+      sale: t.filters.statusSale,
+      rental: t.filters.statusRent,
+    }
+    return labels[status]
+  }
+
+  const extrasContent = (
+    <div className="property-filters__checkboxes">
+      {featureKeys.map((key) => (
+        <label key={key} className="property-filters__checkbox">
+          <input
+            type="checkbox"
+            checked={filters[key]}
+            onChange={(e) => update(key, e.target.checked)}
+          />
+          <span>{t.filters.features[key]}</span>
+        </label>
+      ))}
+    </div>
+  )
+
   return (
     <div className="property-filters" role="search" aria-label={t.filters.aria}>
+      <div className="property-filters__header">
+        <p className="property-filters__title">{t.search.filterTitle}</p>
+        <button type="button" className="property-filters__reset" onClick={onReset}>
+          {t.filters.clear}
+        </button>
+      </div>
+
+      <fieldset className="property-filters__status">
+        <legend className="property-filters__label">{t.filters.status}</legend>
+        <div className="property-filters__status-options" role="group">
+          {statusOptions.map((status) => (
+            <button
+              key={status}
+              type="button"
+              className={`property-filters__status-btn${
+                filters.listingStatus === status
+                  ? ' property-filters__status-btn--active'
+                  : ''
+              }`}
+              aria-pressed={filters.listingStatus === status}
+              onClick={() => handleStatus(status)}
+            >
+              {statusLabel(status)}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
       <div className="property-filters__row">
         <label className="property-filters__field">
           <span className="property-filters__label">{t.filters.neighborhood}</span>
@@ -87,19 +166,16 @@ export default function PropertyFiltersBar({
         </label>
 
         <label className="property-filters__field">
-          <span className="property-filters__label">{t.filters.roomsBeds}</span>
+          <span className="property-filters__label">{t.filters.rooms}</span>
           <select
-            value={filters.bedrooms === '' ? '' : String(filters.bedrooms)}
+            value={filters.rooms === '' ? '' : String(filters.rooms)}
             onChange={(e) =>
-              update(
-                'bedrooms',
-                e.target.value === '' ? '' : Number(e.target.value),
-              )
+              update('rooms', e.target.value === '' ? '' : Number(e.target.value))
             }
           >
-            {bedroomOptions.map((b) => (
-              <option key={b || 'any'} value={b}>
-                {b === '' ? t.filters.any : format(t.filters.roomsPlus, { count: b })}
+            {roomOptions.map((r) => (
+              <option key={r || 'any'} value={r}>
+                {r === '' ? t.filters.any : format(t.filters.roomsPlus, { count: r })}
               </option>
             ))}
           </select>
@@ -112,7 +188,9 @@ export default function PropertyFiltersBar({
             {format(t.filters.priceRange, {
               label: priceLabel,
               min: filters.priceMin.toLocaleString(locale === 'he' ? 'he-IL' : 'en-US'),
-              max: filters.priceMax.toLocaleString(locale === 'he' ? 'he-IL' : 'en-US'),
+              max: Math.min(filters.priceMax, priceMax).toLocaleString(
+                locale === 'he' ? 'he-IL' : 'en-US',
+              ),
             })}
           </span>
           <div className="property-filters__sliders">
@@ -121,7 +199,7 @@ export default function PropertyFiltersBar({
               min={0}
               max={priceMax}
               step={priceStep}
-              value={filters.priceMin}
+              value={Math.min(filters.priceMin, priceMax)}
               onChange={(e) => update('priceMin', Number(e.target.value))}
               aria-label={t.filters.minPrice}
             />
@@ -130,7 +208,7 @@ export default function PropertyFiltersBar({
               min={0}
               max={priceMax}
               step={priceStep}
-              value={filters.priceMax}
+              value={Math.min(filters.priceMax, priceMax)}
               onChange={(e) => update('priceMax', Number(e.target.value))}
               aria-label={t.filters.maxPrice}
             />
@@ -138,25 +216,17 @@ export default function PropertyFiltersBar({
         </div>
       </div>
 
-      <fieldset className="property-filters__extras">
-        <legend className="property-filters__label">{t.filters.extraFilters}</legend>
-        <div className="property-filters__checkboxes">
-          {featureKeys.map((key) => (
-            <label key={key} className="property-filters__checkbox">
-              <input
-                type="checkbox"
-                checked={filters[key]}
-                onChange={(e) => update(key, e.target.checked)}
-              />
-              <span>{t.filters.features[key]}</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <button type="button" className="property-filters__reset" onClick={onReset}>
-        {t.filters.clear}
-      </button>
+      {viewport === 'mobile' ? (
+        <details className="property-filters__extras-panel">
+          <summary className="property-filters__label">{t.filters.extraFilters}</summary>
+          {extrasContent}
+        </details>
+      ) : (
+        <fieldset className="property-filters__extras">
+          <legend className="property-filters__label">{t.filters.extraFilters}</legend>
+          {extrasContent}
+        </fieldset>
+      )}
     </div>
   )
 }

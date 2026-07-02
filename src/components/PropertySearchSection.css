@@ -1,0 +1,8 @@
+.property-search-section {
+  width: 100%;
+  padding: 0 clamp(1rem, 4vw, 2rem) var(--section-padding);
+}
+
+.property-search-section .property-filters {
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+}
