@@ -31,7 +31,7 @@ function readStoredLocale(): Locale {
   } catch {
     /* ignore */
   }
-  return 'en'
+  return 'he'
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

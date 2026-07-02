@@ -49,6 +49,10 @@ const en = {
     ariaLabel: 'Chat with ProperTLV on WhatsApp',
     defaultMessage: 'Hello, I would like to get in touch with ProperTLV.',
   },
+  floatingHome: {
+    label: 'Home',
+    ariaLabel: 'Return to homepage',
+  },
   hero: {
     aria: 'Tel Aviv introduction',
     alt: 'Tel Aviv — animation coming soon',
@@ -289,6 +293,10 @@ const he: TranslationTree = {
     label: 'וואטסאפ',
     ariaLabel: 'צ׳אט עם ProperTLV בוואטסאפ',
     defaultMessage: 'שלום, אשמח ליצור קשר עם ProperTLV.',
+  },
+  floatingHome: {
+    label: 'בית',
+    ariaLabel: 'חזרה לדף הבית',
   },
   hero: {
     aria: 'היכרות עם תל אביב',
