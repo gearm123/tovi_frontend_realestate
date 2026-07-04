@@ -21,6 +21,14 @@ export default function Header() {
 
   return (
     <header className="header">
+      <Link to="/" className="header__logo-link" aria-label={`${business.name} home`}>
+        <img
+          className="header__logo"
+          src="/assets/logo_shine_content.png"
+          alt={`${business.name} logo`}
+        />
+      </Link>
+
       <LanguageToggle />
 
       <div className="header__masthead">
