@@ -12,15 +12,24 @@ export default function AboutSection() {
     <section className="about-section" aria-labelledby="about-section-title">
       <div className="about-section__inner">
         <header className="about-section__header">
-          {about.accent && (
-            <p className="about-section__accent orange-cursive-title orange-cursive-title--subtitle">
-              {about.accent}
-            </p>
-          )}
-          <h2 id="about-section-title" className="about-section__title">
-            {about.title}
-          </h2>
-          {about.subtitle && <p className="about-section__subtitle">{about.subtitle}</p>}
+          <div className="about-section__heading-lockup">
+            <img
+              className="about-section__logo"
+              src="/assets/logo_pat_content.png"
+              alt="ProperTLV"
+            />
+            <div className="about-section__heading-copy">
+              {about.accent && (
+                <p className="about-section__accent orange-cursive-title orange-cursive-title--subtitle">
+                  {about.accent}
+                </p>
+              )}
+              <h2 id="about-section-title" className="about-section__title">
+                {about.title}
+              </h2>
+              {about.subtitle && <p className="about-section__subtitle">{about.subtitle}</p>}
+            </div>
+          </div>
         </header>
 
         <div className="about-section__body">

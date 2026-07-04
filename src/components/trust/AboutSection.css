@@ -15,6 +15,28 @@
   margin: 0 auto 2rem;
 }
 
+.about-section__heading-lockup {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 1.75rem);
+  direction: ltr;
+}
+
+.about-section__logo {
+  width: clamp(5rem, 12vw, 8rem);
+  height: auto;
+  flex: 0 0 auto;
+}
+
+.about-section__heading-copy {
+  direction: ltr;
+}
+
+html[dir='rtl'] .about-section__heading-copy {
+  direction: rtl;
+}
+
 .about-section__accent {
   margin-bottom: 0.15rem;
 }
@@ -110,6 +132,17 @@
 
   .about-section__header {
     text-align: start;
+  }
+
+  .about-section__heading-lockup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .about-section__logo {
+    width: clamp(4.5rem, 30vw, 6.5rem);
   }
 
   .about-section__cta {
