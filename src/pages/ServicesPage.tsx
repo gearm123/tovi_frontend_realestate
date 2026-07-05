@@ -1,11 +1,12 @@
 import PageShell from '../components/PageShell'
 import ServiceSectionBlock from '../components/services/ServiceSectionBlock'
+import SellersExclusivePackage from '../components/services/SellersExclusivePackage'
 import { useSiteContent } from '../hooks/useSiteContent'
 import './ServicesPage.css'
 
 export default function ServicesPage() {
   const { content } = useSiteContent()
-  const { servicesPage, exclusivityPackage, buyerServices, sellerServices } = content
+  const { servicesPage, buyerServices, sellerServices } = content
 
   return (
     <>
@@ -15,11 +16,7 @@ export default function ServicesPage() {
         subtitle={servicesPage.subtitle}
       />
       <div className="services-page">
-        <ServiceSectionBlock
-          id="exclusivity-package"
-          section={exclusivityPackage}
-          variant="premium"
-        />
+        <SellersExclusivePackage />
         <ServiceSectionBlock id="buyer-services" section={buyerServices} />
         <ServiceSectionBlock id="seller-services" section={sellerServices} />
       </div>

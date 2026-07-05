@@ -11,7 +11,7 @@ const navKeys = [
   { to: '/properties', key: 'search' as const },
   { to: '/sales', key: 'sales' as const },
   { to: '/rentals', key: 'rentals' as const },
-  { to: '/services#exclusivity-package', key: 'sellersPackage' as const },
+  { to: '/sellers-package', key: 'sellersPackage' as const },
   { to: '/contact', key: 'contact' as const },
   { to: '/magazine', key: 'magazine' as const },
 ]

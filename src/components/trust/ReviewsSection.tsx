@@ -3,23 +3,38 @@ import { useSiteContent } from '../../hooks/useSiteContent'
 import ReviewCard from './ReviewCard'
 import './ReviewsSection.css'
 
+interface ReviewsSectionProps {
+  id?: string
+  variant?: 'default' | 'embedded'
+  showGoogleButton?: boolean
+}
+
 /** Client testimonials — PLACEHOLDER_COPY in src/data/content until real reviews are added */
-export default function ReviewsSection() {
+export default function ReviewsSection({
+  id = 'reviews-section',
+  variant = 'default',
+  showGoogleButton,
+}: ReviewsSectionProps) {
   const { content } = useSiteContent()
   const { reviews } = content
   const { googleReviews } = reviews
-  const showGoogleButton =
-    googleReviews.showButton && !CONTACT_PLACEHOLDERS.googleReviews
+  const shouldShowGoogleButton =
+    showGoogleButton ??
+    (googleReviews.showButton && !CONTACT_PLACEHOLDERS.googleReviews)
 
   return (
-    <section className="reviews-section" aria-labelledby="reviews-section-title">
+    <section
+      id={id}
+      className={`reviews-section reviews-section--${variant}`}
+      aria-labelledby={`${id}-title`}
+    >
       <header className="reviews-section__header">
         {reviews.accent && (
           <p className="reviews-section__accent orange-cursive-title orange-cursive-title--subtitle">
             {reviews.accent}
           </p>
         )}
-        <h2 id="reviews-section-title" className="reviews-section__title">
+        <h2 id={`${id}-title`} className="reviews-section__title">
           {reviews.title}
         </h2>
         {reviews.subtitle && <p className="reviews-section__subtitle">{reviews.subtitle}</p>}
@@ -35,7 +50,7 @@ export default function ReviewsSection() {
         ))}
       </div>
 
-      {showGoogleButton ? (
+      {shouldShowGoogleButton && (
         <div className="reviews-section__google">
           <a
             href={googleReviews.url}
@@ -47,12 +62,6 @@ export default function ReviewsSection() {
           </a>
           <p className="reviews-section__google-note">{googleReviews.note}</p>
         </div>
-      ) : (
-        googleReviews.showButton && (
-          <p className="reviews-section__google-note reviews-section__google-note--only">
-            {googleReviews.note}
-          </p>
-        )
       )}
     </section>
   )

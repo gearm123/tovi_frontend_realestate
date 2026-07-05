@@ -48,13 +48,45 @@ export interface ReviewsSection {
   googleReviews: GoogleReviewsPlaceholder
 }
 
+export interface PackageImage {
+  src: string
+  alt: string
+}
+
+/** Service or package block with bullet points */
+export interface ServiceSectionGroup {
+  title: string
+  items: string[]
+  image?: string
+  imageAlt?: string
+  /** Optional secondary image — e.g. brochure mockup beside a lifestyle photo */
+  secondaryImage?: string
+  secondaryImageAlt?: string
+}
+
 /** Service or package block with bullet points */
 export interface ServiceSection extends ContentSection {
   bullets: string[]
+  /** Optional grouped sections — used for multi-part packages such as the sales brochure */
+  groups?: ServiceSectionGroup[]
+  /** Intro hero image — used on the sales package page */
+  heroImage?: string
+  heroImageAlt?: string
+  /** Short intro highlights — e.g. “Why choose exclusivity with us?” */
+  highlights?: string[]
+  highlightsTitle?: string
+  /** Portfolio / marketing showcase grid from the sales brochure */
+  showcaseImages?: PackageImage[]
   /** Contact CTA label — e.g. "Speak with ProperTLV" */
   ctaLabel: string
   /** Optional contact link; defaults to /contact */
   ctaHref?: string
+}
+
+export interface SalesPackageClosingContent {
+  title: string
+  subtitle?: string
+  ctaLabel: string
 }
 
 export interface ServicesPageContent extends ContentSection {
@@ -98,10 +130,28 @@ export interface MapSectionContent {
   neighborhoodFallback: string
 }
 
+export interface TeamMember {
+  id: string
+  name: string
+  title: string
+  bio: string
+  image: string
+  imageAlt: string
+}
+
+export interface TeamSectionContent {
+  accent?: string
+  title: string
+  subtitle?: string
+  members: TeamMember[]
+}
+
 export interface SiteContent {
   about: AboutContent
   servicesPage: ServicesPageContent
   exclusivityPackage: ServiceSection
+  salesPackageClosing: SalesPackageClosingContent
+  salesTeam: TeamSectionContent
   buyerServices: ServiceSection
   sellerServices: ServiceSection
   reviews: ReviewsSection

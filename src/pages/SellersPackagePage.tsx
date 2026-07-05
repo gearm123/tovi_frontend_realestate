@@ -1,6 +1,22 @@
-import { Navigate } from 'react-router-dom'
+import PageShell from '../components/PageShell'
+import SellersExclusivePackage from '../components/services/SellersExclusivePackage'
+import { useSiteContent } from '../hooks/useSiteContent'
+import './SellersPackagePage.css'
 
-/** Legacy route — redirects to Exclusivity Package section on Services page */
 export default function SellersPackagePage() {
-  return <Navigate to="/services#exclusivity-package" replace />
+  const { content } = useSiteContent()
+  const { exclusivityPackage } = content
+
+  return (
+    <>
+      <PageShell
+        title={exclusivityPackage.title}
+        accent={exclusivityPackage.accent}
+        subtitle={exclusivityPackage.subtitle}
+      />
+      <div className="sellers-package-page">
+        <SellersExclusivePackage />
+      </div>
+    </>
+  )
 }

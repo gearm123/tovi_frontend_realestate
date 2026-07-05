@@ -11,7 +11,7 @@ export default function ServicesOverview() {
     {
       id: 'exclusivity',
       section: exclusivityPackage,
-      href: '/services#exclusivity-package',
+      href: '/sellers-package',
       variant: 'premium' as const,
     },
     {
