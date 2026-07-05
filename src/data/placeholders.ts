@@ -29,18 +29,15 @@ export const PLACEHOLDER_VIDEO_URL = ''
 export const PLACEHOLDER_DEMO_VIDEO_URL =
   'https://www.youtube.com/watch?v=L5k8vMkS70E'
 
-// TODO(client): Replace with confirmed ProperTLV contact email
-export const PLACEHOLDER_EMAIL = 'contact@propertlv.placeholder'
+export const PLACEHOLDER_EMAIL = 'office@propertlv.com'
 
-// TODO(client): Replace with confirmed office address
-export const PLACEHOLDER_ADDRESS = 'Office address coming soon — Tel Aviv'
+export const PLACEHOLDER_ADDRESS = 'בן יהודה 83, תל אביב'
 
-/** Social profile URLs — replace with live accounts */
+/** Social profile URLs */
 export const PLACEHOLDER_SOCIAL = {
-  // TODO(client): Replace with live Instagram profile URL
-  instagram: 'https://instagram.com/placeholder',
-  // TODO(client): Replace with live Facebook profile URL
-  facebook: 'https://facebook.com/placeholder',
+  instagram: 'https://www.instagram.com/proper.tlv?igsh=NHRjOTE5ZGRrZnpn',
+  facebook: 'https://www.facebook.com/ProperTelAviv/',
+  linkedin: 'https://www.linkedin.com/company/propertlv/',
 } as const
 
 // TODO(client): Replace with live Google Business reviews URL
@@ -52,9 +49,9 @@ export const PLACEHOLDER_BOOKING_URL =
 
 /** Flags for UI — set to false once real client details are in business.ts */
 export const CONTACT_PLACEHOLDERS = {
-  email: true,
-  address: true,
-  social: true,
+  email: false,
+  address: false,
+  social: false,
   booking: true,
   googleReviews: true,
 } as const

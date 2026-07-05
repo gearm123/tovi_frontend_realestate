@@ -1,13 +1,8 @@
 import type { BusinessContact } from '../types/business'
-import {
-  PLACEHOLDER_ADDRESS,
-  PLACEHOLDER_EMAIL,
-  PLACEHOLDER_SOCIAL,
-} from './placeholders'
+import { PLACEHOLDER_SOCIAL } from './placeholders'
 
 /**
  * ProperTLV business contact — single source of truth.
- * TODO(client): Update when final contact details are confirmed.
  */
 export const business: BusinessContact = {
   name: 'ProperTLV',
@@ -17,14 +12,15 @@ export const business: BusinessContact = {
     tel: '+972586270099',
     whatsapp: '972586270099',
   },
-  email: PLACEHOLDER_EMAIL,
+  email: 'office@propertlv.com',
   address: {
-    display: PLACEHOLDER_ADDRESS,
-    line1: PLACEHOLDER_ADDRESS,
-    city: 'Tel Aviv',
+    display: 'בן יהודה 83, תל אביב',
+    line1: 'בן יהודה 83',
+    city: 'תל אביב',
   },
   social: {
     instagram: PLACEHOLDER_SOCIAL.instagram,
     facebook: PLACEHOLDER_SOCIAL.facebook,
+    linkedin: PLACEHOLDER_SOCIAL.linkedin,
   },
 }

@@ -1,11 +1,14 @@
+import type { ReactNode } from 'react'
 import type { BusinessSocial } from '../types/business'
+import { isPlaceholderUrl } from '../data/placeholders'
 import './SocialLinks.css'
 
 interface SocialLinksProps {
   social: BusinessSocial
   instagramLabel: string
   facebookLabel: string
-  /** When true, icons are shown without external links */
+  linkedinLabel: string
+  /** When true, all icons are shown without external links */
   linksDisabled?: boolean
 }
 
@@ -45,45 +48,89 @@ function FacebookIcon() {
   )
 }
 
-export default function SocialLinks({
-  social,
-  instagramLabel,
-  facebookLabel,
-  linksDisabled = false,
-}: SocialLinksProps) {
-  if (linksDisabled) {
+function LinkedInIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <rect
+        x="4"
+        y="4"
+        width="16"
+        height="16"
+        rx="2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <path
+        fill="currentColor"
+        d="M8 10v7H6v-7h2Zm-1-2.2a1.1 1.1 0 1 1 0-2.2 1.1 1.1 0 0 1 0 2.2ZM18 17h-2v-3.4c0-.8-.3-1.4-1.1-1.4-.6 0-.9.4-1.1.8-.1.2-.1.5-.1.8V17h-2s0-5.6 0-7h2v1c.3-.4.8-1.1 1.9-1.1 1.4 0 2.4.9 2.4 2.9V17Z"
+      />
+    </svg>
+  )
+}
+
+function SocialLinkItem({
+  href,
+  label,
+  disabled,
+  children,
+}: {
+  href: string
+  label: string
+  disabled: boolean
+  children: ReactNode
+}) {
+  if (disabled) {
     return (
-      <div className="social-links">
-        <span className="social-links__item social-links__item--disabled" aria-label={instagramLabel}>
-          <InstagramIcon />
-        </span>
-        <span className="social-links__item social-links__item--disabled" aria-label={facebookLabel}>
-          <FacebookIcon />
-        </span>
-      </div>
+      <span className="social-links__item social-links__item--disabled" aria-label={label}>
+        {children}
+      </span>
     )
   }
 
   return (
+    <a
+      href={href}
+      className="social-links__item"
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label={label}
+    >
+      {children}
+    </a>
+  )
+}
+
+export default function SocialLinks({
+  social,
+  instagramLabel,
+  facebookLabel,
+  linkedinLabel,
+  linksDisabled = false,
+}: SocialLinksProps) {
+  return (
     <div className="social-links">
-      <a
+      <SocialLinkItem
         href={social.instagram}
-        className="social-links__item"
-        target="_blank"
-        rel="noreferrer noopener"
-        aria-label={instagramLabel}
+        label={instagramLabel}
+        disabled={linksDisabled || isPlaceholderUrl(social.instagram)}
       >
         <InstagramIcon />
-      </a>
-      <a
+      </SocialLinkItem>
+      <SocialLinkItem
         href={social.facebook}
-        className="social-links__item"
-        target="_blank"
-        rel="noreferrer noopener"
-        aria-label={facebookLabel}
+        label={facebookLabel}
+        disabled={linksDisabled || isPlaceholderUrl(social.facebook)}
       >
         <FacebookIcon />
-      </a>
+      </SocialLinkItem>
+      <SocialLinkItem
+        href={social.linkedin}
+        label={linkedinLabel}
+        disabled={linksDisabled || isPlaceholderUrl(social.linkedin)}
+      >
+        <LinkedInIcon />
+      </SocialLinkItem>
     </div>
   )
 }

@@ -17,6 +17,7 @@ export interface BusinessAddress {
 export interface BusinessSocial {
   instagram: string
   facebook: string
+  linkedin: string
 }
 
 export interface BusinessContact {

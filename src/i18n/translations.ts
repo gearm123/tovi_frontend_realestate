@@ -48,6 +48,7 @@ const en = {
     followUs: 'Follow us',
     instagram: 'ProperTLV on Instagram',
     facebook: 'ProperTLV on Facebook',
+    linkedin: 'ProperTLV on LinkedIn',
     placeholder: 'placeholder',
     contactUs: 'Contact Us',
     rights: 'All rights reserved.',
@@ -87,7 +88,7 @@ const en = {
     subtitle: 'Tell us what you are looking for and we will get back to you.',
     reachUs: 'Reach us at',
     or: 'or',
-    address: 'Rothschild Blvd 45, Tel Aviv.',
+    address: '83 Ben Yehuda St, Tel Aviv.',
   },
   contactForm: {
     success: 'Thank you for reaching out. We will be in touch shortly.',
@@ -298,6 +299,7 @@ const he: TranslationTree = {
     followUs: 'עקבו אחרינו',
     instagram: 'ProperTLV באינסטגרם',
     facebook: 'ProperTLV בפייסבוק',
+    linkedin: 'ProperTLV בלינקדאין',
     placeholder: 'מציין מקום',
     contactUs: 'צור קשר',
     rights: 'כל הזכויות שמורות.',
@@ -337,7 +339,7 @@ const he: TranslationTree = {
     subtitle: 'ספרו לנו מה אתם מחפשים ונחזור אליכם.',
     reachUs: 'ניתן ליצור קשר ב',
     or: 'או',
-    address: 'שדרות רוטשילד 45, תל אביב.',
+    address: 'בן יהודה 83, תל אביב.',
   },
   contactForm: {
     success: 'תודה שפניתם אלינו. ניצור קשר בקרוב.',

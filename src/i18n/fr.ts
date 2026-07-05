@@ -43,6 +43,7 @@ export const frPatch = {
     followUs: 'Suivez-nous',
     instagram: 'ProperTLV sur Instagram',
     facebook: 'ProperTLV sur Facebook',
+    linkedin: 'ProperTLV sur LinkedIn',
     placeholder: 'placeholder',
     contactUs: 'Contact',
     rights: 'Tous droits réservés.',
@@ -82,7 +83,7 @@ export const frPatch = {
     subtitle: 'Dites-nous ce que vous recherchez et nous vous répondrons.',
     reachUs: 'Contactez-nous au',
     or: 'ou',
-    address: 'Rothschild Blvd 45, Tel Aviv.',
+    address: '83 Ben Yehuda St, Tel Aviv.',
   },
   contactForm: {
     success: 'Merci pour votre message. Nous vous recontacterons rapidement.',

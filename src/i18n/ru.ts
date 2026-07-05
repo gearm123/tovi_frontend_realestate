@@ -43,6 +43,7 @@ export const ruPatch = {
     followUs: 'Мы в соцсетях',
     instagram: 'ProperTLV в Instagram',
     facebook: 'ProperTLV в Facebook',
+    linkedin: 'ProperTLV в LinkedIn',
     placeholder: 'placeholder',
     contactUs: 'Контакты',
     rights: 'Все права защищены.',
@@ -82,7 +83,7 @@ export const ruPatch = {
     subtitle: 'Расскажите, что вы ищете, и мы свяжемся с вами.',
     reachUs: 'Свяжитесь с нами по',
     or: 'или',
-    address: 'Rothschild Blvd 45, Tel Aviv.',
+    address: '83 Ben Yehuda St, Tel Aviv.',
   },
   contactForm: {
     success: 'Спасибо за обращение. Мы скоро свяжемся с вами.',

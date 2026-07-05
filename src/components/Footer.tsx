@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
-import { CONTACT_PLACEHOLDERS } from '../data/placeholders'
+import { CONTACT_PLACEHOLDERS, isPlaceholderUrl } from '../data/placeholders'
 import { useSiteContent } from '../hooks/useSiteContent'
 import BrandTitle from './BrandTitle'
 import SocialLinks from './SocialLinks'
@@ -60,7 +60,10 @@ export default function Footer() {
 
           <div className="footer__social-wrap">
             <span className="footer__contact-label">{t.footer.followUs}</span>
-            {CONTACT_PLACEHOLDERS.social && (
+            {(CONTACT_PLACEHOLDERS.social ||
+              isPlaceholderUrl(business.social.instagram) ||
+              isPlaceholderUrl(business.social.facebook) ||
+              isPlaceholderUrl(business.social.linkedin)) && (
               <span className="footer__placeholder-tag footer__placeholder-tag--inline">
                 {t.footer.placeholder}
               </span>
@@ -69,7 +72,8 @@ export default function Footer() {
               social={business.social}
               instagramLabel={t.footer.instagram}
               facebookLabel={t.footer.facebook}
-              linksDisabled={CONTACT_PLACEHOLDERS.social}
+              linkedinLabel={t.footer.linkedin}
+              linksDisabled={false}
             />
           </div>
 
