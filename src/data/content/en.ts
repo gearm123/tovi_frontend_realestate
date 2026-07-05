@@ -111,6 +111,10 @@ export const siteContentEn: SiteContent = {
     ],
     ctaLabel: 'Speak with ProperTLV about the package',
     ctaHref: '/contact?interest=selling',
+    relatedLink: {
+      label: 'Read our 2026 Tel Aviv market outlook',
+      href: '/magazine/tel-aviv-real-estate-window-2026',
+    },
   },
 
   salesPackageClosing: {
@@ -171,6 +175,16 @@ export const siteContentEn: SiteContent = {
     ],
     ctaLabel: 'Speak with ProperTLV about buying',
     ctaHref: '/contact?interest=buying',
+    relatedLinks: [
+      {
+        label: 'Tel Aviv Real Estate 2026: The Opportunity for Israeli Buyers',
+        href: '/magazine/tel-aviv-real-estate-israeli-buyers-2026',
+      },
+      {
+        label: 'Tel Aviv Real Estate: The Window of Opportunity in 2026',
+        href: '/magazine/tel-aviv-real-estate-window-2026',
+      },
+    ],
   },
 
   sellerServices: {

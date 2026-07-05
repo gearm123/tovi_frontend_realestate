@@ -113,6 +113,22 @@ export default function ServiceSectionBlock({
         <Link to={ctaHref} className="service-block__cta">
           {section.ctaLabel}
         </Link>
+
+        {section.relatedLink && (
+          <p className="service-block__related">
+            <Link to={section.relatedLink.href}>{section.relatedLink.label}</Link>
+          </p>
+        )}
+
+        {section.relatedLinks && section.relatedLinks.length > 0 && (
+          <ul className="service-block__related-list">
+            {section.relatedLinks.map((link) => (
+              <li key={link.href}>
+                <Link to={link.href}>{link.label}</Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </article>
   )

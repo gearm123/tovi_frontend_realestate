@@ -111,6 +111,10 @@ export const siteContentHe: SiteContent = {
     ],
     ctaLabel: 'דברו עם ProperTLV על החבילה',
     ctaHref: '/contact?interest=selling',
+    relatedLink: {
+      label: 'קראו את תחזית שוק תל אביב ל-2026',
+      href: '/magazine/tel-aviv-real-estate-window-2026',
+    },
   },
 
   salesPackageClosing: {
@@ -171,6 +175,16 @@ export const siteContentHe: SiteContent = {
     ],
     ctaLabel: 'דברו עם ProperTLV על קנייה',
     ctaHref: '/contact?interest=buying',
+    relatedLinks: [
+      {
+        label: 'נדל״ן בתל אביב 2026: ההזדמנות לקונים ישראלים',
+        href: '/magazine/tel-aviv-real-estate-israeli-buyers-2026',
+      },
+      {
+        label: 'נדל״ן בתל אביב: חלון ההזדמנות ב-2026',
+        href: '/magazine/tel-aviv-real-estate-window-2026',
+      },
+    ],
   },
 
   sellerServices: {

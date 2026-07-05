@@ -85,6 +85,16 @@ export interface ServiceSection extends ContentSection {
   ctaLabel: string
   /** Optional contact link; defaults to /contact */
   ctaHref?: string
+  /** Optional related magazine or resource link */
+  relatedLink?: {
+    label: string
+    href: string
+  }
+  /** Optional additional insight links — shown below the primary CTA */
+  relatedLinks?: {
+    label: string
+    href: string
+  }[]
 }
 
 export interface SalesPackageClosingContent {
