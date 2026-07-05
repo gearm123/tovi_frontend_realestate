@@ -1,4 +1,7 @@
 import type { Locale } from './types'
+import { frPatch } from './fr'
+import { mergeTranslations } from './mergeTranslations'
+import { ruPatch } from './ru'
 
 const en = {
   meta: {
@@ -8,8 +11,13 @@ const en = {
   lang: {
     switchToHebrew: 'עברית',
     switchToEnglish: 'English',
+    switchToFrench: 'Français',
+    switchToRussian: 'Русский',
     ariaSwitchToHebrew: 'Switch site language to Hebrew',
     ariaSwitchToEnglish: 'Switch site language to English',
+    ariaSwitchToFrench: 'Switch site language to French',
+    ariaSwitchToRussian: 'Switch site language to Russian',
+    groupAria: 'Language selection',
   },
   header: {
     tagline: 'tailor made apartments',
@@ -253,8 +261,13 @@ const he: TranslationTree = {
   lang: {
     switchToHebrew: 'עברית',
     switchToEnglish: 'English',
+    switchToFrench: 'Français',
+    switchToRussian: 'Русский',
     ariaSwitchToHebrew: 'החלפת שפת האתר לעברית',
     ariaSwitchToEnglish: 'החלפת שפת האתר לאנגלית',
+    ariaSwitchToFrench: 'החלפת שפת האתר לצרפתית',
+    ariaSwitchToRussian: 'החלפת שפת האתר לרוסית',
+    groupAria: 'בחירת שפה',
   },
   header: {
     tagline: 'דירות בהתאמה אישית',
@@ -492,7 +505,10 @@ const he: TranslationTree = {
 
 export type TranslationTree = typeof en
 
-export const translations: Record<Locale, TranslationTree> = { en, he }
+const fr = mergeTranslations(en, frPatch)
+const ru = mergeTranslations(en, ruPatch)
+
+export const translations: Record<Locale, TranslationTree> = { en, he, fr, ru }
 
 export function interpolate(
   template: string,

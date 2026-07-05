@@ -1,4 +1,5 @@
 import type { Locale } from './types'
+import { SUPPORTED_LOCALES } from './locales'
 
 export const LOCALE_STORAGE_KEY = 'propertlv-locale'
 const LOCALE_EXPLICIT_KEY = 'propertlv-locale-explicit'
@@ -6,7 +7,7 @@ const LOCALE_EXPLICIT_KEY = 'propertlv-locale-explicit'
 const DEFAULT_LOCALE: Locale = 'he'
 
 function isLocale(value: string | null): value is Locale {
-  return value === 'he' || value === 'en'
+  return SUPPORTED_LOCALES.includes(value as Locale)
 }
 
 /** Resolves locale from an explicit user choice, otherwise Hebrew. */

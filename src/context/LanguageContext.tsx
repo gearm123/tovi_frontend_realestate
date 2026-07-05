@@ -16,7 +16,6 @@ type LanguageContextValue = {
   dir: 'ltr' | 'rtl'
   isRtl: boolean
   setLocale: (locale: Locale) => void
-  toggleLocale: () => void
   t: TranslationTree
   format: (template: string, params?: TranslationParams) => string
 }
@@ -30,10 +29,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setLocaleState(next)
     persistLocaleChoice(next)
   }, [])
-
-  const toggleLocale = useCallback(() => {
-    setLocale(locale === 'en' ? 'he' : 'en')
-  }, [locale, setLocale])
 
   const dir = getDir(locale)
   const isRtl = dir === 'rtl'
@@ -55,11 +50,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       dir,
       isRtl,
       setLocale,
-      toggleLocale,
       t: translations[locale],
       format: interpolate,
     }),
-    [locale, dir, isRtl, setLocale, toggleLocale],
+    [locale, dir, isRtl, setLocale],
   )
 
   return (

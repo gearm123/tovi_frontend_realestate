@@ -79,7 +79,7 @@ export function getLocalizedProperty(
   locale: Locale,
   fallback: PropertyTranslation & { neighborhood: string },
 ) {
-  if (locale === 'en') {
+  if (locale !== 'he') {
     return {
       title: fallback.title,
       address: fallback.address,

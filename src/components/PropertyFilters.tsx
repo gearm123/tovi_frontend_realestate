@@ -6,6 +6,7 @@ import {
   type ListingStatusFilter,
 } from '../constants/propertySearch'
 import { useLanguage } from '../context/LanguageContext'
+import { NUMBER_FORMAT_LOCALES } from '../i18n/locales'
 import { useViewport } from '../hooks/useViewport'
 import type { PropertyFilters } from '../types/filters'
 import './PropertyFilters.css'
@@ -187,9 +188,9 @@ export default function PropertyFiltersBar({
           <span className="property-filters__label">
             {format(t.filters.priceRange, {
               label: priceLabel,
-              min: filters.priceMin.toLocaleString(locale === 'he' ? 'he-IL' : 'en-US'),
+              min: filters.priceMin.toLocaleString(NUMBER_FORMAT_LOCALES[locale]),
               max: Math.min(filters.priceMax, priceMax).toLocaleString(
-                locale === 'he' ? 'he-IL' : 'en-US',
+                NUMBER_FORMAT_LOCALES[locale],
               ),
             })}
           </span>
