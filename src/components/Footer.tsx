@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { CONTACT_PLACEHOLDERS } from '../data/placeholders'
 import { useSiteContent } from '../hooks/useSiteContent'
+import BrandTitle from './BrandTitle'
 import SocialLinks from './SocialLinks'
 import './Footer.css'
 
@@ -13,7 +14,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer__inner">
         <section className="footer__block footer__block--brand">
-          <p className="footer__logo">{business.name}</p>
+          <BrandTitle as="p" className="footer__logo" />
           <p>{t.footer.blurb}</p>
           <nav className="footer__links" aria-label={t.footer.navAria}>
             <Link to="/about">{t.footer.about}</Link>
@@ -81,7 +82,8 @@ export default function Footer() {
       </div>
 
       <p className="footer__copyright">
-        &copy; {new Date().getFullYear()} {business.name}. {t.footer.rights}
+        &copy; {new Date().getFullYear()} <BrandTitle as="span" className="footer__copyright-brand" />.{' '}
+        {t.footer.rights}
       </p>
     </footer>
   )

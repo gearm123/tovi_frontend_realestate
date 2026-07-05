@@ -1,0 +1,42 @@
+.brand-title,
+.brand-title__proper,
+.brand-title__tlv {
+  font-family: var(--font-brand);
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}
+
+.brand-title {
+  display: inline-block;
+  line-height: 1;
+}
+
+.brand-title__proper {
+  color: var(--brand-proper);
+}
+
+.brand-title__tlv {
+  color: var(--brand-tlv);
+}
+
+/* Beat global h1 / span typography in both LTR (English) and RTL (Hebrew) */
+h1.brand-title,
+p.brand-title,
+span.brand-title,
+html[dir='ltr'] h1.brand-title,
+html[dir='ltr'] p.brand-title,
+html[dir='ltr'] span.brand-title,
+html[dir='ltr'] .brand-title__proper,
+html[dir='ltr'] .brand-title__tlv,
+html[dir='rtl'] h1.brand-title,
+html[dir='rtl'] p.brand-title,
+html[dir='rtl'] span.brand-title,
+html[dir='rtl'] .brand-title,
+html[dir='rtl'] .brand-title__proper,
+html[dir='rtl'] .brand-title__tlv {
+  font-family: var(--font-brand);
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}

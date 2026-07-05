@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useSiteContent } from '../hooks/useSiteContent'
+import BrandTitle from './BrandTitle'
 import LanguageToggle from './LanguageToggle'
 import './Header.css'
 
@@ -33,7 +34,7 @@ export default function Header() {
 
       <div className="header__masthead">
         <Link to="/" className="header__brand">
-          <h1 className="header__title">{business.name}</h1>
+          <BrandTitle as="h1" className="header__title" />
           <p className="header__tagline orange-cursive-title orange-cursive-title--tagline">
             {t.header.tagline}
           </p>

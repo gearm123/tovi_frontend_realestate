@@ -12,7 +12,7 @@ const en = {
     ariaSwitchToEnglish: 'Switch site language to English',
   },
   header: {
-    tagline: 'Tel Aviv Real Estate',
+    tagline: 'tailor made apartments',
     navAria: 'Main navigation',
     nav: {
       about: 'About',
@@ -257,7 +257,7 @@ const he: TranslationTree = {
     ariaSwitchToEnglish: 'החלפת שפת האתר לאנגלית',
   },
   header: {
-    tagline: 'נדל״ן בתל אביב',
+    tagline: 'דירות בהתאמה אישית',
     navAria: 'ניווט ראשי',
     nav: {
       about: 'אודות',
