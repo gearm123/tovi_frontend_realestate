@@ -50,6 +50,8 @@ export default function TeamSection({
           </article>
         ))}
       </div>
+
+      {section.footnote && <p className="team-section__footnote">{section.footnote}</p>}
     </section>
   )
 }

@@ -1,6 +1,5 @@
 import ServiceSectionBlock from './ServiceSectionBlock'
 import TeamSection from './TeamSection'
-import PackageShowcaseGallery from './PackageShowcaseGallery'
 import SalesPackageClosing from './SalesPackageClosing'
 import ReviewsSection from '../trust/ReviewsSection'
 import { useSiteContent } from '../../hooks/useSiteContent'
@@ -17,10 +16,6 @@ export default function SellersExclusivePackage() {
         section={exclusivityPackage}
         variant="premium"
       />
-
-      {exclusivityPackage.showcaseImages && (
-        <PackageShowcaseGallery images={exclusivityPackage.showcaseImages} />
-      )}
 
       <TeamSection id="exclusivity-package-team" section={salesTeam} variant="premium" />
 

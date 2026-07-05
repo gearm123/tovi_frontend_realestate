@@ -44,8 +44,23 @@ export default function ServiceSectionBlock({
         <h2 className="service-block__title" id={id ? `${id}-title` : undefined}>
           {section.title}
         </h2>
+        {section.packageDuration && (
+          <p className="service-block__duration">{section.packageDuration}</p>
+        )}
         {section.subtitle && <p className="service-block__subtitle">{section.subtitle}</p>}
       </header>
+
+      {section.durationImage && (
+        <figure className="service-block__duration-visual">
+          <img
+            className="service-block__duration-image"
+            src={section.durationImage}
+            alt={section.durationImageAlt ?? section.packageDuration ?? section.title}
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      )}
 
       <div className="service-block__body">
         {section.paragraphs.map((paragraph) => (
@@ -67,35 +82,16 @@ export default function ServiceSectionBlock({
 
         {section.groups?.map((group) => (
           <div key={group.title} className="service-block__group">
-            {(group.image || group.secondaryImage) && (
-              <div
-                className={`service-block__group-media${
-                  group.secondaryImage ? ' service-block__group-media--duo' : ''
-                }`}
-              >
-                {group.image && (
-                  <figure className="service-block__group-figure">
-                    <img
-                      className="service-block__group-image"
-                      src={group.image}
-                      alt={group.imageAlt ?? group.title}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </figure>
-                )}
-                {group.secondaryImage && (
-                  <figure className="service-block__group-figure service-block__group-figure--secondary">
-                    <img
-                      className="service-block__group-image"
-                      src={group.secondaryImage}
-                      alt={group.secondaryImageAlt ?? group.title}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </figure>
-                )}
-              </div>
+            {group.image && (
+              <figure className="service-block__group-figure service-block__group-figure--single">
+                <img
+                  className="service-block__group-image"
+                  src={group.image}
+                  alt={group.imageAlt ?? group.title}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
             )}
             <h3 className="service-block__group-title">{group.title}</h3>
             <ul className="service-block__list">

@@ -75,6 +75,10 @@ export interface ServiceSection extends ContentSection {
   /** Short intro highlights — e.g. “Why choose exclusivity with us?” */
   highlights?: string[]
   highlightsTitle?: string
+  /** e.g. four-month exclusive representation term from the Hebrew brochure */
+  packageDuration?: string
+  durationImage?: string
+  durationImageAlt?: string
   /** Portfolio / marketing showcase grid from the sales brochure */
   showcaseImages?: PackageImage[]
   /** Contact CTA label — e.g. "Speak with ProperTLV" */
@@ -144,6 +148,8 @@ export interface TeamSectionContent {
   title: string
   subtitle?: string
   members: TeamMember[]
+  /** Optional line about wider office support — no photos required */
+  footnote?: string
 }
 
 export interface SiteContent {

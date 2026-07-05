@@ -39,18 +39,21 @@ export const siteContentEn: SiteContent = {
   exclusivityPackage: {
     accent: 'Exclusive',
     title: 'The Exclusive Representation Package',
-    subtitle: 'The power of selling exclusively with ProperTLV.',
+    subtitle: 'Exclusivity that delivers results with ProperTLV.',
+    packageDuration: '4-month exclusive representation',
+    durationImage: '/assets/exclusivity-he/package-duration.jpg',
+    durationImageAlt: 'Luxury poolside setting — ProperTLV four-month exclusive representation',
     heroImage: '/assets/sales-package/hero-tel-aviv.jpg',
     heroImageAlt: 'Tel Aviv skyline at golden hour — ProperTLV exclusive sales marketing',
     paragraphs: [
-      'At ProperTLV, we’re not just agents — we’re trusted partners in Tel Aviv’s high-end real estate market. With 15+ years of experience and a global clientele including expats, diplomats, and locals, we handle every detail with care and precision.',
+      'At ProperTLV, we’re not just agents — we’re trusted partners in Tel Aviv’s high-end real estate market. With 17+ years of experience and a global clientele including expats, diplomats, and locals, we handle every detail with care and precision.',
       'From Bauhaus gems to garden and rooftop homes, our exclusive listings shine through targeted marketing, 24/7 service, and full legal support.',
-      'Your home deserves the ProperTLV touch.',
+      'Your property deserves representation at the highest level.',
     ],
     highlights: [
       'Strategic marketing for qualified buyers',
-      'Seamless, end-to-end management',
-      'Total peace of mind',
+      'Smooth and professional end-to-end management',
+      'Complete peace of mind',
     ],
     highlightsTitle: 'Why choose exclusivity with us?',
     bullets: [],
@@ -59,28 +62,22 @@ export const siteContentEn: SiteContent = {
         title: '1. Premium Marketing Package',
         image: '/assets/sales-package/premium-marketing.jpg',
         imageAlt: 'Professionally staged living room prepared for a ProperTLV listing',
-        secondaryImage: '/assets/sales-package/premium-brochure.png',
-        secondaryImageAlt: 'Custom-designed luxury property brochure mockup',
         items: [
           'Professional photography and videography — includes cinematic video tours and aerial drone footage (if relevant)',
-          'Interior design consultation and staging — our in-house design team ensures the home looks its absolute best',
-          'Custom-designed digital and print brochure — luxury-grade marketing materials with multilingual options (Hebrew, English, French, and Russian)',
+          'Interior design consultation and home styling — our in-house design team ensures the home looks its absolute best',
+          'Custom-designed digital brochure — luxury-grade marketing materials with multilingual options (Hebrew, English, French, and Russian)',
         ],
       },
       {
         title: '2. Elite Exposure & Network',
-        image: '/assets/sales-package/elite-exposure-1.jpg',
-        imageAlt: 'ProperTLV social media marketing reach and audience engagement',
-        secondaryImage: '/assets/sales-package/elite-exposure-2.jpg',
-        secondaryImageAlt: 'Premium property portals and international listing exposure',
         items: [
           '17+ years of high-end real estate expertise — deep roots in the local market and international buyer community',
-          'Exclusive access to our client network — mailing list of over 5,000 pre-qualified buyers, many of whom are overseas investors or relocating families',
+          'Exclusive access to our client network — mailing list of over 5,000 qualified buyers, many of whom are overseas investors or relocating families',
           'Instagram: 23K+ active, high-end followers',
           'Facebook: 2.1K+ curated audience and posting in exclusive realtor groups',
           'Regular content shared for your property via reels, posts, and stories with strong engagement',
           'LinkedIn page: 1,200 close connections',
-          'Listing on premium portals — local and international platforms (e.g. Yad2, Madlan, OnMap, Google Ads, website, international portals if applicable)',
+          'Listing on premium portals — Yad2, Madlan, OnMap, Google Ads, our website, and international portals where applicable',
         ],
       },
       {
@@ -88,66 +85,28 @@ export const siteContentEn: SiteContent = {
         image: '/assets/sales-package/promotion-strategy.jpg',
         imageAlt: 'ProperTLV agent hosting a private property tour for qualified buyers',
         items: [
-          'Dedicated marketing plan for your property — tailored to your home’s unique features and target buyer demographics',
-          'WhatsApp and direct messaging campaigns — property sent directly to our personal agent contact list (VIP buyers, ambassadors, relocation agencies) and colleagues in the industry',
+          'Dedicated marketing plan for your property — tailored to your home’s unique features and target buyer profile',
+          'WhatsApp and direct messaging campaigns — property sent directly to our personal contact list (VIP buyers, ambassadors, relocation agencies, and industry colleagues)',
           'Open houses and private tours — organized for qualified buyers only, with guided tours by a senior agent',
         ],
       },
       {
-        title: '4. White Glove Service',
-        image: '/assets/sales-package/white-glove.jpg',
-        imageAlt: 'ProperTLV agent providing attentive white-glove client service',
+        title: '4. Personal Premium Service',
         items: [
           'Single point of contact — full accountability and availability; one agent handling everything, with no confusion',
-          'Clear communication and updates — monthly performance reports and buyer feedback',
-          'Discreet sales option — for clients who prefer not to advertise publicly (via silent or off-market listings)',
+          'Clear communication and updates — monthly performance reports and feedback from potential buyers',
+          'Discreet sales option — for clients who prefer not to advertise publicly (quiet or off-market listings)',
         ],
       },
       {
-        title: '5. Maximize Your Sale Price',
+        title: '5. Achieving Maximum Value for Your Property',
         image: '/assets/sales-package/maximize-sale-1.jpg',
         imageAlt: 'Luxury Tel Aviv apartment interior marketed by ProperTLV',
-        secondaryImage: '/assets/sales-package/maximize-sale-2.jpg',
-        secondaryImageAlt: 'High-end property presentation showcasing sale value',
         items: [
           'Strategic pricing advisory — based on real-time data and luxury market trends',
-          'Offer and negotiation management — we manage every step to secure the highest possible sale price from the right buyer',
-          'Experience with high-stakes transactions — proven results with multi-million shekel and euro properties',
+          'Offer and negotiation management — we manage every step to secure the highest possible sale price',
+          'Experience with high-value transactions — proven results in properties worth millions of shekels and euros',
         ],
-      },
-    ],
-    showcaseImages: [
-      {
-        src: '/assets/sales-package/showcase-1.jpg',
-        alt: 'ProperTLV exclusive listing — elegant living space',
-      },
-      {
-        src: '/assets/sales-package/showcase-2.jpg',
-        alt: 'ProperTLV exclusive listing — designer kitchen',
-      },
-      {
-        src: '/assets/sales-package/showcase-3.jpg',
-        alt: 'ProperTLV exclusive listing — bright bedroom suite',
-      },
-      {
-        src: '/assets/sales-package/showcase-4.jpg',
-        alt: 'ProperTLV exclusive listing — rooftop terrace views',
-      },
-      {
-        src: '/assets/sales-package/showcase-5.jpg',
-        alt: 'ProperTLV exclusive listing — curated interior details',
-      },
-      {
-        src: '/assets/sales-package/showcase-6.jpg',
-        alt: 'ProperTLV exclusive listing — premium bathroom finish',
-      },
-      {
-        src: '/assets/sales-package/showcase-7.jpg',
-        alt: 'ProperTLV exclusive listing — outdoor entertaining area',
-      },
-      {
-        src: '/assets/sales-package/showcase-8.jpg',
-        alt: 'ProperTLV exclusive listing — architectural Tel Aviv home',
       },
     ],
     ctaLabel: 'Speak with ProperTLV about the package',
@@ -155,7 +114,7 @@ export const siteContentEn: SiteContent = {
   },
 
   salesPackageClosing: {
-    title: 'We look forward to working with you',
+    title: 'We look forward to accompanying you to your next deal',
     subtitle: 'Reach out to start your exclusive sales journey with ProperTLV.',
     ctaLabel: 'Contact ProperTLV',
   },
@@ -164,6 +123,8 @@ export const siteContentEn: SiteContent = {
     accent: 'The Team',
     title: 'The Team',
     subtitle: 'The people behind ProperTLV’s exclusive sales experience.',
+    footnote:
+      'Supported by our rental specialists and office team — keeping every listing coordinated from first call to closing.',
     members: [
       {
         id: 'tova-dekkers',
@@ -233,7 +194,7 @@ export const siteContentEn: SiteContent = {
 
   reviews: {
     accent: "Client's Words",
-    title: "Client's Words",
+    title: 'What our clients say',
     subtitle: 'Feedback from buyers, sellers, and renters who worked with ProperTLV.',
     placeholderLabel: 'Sample',
     items: [
