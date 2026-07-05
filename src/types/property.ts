@@ -48,4 +48,6 @@ export interface Property {
   coordinates: PropertyCoordinates
   featured?: boolean
   features: PropertyFeatures
+  /** Agent responsible for this listing — references `agents.ts` */
+  agentId: string
 }

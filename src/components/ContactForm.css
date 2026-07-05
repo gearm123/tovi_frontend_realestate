@@ -14,6 +14,28 @@
   color: var(--ink-soft);
 }
 
+.contact-form__context {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--paper);
+}
+
+.contact-form__context-title {
+  font-family: var(--font-primary);
+  font-size: 0.92rem;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 0.35rem;
+}
+
+.contact-form__context-agent {
+  font-family: var(--font-primary);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
 .contact-form__legend {
   font-family: var(--font-primary);
   font-size: 0.7rem;

@@ -97,6 +97,10 @@ export const ruPatch = {
     phone: 'Телефон',
     message: 'Сообщение',
     submit: 'Отправить',
+    propertyContext: 'Запрос по объекту: {title}',
+    routedTo: 'Ваше сообщение будет обработано: {name} ({email}).',
+    propertyMessageTemplate:
+      'Здравствуйте,\n\nМеня интересует объект:\n{title} (ID: {id})\n\n',
   },
   accessibility: {
     openMenu: 'Доступность',
@@ -236,5 +240,10 @@ export const ruPatch = {
     returnHome: 'На главную',
     yes: '✓',
     no: '—',
+    yourAgent: 'Ваш контакт',
+    listedWith: 'Объект ведёт {name}',
+    emailAgent: 'Написать {name}',
+    contactAgent: 'Отправить запрос',
+    agentPhone: 'Позвонить',
   },
 }

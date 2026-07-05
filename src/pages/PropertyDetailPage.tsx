@@ -1,6 +1,8 @@
 import { Link, useParams } from 'react-router-dom'
 import ConversionSections from '../components/conversion/ConversionSections'
 import VideoEmbed from '../components/shared/VideoEmbed'
+import PropertyAgentCard from '../components/property-listings/shared/PropertyAgentCard'
+import { getAgentForProperty } from '../services/agentService'
 import { getPropertyById } from '../services/propertyService'
 import ListingTypeBadge from '../components/property-listings/shared/ListingTypeBadge'
 import PropertyImage from '../components/property-listings/shared/PropertyImage'
@@ -8,6 +10,7 @@ import { useLanguage } from '../context/LanguageContext'
 import { useViewport } from '../hooks/useViewport'
 import { getLocalizedProperty } from '../i18n/propertyTranslations'
 import { isPlayableVideoUrl } from '../utils/propertyVideo'
+import { getPropertyContactPath } from '../utils/propertyContact'
 import './PropertyDetailPage.css'
 
 const featureKeys = [
@@ -52,6 +55,8 @@ export default function PropertyDetailPage() {
 
   const showVideoTour =
     property.videoUrl && isPlayableVideoUrl(property.videoUrl)
+
+  const agent = getAgentForProperty(property, locale)
 
   return (
     <article className={`property-detail property-detail--${viewport}`}>
@@ -124,8 +129,14 @@ export default function PropertyDetailPage() {
           </ul>
         </div>
 
+        <PropertyAgentCard
+          agent={agent}
+          property={property}
+          propertyTitle={localized.title}
+        />
+
         <div className="property-detail__actions">
-          <Link to="/contact" className="property-detail__cta">
+          <Link to={getPropertyContactPath(property)} className="property-detail__cta">
             {t.property.contactCta}
           </Link>
           <Link

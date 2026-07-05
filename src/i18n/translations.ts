@@ -102,6 +102,10 @@ const en = {
     phone: 'Phone',
     message: 'Message',
     submit: 'Send message',
+    propertyContext: 'Inquiry about: {title}',
+    routedTo: 'Your message will be handled by {name} ({email}).',
+    propertyMessageTemplate:
+      'Hi,\n\nI am interested in the following property:\n{title} (ID: {id})\n\n',
   },
   accessibility: {
     openMenu: 'Accessibility',
@@ -251,6 +255,11 @@ const en = {
     returnHome: 'Return home',
     yes: '✓',
     no: '—',
+    yourAgent: 'Your contact',
+    listedWith: 'Listed with {name}',
+    emailAgent: 'Email {name}',
+    contactAgent: 'Send inquiry',
+    agentPhone: 'Call',
   },
 }
 
@@ -353,6 +362,10 @@ const he: TranslationTree = {
     phone: 'טלפון',
     message: 'הודעה',
     submit: 'שליחת הודעה',
+    propertyContext: 'פנייה לגבי: {title}',
+    routedTo: 'הפנייה תטופל על ידי {name} ({email}).',
+    propertyMessageTemplate:
+      'שלום,\n\nאני מתעניין/ת בנכס הבא:\n{title} (מזהה: {id})\n\n',
   },
   accessibility: {
     openMenu: 'נגישות',
@@ -502,6 +515,11 @@ const he: TranslationTree = {
     returnHome: 'חזרה לדף הבית',
     yes: '✓',
     no: '—',
+    yourAgent: 'איש הקשר שלכם',
+    listedWith: 'בטיפול {name}',
+    emailAgent: 'שליחת מייל ל{name}',
+    contactAgent: 'שליחת פנייה',
+    agentPhone: 'התקשרות',
   },
 }
 

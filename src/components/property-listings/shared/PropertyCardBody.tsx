@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { Property } from '../../../types/property'
 import { useLanguage } from '../../../context/LanguageContext'
 import { getLocalizedProperty } from '../../../i18n/propertyTranslations'
+import { getAgentForProperty } from '../../../services/agentService'
 import { getPropertyDetailPath } from '../../../utils/propertyPath'
 
 interface PropertyCardBodyProps {
@@ -28,6 +29,8 @@ export default function PropertyCardBody({
     property.neighborhood
 
   const detailPath = getPropertyDetailPath(property)
+  const agent = getAgentForProperty(property, locale)
+
   return (
     <div className={`${classPrefix}__body`}>
       <p className={`${classPrefix}__neighborhood`}>{neighborhoodLabel}</p>
@@ -47,6 +50,10 @@ export default function PropertyCardBody({
       </div>
 
       <p className={`${classPrefix}__description`}>{localized.description}</p>
+
+      <p className={`${classPrefix}__agent`}>
+        {t.property.listedWith.replace('{name}', agent.name)}
+      </p>
 
       <div className={`${classPrefix}__footer`}>
         <Link to={detailPath} className={`${classPrefix}__link`}>

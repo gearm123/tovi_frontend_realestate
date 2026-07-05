@@ -97,6 +97,10 @@ export const frPatch = {
     phone: 'Téléphone',
     message: 'Message',
     submit: 'Envoyer',
+    propertyContext: 'Demande concernant : {title}',
+    routedTo: 'Votre message sera traité par {name} ({email}).',
+    propertyMessageTemplate:
+      'Bonjour,\n\nJe suis intéressé(e) par le bien suivant :\n{title} (ID : {id})\n\n',
   },
   accessibility: {
     openMenu: 'Accessibilité',
@@ -236,5 +240,10 @@ export const frPatch = {
     returnHome: "Retour à l'accueil",
     yes: '✓',
     no: '—',
+    yourAgent: 'Votre contact',
+    listedWith: 'Présenté par {name}',
+    emailAgent: 'Écrire à {name}',
+    contactAgent: 'Envoyer une demande',
+    agentPhone: 'Appeler',
   },
 }

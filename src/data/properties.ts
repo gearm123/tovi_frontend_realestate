@@ -47,6 +47,7 @@ function demoListingImage(stubId: number): string {
 export const properties: Property[] = [
   {
     id: '1',
+    agentId: 'tova-dekkers',
     title: 'Sunlit Bauhaus on Rothschild',
     neighborhood: 'Lev HaIr',
     address: 'Rothschild Blvd 42, Tel Aviv',
@@ -75,6 +76,7 @@ export const properties: Property[] = [
   },
   {
     id: '2',
+    agentId: 'eden-kaduri',
     title: 'Garden-Level Duplex in Neve Tzedek',
     neighborhood: 'Neve Tzedek',
     address: 'Shabazi St 18, Tel Aviv',
@@ -102,6 +104,7 @@ export const properties: Property[] = [
   },
   {
     id: '3',
+    agentId: 'tova-dekkers',
     title: 'Sea-Breeze Penthouse, Tel Aviv Port',
     neighborhood: 'Namal',
     address: "HaTa'arucha St 3, Tel Aviv",
@@ -128,6 +131,7 @@ export const properties: Property[] = [
   },
   {
     id: '4',
+    agentId: 'miri-minkin',
     title: 'Quiet Corner in Old North',
     neighborhood: 'Tzameret',
     address: 'Ben Yehuda St 156, Tel Aviv',
@@ -154,6 +158,7 @@ export const properties: Property[] = [
   },
   {
     id: '5',
+    agentId: 'miri-minkin',
     title: 'Florentin Loft with Character',
     neighborhood: 'Florentin',
     address: 'Salame St 28, Tel Aviv',
@@ -180,6 +185,7 @@ export const properties: Property[] = [
   },
   {
     id: '6',
+    agentId: 'miri-minkin',
     title: 'Family Home near HaYarkon Park',
     neighborhood: 'Ramat Aviv',
     address: 'Einstein St 12, Tel Aviv',
@@ -206,6 +212,7 @@ export const properties: Property[] = [
   },
   {
     id: 'r1',
+    agentId: 'yana-yatsenko',
     title: 'Bauhaus Rental on Rothschild',
     neighborhood: 'Lev HaIr',
     address: 'Rothschild Blvd 88, Tel Aviv',
@@ -233,6 +240,7 @@ export const properties: Property[] = [
   },
   {
     id: 'r2',
+    agentId: 'tova-dekkers',
     title: 'Modern Flat in Sarona',
     neighborhood: 'Sarona',
     address: 'Kaplan St 5, Tel Aviv',
@@ -260,6 +268,7 @@ export const properties: Property[] = [
   },
   {
     id: 'r3',
+    agentId: 'yana-yatsenko',
     title: 'Charming Studio in Florentin',
     neighborhood: 'Florentin',
     address: 'Vital St 14, Tel Aviv',
@@ -286,6 +295,7 @@ export const properties: Property[] = [
   },
   {
     id: 'r4',
+    agentId: 'miri-minkin',
     title: 'Garden Apartment in Old North',
     neighborhood: 'Old North',
     address: 'Dizengoff St 210, Tel Aviv',
