@@ -6,3 +6,15 @@
   flex-direction: column;
   gap: clamp(1.5rem, 3vw, 2rem);
 }
+
+.services-page__intro {
+  max-width: 720px;
+  font-family: var(--font-primary);
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+}
+
+.services-page__intro p {
+  margin: 0;
+}

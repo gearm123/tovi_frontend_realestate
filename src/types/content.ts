@@ -108,6 +108,12 @@ export interface ServicesPageContent extends ContentSection {
   overviewIntro: string
   /** Homepage link to full services page */
   viewAllLink: string
+  /** Compact promo on /services linking to the full exclusive package page */
+  exclusivePackageTeaser: {
+    body: string
+    ctaLabel: string
+    ctaHref: string
+  }
 }
 export interface CtaSection {
   title: string

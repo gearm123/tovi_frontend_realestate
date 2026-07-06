@@ -29,11 +29,18 @@ export const siteContentEn: SiteContent = {
   servicesPage: {
     accent: 'How We Work',
     title: 'Our Services',
-    subtitle: 'Exclusive representation and premium marketing for Tel Aviv sellers.',
+    subtitle: 'Personal guidance for buyers and sellers across Tel Aviv.',
     overviewIntro:
-      'From the Exclusive Representation Package to buyer and seller guidance — ProperTLV offers hands-on support backed by 15+ years in Tel Aviv’s high-end market.',
+      'From finding the right home to selling with clarity — ProperTLV offers hands-on buyer and seller support, plus a dedicated Exclusive Representation Package for premium listings.',
     viewAllLink: 'View all services',
-    paragraphs: [],
+    paragraphs: [
+      'ProperTLV is a boutique Tel Aviv agency. On this page you’ll find how we help buyers search with confidence and how we guide sellers through pricing, marketing, and closing. For our full premium sales program — photography, staging, network exposure, and 4-month exclusive representation — see the Exclusive Package page.',
+    ],
+    exclusivePackageTeaser: {
+      body: 'A structured 4-month exclusive program for sellers who want the full ProperTLV treatment: premium marketing, elite buyer-network exposure, personal senior-agent service, and negotiation to maximize value.',
+      ctaLabel: 'Explore the Exclusive Package',
+      ctaHref: '/sellers-package',
+    },
   },
 
   exclusivityPackage: {
@@ -190,20 +197,25 @@ export const siteContentEn: SiteContent = {
   sellerServices: {
     accent: 'For Sellers',
     title: 'Services for Sellers',
-    subtitle: 'Present your property at its best — and reach buyers who are serious about Tel Aviv.',
+    subtitle: 'Clear advice and organised support — from valuation through closing.',
     paragraphs: [
-      'Selling a home is about more than posting an ad. ProperTLV helps you position your property accurately, present it beautifully, and connect with buyers who are a genuine fit — whether you choose our full Exclusive Representation Package or focused seller support.',
-      'From first valuation conversation through marketing, viewings, and offer review, you have a single point of contact who keeps the process organised, transparent, and discreet when needed.',
+      'Selling in Tel Aviv means balancing price, timing, presentation, and the right audience. ProperTLV helps you understand where your property sits in the market, prepare it thoughtfully, and move through viewings and offers without losing control of the process.',
+      'This is our standard seller support: strategic guidance, coordinated communication, and professional handling at every step. If you want the full premium program — professional media, staging, targeted campaigns, and exclusive representation — that is covered in our separate Exclusive Representation Package.',
     ],
     bullets: [
-      'Pricing and positioning advice grounded in the luxury Tel Aviv market',
-      'Professional photography, video, staging, and brochure preparation',
-      'Targeted marketing across premium portals and our buyer network',
-      'Viewing management, buyer screening, and monthly progress updates',
-      'Offer review, negotiation support, and closing coordination',
+      'Initial valuation conversation and pricing context for your neighbourhood',
+      'Advice on presentation and readiness before going to market',
+      'Listing coordination and organised viewing schedules',
+      'Buyer feedback, offer review, and negotiation support',
+      'Discreet handling when privacy matters',
+      'Coordination with lawyers and advisors through closing',
     ],
     ctaLabel: 'Contact ProperTLV about selling',
     ctaHref: '/contact?interest=selling',
+    relatedLink: {
+      label: 'See the Exclusive Representation Package',
+      href: '/sellers-package',
+    },
   },
 
   reviews: {
