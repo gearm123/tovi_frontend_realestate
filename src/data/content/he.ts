@@ -283,8 +283,10 @@ export const siteContentHe: SiteContent = {
     googleReviews: {
       showButton: true,
       url: business.googleBusiness.mapsUrl,
-      buttonLabel: 'צפייה בביקורות Google',
-      note: '5.0 ב-Google · 38 ביקורות',
+      buttonLabel: 'לכל הביקורות',
+      sourceLabel: 'ביקורות Google',
+      reviewCountLabel: 'ביקורות',
+      ariaLabel: 'צפייה ב-Proper TLV ב-Google Maps — דירוג 5.0 מתוך 38 ביקורות',
     },
   },
 

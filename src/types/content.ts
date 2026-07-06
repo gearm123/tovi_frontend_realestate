@@ -35,7 +35,11 @@ export interface GoogleReviewsPlaceholder {
   showButton: boolean
   url: string
   buttonLabel: string
-  note: string
+  sourceLabel: string
+  reviewCountLabel: string
+  ariaLabel: string
+  /** @deprecated Shown in banner via rating stars — kept for backwards compatibility */
+  note?: string
 }
 
 export interface ReviewsSection {

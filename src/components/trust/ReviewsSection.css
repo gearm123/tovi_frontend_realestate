@@ -37,53 +37,6 @@
   margin: 0 auto;
 }
 
-.reviews-section__google {
-  max-width: var(--max-width);
-  margin: 2.5rem auto 0;
-  padding: 1.5rem;
-  text-align: center;
-  background: var(--white);
-  border: 1px dashed var(--rule);
-  border-radius: var(--property-radius);
-}
-
-.reviews-section__google-btn {
-  display: inline-block;
-  font-family: var(--font-button);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink);
-  background: var(--paper);
-  border: 1px solid var(--rule);
-  padding: 0.65rem 1.35rem;
-  border-radius: 999px;
-  transition:
-    border-color 0.2s ease,
-    color 0.2s ease,
-    background 0.2s ease;
-}
-
-.reviews-section__google-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--white);
-}
-
-.reviews-section__google-note {
-  margin-top: 0.75rem;
-  font-family: var(--font-primary);
-  font-size: 0.72rem;
-  font-style: italic;
-  color: var(--ink-muted);
-  line-height: 1.5;
-}
-
-.reviews-section__google-note--only {
-  text-align: center;
-  margin-top: 1.5rem;
-}
-
 @media (max-width: 768px) {
   .reviews-section__header {
     text-align: start;

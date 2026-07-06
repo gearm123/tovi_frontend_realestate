@@ -283,8 +283,10 @@ export const siteContentEn: SiteContent = {
     googleReviews: {
       showButton: true,
       url: business.googleBusiness.mapsUrl,
-      buttonLabel: 'View Google Reviews',
-      note: '5.0 on Google · 38 reviews',
+      buttonLabel: 'View all reviews',
+      sourceLabel: 'Google Reviews',
+      reviewCountLabel: 'reviews',
+      ariaLabel: 'View Proper TLV on Google Maps — 5.0 stars from 38 reviews',
     },
   },
 

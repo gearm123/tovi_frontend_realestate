@@ -1,5 +1,6 @@
 import { CONTACT_PLACEHOLDERS } from '../../data/placeholders'
 import { useSiteContent } from '../../hooks/useSiteContent'
+import GoogleReviewsBanner from './GoogleReviewsBanner'
 import ReviewCard from './ReviewCard'
 import './ReviewsSection.css'
 
@@ -51,17 +52,7 @@ export default function ReviewsSection({
       </div>
 
       {shouldShowGoogleButton && (
-        <div className="reviews-section__google">
-          <a
-            href={googleReviews.url}
-            className="reviews-section__google-btn"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {googleReviews.buttonLabel}
-          </a>
-          <p className="reviews-section__google-note">{googleReviews.note}</p>
-        </div>
+        <GoogleReviewsBanner googleReviews={googleReviews} />
       )}
     </section>
   )
