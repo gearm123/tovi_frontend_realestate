@@ -40,9 +40,6 @@ export const PLACEHOLDER_SOCIAL = {
   linkedin: 'https://www.linkedin.com/company/propertlv/',
 } as const
 
-// TODO(client): Replace with live Google Business reviews URL
-export const PLACEHOLDER_GOOGLE_REVIEWS_URL = 'https://g.page/placeholder-propertlv/review'
-
 // TODO(client): Replace with live Calendly or booking URL
 export const PLACEHOLDER_BOOKING_URL =
   'https://calendly.com/placeholder-propertlv/consultation'
@@ -53,7 +50,7 @@ export const CONTACT_PLACEHOLDERS = {
   address: false,
   social: false,
   booking: true,
-  googleReviews: true,
+  googleReviews: false,
 } as const
 
 export function isPlaceholderUrl(url: string): boolean {

@@ -23,4 +23,11 @@ export const business: BusinessContact = {
     facebook: PLACEHOLDER_SOCIAL.facebook,
     linkedin: PLACEHOLDER_SOCIAL.linkedin,
   },
+  googleBusiness: {
+    listingName: 'Proper TLV',
+    mapsUrl:
+      'https://www.google.com/maps/place/Proper+TLV/data=!4m2!3m1!1s0x0:0x8310b2683aacfe49',
+    rating: 5.0,
+    reviewCount: 38,
+  },
 }

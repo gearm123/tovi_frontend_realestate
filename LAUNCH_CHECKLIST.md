@@ -1,7 +1,7 @@
 # ProperTLV — Launch Checklist
 
 Track progress toward a production-ready brokerage site.  
-Last updated: July 2026.
+Last updated: 6 July 2026.
 
 ---
 
@@ -9,16 +9,17 @@ Last updated: July 2026.
 
 - [ ] **Real property listings** — Replace demo data in `src/data/properties.ts` with live inventory (photos, prices, addresses, exact coordinates, agents)
 - [ ] **Sold / rented handling** — Hide or mark listings that are no longer available
-- [ ] **Working contact form** — Submissions reach agent/office inboxes (Netlify Forms, Formspree, email API, or CRM)
-- [ ] **Agent routing on inquiries** — Property-specific contact routes to the assigned agent email
-- [ ] **Google Maps live on production** — Netlify env vars set; API key referrers include live domain
+- [x] **Working contact form** — WhatsApp + mailto on submit; Netlify Forms capture in background (`contactService.ts`, `ContactForm.tsx`)
+- [ ] **Netlify form email notifications** — In Netlify dashboard: Site settings → Forms → add notification to `office@propertlv.com` (contact + newsletter)
+- [x] **Agent routing on inquiries** — General → `office@propertlv.com`; listing contact → assigned agent email via URL params + mailto
+- [ ] **Google Maps live on production** — Netlify env vars set (`VITE_MAP_PROVIDER`, `VITE_GOOGLE_MAPS_API_KEY`); API key referrers include live domain
 - [ ] **Privacy policy** — Required for contact forms, newsletter, and Google Maps
 
 ---
 
 ## Priority 2 — Trust & credibility
 
-- [ ] **Google Business Reviews** — Replace placeholder URL; show reviews button on site
+- [x] **Google Business Reviews** — Live Maps link wired (`business.googleBusiness`); button shows 5.0 · 38 reviews
 - [ ] **Real testimonials** — Remove “Sample” labels when client approves quotes
 - [ ] **Brokerage / legal footer** — License info, terms, accessibility statement as needed
 - [ ] **Online booking** — Connect real Calendly (or similar); update `PLACEHOLDER_BOOKING_URL` in `src/data/placeholders.ts`
@@ -46,7 +47,8 @@ Last updated: July 2026.
 
 ## Priority 5 — Operations & long-term
 
-- [ ] **Newsletter integration** — Mailchimp, Brevo, or CRM (`src/services/newsletterService.ts`)
+- [x] **Newsletter capture (Netlify Forms)** — Signups logged via Netlify; upgrade to Mailchimp/Brevo/CRM later if needed
+- [ ] **Auto-forward listing inquiries to agent email** — Optional: Zapier or Netlify function so Netlify notifications go to assigned realtor, not only office
 - [ ] **CRM / MLS sync** — Single source of truth for listings instead of manual `properties.ts` edits
 - [ ] **CMS or admin** — If client will update content without developer deploys
 - [ ] **French / Russian content** — UI exists; body copy still mostly EN/HE
@@ -60,9 +62,21 @@ Last updated: July 2026.
 - [x] Bilingual EN/HE site structure
 - [x] Sellers Exclusive Package (PDF brochure content)
 - [x] Services vs exclusive package split
-- [x] Per-listing agent assignment + contact routing (UI)
+- [x] Per-listing agent assignment (`agentId` on every property)
+- [x] Agent emails in `src/data/agents.ts` (Tova, Miri, Yana, Eden)
+- [x] Contact routing: general → office email; listing → agent email; WhatsApp → office `058-6270099`
+- [x] Netlify Forms wired (contact + newsletter) + `netlify.toml`
 - [x] Google Maps integration (code + env config)
 - [x] 2026 market articles (Olim + Israeli buyers)
 - [x] WhatsApp floating button
 - [x] Accessibility widget
 - [x] Magazine, search, sales/rentals filters
+
+---
+
+## Contact form — how it works (reference)
+
+| Path | Email (mailto) | WhatsApp | Netlify log |
+|------|----------------|----------|-------------|
+| General `/contact` | `office@propertlv.com` | Office number | Yes → office inbox (once notifications set) |
+| Listing `/contact?property=…&agent=…` | Assigned agent email | Office number (message includes agent + property) | Yes, with `agentEmail` field |

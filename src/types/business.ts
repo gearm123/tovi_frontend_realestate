@@ -20,6 +20,14 @@ export interface BusinessSocial {
   linkedin: string
 }
 
+export interface GoogleBusinessProfile {
+  /** Public name on Google Maps */
+  listingName: string
+  mapsUrl: string
+  rating: number
+  reviewCount: number
+}
+
 export interface BusinessContact {
   name: string
   contactPerson: string
@@ -27,4 +35,5 @@ export interface BusinessContact {
   email: string
   address: BusinessAddress
   social: BusinessSocial
+  googleBusiness: GoogleBusinessProfile
 }

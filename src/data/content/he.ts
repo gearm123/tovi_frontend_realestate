@@ -1,5 +1,5 @@
 import type { SiteContent } from '../../types/content'
-import { PLACEHOLDER_GOOGLE_REVIEWS_URL } from '../placeholders'
+import { business } from '../business'
 
 /**
  * PLACEHOLDER_COPY — Hebrew site content.
@@ -282,9 +282,9 @@ export const siteContentHe: SiteContent = {
     ],
     googleReviews: {
       showButton: true,
-      url: PLACEHOLDER_GOOGLE_REVIEWS_URL,
+      url: business.googleBusiness.mapsUrl,
       buttonLabel: 'צפייה בביקורות Google',
-      note: 'קישור לפרופיל Google Business — יחובר כשיהיה פעיל.',
+      note: '5.0 ב-Google · 38 ביקורות',
     },
   },
 

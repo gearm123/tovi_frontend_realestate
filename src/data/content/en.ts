@@ -1,5 +1,5 @@
 import type { SiteContent } from '../../types/content'
-import { PLACEHOLDER_GOOGLE_REVIEWS_URL } from '../placeholders'
+import { business } from '../business'
 
 /**
  * PLACEHOLDER_COPY — English site content.
@@ -282,9 +282,9 @@ export const siteContentEn: SiteContent = {
     ],
     googleReviews: {
       showButton: true,
-      url: PLACEHOLDER_GOOGLE_REVIEWS_URL,
+      url: business.googleBusiness.mapsUrl,
       buttonLabel: 'View Google Reviews',
-      note: 'Google Business profile link — to be connected when live.',
+      note: '5.0 on Google · 38 reviews',
     },
   },
 
