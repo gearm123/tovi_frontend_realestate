@@ -1,5 +1,7 @@
+import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ConversionSections from '../components/conversion/ConversionSections'
+import PageSeo from '../components/seo/PageSeo'
 import VideoEmbed from '../components/shared/VideoEmbed'
 import PropertyAgentCard from '../components/property-listings/shared/PropertyAgentCard'
 import { getAgentForProperty } from '../services/agentService'
@@ -11,6 +13,8 @@ import { useViewport } from '../hooks/useViewport'
 import { getLocalizedProperty } from '../i18n/propertyTranslations'
 import { isPlayableVideoUrl } from '../utils/propertyVideo'
 import { getPropertyContactPath } from '../utils/propertyContact'
+import { getPropertyDetailPath } from '../utils/propertyPath'
+import { buildRealEstateListingJsonLd } from '../seo/structuredData'
 import './PropertyDetailPage.css'
 
 const featureKeys = [
@@ -28,22 +32,41 @@ export default function PropertyDetailPage() {
   const viewport = useViewport()
   const property = id ? getPropertyById(id) : undefined
 
+  const localizedPreview = useMemo(() => {
+    if (!property) return null
+    return getLocalizedProperty(property.id, locale, {
+      title: property.title,
+      address: property.address,
+      description: property.description,
+      price: property.price,
+      neighborhood: property.neighborhood,
+    })
+  }, [property, locale])
+
+  const propertyPath = property ? getPropertyDetailPath(property) : undefined
+
+  const propertyJsonLd = useMemo(() => {
+    if (!property || !localizedPreview || !propertyPath) return undefined
+    return buildRealEstateListingJsonLd(property, localizedPreview, propertyPath)
+  }, [property, localizedPreview, propertyPath])
+
   if (!property) {
     return (
-      <div className="property-detail property-detail--missing">
+      <>
+        <PageSeo
+          title={t.property.notFound}
+          description={t.property.returnHome}
+          noIndex
+        />
+        <div className="property-detail property-detail--missing">
         <h1>{t.property.notFound}</h1>
         <Link to="/">{t.property.returnHome}</Link>
-      </div>
+        </div>
+      </>
     )
   }
 
-  const localized = getLocalizedProperty(property.id, locale, {
-    title: property.title,
-    address: property.address,
-    description: property.description,
-    price: property.price,
-    neighborhood: property.neighborhood,
-  })
+  const localized = localizedPreview!
 
   const typeLabel =
     (t.propertyTypes as Record<string, string>)[property.propertyType] ??
@@ -59,6 +82,14 @@ export default function PropertyDetailPage() {
   const agent = getAgentForProperty(property, locale)
 
   return (
+    <>
+      <PageSeo
+        title={`${localized.title} — ProperTLV`}
+        description={localized.description.slice(0, 155)}
+        path={propertyPath}
+        image={property.image}
+        jsonLd={propertyJsonLd}
+      />
     <article className={`property-detail property-detail--${viewport}`}>
       <div className="property-detail__image-wrap">
         <PropertyImage
@@ -150,5 +181,6 @@ export default function PropertyDetailPage() {
         <ConversionSections variant="stacked" compact />
       </div>
     </article>
+    </>
   )
 }

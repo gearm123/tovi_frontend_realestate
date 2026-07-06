@@ -7,7 +7,7 @@ export default function AllSalesPage() {
 
   return (
     <>
-      <PageShell title={t.sales.title} accent={t.sales.accent} subtitle={t.sales.subtitle} />
+      <PageShell title={t.sales.title} accent={t.sales.accent} subtitle={t.sales.subtitle} seoKey="sales" />
       <PropertySearchSection
         initialStatus="sale"
         listingsTitle={t.sales.listingsTitle}

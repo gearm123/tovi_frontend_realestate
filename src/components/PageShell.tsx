@@ -1,10 +1,13 @@
 import type { ReactNode } from 'react'
+import PageSeo from './seo/PageSeo'
+import type { StaticSeoPageKey } from '../seo/pageSeoCatalog'
 import './PageShell.css'
 
 interface PageShellProps {
   title: string
   accent?: string
   subtitle?: string
+  seoKey?: StaticSeoPageKey
   children?: ReactNode
 }
 
@@ -12,10 +15,13 @@ export default function PageShell({
   title,
   accent,
   subtitle,
+  seoKey,
   children,
 }: PageShellProps) {
   return (
-    <div className="page-shell">
+    <>
+      {seoKey && <PageSeo pageKey={seoKey} />}
+      <div className="page-shell">
       <header className="page-shell__header">
         {accent && (
           <p className="page-shell__accent orange-cursive-title orange-cursive-title--subtitle">
@@ -26,6 +32,7 @@ export default function PageShell({
         {subtitle && <p className="page-shell__subtitle">{subtitle}</p>}
       </header>
       {children && <div className="page-shell__content">{children}</div>}
-    </div>
+      </div>
+    </>
   )
 }

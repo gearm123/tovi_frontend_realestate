@@ -12,6 +12,7 @@ export default function PropertiesSearchPage() {
         title={t.search.title}
         accent={t.search.accent}
         subtitle={t.search.subtitle}
+        seoKey="search"
       />
       <PropertyMapSection />
       <PropertySearchSection showListingsHeader={false} />

@@ -36,12 +36,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     document.documentElement.lang = locale
     document.documentElement.dir = dir
-    document.title = translations[locale].meta.title
-
-    const meta = document.querySelector('meta[name="description"]')
-    if (meta) {
-      meta.setAttribute('content', translations[locale].meta.description)
-    }
   }, [locale, dir])
 
   const value = useMemo<LanguageContextValue>(

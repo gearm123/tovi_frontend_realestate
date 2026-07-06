@@ -12,7 +12,7 @@ export default function AboutPage() {
 
   return (
 
-    <PageShell title={about.title} accent={about.accent} subtitle={about.subtitle}>
+    <PageShell title={about.title} accent={about.accent} subtitle={about.subtitle} seoKey="about">
 
       {about.paragraphs.map((paragraph) => (
 

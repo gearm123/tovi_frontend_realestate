@@ -14,6 +14,7 @@ export default function ServicesPage() {
         title={servicesPage.title}
         accent={servicesPage.accent}
         subtitle={servicesPage.subtitle}
+        seoKey="services"
       />
       <div className="services-page">
         {servicesPage.paragraphs.length > 0 && (

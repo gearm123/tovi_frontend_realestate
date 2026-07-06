@@ -11,7 +11,7 @@ export default function ContactPage() {
   const { business } = useSiteContent()
 
   return (
-    <PageShell title={t.contact.title} accent={t.contact.accent} subtitle={t.contact.subtitle}>
+    <PageShell title={t.contact.title} accent={t.contact.accent} subtitle={t.contact.subtitle} seoKey="contact">
       <p>
         {t.contact.reachUs}{' '}
         {CONTACT_PLACEHOLDERS.email ? (

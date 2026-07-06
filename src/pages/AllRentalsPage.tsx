@@ -11,6 +11,7 @@ export default function AllRentalsPage() {
         title={t.rentals.title}
         accent={t.rentals.accent}
         subtitle={t.rentals.subtitle}
+        seoKey="rentals"
       />
       <PropertySearchSection
         initialStatus="rental"

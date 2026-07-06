@@ -13,6 +13,7 @@ export default function SellersPackagePage() {
         title={exclusivityPackage.title}
         accent={exclusivityPackage.accent}
         subtitle={exclusivityPackage.subtitle}
+        seoKey="sellersPackage"
       />
       <div className="sellers-package-page">
         <SellersExclusivePackage />

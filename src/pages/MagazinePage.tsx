@@ -16,6 +16,7 @@ export default function MagazinePage() {
         title={magazinePage.title}
         accent={magazinePage.accent}
         subtitle={magazinePage.subtitle}
+        seoKey="magazine"
       />
       <div className="magazine-page">
         <div className="magazine-page__grid">

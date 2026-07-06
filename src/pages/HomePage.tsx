@@ -1,4 +1,5 @@
 import HeroVideo from '../components/HeroVideo'
+import PageSeo from '../components/seo/PageSeo'
 import PropertyListings from '../components/PropertyListings'
 import PropertyMapSection from '../components/map/PropertyMapSection'
 import PropertySearchSection from '../components/PropertySearchSection'
@@ -15,6 +16,7 @@ export default function HomePage() {
 
   return (
     <>
+      <PageSeo pageKey="home" />
       <HeroVideo />
       <PropertyListings
         properties={featured}

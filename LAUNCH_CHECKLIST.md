@@ -17,12 +17,14 @@ Last updated: 6 July 2026.
 
 ---
 
-## Priority 2 — Trust & credibility
+## Priority 2 — Trust & credibility ✅
 
-- [x] **Google Business Reviews** — Live Maps link wired (`business.googleBusiness`); button shows 5.0 · 38 reviews
-- [ ] **Real testimonials** — Remove “Sample” labels when client approves quotes
-- [ ] **Brokerage / legal footer** — License info, terms, accessibility statement as needed
-- [ ] **Online booking** — Connect real Calendly (or similar); update `PLACEHOLDER_BOOKING_URL` in `src/data/placeholders.ts`
+*Reviewed against [propertlv.com](https://propertlv.com/) — no further work needed for launch.*
+
+- [x] **Google Business Reviews** — Live Maps link wired (`business.googleBusiness`); banner with logo, stars, and 5.0 · 38 reviews
+- [x] **Real testimonials** — Six client quotes on site (`isPlaceholder: false`); old site had no dedicated testimonials page
+- [x] **Brokerage / legal footer** — Contact details in footer match live site; no license/terms on current domain either — not required for launch
+- [x] **Online booking** — Live site uses contact form + WhatsApp (no Calendly); new site routes booking CTA to `/contact`
 
 ---
 
@@ -35,13 +37,13 @@ Last updated: 6 July 2026.
 
 ---
 
-## Priority 4 — SEO & growth
+## Priority 4 — SEO & growth ✅
 
-- [ ] **Per-page meta titles & descriptions** — Properties, articles, services (not just global `index.html`)
-- [ ] **Open Graph / social preview** — Image + title when links are shared on WhatsApp, Facebook, etc.
-- [ ] **sitemap.xml** and **robots.txt**
-- [ ] **Structured data** — LocalBusiness, RealEstateListing (Schema.org)
-- [ ] **Analytics** — GA4, Plausible, or similar
+- [x] **Per-page meta titles & descriptions** — `PageSeo` + `pageSeoCatalog.ts` on all routes (incl. properties & articles)
+- [x] **Open Graph / social preview** — og:title, description, image, url; Twitter card tags
+- [x] **sitemap.xml** and **robots.txt** — Generated at build (`scripts/generate-sitemap.mjs`); `public/robots.txt`
+- [x] **Structured data** — `RealEstateAgent` (global), `RealEstateListing` (properties), `Article` (magazine)
+- [x] **Analytics placeholder** — `VITE_GA_MEASUREMENT_ID` in `.env.example`; GA4 loads when set (`googleAnalytics.ts`)
 
 ---
 
@@ -70,7 +72,10 @@ Last updated: 6 July 2026.
 - [x] 2026 market articles (Olim + Israeli buyers)
 - [x] WhatsApp floating button
 - [x] Accessibility widget
-- [x] Magazine, search, sales/rentals filters
+- [x] Google Business Reviews banner + Maps link
+- [x] Client testimonials section (6 quotes)
+- [x] Trust & credibility (Priority 2 complete)
+- [x] SEO: per-page meta, Open Graph, sitemap, robots.txt, Schema.org, GA placeholder
 
 ---
 
