@@ -1,0 +1,104 @@
+.google-property-map__canvas-wrap {
+  border-radius: var(--property-radius);
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--white);
+}
+
+.google-property-map__canvas {
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  min-height: 280px;
+}
+
+.google-property-map__info {
+  font-family: var(--font-primary);
+  max-width: 220px;
+  padding: 0.15rem 0.25rem 0.25rem;
+}
+
+.google-property-map__info-type {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.35rem;
+}
+
+.google-property-map__info-title {
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+  color: var(--ink);
+}
+
+.google-property-map__info-neighborhood {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.35rem;
+}
+
+.google-property-map__info-price {
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}
+
+.google-property-map__info-note {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.google-property-map__info-link {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.google-property-map__info-link:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 768px) {
+  .google-property-map__canvas {
+    min-height: 260px;
+  }
+}
+
+.google-property-map__fallback-message {
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid #e8c4b8;
+  border-radius: var(--property-radius);
+  background: #fff8f5;
+  font-family: var(--font-primary);
+}
+
+.google-property-map__fallback-message h3 {
+  font-size: 1rem;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}
+
+.google-property-map__fallback-message p {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 0.65rem;
+}
+
+.google-property-map__fallback-message ul {
+  margin: 0;
+  padding-inline-start: 1.2rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}

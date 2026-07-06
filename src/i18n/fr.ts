@@ -246,4 +246,13 @@ export const frPatch = {
     contactAgent: 'Envoyer une demande',
     agentPhone: 'Appeler',
   },
+  map: {
+    loadErrorTitle: 'Google Maps n’a pas pu se charger',
+    loadErrorBody:
+      'Le site utilise votre clé API, mais Google l’a rejetée. Vérifiez la console du navigateur, puis corrigez dans Google Cloud Console :',
+    loadErrorBilling: 'La facturation est activée sur le projet',
+    loadErrorApi: 'Maps JavaScript API est activée',
+    loadErrorReferrer:
+      'Les référents HTTP de la clé incluent ce site (ex. http://localhost:5173/* et votre domaine)',
+  },
 }

@@ -1,6 +1,7 @@
 import { getActiveMapProvider } from '../../services/mapService'
 import type { MapSectionContent } from '../../types/content'
 import type { PropertyMapPin } from '../../types/map'
+import GooglePropertyMap from './GooglePropertyMap'
 import PlaceholderPropertyMap from './PlaceholderPropertyMap'
 import './PropertyMap.css'
 
@@ -16,10 +17,9 @@ export default function PropertyMap({ pins, content }: PropertyMapProps) {
     return <PlaceholderPropertyMap pins={pins} content={content} />
   }
 
-  /**
-   * Live map providers — implement when credentials are configured:
-   *   provider === 'google'  → GooglePropertyMap (VITE_GOOGLE_MAPS_API_KEY)
-   *   provider === 'mapbox'  → MapboxPropertyMap (VITE_MAPBOX_ACCESS_TOKEN)
-   */
+  if (provider === 'google') {
+    return <GooglePropertyMap pins={pins} content={content} />
+  }
+
   return <PlaceholderPropertyMap pins={pins} content={content} />
 }

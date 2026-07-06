@@ -246,4 +246,13 @@ export const ruPatch = {
     contactAgent: 'Отправить запрос',
     agentPhone: 'Позвонить',
   },
+  map: {
+    loadErrorTitle: 'Не удалось загрузить Google Maps',
+    loadErrorBody:
+      'Сайт использует ваш API-ключ, но Google его отклонил. Проверьте консоль браузера и исправьте в Google Cloud Console:',
+    loadErrorBilling: 'Биллинг включён для проекта',
+    loadErrorApi: 'Включён Maps JavaScript API',
+    loadErrorReferrer:
+      'HTTP referrers ключа включают этот сайт (напр. http://localhost:5173/* и ваш домен)',
+  },
 }

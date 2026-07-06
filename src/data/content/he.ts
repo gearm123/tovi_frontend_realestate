@@ -324,9 +324,9 @@ export const siteContentHe: SiteContent = {
     accent: 'תל אביב',
     title: 'נכסים ברחבי העיר',
     subtitle:
-      'גלו את נכסי ProperTLV לפי שכונה. לחצו על סיכה לפרטים — מפת אינטראקטיבית מלאה תתווסף בקרוב.',
+      'גלו את נכסי ProperTLV לפי שכונה — לחצו על סיכה או על נכס ברשימה לפרטים.',
     placeholderNote:
-      'מפת תצוגה מקדימה — חיבור ל-Google Maps או Mapbox כשמפתחות API יהיו מוכנים.',
+      'מפת תצוגה מקדימה — חיבור ל-Google Maps כשמפתחות API יהיו מוכנים.',
     viewProperty: 'לפרטי הנכס',
     allNeighborhoods: 'כל השכונות',
     listingsCount: '{count} נכסים',

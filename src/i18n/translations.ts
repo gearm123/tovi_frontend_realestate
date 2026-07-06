@@ -261,6 +261,15 @@ const en = {
     contactAgent: 'Send inquiry',
     agentPhone: 'Call',
   },
+  map: {
+    loadErrorTitle: 'Google Maps could not load',
+    loadErrorBody:
+      'The site is using your API key, but Google rejected it. Check the browser console, then fix these in Google Cloud Console:',
+    loadErrorBilling: 'Billing is enabled on the project',
+    loadErrorApi: 'Maps JavaScript API is enabled',
+    loadErrorReferrer:
+      'API key HTTP referrers include this site (e.g. http://localhost:5173/* and your live domain)',
+  },
 }
 
 const he: TranslationTree = {
@@ -520,6 +529,15 @@ const he: TranslationTree = {
     emailAgent: 'שליחת מייל ל{name}',
     contactAgent: 'שליחת פנייה',
     agentPhone: 'התקשרות',
+  },
+  map: {
+    loadErrorTitle: 'לא ניתן לטעון את Google Maps',
+    loadErrorBody:
+      'האתר משתמש במפתח ה-API, אך Google דחה אותו. בדקו את הקונסול בדפדפן, ואז תקנו ב-Google Cloud Console:',
+    loadErrorBilling: 'חיוב מופעל בפרויקט',
+    loadErrorApi: 'Maps JavaScript API מופעל',
+    loadErrorReferrer:
+      'הגבלות HTTP referrer של המפתח כוללות את האתר (למשל http://localhost:5173/* והדומיין החי)',
   },
 }
 

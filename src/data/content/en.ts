@@ -324,9 +324,9 @@ export const siteContentEn: SiteContent = {
     accent: 'Tel Aviv',
     title: 'Properties across the city',
     subtitle:
-      'Explore ProperTLV listings by neighbourhood. Select a pin to view details — interactive map integration coming soon.',
+      'Explore ProperTLV listings by neighbourhood — select a pin or listing to view details.',
     placeholderNote:
-      'Preview map — connect Google Maps or Mapbox when API credentials are ready.',
+      'Preview map — connect Google Maps when API credentials are ready.',
     viewProperty: 'View property',
     allNeighborhoods: 'All neighbourhoods',
     listingsCount: '{count} listings',
