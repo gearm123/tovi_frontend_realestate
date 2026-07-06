@@ -54,7 +54,22 @@ export default function NewsletterSignupSection({
             {content.successMessage}
           </p>
         ) : (
-          <form className="newsletter-signup__form" onSubmit={handleSubmit} noValidate>
+          <form
+            className="newsletter-signup__form"
+            name="newsletter"
+            method="POST"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            onSubmit={handleSubmit}
+            noValidate
+          >
+            <input type="hidden" name="form-name" value="newsletter" />
+            <p className="newsletter-signup__honeypot" hidden>
+              <label>
+                Do not fill this out:
+                <input name="bot-field" tabIndex={-1} autoComplete="off" />
+              </label>
+            </p>
             <label className="newsletter-signup__field">
               <span className="newsletter-signup__label">{content.nameLabel}</span>
               <input

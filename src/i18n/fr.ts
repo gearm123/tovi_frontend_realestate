@@ -87,6 +87,11 @@ export const frPatch = {
   },
   contactForm: {
     success: 'Merci pour votre message. Nous vous recontacterons rapidement.',
+    successHint:
+      'Nous avons ouvert WhatsApp avec votre message — appuyez sur Envoyer pour nous joindre. Vous pouvez aussi nous écrire par e-mail ci-dessous.',
+    whatsappAction: 'Ouvrir WhatsApp',
+    emailAction: 'E-mail à {email}',
+    submitting: 'Envoi…',
     legend: 'Je suis intéressé(e) par',
     selling: 'Vendre un bien',
     buying: 'Acheter un bien',

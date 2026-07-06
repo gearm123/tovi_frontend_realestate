@@ -87,6 +87,11 @@ export const ruPatch = {
   },
   contactForm: {
     success: 'Спасибо за обращение. Мы скоро свяжемся с вами.',
+    successHint:
+      'Мы открыли WhatsApp с вашим сообщением — нажмите «Отправить», чтобы связаться с нами. Также можно написать на e-mail по кнопке ниже.',
+    whatsappAction: 'Открыть WhatsApp',
+    emailAction: 'E-mail: {email}',
+    submitting: 'Отправка…',
     legend: 'Меня интересует',
     selling: 'Продажа недвижимости',
     buying: 'Покупка недвижимости',

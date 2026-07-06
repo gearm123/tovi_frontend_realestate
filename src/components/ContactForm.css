@@ -14,6 +14,59 @@
   color: var(--ink-soft);
 }
 
+.contact-form__honeypot {
+  display: none;
+}
+
+.contact-form__success-title {
+  font-size: 1rem;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+
+.contact-form__success-hint {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.contact-form__success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.contact-form__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 10rem;
+  padding: 0.7rem 1.25rem;
+  border-radius: 4px;
+  font-family: var(--font-button);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.contact-form__action:hover {
+  opacity: 0.9;
+}
+
+.contact-form__action--whatsapp {
+  color: var(--white);
+  background: #25d366;
+}
+
+.contact-form__action--email {
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+}
+
 .contact-form__context {
   margin-bottom: 1.5rem;
   padding: 1rem 1.1rem;
@@ -137,8 +190,13 @@
   transition: opacity 0.2s ease;
 }
 
-.contact-form__submit:hover {
+.contact-form__submit:hover:not(:disabled) {
   opacity: 0.9;
+}
+
+.contact-form__submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 @media (max-width: 600px) {

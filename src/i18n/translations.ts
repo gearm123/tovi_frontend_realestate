@@ -92,6 +92,11 @@ const en = {
   },
   contactForm: {
     success: 'Thank you for reaching out. We will be in touch shortly.',
+    successHint:
+      'We opened WhatsApp with your message — tap Send there to reach us. You can also email us using the button below.',
+    whatsappAction: 'Open WhatsApp',
+    emailAction: 'Email {email}',
+    submitting: 'Sending…',
     legend: 'I am interested in',
     selling: 'Selling a property',
     buying: 'Buying a property',
@@ -361,6 +366,11 @@ const he: TranslationTree = {
   },
   contactForm: {
     success: 'תודה שפניתם אלינו. ניצור קשר בקרוב.',
+    successHint:
+      'פתחנו את וואטסאפ עם ההודעה שלכם — לחצו שליחה שם כדי ליצור קשר. אפשר גם לשלוח אלינו אימייל בכפתור למטה.',
+    whatsappAction: 'פתיחת וואטסאפ',
+    emailAction: 'אימייל ל-{email}',
+    submitting: 'שולח…',
     legend: 'אני מעוניין/ת ב',
     selling: 'מכירת נכס',
     buying: 'רכישת נכס',
