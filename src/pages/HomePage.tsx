@@ -26,10 +26,10 @@ export default function HomePage() {
       />
       <AboutSection />
       <ServicesOverview />
-      <ReviewsSection />
-      <ConversionSections variant="split" />
       <PropertyMapSection />
       <PropertySearchSection id="search" showListingsHeader listingsTitle={t.search.resultsTitle} />
+      <ReviewsSection />
+      <ConversionSections variant="split" />
     </>
   )
 }
