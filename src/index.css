@@ -172,7 +172,7 @@ html[dir='rtl'] .hero-title {
   font-family: 'Great Vibes', cursive;
   font-weight: 400;
   color: #ec5b28;
-  font-size: clamp(64px, 8vw, 120px);
+  font-size: clamp(4rem, 8vw, 7.5rem);
   line-height: 0.85;
   letter-spacing: 0;
   text-transform: none;
