@@ -24,10 +24,10 @@ export default function HomePage() {
         title={t.home.title}
         intro={t.home.intro}
       />
-      <AboutSection />
       <ServicesOverview />
       <PropertyMapSection />
       <PropertySearchSection id="search" showListingsHeader listingsTitle={t.search.resultsTitle} />
+      <AboutSection />
       <ReviewsSection />
       <ConversionSections variant="split" />
     </>
