@@ -57,6 +57,10 @@ export const frPatch = {
     label: 'Accueil',
     ariaLabel: "Retour à l'accueil",
   },
+  floatingNav: {
+    openMenu: 'Ouvrir le menu du site',
+    closeMenu: 'Fermer le menu du site',
+  },
   hero: {
     aria: 'Introduction à Tel Aviv',
     alt: 'Tel Aviv — animation bientôt disponible',

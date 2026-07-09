@@ -57,6 +57,10 @@ export const ruPatch = {
     label: 'Главная',
     ariaLabel: 'Вернуться на главную',
   },
+  floatingNav: {
+    openMenu: 'Открыть меню сайта',
+    closeMenu: 'Закрыть меню сайта',
+  },
   hero: {
     aria: 'Знакомство с Тель-Авивом',
     alt: 'Тель-Авив — анимация скоро',

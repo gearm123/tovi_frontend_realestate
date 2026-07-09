@@ -62,6 +62,10 @@ const en = {
     label: 'Home',
     ariaLabel: 'Return to homepage',
   },
+  floatingNav: {
+    openMenu: 'Open site menu',
+    closeMenu: 'Close site menu',
+  },
   hero: {
     aria: 'Tel Aviv introduction',
     alt: 'Tel Aviv — animation coming soon',
@@ -335,6 +339,10 @@ const he: TranslationTree = {
   floatingHome: {
     label: 'בית',
     ariaLabel: 'חזרה לדף הבית',
+  },
+  floatingNav: {
+    openMenu: 'פתיחת תפריט האתר',
+    closeMenu: 'סגירת תפריט האתר',
   },
   hero: {
     aria: 'היכרות עם תל אביב',
