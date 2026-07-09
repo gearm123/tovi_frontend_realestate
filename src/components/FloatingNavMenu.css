@@ -170,8 +170,8 @@
 
 @media (max-width: 768px) {
   .floating-nav-menu__trigger {
-    top: max(0.65rem, env(safe-area-inset-top, 0px));
-    right: calc(0.75rem + 6.75rem + 0.45rem);
+    top: calc(max(0.65rem, env(safe-area-inset-top, 0px)) + 1.7rem + 0.4rem);
+    right: max(0.75rem, env(safe-area-inset-right, 0px));
     width: 2.75rem;
     height: 2.75rem;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
@@ -187,7 +187,7 @@
   }
 
   .floating-nav-menu__panel {
-    top: calc(max(0.65rem, env(safe-area-inset-top, 0px)) + 2.75rem + 0.6rem);
+    top: calc(max(0.65rem, env(safe-area-inset-top, 0px)) + 1.7rem + 0.4rem + 2.75rem + 0.55rem);
     right: max(0.75rem, env(safe-area-inset-right, 0px));
     left: max(0.75rem, env(safe-area-inset-left, 0px));
     width: auto;
