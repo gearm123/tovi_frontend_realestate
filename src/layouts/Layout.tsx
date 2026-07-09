@@ -3,6 +3,7 @@ import AccessibilityWidget from '../components/accessibility/AccessibilityWidget
 import FloatingHomeButton from '../components/FloatingHomeButton'
 import FloatingNavMenu from '../components/FloatingNavMenu'
 import GlobalSiteSeo from '../components/seo/GlobalSiteSeo'
+import ScrollToTop from '../components/ScrollToTop'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import WhatsAppButton from '../components/WhatsAppButton'
@@ -11,6 +12,7 @@ export default function Layout() {
   return (
     <>
       <GlobalSiteSeo />
+      <ScrollToTop />
       <Header />
       <main>
         <Outlet />

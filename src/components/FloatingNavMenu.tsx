@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { siteNavItems } from '../data/siteNav'
 import { useLanguage } from '../context/LanguageContext'
+import { scrollPageToTop } from '../utils/scrollPageToTop'
 import './FloatingNavMenu.css'
 
 export default function FloatingNavMenu() {
@@ -78,7 +79,10 @@ export default function FloatingNavMenu() {
                 <Link
                   to={item.to}
                   className={pathname === item.to ? 'active' : undefined}
-                  onClick={closeMenu}
+                  onClick={() => {
+                    closeMenu()
+                    scrollPageToTop()
+                  }}
                 >
                   {t.header.nav[item.key]}
                 </Link>

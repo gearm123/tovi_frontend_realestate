@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
+import { scrollPageToTop } from '../utils/scrollPageToTop'
 import './FloatingHomeButton.css'
 
 function HomeIcon() {
@@ -30,6 +31,7 @@ export default function FloatingHomeButton() {
       className="floating-home-button"
       aria-label={t.floatingHome.ariaLabel}
       title={t.floatingHome.ariaLabel}
+      onClick={scrollPageToTop}
     >
       <HomeIcon />
       <span className="floating-home-button__label">{t.floatingHome.label}</span>

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { siteNavItems } from '../data/siteNav'
 import { useLanguage } from '../context/LanguageContext'
 import { useSiteContent } from '../hooks/useSiteContent'
+import { scrollPageToTop } from '../utils/scrollPageToTop'
 import BrandTitle from './BrandTitle'
 import LanguageToggle from './LanguageToggle'
 import './Header.css'
@@ -12,7 +13,12 @@ export default function Header() {
 
   return (
     <header className="header">
-      <Link to="/" className="header__logo-link" aria-label={`${business.name} home`}>
+      <Link
+        to="/"
+        className="header__logo-link"
+        aria-label={`${business.name} home`}
+        onClick={scrollPageToTop}
+      >
         <img
           className="header__logo"
           src="/assets/logo_shine_content.png"
@@ -23,7 +29,7 @@ export default function Header() {
       <LanguageToggle />
 
       <div className="header__masthead">
-        <Link to="/" className="header__brand">
+        <Link to="/" className="header__brand" onClick={scrollPageToTop}>
           <BrandTitle as="h1" className="header__title" />
           <p className="header__tagline orange-cursive-title orange-cursive-title--tagline">
             {t.header.tagline}
@@ -37,7 +43,9 @@ export default function Header() {
             {index > 0 && (
               <span className="header__nav-dot" aria-hidden="true" />
             )}
-            <Link to={item.to}>{t.header.nav[item.key]}</Link>
+            <Link to={item.to} onClick={scrollPageToTop}>
+              {t.header.nav[item.key]}
+            </Link>
           </span>
         ))}
       </nav>
