@@ -11,11 +11,15 @@ import MagazineArticlePage from './pages/MagazineArticlePage'
 import PropertiesSearchPage from './pages/PropertiesSearchPage'
 import ServicesPage from './pages/ServicesPage'
 import PropertyDetailPage from './pages/PropertyDetailPage'
+import AdminLoginPage from './pages/AdminLoginPage'
+import AdminDashboardPage from './pages/AdminDashboardPage'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="admin" element={<AdminLoginPage />} />
+        <Route path="admin/dashboard" element={<AdminDashboardPage />} />
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
