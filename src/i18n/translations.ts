@@ -217,7 +217,7 @@ const en = {
     resultsIntro: 'Listings update instantly as you adjust the filters below.',
     resultsCount: '{count} properties found',
     demoListingsNote:
-      'Sample listings for demonstration — final properties will be supplied by ProperTLV.',
+      'Current ProperTLV listings — availability and details may change.',
     emptyTitle: 'No properties match your search',
     emptyText:
       'Try broadening your filters — change the status, neighbourhood, or price range, or clear all filters to start again.',
@@ -514,7 +514,7 @@ const he: TranslationTree = {
     resultsIntro: 'הרשימה מתעדכנת מיד כשמשנים את המסננים.',
     resultsCount: 'נמצאו {count} נכסים',
     demoListingsNote:
-      'נכסים לדוגמה להמחשה — הנכסים הסופיים יסופקו על ידי ProperTLV.',
+      'נכסים עדכניים של ProperTLV — הזמינות והפרטים עשויים להשתנות.',
     emptyTitle: 'לא נמצאו נכסים תואמים',
     emptyText:
       'נסו להרחיב את המסננים — שנו סטטוס, שכונה או טווח מחירים, או נקו את כל המסננים להתחלה מחדש.',

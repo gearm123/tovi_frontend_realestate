@@ -10,7 +10,7 @@ import type { BusinessContact } from '../types/business'
 import type { ListingType, Property, PropertyFeatures } from '../types/property'
 import { PLACEHOLDER_MAP_CENTER, PLACEHOLDER_PROPERTY_IMAGE } from '../data/placeholders'
 
-const STORAGE_KEY = 'propertlv_site_data_v1'
+const STORAGE_KEY = 'propertlv_site_data_v2'
 const DATA_EVENT = 'propertlv-site-data-updated'
 
 export type LeadCaptureSettings = {

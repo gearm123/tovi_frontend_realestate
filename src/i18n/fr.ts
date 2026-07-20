@@ -212,7 +212,7 @@ export const frPatch = {
     resultsIntro: 'Les résultats se mettent à jour instantanément.',
     resultsCount: '{count} biens trouvés',
     demoListingsNote:
-      'Annonces de démonstration — les biens finaux seront fournis par ProperTLV.',
+      'Annonces ProperTLV actuelles — disponibilité et détails susceptibles de changer.',
     emptyTitle: 'Aucun bien ne correspond',
     emptyText:
       'Essayez d’élargir vos filtres — statut, quartier, prix — ou réinitialisez pour recommencer.',
