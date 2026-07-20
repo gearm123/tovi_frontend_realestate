@@ -1,4 +1,4 @@
-import { business } from '../data/business'
+import { getBusiness } from '../lib/siteDataStore'
 import { buildWhatsAppUrl } from '../utils/whatsapp'
 
 export interface ContactInquiry {
@@ -35,7 +35,7 @@ export function buildContactInquiryText(inquiry: ContactInquiry): string {
 }
 
 export function getContactRecipientEmail(inquiry: Pick<ContactInquiry, 'agentEmail'>): string {
-  return inquiry.agentEmail?.trim() || business.email
+  return inquiry.agentEmail?.trim() || getBusiness().email
 }
 
 export function buildContactMailtoUrl(inquiry: ContactInquiry): string {
@@ -49,7 +49,7 @@ export function buildContactMailtoUrl(inquiry: ContactInquiry): string {
 }
 
 export function buildContactWhatsAppUrl(inquiry: ContactInquiry): string {
-  return buildWhatsAppUrl(business.phone.whatsapp, buildContactInquiryText(inquiry))
+  return buildWhatsAppUrl(getBusiness().phone.whatsapp, buildContactInquiryText(inquiry))
 }
 
 export async function submitNetlifyForm(

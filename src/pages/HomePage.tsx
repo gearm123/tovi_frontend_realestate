@@ -8,11 +8,12 @@ import ServicesOverview from '../components/services/ServicesOverview'
 import AboutSection from '../components/trust/AboutSection'
 import ReviewsSection from '../components/trust/ReviewsSection'
 import { useLanguage } from '../context/LanguageContext'
-import { getFeaturedProperties } from '../services/propertyService'
+import { useSiteData } from '../hooks/useSiteData'
 
 export default function HomePage() {
   const { t } = useLanguage()
-  const featured = getFeaturedProperties()
+  const { properties } = useSiteData()
+  const featured = properties.filter((property) => property.featured)
 
   return (
     <>

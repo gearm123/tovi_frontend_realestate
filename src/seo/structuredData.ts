@@ -1,8 +1,9 @@
-import { business } from '../data/business'
+import { getBusiness } from '../lib/siteDataStore'
 import { toAbsoluteUrl } from '../constants/seoConfig'
 import type { Property } from '../types/property'
 
 export function buildLocalBusinessJsonLd(): Record<string, unknown> {
+  const business = getBusiness()
   const { googleBusiness, phone, address, email, social } = business
 
   return {
@@ -67,6 +68,7 @@ export function buildArticleJsonLd(
   article: { title: string; excerpt: string; date: string; image?: string },
   path: string,
 ): Record<string, unknown> {
+  const business = getBusiness()
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',

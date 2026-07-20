@@ -2,15 +2,16 @@ import { useMemo } from 'react'
 import type { ListingStatusFilter } from '../constants/propertySearch'
 import { useLanguage } from '../context/LanguageContext'
 import { usePropertyFilters } from '../hooks/usePropertyFilters'
-import { getAllProperties } from '../services/propertyService'
+import { useSiteData } from '../hooks/useSiteData'
+import type { Property } from '../types/property'
 import PropertyFiltersBar from './PropertyFilters'
 import PropertyListings from './PropertyListings'
 import PropertySearchEmpty from './PropertySearchEmpty'
 import './PropertySearchSection.css'
 
 interface PropertySearchSectionProps {
-  /** Override property source — defaults to all demo listings */
-  source?: ReturnType<typeof getAllProperties>
+  /** Override property source — defaults to all listings from the site data store */
+  source?: Property[]
   initialStatus?: ListingStatusFilter
   showListingsHeader?: boolean
   listingsTitle?: string
@@ -27,7 +28,8 @@ export default function PropertySearchSection({
   id = 'property-search',
 }: PropertySearchSectionProps) {
   const { t, format } = useLanguage()
-  const catalog = useMemo(() => source ?? getAllProperties(), [source])
+  const { properties } = useSiteData()
+  const catalog = useMemo(() => source ?? properties, [source, properties])
   const { filters, setFilters, filtered, resetFilters, setListingStatus } =
     usePropertyFilters(catalog, { initialStatus })
 

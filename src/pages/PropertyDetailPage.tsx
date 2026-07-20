@@ -5,10 +5,10 @@ import PageSeo from '../components/seo/PageSeo'
 import VideoEmbed from '../components/shared/VideoEmbed'
 import PropertyAgentCard from '../components/property-listings/shared/PropertyAgentCard'
 import { getAgentForProperty } from '../services/agentService'
-import { getPropertyById } from '../services/propertyService'
 import ListingTypeBadge from '../components/property-listings/shared/ListingTypeBadge'
 import PropertyImage from '../components/property-listings/shared/PropertyImage'
 import { useLanguage } from '../context/LanguageContext'
+import { useSiteData } from '../hooks/useSiteData'
 import { useViewport } from '../hooks/useViewport'
 import { getLocalizedProperty } from '../i18n/propertyTranslations'
 import { isPlayableVideoUrl } from '../utils/propertyVideo'
@@ -30,7 +30,8 @@ export default function PropertyDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { t, locale } = useLanguage()
   const viewport = useViewport()
-  const property = id ? getPropertyById(id) : undefined
+  const { properties } = useSiteData()
+  const property = id ? properties.find((item) => item.id === id) : undefined
 
   const localizedPreview = useMemo(() => {
     if (!property) return null

@@ -1,5 +1,7 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './layouts/Layout'
+import AdminShell from './layouts/AdminShell'
+import AdminProtectedRoute from './layouts/AdminProtectedRoute'
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
 import AllSalesPage from './pages/AllSalesPage'
@@ -12,14 +14,36 @@ import PropertiesSearchPage from './pages/PropertiesSearchPage'
 import ServicesPage from './pages/ServicesPage'
 import PropertyDetailPage from './pages/PropertyDetailPage'
 import AdminLoginPage from './pages/AdminLoginPage'
-import AdminDashboardPage from './pages/AdminDashboardPage'
+import AdminDashboardPage from './pages/admin/AdminDashboardPage'
+import AdminListingsPage from './pages/admin/AdminListingsPage'
+import AdminListingFormPage from './pages/admin/AdminListingFormPage'
+import AdminAgentsPage from './pages/admin/AdminAgentsPage'
+import AdminAgentFormPage from './pages/admin/AdminAgentFormPage'
+import AdminBusinessPage from './pages/admin/AdminBusinessPage'
+import AdminLeadCapturePage from './pages/admin/AdminLeadCapturePage'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="admin" element={<AdminLoginPage />} />
-        <Route path="admin/dashboard" element={<AdminDashboardPage />} />
+        <Route path="admin">
+          <Route index element={<AdminLoginPage />} />
+          <Route element={<AdminProtectedRoute />}>
+            <Route element={<AdminShell />}>
+              <Route path="dashboard" element={<AdminDashboardPage />} />
+              <Route path="listings" element={<AdminListingsPage />} />
+              <Route path="listings/new" element={<AdminListingFormPage />} />
+              <Route path="listings/:id" element={<AdminListingFormPage />} />
+              <Route path="agents" element={<AdminAgentsPage />} />
+              <Route path="agents/new" element={<AdminAgentFormPage />} />
+              <Route path="agents/:id" element={<AdminAgentFormPage />} />
+              <Route path="business" element={<AdminBusinessPage />} />
+              <Route path="lead-capture" element={<AdminLeadCapturePage />} />
+              <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+            </Route>
+          </Route>
+        </Route>
+
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />

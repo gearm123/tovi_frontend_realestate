@@ -1,4 +1,5 @@
-import { leadCapturePopupConfig, type LeadCapturePageRule } from '../config/leadCapturePopup'
+import { getLeadCaptureSettings, type LeadCaptureSettings } from './siteDataStore'
+import type { LeadCapturePageRule } from '../config/leadCapturePopup'
 
 function matchesPath(pattern: string, pathname: string): boolean {
   if (pattern.endsWith('*')) {
@@ -18,7 +19,10 @@ function matchesRule(rule: LeadCapturePageRule, pathname: string): boolean {
   return !matched
 }
 
-export function shouldShowLeadCaptureOnPage(pathname: string): boolean {
-  if (!leadCapturePopupConfig.enabled) return false
-  return matchesRule(leadCapturePopupConfig.rule, pathname)
+export function shouldShowLeadCaptureOnPage(
+  pathname: string,
+  settings: LeadCaptureSettings = getLeadCaptureSettings(),
+): boolean {
+  if (!settings.enabled) return false
+  return matchesRule(settings.rule, pathname)
 }

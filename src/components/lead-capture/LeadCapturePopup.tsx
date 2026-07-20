@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { useLocation } from 'react-router-dom'
-import { leadCapturePopupConfig } from '../../config/leadCapturePopup'
+import { getLeadCaptureSettings } from '../../lib/siteDataStore'
 import { getDir, translations } from '../../i18n/translations'
 import type { Locale } from '../../i18n/types'
 import { shouldShowLeadCaptureOnPage } from '../../lib/leadCapturePages'
@@ -36,9 +36,10 @@ export default function LeadCapturePopup() {
     if (!shouldShowLeadCaptureOnPage(pathname)) return undefined
     if (sessionStorage.getItem(SESSION_SUBMITTED_KEY) === '1') return undefined
 
+    const delayMs = getLeadCaptureSettings().delayMs
     const timer = window.setTimeout(() => {
       setOpen(true)
-    }, leadCapturePopupConfig.delayMs)
+    }, delayMs)
 
     return () => window.clearTimeout(timer)
   }, [pathname])
@@ -178,7 +179,7 @@ export default function LeadCapturePopup() {
               <input
                 type="hidden"
                 name="recipientEmail"
-                value={leadCapturePopupConfig.recipientEmail}
+                value={getLeadCaptureSettings().recipientEmail}
               />
               <input type="hidden" name="sourcePage" value={pathname} />
               <input type="hidden" name="interest" value={popupT.leadCapturePopup.interestLabel} />

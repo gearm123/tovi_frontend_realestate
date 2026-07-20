@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useLanguage } from '../context/LanguageContext'
-import { business } from '../data/business'
+import { useSiteData } from './useSiteData'
 import { getSiteContent } from '../data/content'
 
 /**
@@ -9,6 +9,7 @@ import { getSiteContent } from '../data/content'
  */
 export function useSiteContent() {
   const { locale } = useLanguage()
+  const { business } = useSiteData()
 
   return useMemo(
     () => ({
@@ -16,6 +17,6 @@ export function useSiteContent() {
       locale,
       content: getSiteContent(locale),
     }),
-    [locale],
+    [locale, business],
   )
 }

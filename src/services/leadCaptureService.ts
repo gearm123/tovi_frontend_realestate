@@ -1,5 +1,4 @@
-import { business } from '../data/business'
-import { leadCapturePopupConfig } from '../config/leadCapturePopup'
+import { getBusiness, getLeadCaptureSettings } from '../lib/siteDataStore'
 import { submitNetlifyForm } from './contactService'
 import { buildWhatsAppUrl } from '../utils/whatsapp'
 
@@ -27,7 +26,7 @@ export function buildLeadCaptureMessage(payload: LeadCapturePayload): string {
 }
 
 export function buildLeadCaptureWhatsAppUrl(payload: LeadCapturePayload): string {
-  return buildWhatsAppUrl(business.phone.whatsapp, buildLeadCaptureMessage(payload))
+  return buildWhatsAppUrl(getBusiness().phone.whatsapp, buildLeadCaptureMessage(payload))
 }
 
 export function getLeadCapturePayloadFromForm(form: HTMLFormElement): LeadCapturePayload {
@@ -45,7 +44,7 @@ export function getLeadCapturePayloadFromForm(form: HTMLFormElement): LeadCaptur
 export async function submitLeadCapture(form: HTMLFormElement): Promise<boolean> {
   const formData = new FormData(form)
   const data: Record<string, string> = {
-    recipientEmail: leadCapturePopupConfig.recipientEmail,
+    recipientEmail: getLeadCaptureSettings().recipientEmail,
   }
 
   formData.forEach((value, key) => {

@@ -1,4 +1,4 @@
-import { business } from '../data/business'
+import { getBusiness } from '../lib/siteDataStore'
 import { useLanguage } from '../context/LanguageContext'
 import { buildWhatsAppUrl } from '../utils/whatsapp'
 import './WhatsAppButton.css'
@@ -21,6 +21,7 @@ function WhatsAppIcon() {
 
 export default function WhatsAppButton() {
   const { t } = useLanguage()
+  const business = getBusiness()
   const href = buildWhatsAppUrl(business.phone.whatsapp, t.whatsapp.defaultMessage)
 
   return (

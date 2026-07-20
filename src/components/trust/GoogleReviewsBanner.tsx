@@ -1,4 +1,4 @@
-import { business } from '../../data/business'
+import { getBusiness } from '../../lib/siteDataStore'
 import type { GoogleReviewsPlaceholder } from '../../types/content'
 import './GoogleReviewsBanner.css'
 
@@ -51,7 +51,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function GoogleReviewsBanner({ googleReviews }: GoogleReviewsBannerProps) {
-  const { googleBusiness } = business
+  const { googleBusiness } = getBusiness()
   const ratingDisplay = googleBusiness.rating.toFixed(1)
 
   return (

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useSiteContent } from '../../hooks/useSiteContent'
-import { getAllProperties } from '../../services/propertyService'
+import { useSiteData } from '../../hooks/useSiteData'
 import { buildPropertyMapPins } from '../../services/mapService'
 import type { Property } from '../../types/property'
 import PropertyMap from './PropertyMap'
@@ -16,11 +16,12 @@ export default function PropertyMapSection({
   id = 'property-map',
 }: PropertyMapSectionProps) {
   const { content } = useSiteContent()
+  const { properties: allProperties } = useSiteData()
   const { mapSection } = content
 
   const pins = useMemo(
-    () => buildPropertyMapPins(properties ?? getAllProperties()),
-    [properties],
+    () => buildPropertyMapPins(properties ?? allProperties),
+    [properties, allProperties],
   )
 
   if (pins.length === 0) return null

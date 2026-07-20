@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
-import { business } from '../data/business'
+import { getBusiness } from '../lib/siteDataStore'
 import { getAgentById } from '../services/agentService'
 import {
   buildContactMailtoUrl,
@@ -108,7 +108,7 @@ export default function ContactForm() {
     setSuccessLinks({
       whatsappUrl,
       mailtoUrl,
-      recipientEmail: agent?.email ?? business.email,
+      recipientEmail: agent?.email ?? getBusiness().email,
     })
     setSubmitted(true)
     setSubmitting(false)
