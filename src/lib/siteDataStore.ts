@@ -9,6 +9,7 @@ import type { Agent } from '../types/agent'
 import type { BusinessContact } from '../types/business'
 import type { ListingType, Property, PropertyFeatures } from '../types/property'
 import { PLACEHOLDER_MAP_CENTER, PLACEHOLDER_PROPERTY_IMAGE } from '../data/placeholders'
+import { withNormalizedPropertyImages } from '../utils/propertyGallery'
 
 const STORAGE_KEY = 'propertlv_site_data_v2'
 const DATA_EVENT = 'propertlv-site-data-updated'
@@ -54,7 +55,9 @@ function readStorage(): SiteData | null {
     const parsed = JSON.parse(raw) as Partial<SiteData>
     const seed = seedSiteData()
     return {
-      properties: Array.isArray(parsed.properties) ? parsed.properties : seed.properties,
+      properties: (Array.isArray(parsed.properties) ? parsed.properties : seed.properties).map(
+        withNormalizedPropertyImages,
+      ),
       agents: Array.isArray(parsed.agents) ? parsed.agents : seed.agents,
       business: parsed.business ? { ...seed.business, ...parsed.business } : seed.business,
       leadCapture: parsed.leadCapture
@@ -161,6 +164,7 @@ export function createBlankProperty(listingType: ListingType = 'sale'): Property
     area: 70,
     description: '',
     image: PLACEHOLDER_PROPERTY_IMAGE,
+    images: [PLACEHOLDER_PROPERTY_IMAGE],
     videoUrl: '',
     coordinates: { ...PLACEHOLDER_MAP_CENTER },
     featured: false,

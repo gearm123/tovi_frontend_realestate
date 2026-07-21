@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/generate-sitemap.mjs && tsc -b && vite build",
+    "prebuild": "node scripts/generate-redirects.mjs && node scripts/generate-sitemap.mjs",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate:redirects": "node scripts/generate-redirects.mjs",
+    "generate:sitemap": "node scripts/generate-sitemap.mjs"
   },
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.9.0",

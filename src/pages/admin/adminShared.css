@@ -197,6 +197,12 @@
   resize: vertical;
 }
 
+.admin-field__hint {
+  margin: 0.35rem 0 0;
+  font-size: 12px;
+  color: #646970;
+}
+
 .admin-field input:focus,
 .admin-field select:focus,
 .admin-field textarea:focus {

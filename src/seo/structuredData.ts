@@ -1,6 +1,7 @@
 import { getBusiness } from '../lib/siteDataStore'
 import { toAbsoluteUrl } from '../constants/seoConfig'
 import type { Property } from '../types/property'
+import { getPropertyImages } from '../utils/propertyGallery'
 
 export function buildLocalBusinessJsonLd(): Record<string, unknown> {
   const business = getBusiness()
@@ -37,13 +38,14 @@ export function buildRealEstateListingJsonLd(
   localized: { title: string; description: string; address: string },
   path: string,
 ): Record<string, unknown> {
+  const images = getPropertyImages(property).map((src) => toAbsoluteUrl(src))
   const listing: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'RealEstateListing',
     name: localized.title,
     description: localized.description,
     url: toAbsoluteUrl(path),
-    image: toAbsoluteUrl(property.image),
+    image: images.length === 1 ? images[0] : images,
     address: {
       '@type': 'PostalAddress',
       streetAddress: localized.address,

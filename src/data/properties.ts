@@ -1,5 +1,6 @@
 import type { Property } from '../types/property'
 import importedListings from './importedListings.json'
+import { withNormalizedPropertyImages } from '../utils/propertyGallery'
 
 /**
  * Neighborhood options used by search filters and the admin listing form.
@@ -31,7 +32,9 @@ export const propertyTypes = [
  * Images are hosted on the original WordPress media CDN.
  * Manage/edit further via the admin panel.
  */
-export const properties: Property[] = importedListings as Property[]
+export const properties: Property[] = (importedListings as Property[]).map(
+  withNormalizedPropertyImages,
+)
 
 export function getPropertyById(id: string): Property | undefined {
   return properties.find((p) => p.id === id)

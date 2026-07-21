@@ -262,6 +262,7 @@ export const frPatch = {
     forRent: 'À louer',
     featured: 'Sélection',
     videoTour: 'Visite vidéo',
+    photoGallery: 'Photos du bien',
     features: 'Caractéristiques',
     contactCta: 'Nous contacter à propos de ce bien',
     backToListings: 'Retour aux annonces',

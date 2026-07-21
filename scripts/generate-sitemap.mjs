@@ -1,8 +1,8 @@
 /**
  * Generates public/sitemap.xml before production builds.
- * Update STATIC_PATHS or property/magazine lists when routes change.
+ * Update STATIC_PATHS when routes change; listings come from imported inventory.
  */
-import { writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 const SITE_URL = (process.env.VITE_SITE_URL || 'https://propertlv.com').replace(/\/+$/, '')
@@ -19,9 +19,6 @@ const STATIC_PATHS = [
   '/magazine',
 ]
 
-const SALE_IDS = ['1', '2', '3', '4', '5', '6']
-const RENTAL_IDS = ['r1', 'r2', 'r3', 'r4']
-
 const MAGAZINE_SLUGS = [
   'tel-aviv-real-estate-window-2026',
   'tel-aviv-real-estate-israeli-buyers-2026',
@@ -31,14 +28,23 @@ const MAGAZINE_SLUGS = [
   'video-rothschild-walkthrough',
 ]
 
+const listings = JSON.parse(
+  readFileSync(resolve('src/data/importedListings.json'), 'utf8').replace(/^\uFEFF/, ''),
+)
+
 function urlEntry(path) {
   return `  <url>\n    <loc>${SITE_URL}${path}</loc>\n    <changefreq>weekly</changefreq>\n  </url>`
 }
 
+const listingPaths = listings.map((property) =>
+  property.listingType === 'rental'
+    ? `/property/rental/${property.id}`
+    : `/property/sale/${property.id}`,
+)
+
 const paths = [
   ...STATIC_PATHS,
-  ...SALE_IDS.map((id) => `/property/sale/${id}`),
-  ...RENTAL_IDS.map((id) => `/property/rental/${id}`),
+  ...listingPaths,
   ...MAGAZINE_SLUGS.map((slug) => `/magazine/${slug}`),
 ]
 

@@ -262,6 +262,7 @@ export const ruPatch = {
     forRent: 'Аренда',
     featured: 'Избранное',
     videoTour: 'Видео-тур',
+    photoGallery: 'Фотографии объекта',
     features: 'Характеристики',
     contactCta: 'Связаться по этому объекту',
     backToListings: 'К списку',

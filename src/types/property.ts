@@ -41,7 +41,16 @@ export interface Property {
   area: number
   /** Short listing description */
   description: string
+  /**
+   * Cover / primary image — used on cards, SEO, and as gallery fallback.
+   * Prefer keeping this in sync with `images[0]`.
+   */
   image: string
+  /**
+   * Photo gallery for the listing detail page (horizontal scroll).
+   * When empty/missing, the UI falls back to `[image]`.
+   */
+  images?: string[]
   /** Optional property tour — empty until client provides video */
   videoUrl?: string
   /** Map pin — placeholder coordinates until exact address is confirmed */

@@ -54,6 +54,16 @@ export default function AdminListingFormPage() {
           key === 'listingType' ? (value as ListingType) : next.listingType,
         )
       }
+      if (key === 'image') {
+        const cover = String(value ?? '').trim()
+        const rest = (prev.images ?? []).slice(1).filter((src) => src && src !== cover)
+        next.images = cover ? [cover, ...rest] : rest
+      }
+      if (key === 'images') {
+        const images = (value as string[]).map((src) => src.trim()).filter(Boolean)
+        next.images = images
+        next.image = images[0] ?? prev.image
+      }
       return next
     })
     setSaved(false)
@@ -70,6 +80,19 @@ export default function AdminListingFormPage() {
     reader.readAsDataURL(file)
   }
 
+  const galleryText = (form.images ?? (form.image ? [form.image] : []))
+    .filter((src) => !src.startsWith('data:'))
+    .join('\n')
+
+  const setGalleryFromText = (text: string) => {
+    const urls = text
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+    const dataCover = (form.images ?? []).find((src) => src.startsWith('data:'))
+    setField('images', dataCover ? [dataCover, ...urls] : urls)
+  }
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     if (!form.title.trim() || !form.address.trim()) {
@@ -77,12 +100,19 @@ export default function AdminListingFormPage() {
       return
     }
 
+    const images = (form.images ?? [])
+      .map((src) => src.trim())
+      .filter(Boolean)
+    const cover = images[0] || form.image.trim() || ''
+
     const payload: Property = {
       ...form,
       title: form.title.trim(),
       address: form.address.trim(),
       description: form.description.trim(),
       videoUrl: form.videoUrl?.trim() || undefined,
+      image: cover,
+      images: images.length > 0 ? images : cover ? [cover] : [],
       price: formatListingPrice(form.priceNumeric, form.listingType),
     }
 
@@ -280,17 +310,21 @@ export default function AdminListingFormPage() {
           </div>
 
           <div className="admin-form__grid">
-            <div className="admin-field">
-              <label htmlFor="listing-image">Image URL / path</label>
-              <input
-                id="listing-image"
-                value={form.image.startsWith('data:') ? '' : form.image}
-                placeholder="/assets/properties/1.jpg"
-                onChange={(e) => setField('image', e.target.value)}
+            <div className="admin-field admin-field--full">
+              <label htmlFor="listing-images">Gallery image URLs (one per line)</label>
+              <textarea
+                id="listing-images"
+                rows={4}
+                value={galleryText}
+                placeholder={'/assets/properties/1.jpg\n/assets/properties/2.jpg'}
+                onChange={(e) => setGalleryFromText(e.target.value)}
               />
+              <p className="admin-field__hint">
+                First URL is the cover image used on cards and search results.
+              </p>
             </div>
             <div className="admin-field">
-              <label htmlFor="listing-image-file">Or upload image</label>
+              <label htmlFor="listing-image-file">Or upload cover image</label>
               <input
                 id="listing-image-file"
                 type="file"
@@ -358,14 +392,25 @@ export default function AdminListingFormPage() {
             </div>
           </div>
 
-          {form.image ? (
+          {(form.images?.length || form.image) ? (
             <div className="admin-field">
-              <label>Image preview</label>
-              <img
-                src={form.image}
-                alt=""
-                style={{ maxWidth: 280, maxHeight: 180, objectFit: 'cover', borderRadius: 4 }}
-              />
+              <label>Gallery preview</label>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {(form.images?.length ? form.images : [form.image]).map((src) => (
+                  <img
+                    key={src}
+                    src={src}
+                    alt=""
+                    style={{
+                      width: 120,
+                      height: 80,
+                      objectFit: 'cover',
+                      borderRadius: 4,
+                      border: '1px solid #c3c4c7',
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           ) : null}
 
