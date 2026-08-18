@@ -13,6 +13,11 @@ export default function MagazineArticlePage() {
   const { content, locale } = useSiteContent()
   const { magazinePage } = content
   const article = slug ? getMagazineArticleBySlug(slug, locale) : undefined
+  const articlePath = article ? `/magazine/${article.slug}` : '/magazine'
+  const articleJsonLd = useMemo(
+    () => (article ? buildArticleJsonLd(article, articlePath) : null),
+    [article, articlePath],
+  )
 
   if (!article) {
     return (
@@ -31,12 +36,7 @@ export default function MagazineArticlePage() {
     )
   }
 
-  const articlePath = `/magazine/${article.slug}`
   const showVideo = article.type === 'video' && article.videoUrl
-  const articleJsonLd = useMemo(
-    () => buildArticleJsonLd(article, articlePath),
-    [article, articlePath],
-  )
 
   return (
     <>
@@ -46,7 +46,7 @@ export default function MagazineArticlePage() {
         path={articlePath}
         image={article.image}
         type="article"
-        jsonLd={articleJsonLd}
+        jsonLd={articleJsonLd ?? undefined}
       />
     <article className="magazine-article">
       <header className="magazine-article__header">
@@ -79,12 +79,26 @@ export default function MagazineArticlePage() {
       )}
 
       <div className="magazine-article__body">
-        {article.body.map((paragraph) => (
-          <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-        ))}
+        {article.body.map((paragraph) =>
+          paragraph.length < 48 && !paragraph.includes('.') ? (
+            <h2 key={paragraph} className="magazine-article__subhead">
+              {paragraph}
+            </h2>
+          ) : (
+            <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+          ),
+        )}
       </div>
 
       <footer className="magazine-article__footer">
+        {article.source && (
+          <p className="magazine-article__source">
+            {article.source.credit}{' '}
+            <a href={article.source.url} target="_blank" rel="noreferrer">
+              {article.source.name}
+            </a>
+          </p>
+        )}
         <Link to="/magazine" className="magazine-article__back">
           {magazinePage.backToMagazine}
         </Link>

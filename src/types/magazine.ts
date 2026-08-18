@@ -16,6 +16,12 @@ export interface MagazineArticle {
   body: string[]
   /** When true, UI may show a sample marker */
   isPlaceholder: boolean
+  /** Original publication credit, e.g. TheMarker */
+  source?: {
+    name: string
+    url: string
+    credit: string
+  }
 }
 
 export interface MagazinePageContent {

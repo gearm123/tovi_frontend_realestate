@@ -22,10 +22,7 @@ const STATIC_PATHS = [
 const MAGAZINE_SLUGS = [
   'tel-aviv-real-estate-window-2026',
   'tel-aviv-real-estate-israeli-buyers-2026',
-  'bauhaus-tel-aviv',
-  'neighbourhood-guide-florentin',
-  'rental-market-overview',
-  'video-rothschild-walkthrough',
+  'tova-dekkers-propertlv-themarker',
 ]
 
 const listings = JSON.parse(
