@@ -83,7 +83,7 @@ export const frPatch = {
   },
   hero: {
     aria: 'Introduction à Tel Aviv',
-    alt: 'Tel Aviv — animation bientôt disponible',
+    alt: 'Tel Aviv',
     animationPlaceholder: 'votre animation sera ici',
     scrollHint: 'Faire défiler vers les annonces',
   },

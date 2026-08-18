@@ -36,7 +36,9 @@ export function getPropertyImageSources(imagePath: string): PropertyImageSources
 }
 
 export const HERO_IMAGE = {
-  fallback: '/assets/hero.jpg',
-  /** Secondary Tel Aviv skyline if primary hero asset fails */
-  fallbackAlt: '/assets/hero-tel-aviv.jpg',
+  fallback: '/assets/properhero-poster.jpg',
+  /** Secondary Tel Aviv skyline if the hero poster fails */
+  fallbackAlt: '/assets/hero.jpg',
 } as const
+
+export const HERO_VIDEO = '/assets/properhero.mp4'

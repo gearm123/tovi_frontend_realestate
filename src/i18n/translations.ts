@@ -88,7 +88,7 @@ const en = {
   },
   hero: {
     aria: 'Tel Aviv introduction',
-    alt: 'Tel Aviv — animation coming soon',
+    alt: 'Tel Aviv',
     animationPlaceholder: 'here will be your animation',
     scrollHint: 'Scroll to listings',
   },
@@ -386,7 +386,7 @@ const he: TranslationTree = {
   },
   hero: {
     aria: 'היכרות עם תל אביב',
-    alt: 'תל אביב — אנימציה בקרוב',
+    alt: 'תל אביב',
     animationPlaceholder: 'here will be your animation',
     scrollHint: 'גלילה לרשימת הנכסים',
   },

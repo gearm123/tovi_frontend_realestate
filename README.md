@@ -16,10 +16,10 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 Place your animation video at:
 
 ```
-public/videos/tel-aviv.mp4
+public/assets/properhero.mp4
 ```
 
-The hero section will automatically play it on loop (muted). Until the file is added, a beautiful Tel Aviv skyline image is shown as a fallback with a gentle shimmer animation.
+The homepage hero plays it on loop (muted). A still image is used as the poster and as a fallback.
 
 ## Project structure
 

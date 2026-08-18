@@ -83,7 +83,7 @@ export const ruPatch = {
   },
   hero: {
     aria: 'Знакомство с Тель-Авивом',
-    alt: 'Тель-Авив — анимация скоро',
+    alt: 'Тель-Авив',
     animationPlaceholder: 'здесь будет ваша анимация',
     scrollHint: 'Прокрутите к объявлениям',
   },
