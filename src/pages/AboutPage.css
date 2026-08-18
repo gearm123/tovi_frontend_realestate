@@ -1,3 +1,13 @@
+.about-page .page-shell {
+  padding-bottom: 0;
+}
+
+.about-page__team {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(2rem, 4vw, 2.75rem) clamp(1.25rem, 4vw, 2rem) var(--section-padding);
+}
+
 .about-page__highlights {
   list-style: none;
   margin: 2rem 0 0;
