@@ -41,21 +41,6 @@ export const agents: Agent[] = [
     },
   },
   {
-    id: 'dawn-schuster',
-    name: 'Dawn Schuster',
-    title: {
-      en: 'Real Estate Agent & Designer',
-      he: 'סוכנת נדל״ן ומעצבת',
-    },
-    email: 'dawn@propertlv.com',
-    phone: officePhone,
-    image: '/assets/team/dawn-schuster.jpg',
-    imageAlt: {
-      en: 'Portrait of Dawn Schuster, Real Estate Agent and Designer at ProperTLV',
-      he: 'דיוקן של Dawn Schuster, סוכנת נדל״ן ומעצבת ב-ProperTLV',
-    },
-  },
-  {
     id: 'yana-yatsenko',
     name: 'Yana Yatsenko',
     title: {
@@ -64,16 +49,26 @@ export const agents: Agent[] = [
     },
     email: 'yana01204@gmail.com',
     phone: officePhone,
+    image: '/assets/team/yana-Yatsenko.png',
+    imageAlt: {
+      en: 'Portrait of Yana Yatsenko, Rental Specialist at ProperTLV',
+      he: 'דיוקן של Yana Yatsenko, מומחית השכרות ב-ProperTLV',
+    },
   },
   {
-    id: 'eden-kaduri',
-    name: 'Eden Kaduri',
+    id: 'eden-nahum',
+    name: 'Eden Nahum',
     title: {
       en: 'Real Estate Agent',
       he: 'סוכנת נדל״ן',
     },
     email: 'office@propertlv.com',
     phone: officePhone,
+    image: '/assets/team/eden-nahum.png',
+    imageAlt: {
+      en: 'Portrait of Eden Nahum, Real Estate Agent at ProperTLV',
+      he: 'דיוקן של Eden Nahum, סוכנת נדל״ן ב-ProperTLV',
+    },
   },
   {
     id: 'lee-cohen',
@@ -84,6 +79,11 @@ export const agents: Agent[] = [
     },
     email: 'lee@propertlv.com',
     phone: officePhone,
+    image: '/assets/team/lee-cohen.png',
+    imageAlt: {
+      en: 'Portrait of Lee Cohen, Office & Operations at ProperTLV',
+      he: 'דיוקן של Lee Cohen, תפעול ומשרד ב-ProperTLV',
+    },
   },
 ]
 

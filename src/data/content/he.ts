@@ -135,7 +135,7 @@ export const siteContentHe: SiteContent = {
     title: 'הצוות',
     subtitle: 'האנשים שמאחורי חוויית המכירה הבלעדית של ProperTLV.',
     footnote:
-      'מלווים על ידי צוות ההשכרות והתפעול — Yana Yatsenko, Eden Kaduri ו-Lee Cohen — שמוודאים שכל תהליך מתנהל בצורה חלקה.',
+      'מלווים את כל תהליך המכירה וההשכרה — מהשיחה הראשונה ועד לסגירה.',
     members: [
       {
         id: 'tova-dekkers',
@@ -154,12 +154,28 @@ export const siteContentHe: SiteContent = {
         imageAlt: 'דיוקן של Miri Minkin, מומחית נדל״ן ב-ProperTLV',
       },
       {
-        id: 'dawn-schuster',
-        name: 'Dawn Schuster',
-        title: 'סוכנת נדל״ן ומעצבת',
-        bio: 'Dawn Schuster, ילידת בריטניה, היא סוכנת נדל״ן ומעצבת מוכשרת עם עין חדה לפוטנציאל. כמייסדת חברת העיצוב והטקסטיל Eventelier, היא מביאה חזון יצירתי ותובנות שוק לכל נכס, ורואה את המיצוי המלא של כל חלל. מומחיות העיצוב שלה עוזרת למוכרים להציג את בתיהם בצורה יפה, למשוך קונים ולהעלות ערך.',
-        image: '/assets/team/dawn-schuster.jpg',
-        imageAlt: 'דיוקן של Dawn Schuster, סוכנת נדל״ן ומעצבת ב-ProperTLV',
+        id: 'yana-yatsenko',
+        name: 'Yana Yatsenko',
+        title: 'מומחית השכרות',
+        bio: 'Yana מתמחה בהשכרות בתל אביב, ומלווה שוכרים ומשכירים בחוזים, בצפיות ובפרטים שמבטיחים מעבר חלק לכל דירה. היא מביאה תקשורת ברורה וליווי מעשי מהפנייה הראשונה ועד למסירת המפתח.',
+        image: '/assets/team/yana-Yatsenko.png',
+        imageAlt: 'דיוקן של Yana Yatsenko, מומחית השכרות ב-ProperTLV',
+      },
+      {
+        id: 'eden-nahum',
+        name: 'Eden Nahum',
+        title: 'סוכנת נדל״ן',
+        bio: 'Eden מלווה קונים ומוכרים בתל אביב בשירות קשוב ומעשי. היא עוזרת ללקוחות לנווט בין צפיות, משא ומתן והשלבים שהופכים מודעה לעסקה מוצלחת.',
+        image: '/assets/team/eden-nahum.png',
+        imageAlt: 'דיוקן של Eden Nahum, סוכנת נדל״ן ב-ProperTLV',
+      },
+      {
+        id: 'lee-cohen',
+        name: 'Lee Cohen',
+        title: 'תפעול ומשרד',
+        bio: 'Lee מנהלת את התפעול השוטף של ProperTLV — מתאמת בין מודעות, פגישות ותקשורת משרדית, כדי שכל חוויית לקוח תישאר מסודרת מהשיחה הראשונה ועד לסגירה.',
+        image: '/assets/team/lee-cohen.png',
+        imageAlt: 'דיוקן של Lee Cohen, תפעול ומשרד ב-ProperTLV',
       },
     ],
   },
