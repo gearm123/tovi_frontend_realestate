@@ -29,7 +29,7 @@ export const propertyTypes = [
 
 /**
  * Live ProperTLV listings scraped from propertlv.com sale/rent archives.
- * Images are hosted on the original WordPress media CDN.
+ * Gallery photos are stored locally under /assets/property_galleries.
  * Manage/edit further via the admin panel.
  */
 export const properties: Property[] = (importedListings as Property[]).map(

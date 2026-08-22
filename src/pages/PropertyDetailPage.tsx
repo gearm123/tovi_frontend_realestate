@@ -98,6 +98,7 @@ export default function PropertyDetailPage() {
           property={property}
           alt={localized.title}
           label={t.property.photoGallery}
+          priority
           badges={
             <>
               <ListingTypeBadge listingType={property.listingType} />

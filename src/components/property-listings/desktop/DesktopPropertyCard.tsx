@@ -4,7 +4,7 @@ import { getLocalizedProperty } from '../../../i18n/propertyTranslations'
 import { hasPropertyVideoTour } from '../../../utils/propertyVideo'
 import ListingTypeBadge from '../shared/ListingTypeBadge'
 import PropertyCardBody from '../shared/PropertyCardBody'
-import PropertyImage from '../shared/PropertyImage'
+import PropertyImageGallery from '../shared/PropertyImageGallery'
 import VideoTourBadge from '../shared/VideoTourBadge'
 import './DesktopPropertyCard.css'
 
@@ -34,18 +34,21 @@ export default function DesktopPropertyCard({
     >
       <div className="desktop-property__image-wrap">
         <div className="desktop-property__image-frame">
-          <PropertyImage
-            imagePath={property.image}
+          <PropertyImageGallery
+            property={property}
             alt={localized.title}
-            className="desktop-property__image"
+            label={t.property.photoGallery}
+            variant="card"
             priority={index < 2}
+            badges={
+              <div className="desktop-property__badges">
+                <ListingTypeBadge listingType={property.listingType} />
+                {property.featured && (
+                  <span className="desktop-property__badge">{t.property.featured}</span>
+                )}
+              </div>
+            }
           />
-          <div className="desktop-property__badges">
-            <ListingTypeBadge listingType={property.listingType} />
-            {property.featured && (
-              <span className="desktop-property__badge">{t.property.featured}</span>
-            )}
-          </div>
           <span className="desktop-property__price">
             {localized.price ?? property.price}
           </span>

@@ -16,15 +16,16 @@ export default function PropertyImage({
   priority = false,
 }: PropertyImageProps) {
   const sources = getPropertyImageSources(imagePath)
+  const webpType = /\.webp(?:$|\?)/i.test(sources.desktopWebp) ? 'image/webp' : undefined
 
   return (
     <picture className="property-image">
       <source
         media="(max-width: 768px)"
         srcSet={sources.mobileWebp}
-        type="image/webp"
+        type={webpType}
       />
-      <source srcSet={sources.desktopWebp} type="image/webp" />
+      <source srcSet={sources.desktopWebp} type={webpType} />
       <img
         src={sources.desktopJpg}
         alt={alt}

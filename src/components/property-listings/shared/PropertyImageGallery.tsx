@@ -9,6 +9,8 @@ interface PropertyImageGalleryProps {
   alt: string
   label: string
   badges?: ReactNode
+  variant?: 'detail' | 'card'
+  priority?: boolean
 }
 
 export default function PropertyImageGallery({
@@ -16,6 +18,8 @@ export default function PropertyImageGallery({
   alt,
   label,
   badges,
+  variant = 'detail',
+  priority = false,
 }: PropertyImageGalleryProps) {
   const images = getPropertyImages(property)
   const multi = images.length > 1
@@ -24,6 +28,7 @@ export default function PropertyImageGallery({
     <div
       className={[
         'property-gallery',
+        `property-gallery--${variant}`,
         multi ? 'property-gallery--multi' : 'property-gallery--single',
       ].join(' ')}
     >
@@ -39,7 +44,7 @@ export default function PropertyImageGallery({
               imagePath={src}
               alt={images.length > 1 ? `${alt} — ${index + 1}` : alt}
               className="property-gallery__image"
-              priority={index === 0}
+              priority={priority && index === 0}
             />
           </figure>
         ))}

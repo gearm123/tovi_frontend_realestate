@@ -25,3 +25,6 @@ dist-ssr
 
 # Original uncompressed media kept off the public deploy path
 media-source/
+
+# Scrape working cache (downloaded galleries live in public/assets)
+scripts/cache/

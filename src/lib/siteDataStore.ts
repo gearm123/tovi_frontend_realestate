@@ -11,7 +11,7 @@ import type { ListingType, Property, PropertyFeatures } from '../types/property'
 import { PLACEHOLDER_MAP_CENTER, PLACEHOLDER_PROPERTY_IMAGE } from '../data/placeholders'
 import { withNormalizedPropertyImages } from '../utils/propertyGallery'
 
-const STORAGE_KEY = 'propertlv_site_data_v2'
+const STORAGE_KEY = 'propertlv_site_data_v5'
 const DATA_EVENT = 'propertlv-site-data-updated'
 
 export type LeadCaptureSettings = {
