@@ -10,8 +10,9 @@ import type { BusinessContact } from '../types/business'
 import type { ListingType, Property, PropertyFeatures } from '../types/property'
 import { PLACEHOLDER_MAP_CENTER, PLACEHOLDER_PROPERTY_IMAGE } from '../data/placeholders'
 import { withNormalizedPropertyImages } from '../utils/propertyGallery'
+import { withoutStreetNumbers } from '../utils/streetNumber'
 
-const STORAGE_KEY = 'propertlv_site_data_v5'
+const STORAGE_KEY = 'propertlv_site_data_v6'
 const DATA_EVENT = 'propertlv-site-data-updated'
 
 export type LeadCaptureSettings = {
@@ -31,6 +32,24 @@ export interface SiteData {
 
 function clone<T>(value: T): T {
   return structuredClone(value)
+}
+
+function reconcileAgents(stored: Agent[] | undefined): Agent[] {
+  const storedById = new Map((stored ?? []).map((agent) => [agent.id, agent]))
+  const fromSeed = defaultAgents.map((seed) => {
+    const previous = storedById.get(seed.id)
+    if (!previous) return clone(seed)
+    return {
+      ...seed,
+      email: previous.email || seed.email,
+      phone: previous.phone ?? seed.phone,
+    }
+  })
+  const seedIds = new Set(defaultAgents.map((agent) => agent.id))
+  const extras = (stored ?? []).filter(
+    (agent) => !seedIds.has(agent.id) && agent.id !== 'dawn-schuster',
+  )
+  return [...fromSeed, ...extras]
 }
 
 function seedSiteData(): SiteData {
@@ -55,10 +74,10 @@ function readStorage(): SiteData | null {
     const parsed = JSON.parse(raw) as Partial<SiteData>
     const seed = seedSiteData()
     return {
-      properties: (Array.isArray(parsed.properties) ? parsed.properties : seed.properties).map(
-        withNormalizedPropertyImages,
-      ),
-      agents: Array.isArray(parsed.agents) ? parsed.agents : seed.agents,
+      properties: (Array.isArray(parsed.properties) ? parsed.properties : seed.properties)
+        .map(withoutStreetNumbers)
+        .map(withNormalizedPropertyImages),
+      agents: reconcileAgents(parsed.agents),
       business: parsed.business ? { ...seed.business, ...parsed.business } : seed.business,
       leadCapture: parsed.leadCapture
         ? { ...seed.leadCapture, ...parsed.leadCapture }
@@ -83,8 +102,13 @@ export function getSiteData(): SiteData {
 }
 
 export function saveSiteData(next: SiteData): void {
-  cache = next
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+  const sanitized: SiteData = {
+    ...next,
+    properties: next.properties.map(withoutStreetNumbers),
+    agents: reconcileAgents(next.agents),
+  }
+  cache = sanitized
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized))
   notify()
 }
 

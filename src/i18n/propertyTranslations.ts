@@ -1,4 +1,5 @@
 import type { Locale } from './types'
+import { stripStreetNumber } from '../utils/streetNumber'
 
 type PropertyTranslation = {
   title: string
@@ -81,8 +82,8 @@ export function getLocalizedProperty(
 ) {
   if (locale !== 'he') {
     return {
-      title: fallback.title,
-      address: fallback.address,
+      title: stripStreetNumber(fallback.title),
+      address: stripStreetNumber(fallback.address),
       description: fallback.description,
       price: fallback.price,
       neighborhood: fallback.neighborhood,
@@ -91,8 +92,8 @@ export function getLocalizedProperty(
 
   const translated = he[id]
   return {
-    title: translated?.title ?? fallback.title,
-    address: translated?.address ?? fallback.address,
+    title: stripStreetNumber(translated?.title ?? fallback.title),
+    address: stripStreetNumber(translated?.address ?? fallback.address),
     description: translated?.description ?? fallback.description,
     price: translated?.price ?? fallback.price,
     neighborhood: fallback.neighborhood,

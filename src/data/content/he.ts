@@ -1,5 +1,6 @@
 import type { SiteContent } from '../../types/content'
 import { business } from '../business'
+import { teamPortrait } from '../teamPortraits'
 
 /**
  * PLACEHOLDER_COPY — Hebrew site content.
@@ -142,7 +143,7 @@ export const siteContentHe: SiteContent = {
         name: 'Tova Dekkers',
         title: 'מייסדת וסוכנת נדל״ן ראשית',
         bio: 'עם ניסיון של למעלה מ-17 שנה, טובה מציעה שירות מקצועי ואיכותי וליווי אישי המותאם לצרכים ולתקציב של כל לקוח. הרשת הרחבה שלה כוללת שגרירויות, עסקים וקונים בארץ ובחו״ל. בזכות העין החדה שלה לפרטים ויכולתה לסגור עסקאות, היא מלווה לקוחות בכל שלב בתהליך בדיוק ובקפידה.',
-        image: '/assets/team/tova-dekkers.jpg',
+        image: teamPortrait('tova-dekkers'),
         imageAlt: 'דיוקן של Tova Dekkers, מייסדת וסוכנת נדל״ן ראשית ב-ProperTLV',
       },
       {
@@ -150,7 +151,7 @@ export const siteContentHe: SiteContent = {
         name: 'Miri Minkin',
         title: 'מומחית נדל״ן',
         bio: 'עם ניסיון של למעלה מ-10 שנים בבנייה ובנדל״ן, מירי מביאה ידע מעמיק ומקצועיות לכל עסקה. היא מתמחה במכירות והשכרות בתל אביב ובסביבה, ומציעה שירות אמין, אישי ואיכותי לאורך כל התהליך — בגישה אכפתית, בשקיפות, ביושרה ובתשומת לב לכל פרט.',
-        image: '/assets/team/miri-minkin.jpg',
+        image: teamPortrait('miri-minkin'),
         imageAlt: 'דיוקן של Miri Minkin, מומחית נדל״ן ב-ProperTLV',
       },
       {
@@ -158,7 +159,7 @@ export const siteContentHe: SiteContent = {
         name: 'Yana Yatsenko',
         title: 'סוכנת נדל״ן',
         bio: 'Yana מתמחה בהשכרות בתל אביב, ומלווה שוכרים ומשכירים בחוזים, בצפיות ובפרטים שמבטיחים מעבר חלק לכל דירה. היא מביאה תקשורת ברורה וליווי מעשי מהפנייה הראשונה ועד למסירת המפתח.',
-        image: '/assets/team/yana-Yatsenko.png',
+        image: teamPortrait('yana-yatsenko'),
         imageAlt: 'דיוקן של Yana Yatsenko, סוכנת נדל״ן ב-ProperTLV',
       },
       {
@@ -166,7 +167,7 @@ export const siteContentHe: SiteContent = {
         name: 'Eden Nahum',
         title: 'סוכנת נדל״ן',
         bio: 'Eden מלווה קונים ומוכרים בתל אביב בשירות קשוב ומעשי. היא עוזרת ללקוחות לנווט בין צפיות, משא ומתן והשלבים שהופכים מודעה לעסקה מוצלחת.',
-        image: '/assets/team/eden-nahum.png',
+        image: teamPortrait('eden-nahum'),
         imageAlt: 'דיוקן של Eden Nahum, סוכנת נדל״ן ב-ProperTLV',
       },
       {
@@ -174,7 +175,7 @@ export const siteContentHe: SiteContent = {
         name: 'Lee Cohen',
         title: 'תפעול ומשרד',
         bio: 'Lee מנהלת את התפעול השוטף של ProperTLV — מתאמת בין מודעות, פגישות ותקשורת משרדית, כדי שכל חוויית לקוח תישאר מסודרת מהשיחה הראשונה ועד לסגירה.',
-        image: '/assets/team/lee-cohen.png',
+        image: teamPortrait('lee-cohen'),
         imageAlt: 'דיוקן של Lee Cohen, תפעול ומשרד ב-ProperTLV',
       },
     ],

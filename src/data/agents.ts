@@ -1,5 +1,6 @@
 import type { Agent } from '../types/agent'
 import { business } from './business'
+import { teamPortrait } from './teamPortraits'
 
 /**
  * Listing agents — each property's `agentId` routes inquiries to that agent's email.
@@ -19,7 +20,7 @@ export const agents: Agent[] = [
     },
     email: 'tova@propertlv.com',
     phone: officePhone,
-    image: '/assets/team/tova-dekkers.jpg',
+    image: teamPortrait('tova-dekkers'),
     imageAlt: {
       en: 'Portrait of Tova Dekkers, Founder and Lead Real Estate Agent at ProperTLV',
       he: 'דיוקן של Tova Dekkers, מייסדת וסוכנת נדל״ן ראשית ב-ProperTLV',
@@ -34,7 +35,7 @@ export const agents: Agent[] = [
     },
     email: 'miri@propertlv.com',
     phone: officePhone,
-    image: '/assets/team/miri-minkin.jpg',
+    image: teamPortrait('miri-minkin'),
     imageAlt: {
       en: 'Portrait of Miri Minkin, Real Estate Specialist at ProperTLV',
       he: 'דיוקן של Miri Minkin, מומחית נדל״ן ב-ProperTLV',
@@ -49,7 +50,7 @@ export const agents: Agent[] = [
     },
     email: 'yana01204@gmail.com',
     phone: officePhone,
-    image: '/assets/team/yana-Yatsenko.png',
+    image: teamPortrait('yana-yatsenko'),
     imageAlt: {
       en: 'Portrait of Yana Yatsenko, Real Estate Agent at ProperTLV',
       he: 'דיוקן של Yana Yatsenko, סוכנת נדל״ן ב-ProperTLV',
@@ -64,7 +65,7 @@ export const agents: Agent[] = [
     },
     email: 'office@propertlv.com',
     phone: officePhone,
-    image: '/assets/team/eden-nahum.png',
+    image: teamPortrait('eden-nahum'),
     imageAlt: {
       en: 'Portrait of Eden Nahum, Real Estate Agent at ProperTLV',
       he: 'דיוקן של Eden Nahum, סוכנת נדל״ן ב-ProperTLV',
@@ -79,7 +80,7 @@ export const agents: Agent[] = [
     },
     email: 'lee@propertlv.com',
     phone: officePhone,
-    image: '/assets/team/lee-cohen.png',
+    image: teamPortrait('lee-cohen'),
     imageAlt: {
       en: 'Portrait of Lee Cohen, Office & Operations at ProperTLV',
       he: 'דיוקן של Lee Cohen, תפעול ומשרד ב-ProperTLV',

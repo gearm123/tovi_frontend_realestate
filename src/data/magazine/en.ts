@@ -1,4 +1,5 @@
 import type { MagazineArticle } from '../../types/magazine'
+import { teamPortrait } from '../teamPortraits'
 
 /** Magazine articles (EN) */
 export const magazineArticlesEn: MagazineArticle[] = [
@@ -58,7 +59,7 @@ export const magazineArticlesEn: MagazineArticle[] = [
     date: 'July 2024',
     excerpt:
       'TheMarker Labels profile of ProperTLV — a Tel Aviv boutique agency matching buyers, sellers, and renters to homes with personal, multilingual service.',
-    image: '/assets/team/tova-dekkers.jpg',
+    image: teamPortrait('tova-dekkers'),
     body: [
       'Finding an apartment in Tel Aviv is a complex process, and often a long one. Many searchers use property websites and social media, but some buyers want a home in a specific area or compound, or apartments with particular features — garden apartments, penthouses, or distinctive homes in preserved buildings. ProperTLV is a Tel Aviv boutique real-estate agency that specialises in exactly that, offering a personal search and service. The agency presents apartments for sale and rent, matched to each client’s preferences and budget. ProperTLV, owned and led by Tova Dekkers, an experienced and energetic agent, is run by a dedicated women-led team that also includes three experienced agents and a professional marketing manager.',
       '“I founded the agency 17 years ago to help Israelis, overseas residents, and foreigners find the Tel Aviv apartment they had always dreamed of, with professional, personal guidance. I know how to tailor the right apartment and the right deal for each client,” Dekkers says. “I grew up with a father who worked in real estate, studied business administration, travelled the world, and lived for periods in New York and Japan. When I returned to Israel I decided I wanted to work in real estate and also with people from around the world. At the beginning I helped friends from abroad find apartments in Tel Aviv, and later I founded the agency. That is also how I met my Dutch husband — while searching for an apartment for him.”',

@@ -1,5 +1,6 @@
 import type { SiteContent } from '../../types/content'
 import { business } from '../business'
+import { teamPortrait } from '../teamPortraits'
 
 /**
  * PLACEHOLDER_COPY — English site content.
@@ -142,7 +143,7 @@ export const siteContentEn: SiteContent = {
         name: 'Tova Dekkers',
         title: 'Founder & Lead Real Estate Agent',
         bio: 'With over 17 years of experience, Tova offers quality, professional service and personal support tailored to each client’s needs and budget. Her vast network spans embassies, businesses, and buyers both in Israel and abroad. Known for her sharp eye for detail and ability to close deals, she guides clients through every step of the process with precision and care.',
-        image: '/assets/team/tova-dekkers.jpg',
+        image: teamPortrait('tova-dekkers'),
         imageAlt: 'Portrait of Tova Dekkers, Founder and Lead Real Estate Agent at ProperTLV',
       },
       {
@@ -150,7 +151,7 @@ export const siteContentEn: SiteContent = {
         name: 'Miri Minkin',
         title: 'Real Estate Specialist',
         bio: 'With over 10 years of experience in construction and real estate, Miri brings deep knowledge and professionalism to every transaction. She specializes in sales and rentals across Tel Aviv and surrounding areas, offering reliable, personal, and high-quality service throughout the process. Miri guides with care, transparency, integrity, and attention to every detail.',
-        image: '/assets/team/miri-minkin.jpg',
+        image: teamPortrait('miri-minkin'),
         imageAlt: 'Portrait of Miri Minkin, Real Estate Specialist at ProperTLV',
       },
       {
@@ -158,7 +159,7 @@ export const siteContentEn: SiteContent = {
         name: 'Yana Yatsenko',
         title: 'Real Estate Agent',
         bio: 'Yana specializes in Tel Aviv rentals, guiding tenants and landlords through leases, viewings, and the details that keep every rental move running smoothly. She brings clear communication and practical support from first inquiry to handover.',
-        image: '/assets/team/yana-Yatsenko.png',
+        image: teamPortrait('yana-yatsenko'),
         imageAlt: 'Portrait of Yana Yatsenko, Real Estate Agent at ProperTLV',
       },
       {
@@ -166,7 +167,7 @@ export const siteContentEn: SiteContent = {
         name: 'Eden Nahum',
         title: 'Real Estate Agent',
         bio: 'Eden supports buyers and sellers across Tel Aviv with attentive, hands-on service. She helps clients navigate viewings, negotiations, and the steps that turn a listing into a successful deal.',
-        image: '/assets/team/eden-nahum.png',
+        image: teamPortrait('eden-nahum'),
         imageAlt: 'Portrait of Eden Nahum, Real Estate Agent at ProperTLV',
       },
       {
@@ -174,7 +175,7 @@ export const siteContentEn: SiteContent = {
         name: 'Lee Cohen',
         title: 'Office & Operations',
         bio: 'Lee keeps ProperTLV’s day-to-day operations running seamlessly — coordinating listings, appointments, and office communication so every client experience stays organized from first call to closing.',
-        image: '/assets/team/lee-cohen.png',
+        image: teamPortrait('lee-cohen'),
         imageAlt: 'Portrait of Lee Cohen, Office & Operations at ProperTLV',
       },
     ],

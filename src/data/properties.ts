@@ -1,6 +1,7 @@
 import type { Property } from '../types/property'
 import importedListings from './importedListings.json'
 import { withNormalizedPropertyImages } from '../utils/propertyGallery'
+import { withoutStreetNumbers } from '../utils/streetNumber'
 
 /**
  * Neighborhood options used by search filters and the admin listing form.
@@ -32,9 +33,9 @@ export const propertyTypes = [
  * Gallery photos are stored locally under /assets/property_galleries.
  * Manage/edit further via the admin panel.
  */
-export const properties: Property[] = (importedListings as Property[]).map(
-  withNormalizedPropertyImages,
-)
+export const properties: Property[] = (importedListings as Property[])
+  .map(withoutStreetNumbers)
+  .map(withNormalizedPropertyImages)
 
 export function getPropertyById(id: string): Property | undefined {
   return properties.find((p) => p.id === id)
