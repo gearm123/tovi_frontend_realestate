@@ -156,10 +156,10 @@ export const siteContentHe: SiteContent = {
       {
         id: 'yana-yatsenko',
         name: 'Yana Yatsenko',
-        title: 'מומחית השכרות',
+        title: 'סוכנת נדל״ן',
         bio: 'Yana מתמחה בהשכרות בתל אביב, ומלווה שוכרים ומשכירים בחוזים, בצפיות ובפרטים שמבטיחים מעבר חלק לכל דירה. היא מביאה תקשורת ברורה וליווי מעשי מהפנייה הראשונה ועד למסירת המפתח.',
         image: '/assets/team/yana-Yatsenko.png',
-        imageAlt: 'דיוקן של Yana Yatsenko, מומחית השכרות ב-ProperTLV',
+        imageAlt: 'דיוקן של Yana Yatsenko, סוכנת נדל״ן ב-ProperTLV',
       },
       {
         id: 'eden-nahum',

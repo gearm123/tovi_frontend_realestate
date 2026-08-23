@@ -156,10 +156,10 @@ export const siteContentEn: SiteContent = {
       {
         id: 'yana-yatsenko',
         name: 'Yana Yatsenko',
-        title: 'Rental Specialist',
+        title: 'Real Estate Agent',
         bio: 'Yana specializes in Tel Aviv rentals, guiding tenants and landlords through leases, viewings, and the details that keep every rental move running smoothly. She brings clear communication and practical support from first inquiry to handover.',
         image: '/assets/team/yana-Yatsenko.png',
-        imageAlt: 'Portrait of Yana Yatsenko, Rental Specialist at ProperTLV',
+        imageAlt: 'Portrait of Yana Yatsenko, Real Estate Agent at ProperTLV',
       },
       {
         id: 'eden-nahum',
