@@ -54,8 +54,9 @@
 
 @media (max-width: 768px) {
   .floating-home-button {
-    inset-block-start: clamp(4.75rem, 11vw, 5.5rem);
-    inset-block-end: auto;
+    inset-block-start: auto;
+    inset-block-end: calc(max(1.15rem, env(safe-area-inset-bottom, 0px)) + 3.55rem);
+    inset-inline-end: max(1.15rem, env(safe-area-inset-right, 0px));
     padding: 0.8rem;
     border-radius: 50%;
   }

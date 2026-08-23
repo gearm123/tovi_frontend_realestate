@@ -54,6 +54,8 @@
 
 @media (max-width: 768px) {
   .whatsapp-button {
+    inset-block-end: max(1.15rem, env(safe-area-inset-bottom, 0px));
+    inset-inline-end: max(1.15rem, env(safe-area-inset-right, 0px));
     padding: 0.8rem;
     border-radius: 50%;
   }

@@ -1,0 +1,36 @@
+.floating-top-controls {
+  position: fixed;
+  top: max(0.65rem, env(safe-area-inset-top, 0px));
+  right: max(0.65rem, env(safe-area-inset-right, 0px));
+  z-index: 1003;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  max-width: calc(100vw - 1.2rem);
+  pointer-events: none;
+  direction: ltr;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.floating-top-controls > * {
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+
+@media (min-width: 769px) {
+  .floating-top-controls {
+    top: clamp(0.85rem, 2.5vw, 1.15rem);
+    right: clamp(0.85rem, 3vw, 1.5rem);
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .floating-top-controls {
+    gap: 0.4rem;
+    right: max(0.45rem, env(safe-area-inset-right, 0px));
+  }
+}

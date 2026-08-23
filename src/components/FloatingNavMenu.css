@@ -1,8 +1,11 @@
+.floating-nav-menu {
+  position: relative;
+  z-index: 1;
+}
+
 .floating-nav-menu__trigger {
-  position: fixed;
-  top: clamp(0.85rem, 2.5vw, 1.15rem);
-  right: calc(clamp(0.85rem, 3vw, 1.5rem) + clamp(7rem, 18vw, 8.5rem) + 0.5rem);
-  z-index: 1003;
+  position: relative;
+  z-index: 2;
 
   display: inline-flex;
   align-items: center;
@@ -92,7 +95,7 @@
 .floating-nav-menu__backdrop {
   position: fixed;
   inset: 0;
-  z-index: 1001;
+  z-index: 0;
   padding: 0;
   border: none;
   background: rgba(0, 0, 0, 0.28);
@@ -100,9 +103,9 @@
 }
 
 .floating-nav-menu__panel {
-  position: fixed;
-  top: calc(clamp(0.85rem, 2.5vw, 1.15rem) + 2.35rem + 0.55rem);
-  right: calc(clamp(0.85rem, 3vw, 1.5rem) + clamp(7rem, 18vw, 8.5rem) + 0.5rem);
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
   left: auto;
   z-index: 1002;
 
@@ -170,10 +173,8 @@
 
 @media (max-width: 768px) {
   .floating-nav-menu__trigger {
-    top: calc(max(0.65rem, env(safe-area-inset-top, 0px)) + 1.7rem + 0.4rem);
-    right: max(0.75rem, env(safe-area-inset-right, 0px));
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 2.65rem;
+    height: 2.65rem;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   }
 
@@ -187,9 +188,10 @@
   }
 
   .floating-nav-menu__panel {
-    top: calc(max(0.65rem, env(safe-area-inset-top, 0px)) + 1.7rem + 0.4rem + 2.75rem + 0.55rem);
-    right: max(0.75rem, env(safe-area-inset-right, 0px));
-    left: max(0.75rem, env(safe-area-inset-left, 0px));
+    position: fixed;
+    top: calc(max(0.55rem, env(safe-area-inset-top, 0px)) + 2.65rem + 0.5rem);
+    right: max(0.65rem, env(safe-area-inset-right, 0px));
+    left: max(0.65rem, env(safe-area-inset-left, 0px));
     width: auto;
     max-height: min(72vh, 32rem);
     padding: 0.45rem 0;

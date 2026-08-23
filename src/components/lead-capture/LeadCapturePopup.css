@@ -272,7 +272,8 @@
 @media (max-width: 768px) {
   .lead-capture-popup__dialog {
     width: 100%;
-    max-height: min(94vh, 42rem);
+    max-height: min(94dvh, 42rem);
+    min-height: 0;
     border-radius: 1rem;
   }
 

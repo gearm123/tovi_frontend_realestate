@@ -4,7 +4,6 @@ import { useLanguage } from '../context/LanguageContext'
 import { useSiteContent } from '../hooks/useSiteContent'
 import { scrollPageToTop } from '../utils/scrollPageToTop'
 import BrandTitle from './BrandTitle'
-import LanguageToggle from './LanguageToggle'
 import './Header.css'
 
 export default function Header() {
@@ -25,8 +24,6 @@ export default function Header() {
           alt={`${business.name} logo`}
         />
       </Link>
-
-      <LanguageToggle />
 
       <div className="header__masthead">
         <Link to="/" className="header__brand" onClick={scrollPageToTop}>

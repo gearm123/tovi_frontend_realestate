@@ -1,8 +1,6 @@
 .lang-toggle {
-  position: fixed;
-  top: clamp(0.85rem, 2.5vw, 1.15rem);
-  right: clamp(0.85rem, 3vw, 1.5rem);
-  z-index: 100;
+  position: relative;
+  z-index: 1;
   padding: 0;
   direction: ltr;
 }
@@ -77,17 +75,24 @@ html[dir='rtl'] .lang-toggle__option {
 }
 
 @media (max-width: 768px) {
-  .lang-toggle {
-    top: 0.65rem;
-    right: 0.75rem;
-  }
-
   .lang-toggle__track {
-    width: 6.75rem;
+    width: 6.1rem;
     height: 1.7rem;
   }
 
   .lang-toggle__option {
-    font-size: 0.54rem;
+    font-size: 0.52rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .lang-toggle__track {
+    width: 5.85rem;
+    height: 1.6rem;
+  }
+
+  .lang-toggle__option {
+    font-size: 0.48rem;
+    letter-spacing: 0.04em;
   }
 }

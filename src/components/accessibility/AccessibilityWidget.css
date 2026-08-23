@@ -195,6 +195,11 @@
 }
 
 @media (max-width: 768px) {
+  .accessibility-widget {
+    inset-block-end: max(1.15rem, env(safe-area-inset-bottom, 0px));
+    inset-inline-start: max(1.15rem, env(safe-area-inset-left, 0px));
+  }
+
   .accessibility-widget__trigger {
     padding: 0.8rem;
     border-radius: 50%;
