@@ -88,7 +88,7 @@ export default function PropertyDetailPage() {
   return (
     <>
       <PageSeo
-        title={`${localized.title} — ProperTLV`}
+        title={`${localized.title} | ProperTLV`}
         description={localized.description.slice(0, 155)}
         path={propertyPath}
         image={galleryImages[0]}
@@ -160,7 +160,7 @@ export default function PropertyDetailPage() {
               <h2 id="property-video-title">{t.property.videoTour}</h2>
               <VideoEmbed
                 videoUrl={property.videoUrl!}
-                title={`${localized.title} — ${t.property.videoTour}`}
+                title={`${localized.title} (${t.property.videoTour})`}
               />
             </section>
           )}

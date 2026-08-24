@@ -1,7 +1,7 @@
 export const frPatch = {
   meta: {
-    title: 'PROPERTLV — Immobilier à Tel Aviv',
-    description: 'PROPERTLV — appartements et maisons sélectionnés à Tel Aviv.',
+    title: 'PROPERTLV | Immobilier à Tel Aviv',
+    description: 'ProperTLV est une agence boutique pour des appartements et maisons sélectionnés à Tel Aviv.',
   },
   lang: {
     switchToHebrew: 'עברית',
@@ -30,7 +30,7 @@ export const frPatch = {
   },
   footer: {
     blurb:
-      'Appartements et maisons sélectionnés à Tel Aviv — des perles Bauhaus sur Rothschild aux rues familiales de Ramat Aviv.',
+      'Appartements et maisons sélectionnés à Tel Aviv, des perles Bauhaus sur Rothschild aux rues familiales de Ramat Aviv.',
     navAria: 'Navigation du pied de page',
     about: 'À propos',
     sales: 'Toutes les ventes',
@@ -64,7 +64,7 @@ export const frPatch = {
   leadCapturePopup: {
     accent: 'Nous sommes là pour vous',
     title: 'Trouvez votre maison à Tel Aviv',
-    subtitle: 'Laissez votre nom et téléphone — nous vous contacterons sur WhatsApp.',
+    subtitle: 'Laissez votre nom et téléphone. Nous vous contacterons sur WhatsApp.',
     name: 'Nom',
     phone: 'Téléphone',
     message: 'Message (facultatif)',
@@ -75,7 +75,7 @@ export const frPatch = {
     closeAria: 'Fermer la fenêtre',
     successTitle: 'Merci',
     successHint:
-      'Nous avons ouvert WhatsApp avec vos coordonnées — appuyez sur Envoyer pour contacter ProperTLV.',
+      'Nous avons ouvert WhatsApp avec vos coordonnées. Appuyez sur Envoyer pour contacter ProperTLV.',
     whatsappAction: 'Ouvrir WhatsApp',
     error: 'Une erreur est survenue. Réessayez ou contactez-nous sur WhatsApp.',
     footnote: 'Vos coordonnées sont enregistrées et WhatsApp s’ouvre pour nous écrire directement.',
@@ -91,12 +91,12 @@ export const frPatch = {
     sectionLabel: 'La sélection de la semaine',
     title: 'Biens pour vous',
     intro:
-      'Appartements et maisons choisis à Tel Aviv — chacun sélectionné pour sa lumière, son quartier et la vie que vous pourriez y construire.',
+      'Appartements et maisons choisis à Tel Aviv, chacun sélectionné pour sa lumière, son quartier et la vie que vous pourriez y construire.',
   },
   about: {
     accent: 'Notre histoire',
     title: 'À propos de PROPERTLV',
-    subtitle: 'Trouver un chez-soi doit rester personnel — pas transactionnel.',
+    subtitle: 'Trouver un chez-soi doit rester personnel, pas transactionnel.',
     p1: 'PROPERTLV met en relation des personnes avec des biens sélectionnés à Tel Aviv, des perles Bauhaus sur Rothschild aux rues familiales de Ramat Aviv.',
     p2: 'Fondée par des spécialistes locaux qui connaissent la ville rue par rue, nous accompagnons acheteurs, vendeurs et locataires avec transparence et discrétion.',
     p3: 'Que vous cherchiez un penthouse vue mer, un duplex avec jardin ou une location près du parc, PROPERTLV est là pour vous.',
@@ -112,7 +112,7 @@ export const frPatch = {
   contactForm: {
     success: 'Merci pour votre message. Nous vous recontacterons rapidement.',
     successHint:
-      'Nous avons ouvert WhatsApp avec votre message — appuyez sur Envoyer pour nous joindre. Vous pouvez aussi nous écrire par e-mail ci-dessous.',
+      'Nous avons ouvert WhatsApp avec votre message. Appuyez sur Envoyer pour nous joindre. Vous pouvez aussi nous écrire par e-mail ci-dessous.',
     whatsappAction: 'Ouvrir WhatsApp',
     emailAction: 'E-mail à {email}',
     submitting: 'Envoi…',
@@ -177,7 +177,7 @@ export const frPatch = {
       {
         title: 'Guide de quartier : Florentin',
         excerpt:
-          'Des ateliers d’artistes aux bars sur les toits — pourquoi Florentin attire créatifs et jeunes actifs.',
+          'Des ateliers d’artistes aux bars sur les toits, voilà pourquoi Florentin attire créatifs et jeunes actifs.',
         date: 'Février 2026',
       },
       {
@@ -212,10 +212,10 @@ export const frPatch = {
     resultsIntro: 'Les résultats se mettent à jour instantanément.',
     resultsCount: '{count} biens trouvés',
     demoListingsNote:
-      'Annonces ProperTLV actuelles — disponibilité et détails susceptibles de changer.',
+      'Annonces ProperTLV actuelles. La disponibilité et les détails peuvent changer.',
     emptyTitle: 'Aucun bien ne correspond',
     emptyText:
-      'Essayez d’élargir vos filtres — statut, quartier, prix — ou réinitialisez pour recommencer.',
+      'Essayez d’élargir vos filtres (statut, quartier, prix) ou réinitialisez pour recommencer.',
   },
   filters: {
     aria: 'Filtres de recherche',

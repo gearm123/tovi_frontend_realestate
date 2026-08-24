@@ -13,13 +13,13 @@ export const siteContentEn: SiteContent = {
     title: 'About ProperTLV',
     subtitle: 'Boutique real estate guidance rooted in Tel Aviv.',
     paragraphs: [
-      'ProperTLV is led by Tovi — a focused, local service for buyers and sellers who want clear advice and personal attention, not a call centre experience.',
+      'ProperTLV is led by Tovi. We offer a focused, local service for buyers and sellers who want clear advice and personal attention, not a call centre experience.',
       'With deep familiarity across Tel Aviv’s neighbourhoods, we help you understand where to look, what to compare, and how to move forward with confidence. Every conversation starts with listening.',
       'Whether you are buying your first apartment, selling a family home, or renting near the sea, ProperTLV offers discreet support tailored to your pace and priorities.',
     ],
     highlights: [
       'Personal, one-to-one service throughout your search or sale',
-      'Tel Aviv neighbourhood expertise — from Rothschild to Ramat Aviv',
+      'Tel Aviv neighbourhood expertise, from Rothschild to Ramat Aviv',
       'Straightforward guidance on pricing, viewings, and next steps',
       'Discreet, professional handling for local and international clients',
     ],
@@ -32,10 +32,10 @@ export const siteContentEn: SiteContent = {
     title: 'Our Services',
     subtitle: 'Personal guidance for buyers and sellers across Tel Aviv.',
     overviewIntro:
-      'From finding the right home to selling with clarity — ProperTLV offers hands-on buyer and seller support, plus a dedicated Exclusive Representation Package for premium listings.',
+      'From finding the right home to selling with clarity, ProperTLV offers hands-on buyer and seller support, plus a dedicated Exclusive Representation Package for premium listings.',
     viewAllLink: 'View all services',
     paragraphs: [
-      'ProperTLV is a boutique Tel Aviv agency. On this page you’ll find how we help buyers search with confidence and how we guide sellers through pricing, marketing, and closing. For our full premium sales program — photography, staging, network exposure, and 4-month exclusive representation — see the Exclusive Package page.',
+      'ProperTLV is a boutique Tel Aviv agency. On this page you’ll find how we help buyers search with confidence and how we guide sellers through pricing, marketing, and closing. For our full premium sales program, including photography, staging, network exposure, and 4-month exclusive representation, see the Exclusive Package page.',
     ],
     exclusivePackageTeaser: {
       body: 'A structured 4-month exclusive program for sellers who want the full ProperTLV treatment: premium marketing, elite buyer-network exposure, personal senior-agent service, and negotiation to maximize value.',
@@ -50,11 +50,11 @@ export const siteContentEn: SiteContent = {
     subtitle: 'Exclusivity that delivers results with ProperTLV.',
     packageDuration: '4-month exclusive representation',
     durationImage: '/assets/exclusivity-he/package-duration.jpg',
-    durationImageAlt: 'Luxury poolside setting — ProperTLV four-month exclusive representation',
+    durationImageAlt: 'Luxury poolside setting for ProperTLV four-month exclusive representation',
     heroImage: '/assets/sales-package/hero-tel-aviv.jpg',
-    heroImageAlt: 'Tel Aviv skyline at golden hour — ProperTLV exclusive sales marketing',
+    heroImageAlt: 'Tel Aviv skyline at golden hour, ProperTLV exclusive sales marketing',
     paragraphs: [
-      'At ProperTLV, we’re not just agents — we’re trusted partners in Tel Aviv’s high-end real estate market. With 17+ years of experience and a global clientele including expats, diplomats, and locals, we handle every detail with care and precision.',
+      'At ProperTLV we are more than agents. We are trusted partners in Tel Aviv’s high-end real estate market. With 17+ years of experience and a global clientele including expats, diplomats, and locals, we handle every detail with care and precision.',
       'From Bauhaus gems to garden and rooftop homes, our exclusive listings shine through targeted marketing, 24/7 service, and full legal support.',
       'Your property deserves representation at the highest level.',
     ],
@@ -71,21 +71,21 @@ export const siteContentEn: SiteContent = {
         image: '/assets/sales-package/premium-marketing.jpg',
         imageAlt: 'Professionally staged living room prepared for a ProperTLV listing',
         items: [
-          'Professional photography and videography — includes cinematic video tours and aerial drone footage (if relevant)',
-          'Interior design consultation and home styling — our in-house design team ensures the home looks its absolute best',
-          'Custom-designed digital brochure — luxury-grade marketing materials with multilingual options (Hebrew, English, French, and Russian)',
+          'Professional photography and videography, including cinematic video tours and aerial drone footage when relevant',
+          'Interior design consultation and home styling. Our in-house design team makes sure the home looks its best',
+          'A custom digital brochure, with luxury marketing materials available in Hebrew, English, French, and Russian',
         ],
       },
       {
         title: '2. Elite Exposure & Network',
         items: [
-          '17+ years of high-end real estate expertise — deep roots in the local market and international buyer community',
-          'Exclusive access to our client network — mailing list of over 5,000 qualified buyers, many of whom are overseas investors or relocating families',
+          '17+ years of high-end real estate expertise, with deep roots in the local market and international buyer community',
+          'Exclusive access to our client network, a mailing list of over 5,000 qualified buyers, many of them overseas investors or relocating families',
           'Instagram: 23K+ active, high-end followers',
           'Facebook: 2.1K+ curated audience and posting in exclusive realtor groups',
           'Regular content shared for your property via reels, posts, and stories with strong engagement',
           'LinkedIn page: 1,200 close connections',
-          'Listing on premium portals — Yad2, Madlan, OnMap, Google Ads, our website, and international portals where applicable',
+          'Listing on premium portals including Yad2, Madlan, OnMap, Google Ads, our website, and international portals where applicable',
         ],
       },
       {
@@ -93,17 +93,17 @@ export const siteContentEn: SiteContent = {
         image: '/assets/sales-package/promotion-strategy.jpg',
         imageAlt: 'ProperTLV agent hosting a private property tour for qualified buyers',
         items: [
-          'Dedicated marketing plan for your property — tailored to your home’s unique features and target buyer profile',
-          'WhatsApp and direct messaging campaigns — property sent directly to our personal contact list (VIP buyers, ambassadors, relocation agencies, and industry colleagues)',
-          'Open houses and private tours — organized for qualified buyers only, with guided tours by a senior agent',
+          'A dedicated marketing plan for your property, tailored to your home’s unique features and target buyer profile',
+          'WhatsApp and direct messaging campaigns that send the property to our personal contact list, including VIP buyers, ambassadors, relocation agencies, and industry colleagues',
+          'Open houses and private tours for qualified buyers only, with guided tours by a senior agent',
         ],
       },
       {
         title: '4. Personal Premium Service',
         items: [
-          'Single point of contact — full accountability and availability; one agent handling everything, with no confusion',
-          'Clear communication and updates — monthly performance reports and feedback from potential buyers',
-          'Discreet sales option — for clients who prefer not to advertise publicly (quiet or off-market listings)',
+          'A single point of contact, with one agent handling everything so there is no confusion',
+          'Clear communication and updates, including monthly performance reports and feedback from potential buyers',
+          'A discreet sales option for clients who prefer not to advertise publicly, including quiet or off-market listings',
         ],
       },
       {
@@ -111,9 +111,9 @@ export const siteContentEn: SiteContent = {
         image: '/assets/sales-package/maximize-sale-1.jpg',
         imageAlt: 'Luxury Tel Aviv apartment interior marketed by ProperTLV',
         items: [
-          'Strategic pricing advisory — based on real-time data and luxury market trends',
-          'Offer and negotiation management — we manage every step to secure the highest possible sale price',
-          'Experience with high-value transactions — proven results in properties worth millions of shekels and euros',
+          'Strategic pricing advice based on real-time data and luxury market trends',
+          'Offer and negotiation management. We handle every step to secure the highest possible sale price',
+          'Experience with high-value transactions and proven results in properties worth millions of shekels and euros',
         ],
       },
     ],
@@ -174,7 +174,7 @@ export const siteContentEn: SiteContent = {
         id: 'lee-cohen',
         name: 'Lee Cohen',
         title: 'Office & Operations',
-        bio: 'Lee keeps ProperTLV’s day-to-day operations running seamlessly — coordinating listings, appointments, and office communication so every client experience stays organized from first call to closing.',
+        bio: 'Lee keeps ProperTLV’s day-to-day operations running smoothly, coordinating listings, appointments, and office communication so every client experience stays organized from first call to closing.',
         image: teamPortrait('lee-cohen'),
         imageAlt: 'Portrait of Lee Cohen, Office & Operations at ProperTLV',
       },
@@ -185,9 +185,9 @@ export const siteContentEn: SiteContent = {
   buyerServices: {
     accent: 'For Buyers',
     title: 'Services for Buyers',
-    subtitle: 'Finding a Tel Aviv home that fits — with guidance, not pressure.',
+    subtitle: 'Finding a Tel Aviv home that fits, with guidance rather than pressure.',
     paragraphs: [
-      'Buying in Tel Aviv can feel overwhelming: fast-moving listings, varied neighbourhoods, and many details to compare. ProperTLV helps you move through the search with a clear plan — understanding what matters to you, then focusing on properties that genuinely match.',
+      'Buying in Tel Aviv can feel overwhelming: fast-moving listings, varied neighbourhoods, and many details to compare. ProperTLV helps you move through the search with a clear plan. We start by understanding what matters to you, then focus on properties that genuinely match.',
       'You receive honest context on areas and pricing, curated options worth your time, and direct support through viewings, offers, and the steps that follow. The aim is a smooth process and a home that feels right for the long term.',
     ],
     bullets: [
@@ -214,10 +214,10 @@ export const siteContentEn: SiteContent = {
   sellerServices: {
     accent: 'For Sellers',
     title: 'Services for Sellers',
-    subtitle: 'Clear advice and organised support — from valuation through closing.',
+    subtitle: 'Clear advice and organised support, from valuation through closing.',
     paragraphs: [
       'Selling in Tel Aviv means balancing price, timing, presentation, and the right audience. ProperTLV helps you understand where your property sits in the market, prepare it thoughtfully, and move through viewings and offers without losing control of the process.',
-      'This is our standard seller support: strategic guidance, coordinated communication, and professional handling at every step. If you want the full premium program — professional media, staging, targeted campaigns, and exclusive representation — that is covered in our separate Exclusive Representation Package.',
+      'This is our standard seller support: strategic guidance, coordinated communication, and professional handling at every step. If you want the full premium program, including professional media, staging, targeted campaigns, and exclusive representation, that is covered in our separate Exclusive Representation Package.',
     ],
     bullets: [
       'Initial valuation conversation and pricing context for your neighbourhood',
@@ -263,7 +263,7 @@ export const siteContentEn: SiteContent = {
         id: 'review-inna',
         author: 'Inna Dulerayn',
         quote:
-          'I am feeling really grateful to the team of ProperTLV, especially to our agent Tova Dekkers for finding us the excellent place to rent. She is very knowledgeable and flexible — we felt very supported and safe dealing with her and making decisions. She has found for us the perfect property, and helped to find the best solutions in discussing all the details. I would definitely recommend her to my friends.',
+          'I am feeling really grateful to the team of ProperTLV, especially to our agent Tova Dekkers for finding us the excellent place to rent. She is very knowledgeable and flexible. We felt very supported and safe dealing with her and making decisions. She has found for us the perfect property, and helped to find the best solutions in discussing all the details. I would definitely recommend her to my friends.',
         rating: 5,
         date: '',
         role: 'Renter',
@@ -303,7 +303,7 @@ export const siteContentEn: SiteContent = {
       buttonLabel: 'View all reviews',
       sourceLabel: 'Google Reviews',
       reviewCountLabel: 'reviews',
-      ariaLabel: 'View Proper TLV on Google Maps — 5.0 stars from 38 reviews',
+      ariaLabel: 'View Proper TLV on Google Maps, 5.0 stars from 38 reviews',
     },
   },
 
@@ -331,13 +331,13 @@ export const siteContentEn: SiteContent = {
     accent: 'Early Access',
     title: 'Get new properties before everyone else',
     description:
-      'Join ProperTLV’s list for fresh listings, neighbourhood notes, and market updates — delivered discreetly to your inbox.',
+      'Join ProperTLV’s list for fresh listings, neighbourhood notes, and market updates, delivered discreetly to your inbox.',
     nameLabel: 'Name',
     emailLabel: 'Email',
     buttonLabel: 'Subscribe',
     footnote: 'We respect your privacy. Unsubscribe anytime.',
     successMessage:
-      'Thank you — you’re on the list. We’ll be in touch when new properties match what you’re looking for.',
+      'Thank you. You’re on the list. We’ll be in touch when new properties match what you’re looking for.',
     errorMessage: 'Something went wrong. Please try again.',
   },
 
@@ -348,16 +348,16 @@ export const siteContentEn: SiteContent = {
       'Ready to see a property or talk through your search? Pick a time that suits you for a call or viewing with Tovi.',
     buttonLabel: 'Schedule a visit',
     footnote: 'You can also reach us by phone or WhatsApp.',
-    placeholderNote: 'Online scheduling link coming soon — use Contact to book a visit.',
+    placeholderNote: 'Online scheduling link coming soon. Use Contact to book a visit.',
   },
 
   mapSection: {
     accent: 'Tel Aviv',
     title: 'Properties across the city',
     subtitle:
-      'Explore ProperTLV listings by neighbourhood — select a pin or listing to view details.',
+      'Explore ProperTLV listings by neighbourhood. Select a pin or listing to view details.',
     placeholderNote:
-      'Preview map — connect Google Maps when API credentials are ready.',
+      'Preview map. Connect Google Maps when API credentials are ready.',
     viewProperty: 'View property',
     allNeighborhoods: 'All neighbourhoods',
     listingsCount: '{count} listings',

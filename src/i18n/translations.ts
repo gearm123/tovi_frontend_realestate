@@ -5,8 +5,8 @@ import { ruPatch } from './ru'
 
 const en = {
   meta: {
-    title: 'PROPERTLV — Tel Aviv Real Estate',
-    description: 'PROPERTLV — curated homes and apartments in Tel Aviv.',
+    title: 'PROPERTLV | Tel Aviv Real Estate',
+    description: 'ProperTLV is a boutique agency for curated homes and apartments in Tel Aviv.',
   },
   lang: {
     switchToHebrew: 'עברית',
@@ -35,7 +35,7 @@ const en = {
   },
   footer: {
     blurb:
-      'Curated homes and apartments across Tel Aviv — from Bauhaus gems on Rothschild to quiet family streets in Ramat Aviv.',
+      'Curated homes and apartments across Tel Aviv, from Bauhaus gems on Rothschild to quiet family streets in Ramat Aviv.',
     navAria: 'Footer navigation',
     about: 'About',
     sales: 'All Sales',
@@ -69,7 +69,7 @@ const en = {
   leadCapturePopup: {
     accent: 'Let us help',
     title: 'Find your Tel Aviv home',
-    subtitle: 'Leave your name and phone — we will reach out on WhatsApp with curated options.',
+    subtitle: 'Leave your name and phone. We will reach out on WhatsApp with curated options.',
     name: 'Name',
     phone: 'Phone',
     message: 'Message (optional)',
@@ -80,7 +80,7 @@ const en = {
     closeAria: 'Close popup',
     successTitle: 'Thank you',
     successHint:
-      'We opened WhatsApp with your details — tap Send there to reach the ProperTLV team.',
+      'We opened WhatsApp with your details. Tap Send there to reach the ProperTLV team.',
     whatsappAction: 'Open WhatsApp',
     error: 'Something went wrong. Please try again or contact us on WhatsApp.',
     footnote: 'Your details are saved and WhatsApp opens so you can message our team directly.',
@@ -96,14 +96,14 @@ const en = {
     sectionLabel: "This week's selection",
     title: 'Properties for You',
     intro:
-      'Handpicked apartments and homes across Tel Aviv — each one chosen for its light, its neighborhood, and the life you might build there.',
+      'Handpicked apartments and homes across Tel Aviv, each one chosen for its light, its neighborhood, and the life you might build there.',
   },
   about: {
     accent: 'Our Story',
     title: 'About PROPERTLV',
-    subtitle: 'Finding a home should feel personal — not transactional.',
+    subtitle: 'Finding a home should feel personal, not transactional.',
     p1: 'PROPERTLV connects people with thoughtfully selected properties across Tel Aviv, from Bauhaus gems on Rothschild to quiet family streets in Ramat Aviv. We believe every home has a story, and every search deserves patience, expertise, and care.',
-    p2: 'Founded by local specialists who know the city block by block, we guide buyers, sellers, and renters through every step — with transparency, discretion, and a deep respect for what home means.',
+    p2: 'Founded by local specialists who know the city block by block, we guide buyers, sellers, and renters through every step, with transparency, discretion, and a deep respect for what home means.',
     p3: 'Whether you are looking for a sea-view penthouse, a garden-level duplex, or a rental near the park, PROPERTLV is here to help you find the right fit.',
   },
   contact: {
@@ -117,7 +117,7 @@ const en = {
   contactForm: {
     success: 'Thank you for reaching out. We will be in touch shortly.',
     successHint:
-      'We opened WhatsApp with your message — tap Send there to reach us. You can also email us using the button below.',
+      'We opened WhatsApp with your message. Tap Send there to reach us. You can also email us using the button below.',
     whatsappAction: 'Open WhatsApp',
     emailAction: 'Email {email}',
     submitting: 'Sending…',
@@ -157,12 +157,12 @@ const en = {
     title: 'The Exclusive Representation Package',
     subtitle: 'The power of selling exclusively with ProperTLV.',
     intro:
-      'At ProperTLV, we’re trusted partners in Tel Aviv’s high-end real estate market — with 15+ years of experience, global clients, and full-service marketing, exposure, and negotiation support.',
+      'At ProperTLV, we’re trusted partners in Tel Aviv’s high-end real estate market, with 15+ years of experience, global clients, and full-service marketing, exposure, and negotiation support.',
     items: [
-      'Premium marketing — photography, video, staging, and luxury brochures',
-      'Elite exposure — 5,000+ buyer network and premium portal listings',
-      'Personalized promotion — tailored campaigns, WhatsApp outreach, and private tours',
-      'White glove service — one dedicated agent and monthly progress reports',
+      'Premium marketing, including photography, video, staging, and luxury brochures',
+      'Elite exposure through a 5,000+ buyer network and premium portal listings',
+      'Personalized promotion with tailored campaigns, WhatsApp outreach, and private tours',
+      'White glove service, with one dedicated agent and monthly progress reports',
       'Strategic pricing and negotiation to maximize your sale price',
     ],
     cta: 'Enquire about the package',
@@ -182,7 +182,7 @@ const en = {
       {
         title: 'Neighbourhood Guide: Florentin',
         excerpt:
-          'From artist studios to rooftop bars — why creatives and young professionals are calling Florentin home.',
+          'From artist studios to rooftop bars, this is why creatives and young professionals are calling Florentin home.',
         date: 'February 2026',
       },
       {
@@ -217,10 +217,10 @@ const en = {
     resultsIntro: 'Listings update instantly as you adjust the filters below.',
     resultsCount: '{count} properties found',
     demoListingsNote:
-      'Current ProperTLV listings — availability and details may change.',
+      'Current ProperTLV listings. Availability and details may change.',
     emptyTitle: 'No properties match your search',
     emptyText:
-      'Try broadening your filters — change the status, neighbourhood, or price range, or clear all filters to start again.',
+      'Try broadening your filters. Change the status, neighbourhood, or price range, or clear all filters to start again.',
   },
   filters: {
     aria: 'Property search filters',
@@ -307,8 +307,8 @@ const en = {
 
 const he: TranslationTree = {
   meta: {
-    title: 'PROPERTLV — נדל״ן בתל אביב',
-    description: 'PROPERTLV — דירות ובתים נבחרים בתל אביב.',
+    title: 'PROPERTLV | נדל״ן בתל אביב',
+    description: 'ProperTLV היא סוכנות בוטיק לדירות ובתים נבחרים בתל אביב.',
   },
   lang: {
     switchToHebrew: 'עברית',
@@ -337,7 +337,7 @@ const he: TranslationTree = {
   },
   footer: {
     blurb:
-      'דירות ובתים נבחרים ברחבי תל אביב — מפנינות באוהאוס ברוטשילד ועד רחובות שקטים למשפחות ברמת אביב.',
+      'דירות ובתים נבחרים ברחבי תל אביב, מפנינות באוהאוס ברוטשילד ועד רחובות שקטים למשפחות ברמת אביב.',
     navAria: 'ניווט בכותרת תחתונה',
     about: 'אודות',
     sales: 'כל הנכסים למכירה',
@@ -371,7 +371,7 @@ const he: TranslationTree = {
   leadCapturePopup: {
     accent: 'נשמח לעזור',
     title: 'מצאו את הבית שלכם בתל אביב',
-    subtitle: 'השאירו שם וטלפון — נחזור אליכם בוואטסאפ עם הצעות מותאמות אישית.',
+    subtitle: 'השאירו שם וטלפון. נחזור אליכם בוואטסאפ עם הצעות מותאמות אישית.',
     name: 'שם',
     phone: 'טלפון',
     message: 'הודעה (אופציונלי)',
@@ -381,7 +381,7 @@ const he: TranslationTree = {
     dismiss: 'המשך גלישה',
     closeAria: 'סגירת חלון',
     successTitle: 'תודה',
-    successHint: 'פתחנו את וואטסאפ עם הפרטים שלכם — לחצו שליחה שם כדי ליצור קשר עם ProperTLV.',
+    successHint: 'פתחנו את וואטסאפ עם הפרטים שלכם. לחצו שליחה שם כדי ליצור קשר עם ProperTLV.',
     whatsappAction: 'פתיחת וואטסאפ',
     error: 'משהו השתבש. נסו שוב או צרו קשר בוואטסאפ.',
     footnote: 'הפרטים נשמרים ווואטסאפ נפתח כדי שתוכלו לשלוח הודעה ישירות לצוות.',
@@ -397,15 +397,15 @@ const he: TranslationTree = {
     sectionLabel: 'הבחירה של השבוע',
     title: 'נכסים בשבילכם',
     intro:
-      'דירות ובתים נבחרים ברחבי תל אביב — כל אחד נבחר בזכות האור, השכונה והחיים שאפשר לבנות בו.',
+      'דירות ובתים נבחרים ברחבי תל אביב. כל אחד נבחר בזכות האור, השכונה והחיים שאפשר לבנות בו.',
   },
   about: {
     accent: 'הסיפור שלנו',
     title: 'אודות PROPERTLV',
-    subtitle: 'מציאת בית צריכה להרגיש אישית — לא עסקית.',
+    subtitle: 'מציאת בית צריכה להרגיש אישית, לא עסקית.',
     p1: 'PROPERTLV מחברת בין אנשים לנכסים נבחרים ברחבי תל אביב, מפנינות באוהאוס ברוטשילד ועד רחובות משפחתיים שקטים ברמת אביב. אנחנו מאמינים שלכל בית יש סיפור, ולכל חיפוש מגיעים סבלנות, מומחיות ודאגה.',
-    p2: 'החברה הוקמה על ידי מומחים מקומיים שמכירים את העיר רחוב אחר רחוב. אנחנו מלווים קונים, מוכרים ושוכרים בכל שלב — בשקיפות, בדיסקרטיות ובכבוד עמוק למה שבית אומר.',
-    p3: 'בין אם אתם מחפשים פנטהאוז עם נוף לים, דופלקס בקומת גן או דירה להשכרה ליד הפארק — PROPERTLV כאן כדי לעזור לכם למצוא את ההתאמה הנכונה.',
+    p2: 'החברה הוקמה על ידי מומחים מקומיים שמכירים את העיר רחוב אחר רחוב. אנחנו מלווים קונים, מוכרים ושוכרים בכל שלב, בשקיפות, בדיסקרטיות ובכבוד עמוק למה שבית אומר.',
+    p3: 'בין אם אתם מחפשים פנטהאוז עם נוף לים, דופלקס בקומת גן או דירה להשכרה ליד הפארק, PROPERTLV כאן כדי לעזור לכם למצוא את ההתאמה הנכונה.',
   },
   contact: {
     accent: 'שלום',
@@ -418,7 +418,7 @@ const he: TranslationTree = {
   contactForm: {
     success: 'תודה שפניתם אלינו. ניצור קשר בקרוב.',
     successHint:
-      'פתחנו את וואטסאפ עם ההודעה שלכם — לחצו שליחה שם כדי ליצור קשר. אפשר גם לשלוח אלינו אימייל בכפתור למטה.',
+      'פתחנו את וואטסאפ עם ההודעה שלכם. לחצו שליחה שם כדי ליצור קשר. אפשר גם לשלוח אלינו אימייל בכפתור למטה.',
     whatsappAction: 'פתיחת וואטסאפ',
     emailAction: 'אימייל ל-{email}',
     submitting: 'שולח…',
@@ -458,12 +458,12 @@ const he: TranslationTree = {
     title: 'חבילת הייצוג הבלעדית',
     subtitle: 'כוחה של מכירה בלעדית עם ProperTLV.',
     intro:
-      'ב-ProperTLV אנחנו שותפים מהימנים בשוק הנדל״ן היוקרתי של תל אביב — עם ניסיון של למעלה מ-15 שנה, לקוחות מכל העולם, וליווי מלא בשיווק, חשיפה ומשא ומתן.',
+      'ב-ProperTLV אנחנו שותפים מהימנים בשוק הנדל״ן היוקרתי של תל אביב, עם ניסיון של למעלה מ-15 שנה, לקוחות מכל העולם, וליווי מלא בשיווק, חשיפה ומשא ומתן.',
     items: [
-      'שיווק פרימיום — צילום, וידאו, הום סטיילינג וחוברות יוקרה',
-      'חשיפה אליטה — רשת של למעלה מ-5,000 קונים ופרסום בפורטלים מובילים',
-      'קידום מותאם אישית — קמפיינים, WhatsApp וסיורים פרטיים',
-      'שירות White Glove — סוכן ייעודי ודוחות התקדמות חודשיים',
+      'שיווק פרימיום, כולל צילום, וידאו, הום סטיילינג וחוברות יוקרה',
+      'חשיפה אליטה דרך רשת של למעלה מ-5,000 קונים ופרסום בפורטלים מובילים',
+      'קידום מותאם אישית עם קמפיינים, WhatsApp וסיורים פרטיים',
+      'שירות White Glove, עם סוכן ייעודי ודוחות התקדמות חודשיים',
       'תמחור ומשא ומתן אסטרטגיים למקסום מחיר המכירה',
     ],
     cta: 'לפרטים על החבילה',
@@ -483,7 +483,7 @@ const he: TranslationTree = {
       {
         title: 'מדריך שכונות: פלורנטין',
         excerpt:
-          'מסטודיו לאמנים ועד ברים על הגג — למה יוצרים וצעירים מקצועיים בוחרים לגור בפלורנטין.',
+          'מסטודיו לאמנים ועד ברים על הגג, זו הסיבה שיוצרים וצעירים מקצועיים בוחרים לגור בפלורנטין.',
         date: 'פברואר 2026',
       },
       {
@@ -518,10 +518,10 @@ const he: TranslationTree = {
     resultsIntro: 'הרשימה מתעדכנת מיד כשמשנים את המסננים.',
     resultsCount: 'נמצאו {count} נכסים',
     demoListingsNote:
-      'נכסים עדכניים של ProperTLV — הזמינות והפרטים עשויים להשתנות.',
+      'נכסים עדכניים של ProperTLV. הזמינות והפרטים עשויים להשתנות.',
     emptyTitle: 'לא נמצאו נכסים תואמים',
     emptyText:
-      'נסו להרחיב את המסננים — שנו סטטוס, שכונה או טווח מחירים, או נקו את כל המסננים להתחלה מחדש.',
+      'נסו להרחיב את המסננים. שנו סטטוס, שכונה או טווח מחירים, או נקו את כל המסננים להתחלה מחדש.',
   },
   filters: {
     aria: 'מסנני חיפוש נכסים',

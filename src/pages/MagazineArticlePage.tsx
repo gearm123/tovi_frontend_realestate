@@ -41,7 +41,7 @@ export default function MagazineArticlePage() {
   return (
     <>
       <PageSeo
-        title={`${article.title} — ProperTLV Magazine`}
+        title={`${article.title} | ProperTLV Magazine`}
         description={article.excerpt}
         path={articlePath}
         image={article.image}

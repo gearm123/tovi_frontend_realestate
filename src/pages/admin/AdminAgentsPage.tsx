@@ -10,7 +10,7 @@ export default function AdminAgentsPage() {
     const assigned = properties.filter((p) => p.agentId === id).length
     if (assigned > 0) {
       window.alert(
-        `Cannot delete “${name}” — ${assigned} listing(s) still assigned to this agent. Reassign them first.`,
+        `Cannot delete “${name}”. ${assigned} listing(s) still assigned to this agent. Reassign them first.`,
       )
       return
     }

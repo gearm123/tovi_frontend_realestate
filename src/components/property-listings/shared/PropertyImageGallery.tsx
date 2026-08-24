@@ -43,7 +43,7 @@ export default function PropertyImageGallery({
           <figure key={`${src}-${index}`} className="property-gallery__slide">
             <PropertyImage
               imagePath={src}
-              alt={images.length > 1 ? `${alt} — ${index + 1}` : alt}
+              alt={images.length > 1 ? `${alt} (${index + 1})` : alt}
               className="property-gallery__image"
               priority={priority && index === 0}
             />
