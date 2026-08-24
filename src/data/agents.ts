@@ -43,7 +43,7 @@ export const agents: Agent[] = [
   },
   {
     id: 'yana-yatsenko',
-    name: 'Yana Yatsenko',
+    name: 'Yana Yats',
     title: {
       en: 'Real Estate Agent',
       he: 'סוכנת נדל״ן',
@@ -52,8 +52,8 @@ export const agents: Agent[] = [
     phone: officePhone,
     image: teamPortrait('yana-yatsenko'),
     imageAlt: {
-      en: 'Portrait of Yana Yatsenko, Real Estate Agent at ProperTLV',
-      he: 'דיוקן של Yana Yatsenko, סוכנת נדל״ן ב-ProperTLV',
+      en: 'Portrait of Yana Yats, Real Estate Agent at ProperTLV',
+      he: 'דיוקן של Yana Yats, סוכנת נדל״ן ב-ProperTLV',
     },
   },
   {
