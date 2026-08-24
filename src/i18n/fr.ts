@@ -275,6 +275,7 @@ export const frPatch = {
     emailAgent: 'Écrire à {name}',
     contactAgent: 'Envoyer une demande',
     agentPhone: 'Appeler',
+    loadMore: 'Voir plus',
   },
   map: {
     loadErrorTitle: 'Google Maps n’a pas pu se charger',

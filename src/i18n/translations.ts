@@ -290,6 +290,7 @@ const en = {
     emailAgent: 'Email {name}',
     contactAgent: 'Send inquiry',
     agentPhone: 'Call',
+    loadMore: 'Load more',
   },
   map: {
     loadErrorTitle: 'Google Maps could not load',
@@ -588,6 +589,7 @@ const he: TranslationTree = {
     emailAgent: 'שליחת מייל ל{name}',
     contactAgent: 'שליחת פנייה',
     agentPhone: 'התקשרות',
+    loadMore: 'הצג עוד',
   },
   map: {
     loadErrorTitle: 'לא ניתן לטעון את Google Maps',

@@ -21,7 +21,8 @@ export default function PropertyImageGallery({
   variant = 'detail',
   priority = false,
 }: PropertyImageGalleryProps) {
-  const images = getPropertyImages(property)
+  const allImages = getPropertyImages(property)
+  const images = variant === 'card' ? allImages.slice(0, 1) : allImages
   const multi = images.length > 1
 
   return (

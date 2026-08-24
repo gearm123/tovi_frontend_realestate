@@ -10,10 +10,12 @@ import ReviewsSection from '../components/trust/ReviewsSection'
 import { useLanguage } from '../context/LanguageContext'
 import { useSiteData } from '../hooks/useSiteData'
 
+const HOME_FEATURED_COUNT = 6
+
 export default function HomePage() {
   const { t } = useLanguage()
   const { properties } = useSiteData()
-  const featured = properties.filter((property) => property.featured)
+  const featured = properties.filter((property) => property.featured).slice(0, HOME_FEATURED_COUNT)
 
   return (
     <>

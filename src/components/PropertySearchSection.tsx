@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { ListingStatusFilter } from '../constants/propertySearch'
 import { useLanguage } from '../context/LanguageContext'
 import { usePropertyFilters } from '../hooks/usePropertyFilters'
@@ -8,6 +8,8 @@ import PropertyFiltersBar from './PropertyFilters'
 import PropertyListings from './PropertyListings'
 import PropertySearchEmpty from './PropertySearchEmpty'
 import './PropertySearchSection.css'
+
+const SEARCH_PAGE_SIZE = 12
 
 interface PropertySearchSectionProps {
   /** Override property source — defaults to all listings from the site data store */
@@ -36,6 +38,15 @@ export default function PropertySearchSection({
   const sectionLabel = format(t.search.resultsCount, { count: filtered.length })
   const title = listingsTitle ?? t.search.resultsTitle
   const intro = listingsIntro ?? t.search.resultsIntro
+  const [visibleCount, setVisibleCount] = useState(SEARCH_PAGE_SIZE)
+  const filterKey = `${filtered.length}:${filtered[0]?.id ?? ''}:${filtered[filtered.length - 1]?.id ?? ''}`
+
+  useEffect(() => {
+    setVisibleCount(SEARCH_PAGE_SIZE)
+  }, [filterKey])
+
+  const listed = filtered.slice(0, visibleCount)
+  const hasMore = visibleCount < filtered.length
 
   return (
     <section id={id} className="property-search-section" aria-label={t.search.sectionAria}>
@@ -50,13 +61,26 @@ export default function PropertySearchSection({
       {filtered.length === 0 ? (
         <PropertySearchEmpty onReset={resetFilters} />
       ) : (
-        <PropertyListings
-          properties={filtered}
-          sectionLabel={sectionLabel}
-          title={title}
-          intro={intro}
-          showHeader={showListingsHeader}
-        />
+        <>
+          <PropertyListings
+            properties={listed}
+            sectionLabel={sectionLabel}
+            title={title}
+            intro={intro}
+            showHeader={showListingsHeader}
+          />
+          {hasMore && (
+            <div className="property-search-section__more">
+              <button
+                type="button"
+                className="property-search-section__more-button"
+                onClick={() => setVisibleCount((count) => count + SEARCH_PAGE_SIZE)}
+              >
+                {t.property.loadMore}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </section>
   )

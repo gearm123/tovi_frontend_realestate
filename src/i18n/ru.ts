@@ -275,6 +275,7 @@ export const ruPatch = {
     emailAgent: 'Написать {name}',
     contactAgent: 'Отправить запрос',
     agentPhone: 'Позвонить',
+    loadMore: 'Показать ещё',
   },
   map: {
     loadErrorTitle: 'Не удалось загрузить Google Maps',

@@ -17,3 +17,29 @@
 .property-search-section .property-filters {
   margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
 }
+
+.property-search-section__more {
+  display: flex;
+  justify-content: center;
+  padding: 0.25rem 0 1.5rem;
+}
+
+.property-search-section__more-button {
+  font-family: var(--font-button);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--white);
+  padding: 0.65rem 1.25rem;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.property-search-section__more-button:hover,
+.property-search-section__more-button:focus-visible {
+  background: var(--accent);
+  color: var(--white);
+}
