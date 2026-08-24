@@ -163,6 +163,36 @@
   line-height: 1.8;
   max-width: 60ch;
   margin-bottom: 0.65rem;
+  unicode-bidi: isolate;
+  text-align: start;
+}
+
+.desktop-property__description--formatted {
+  white-space: pre-line;
+}
+
+.desktop-property__show-more {
+  display: inline-block;
+  align-self: flex-start;
+  margin: -0.2rem 0 0.85rem;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-button);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.desktop-property__show-more:hover {
+  text-decoration: underline;
+}
+
+.desktop-property__title,
+.desktop-property__address {
+  unicode-bidi: isolate;
+  text-align: start;
 }
 
 .desktop-property__agent {

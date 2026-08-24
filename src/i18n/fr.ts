@@ -276,6 +276,8 @@ export const frPatch = {
     contactAgent: 'Envoyer une demande',
     agentPhone: 'Appeler',
     loadMore: 'Voir plus',
+    showMore: 'Voir plus',
+    showLess: 'Voir moins',
   },
   map: {
     loadErrorTitle: 'Google Maps n’a pas pu se charger',

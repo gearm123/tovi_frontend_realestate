@@ -88,6 +88,13 @@
   margin-bottom: 1.25rem;
 }
 
+.property-detail__title,
+.property-detail__address,
+.property-detail__description,
+.property-detail__price {
+  unicode-bidi: isolate;
+}
+
 .property-detail__description {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-regular);
@@ -95,6 +102,8 @@
   color: var(--ink-soft);
   line-height: 1.8;
   margin-bottom: 2rem;
+  white-space: pre-line;
+  text-align: start;
 }
 
 .property-detail__video {

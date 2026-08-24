@@ -11,11 +11,13 @@ import './MobilePropertyCard.css'
 interface MobilePropertyCardProps {
   property: Property
   index: number
+  collapseDescription?: boolean
 }
 
 export default function MobilePropertyCard({
   property,
   index,
+  collapseDescription = false,
 }: MobilePropertyCardProps) {
   const { t, locale } = useLanguage()
 
@@ -60,7 +62,11 @@ export default function MobilePropertyCard({
         </div>
       </div>
 
-      <PropertyCardBody property={property} classPrefix="mobile-property" />
+      <PropertyCardBody
+        property={property}
+        classPrefix="mobile-property"
+        collapseDescription={collapseDescription}
+      />
     </article>
   )
 }

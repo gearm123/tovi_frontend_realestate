@@ -11,11 +11,13 @@ import './DesktopPropertyCard.css'
 interface DesktopPropertyCardProps {
   property: Property
   index: number
+  collapseDescription?: boolean
 }
 
 export default function DesktopPropertyCard({
   property,
   index,
+  collapseDescription = false,
 }: DesktopPropertyCardProps) {
   const { t, locale } = useLanguage()
 
@@ -60,7 +62,11 @@ export default function DesktopPropertyCard({
         </div>
       </div>
 
-      <PropertyCardBody property={property} classPrefix="desktop-property" />
+      <PropertyCardBody
+        property={property}
+        classPrefix="desktop-property"
+        collapseDescription={collapseDescription}
+      />
     </article>
   )
 }

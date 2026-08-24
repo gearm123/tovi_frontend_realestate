@@ -291,6 +291,8 @@ const en = {
     contactAgent: 'Send inquiry',
     agentPhone: 'Call',
     loadMore: 'Load more',
+    showMore: 'Show more',
+    showLess: 'Show less',
   },
   map: {
     loadErrorTitle: 'Google Maps could not load',
@@ -590,6 +592,8 @@ const he: TranslationTree = {
     contactAgent: 'שליחת פנייה',
     agentPhone: 'התקשרות',
     loadMore: 'הצג עוד',
+    showMore: 'הצג עוד',
+    showLess: 'הצג פחות',
   },
   map: {
     loadErrorTitle: 'לא ניתן לטעון את Google Maps',

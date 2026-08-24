@@ -2,6 +2,7 @@ import type { Property } from '../types/property'
 import importedListings from './importedListings.json'
 import { withNormalizedPropertyImages } from '../utils/propertyGallery'
 import { withoutStreetNumbers } from '../utils/streetNumber'
+import { withCleanedListingCopy } from '../utils/listingCopy'
 
 /**
  * Neighborhood options used by search filters and the admin listing form.
@@ -35,6 +36,7 @@ export const propertyTypes = [
  */
 export const properties: Property[] = (importedListings as Property[])
   .map(withoutStreetNumbers)
+  .map(withCleanedListingCopy)
   .map(withNormalizedPropertyImages)
 
 export function getPropertyById(id: string): Property | undefined {

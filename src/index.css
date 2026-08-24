@@ -197,3 +197,33 @@ html[dir='rtl'] .orange-cursive-title {
   font-family: var(--font-hebrew);
   font-weight: 400;
 }
+
+/* Listing copy follows the language of the text, not the page UI. */
+.listing-copy[dir='ltr'] {
+  direction: ltr;
+  text-align: left !important;
+  unicode-bidi: isolate;
+  font-family: 'Cormorant Garamond', serif;
+  width: 100%;
+  max-width: none;
+  margin-inline-start: 0;
+  margin-inline-end: auto;
+}
+
+.listing-copy[dir='rtl'] {
+  direction: rtl;
+  text-align: right !important;
+  unicode-bidi: isolate;
+}
+
+h1.listing-copy,
+h3.listing-copy {
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.desktop-property__body[dir='ltr'],
+.mobile-property__body[dir='ltr'],
+.property-detail__body[dir='ltr'] {
+  text-align: left;
+}

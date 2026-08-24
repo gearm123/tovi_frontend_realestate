@@ -26,10 +26,16 @@ export default function HomePage() {
         sectionLabel={t.home.sectionLabel}
         title={t.home.title}
         intro={t.home.intro}
+        collapseDescription
       />
       <ServicesOverview />
       <PropertyMapSection />
-      <PropertySearchSection id="search" showListingsHeader listingsTitle={t.search.resultsTitle} />
+      <PropertySearchSection
+        id="search"
+        showListingsHeader
+        listingsTitle={t.search.resultsTitle}
+        collapseDescription
+      />
       <AboutSection />
       <ReviewsSection />
       <ConversionSections variant="split" />

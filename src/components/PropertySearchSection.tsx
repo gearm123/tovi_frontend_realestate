@@ -19,6 +19,7 @@ interface PropertySearchSectionProps {
   listingsTitle?: string
   listingsIntro?: string
   id?: string
+  collapseDescription?: boolean
 }
 
 export default function PropertySearchSection({
@@ -28,6 +29,7 @@ export default function PropertySearchSection({
   listingsTitle,
   listingsIntro,
   id = 'property-search',
+  collapseDescription = false,
 }: PropertySearchSectionProps) {
   const { t, format } = useLanguage()
   const { properties } = useSiteData()
@@ -68,6 +70,7 @@ export default function PropertySearchSection({
             title={title}
             intro={intro}
             showHeader={showListingsHeader}
+            collapseDescription={collapseDescription}
           />
           {hasMore && (
             <div className="property-search-section__more">

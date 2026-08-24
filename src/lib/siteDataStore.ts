@@ -11,6 +11,7 @@ import type { ListingType, Property, PropertyFeatures } from '../types/property'
 import { PLACEHOLDER_MAP_CENTER, PLACEHOLDER_PROPERTY_IMAGE } from '../data/placeholders'
 import { withNormalizedPropertyImages } from '../utils/propertyGallery'
 import { withoutStreetNumbers } from '../utils/streetNumber'
+import { withCleanedListingCopy } from '../utils/listingCopy'
 
 const STORAGE_KEY = 'propertlv_site_data_v6'
 const DATA_EVENT = 'propertlv-site-data-updated'
@@ -76,6 +77,7 @@ function readStorage(): SiteData | null {
     return {
       properties: (Array.isArray(parsed.properties) ? parsed.properties : seed.properties)
         .map(withoutStreetNumbers)
+        .map(withCleanedListingCopy)
         .map(withNormalizedPropertyImages),
       agents: reconcileAgents(parsed.agents),
       business: parsed.business ? { ...seed.business, ...parsed.business } : seed.business,

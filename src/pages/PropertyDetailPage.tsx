@@ -11,6 +11,7 @@ import { useLanguage } from '../context/LanguageContext'
 import { useSiteData } from '../hooks/useSiteData'
 import { useViewport } from '../hooks/useViewport'
 import { getLocalizedProperty } from '../i18n/propertyTranslations'
+import { listingTextDir } from '../utils/listingCopy'
 import { getPropertyImages } from '../utils/propertyGallery'
 import { isPlayableVideoUrl } from '../utils/propertyVideo'
 import { getPropertyContactPath } from '../utils/propertyContact'
@@ -109,13 +110,26 @@ export default function PropertyDetailPage() {
           }
         />
 
-        <div className="property-detail__body">
+        <div
+          className="property-detail__body"
+          dir={listingTextDir(`${localized.title} ${localized.address} ${localized.description}`)}
+        >
           {viewport === 'desktop' && (
             <ListingTypeBadge listingType={property.listingType} variant="inline" />
           )}
           <p className="property-detail__neighborhood">{neighborhoodLabel}</p>
-          <h1 className="property-detail__title">{localized.title}</h1>
-          <p className="property-detail__address">{localized.address}</p>
+          <h1
+            className="property-detail__title listing-copy"
+            dir={listingTextDir(localized.title)}
+          >
+            {localized.title}
+          </h1>
+          <p
+            className="property-detail__address listing-copy"
+            dir={listingTextDir(localized.address)}
+          >
+            {localized.address}
+          </p>
 
           <div className="property-detail__specs">
             <span>
@@ -134,7 +148,12 @@ export default function PropertyDetailPage() {
           <p className="property-detail__price">
             {localized.price ?? property.price}
           </p>
-          <p className="property-detail__description">{localized.description}</p>
+          <p
+            className="property-detail__description listing-copy"
+            dir={listingTextDir(localized.description)}
+          >
+            {localized.description}
+          </p>
 
           {showVideoTour && (
             <section className="property-detail__video" aria-labelledby="property-video-title">
