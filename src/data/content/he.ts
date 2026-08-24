@@ -164,11 +164,11 @@ export const siteContentHe: SiteContent = {
       },
       {
         id: 'eden-nahum',
-        name: 'Eden Nahum',
+        name: 'Eden Kaduri',
         title: 'סוכנת נדל״ן',
         bio: 'Eden מלווה קונים ומוכרים בתל אביב בשירות קשוב ומעשי. היא עוזרת ללקוחות לנווט בין צפיות, משא ומתן והשלבים שהופכים מודעה לעסקה מוצלחת.',
         image: teamPortrait('eden-nahum'),
-        imageAlt: 'דיוקן של Eden Nahum, סוכנת נדל״ן ב-ProperTLV',
+        imageAlt: 'דיוקן של Eden Kaduri, סוכנת נדל״ן ב-ProperTLV',
       },
       {
         id: 'lee-cohen',

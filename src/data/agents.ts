@@ -58,7 +58,7 @@ export const agents: Agent[] = [
   },
   {
     id: 'eden-nahum',
-    name: 'Eden Nahum',
+    name: 'Eden Kaduri',
     title: {
       en: 'Real Estate Agent',
       he: 'סוכנת נדל״ן',
@@ -67,8 +67,8 @@ export const agents: Agent[] = [
     phone: officePhone,
     image: teamPortrait('eden-nahum'),
     imageAlt: {
-      en: 'Portrait of Eden Nahum, Real Estate Agent at ProperTLV',
-      he: 'דיוקן של Eden Nahum, סוכנת נדל״ן ב-ProperTLV',
+      en: 'Portrait of Eden Kaduri, Real Estate Agent at ProperTLV',
+      he: 'דיוקן של Eden Kaduri, סוכנת נדל״ן ב-ProperTLV',
     },
   },
   {

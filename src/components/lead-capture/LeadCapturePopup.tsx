@@ -13,7 +13,27 @@ import LeadCaptureLanguageToggle from './LeadCaptureLanguageToggle'
 import './LeadCapturePopup.css'
 
 const SESSION_SUBMITTED_KEY = 'propertlv-lead-capture-submitted'
+const SESSION_SEEN_KEY = 'propertlv-lead-capture-seen'
 const DEFAULT_POPUP_LOCALE: Locale = 'he'
+
+function wasShownThisSession(): boolean {
+  try {
+    return (
+      sessionStorage.getItem(SESSION_SEEN_KEY) === '1' ||
+      sessionStorage.getItem(SESSION_SUBMITTED_KEY) === '1'
+    )
+  } catch {
+    return false
+  }
+}
+
+function markShownThisSession(): void {
+  try {
+    sessionStorage.setItem(SESSION_SEEN_KEY, '1')
+  } catch {
+    /* private mode / blocked storage */
+  }
+}
 
 export default function LeadCapturePopup() {
   const { pathname } = useLocation()
@@ -30,19 +50,18 @@ export default function LeadCapturePopup() {
   const popupDir = getDir(popupLocale)
 
   useEffect(() => {
-    setOpen(false)
-    setStatus('idle')
-
-    if (!shouldShowLeadCaptureOnPage(pathname)) return undefined
-    if (sessionStorage.getItem(SESSION_SUBMITTED_KEY) === '1') return undefined
+    if (wasShownThisSession()) return undefined
 
     const delayMs = getLeadCaptureSettings().delayMs
     const timer = window.setTimeout(() => {
+      if (wasShownThisSession()) return
+      if (!shouldShowLeadCaptureOnPage(window.location.pathname)) return
+      markShownThisSession()
       setOpen(true)
     }, delayMs)
 
     return () => window.clearTimeout(timer)
-  }, [pathname])
+  }, [])
 
   useEffect(() => {
     if (!open) return undefined
@@ -54,7 +73,7 @@ export default function LeadCapturePopup() {
     closeButtonRef.current?.focus()
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false)
+      if (event.key === 'Escape') handleDismiss()
     }
 
     document.addEventListener('keydown', onKeyDown)
@@ -66,6 +85,7 @@ export default function LeadCapturePopup() {
   }, [open])
 
   const handleDismiss = () => {
+    markShownThisSession()
     setOpen(false)
     setStatus('idle')
     setWhatsappUrl(null)

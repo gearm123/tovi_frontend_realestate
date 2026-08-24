@@ -14,6 +14,6 @@ export type LeadCapturePageRule =
 export const leadCapturePopupConfig = {
   enabled: true,
   rule: { mode: 'all' } satisfies LeadCapturePageRule,
-  delayMs: 1400,
+  delayMs: 10_000,
   recipientEmail: 'office@propertlv.com',
 } as const

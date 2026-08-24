@@ -53,6 +53,20 @@ function reconcileAgents(stored: Agent[] | undefined): Agent[] {
   return [...fromSeed, ...extras]
 }
 
+const LEGACY_POPUP_DELAY_MS = 1400
+
+function resolveLeadCapture(
+  stored: LeadCaptureSettings | undefined,
+  seed: LeadCaptureSettings,
+): LeadCaptureSettings {
+  if (!stored) return seed
+  const merged = { ...seed, ...stored }
+  if (merged.delayMs === LEGACY_POPUP_DELAY_MS) {
+    return { ...merged, delayMs: seed.delayMs }
+  }
+  return merged
+}
+
 function seedSiteData(): SiteData {
   return {
     properties: clone(defaultProperties),
@@ -81,9 +95,7 @@ function readStorage(): SiteData | null {
         .map(withNormalizedPropertyImages),
       agents: reconcileAgents(parsed.agents),
       business: parsed.business ? { ...seed.business, ...parsed.business } : seed.business,
-      leadCapture: parsed.leadCapture
-        ? { ...seed.leadCapture, ...parsed.leadCapture }
-        : seed.leadCapture,
+      leadCapture: resolveLeadCapture(parsed.leadCapture, seed.leadCapture),
       defaultAgentId: parsed.defaultAgentId ?? seed.defaultAgentId,
     }
   } catch {

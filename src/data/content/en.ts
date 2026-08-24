@@ -164,11 +164,11 @@ export const siteContentEn: SiteContent = {
       },
       {
         id: 'eden-nahum',
-        name: 'Eden Nahum',
+        name: 'Eden Kaduri',
         title: 'Real Estate Agent',
         bio: 'Eden supports buyers and sellers across Tel Aviv with attentive, hands-on service. She helps clients navigate viewings, negotiations, and the steps that turn a listing into a successful deal.',
         image: teamPortrait('eden-nahum'),
-        imageAlt: 'Portrait of Eden Nahum, Real Estate Agent at ProperTLV',
+        imageAlt: 'Portrait of Eden Kaduri, Real Estate Agent at ProperTLV',
       },
       {
         id: 'lee-cohen',
