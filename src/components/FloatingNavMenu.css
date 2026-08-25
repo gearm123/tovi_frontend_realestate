@@ -10,15 +10,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.35rem;
-  height: 2.35rem;
+  width: 2.65rem;
+  height: 2.65rem;
   padding: 0;
 
   background: var(--white);
   color: var(--ink);
   border: 1px solid var(--rule);
   border-radius: 50%;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 
   transition:
@@ -48,8 +48,8 @@
 .floating-nav-menu__icon {
   position: relative;
   display: block;
-  width: 1rem;
-  height: 0.75rem;
+  width: 1.1rem;
+  height: 0.85rem;
 }
 
 .floating-nav-menu__icon span {
@@ -193,22 +193,16 @@
   background: rgba(240, 90, 36, 0.06);
 }
 
-@media (min-width: 769px) {
-  .floating-nav-menu {
-    display: none;
-  }
-}
-
 @media (max-width: 768px) {
   .floating-nav-menu__trigger {
-    width: 2.2rem;
-    height: 2.2rem;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    width: 2.65rem;
+    height: 2.65rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   }
 
   .floating-nav-menu__icon {
-    width: 0.95rem;
-    height: 0.72rem;
+    width: 1.1rem;
+    height: 0.85rem;
   }
 
   .floating-nav-menu__backdrop {
@@ -221,7 +215,7 @@
 
   .floating-nav-menu__panel {
     position: fixed;
-    top: calc(max(0.55rem, env(safe-area-inset-top, 0px)) + 2.2rem + 0.45rem);
+    top: calc(max(0.55rem, env(safe-area-inset-top, 0px)) + 2.65rem + 0.5rem);
     right: max(0.55rem, env(safe-area-inset-right, 0px));
     left: max(0.55rem, env(safe-area-inset-left, 0px));
     width: auto;
