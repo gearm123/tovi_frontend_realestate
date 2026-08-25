@@ -95,36 +95,40 @@
 
 @media (max-width: 768px) {
   .header {
-    --header-logo-width: 4.275rem;
-    --header-logo-top: max(0.5rem, env(safe-area-inset-top, 0px));
+    --header-logo-width: 3.85rem;
+    --header-logo-top: max(0.45rem, env(safe-area-inset-top, 0px));
     padding: calc(
-        var(--header-logo-top) + (var(--header-logo-width) * 903 / 650) + 0.4rem
+        var(--header-logo-top) + (var(--header-logo-width) * 903 / 650) + 0.25rem
       )
-      clamp(0.75rem, 4vw, 1.25rem) 0;
+      3.4rem 0;
     overflow-x: hidden;
   }
 
   .header__logo-link {
     position: absolute;
     top: var(--header-logo-top);
-    left: max(1rem, env(safe-area-inset-left, 0px));
+    left: max(0.75rem, env(safe-area-inset-left, 0px));
     width: var(--header-logo-width);
     margin: 0;
     z-index: 2;
   }
 
   .header__masthead {
-    padding: 0.15rem 0.25rem 0.55rem;
+    padding: 0.15rem 0 0.45rem;
+  }
+
+  .header__brand {
+    max-width: 100%;
   }
 
   .header__title {
-    font-size: clamp(1.85rem, 8.5vw, 2.55rem);
+    font-size: clamp(1.7rem, 7.4vw, 2.25rem);
     line-height: 0.95;
   }
 
   .header__tagline.orange-cursive-title {
     margin-top: 0.2rem;
-    font-size: clamp(1.15rem, 5.2vw, 1.55rem);
+    font-size: clamp(1.05rem, 4.6vw, 1.4rem);
   }
 
   .header__nav {

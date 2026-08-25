@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom'
 import AccessibilityWidget from '../components/accessibility/AccessibilityWidget'
-import FloatingHomeButton from '../components/FloatingHomeButton'
 import FloatingTopControls from '../components/FloatingTopControls'
 import LeadCapturePopup from '../components/lead-capture/LeadCapturePopup'
 import GlobalSiteSeo from '../components/seo/GlobalSiteSeo'
@@ -20,7 +19,6 @@ export default function Layout() {
       </main>
       <Footer />
       <FloatingTopControls />
-      <FloatingHomeButton />
       <AccessibilityWidget />
       <WhatsAppButton />
       <LeadCapturePopup />

@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { isNavItemActive, siteNavItems } from '../data/siteNav'
 import { useLanguage } from '../context/LanguageContext'
 import { scrollPageToTop } from '../utils/scrollPageToTop'
+import LanguageToggle from './LanguageToggle'
 import './FloatingNavMenu.css'
 
 export default function FloatingNavMenu() {
@@ -74,6 +75,10 @@ export default function FloatingNavMenu() {
             className="floating-nav-menu__panel"
             aria-label={t.header.navAria}
           >
+            <div className="floating-nav-menu__langs">
+              <p className="floating-nav-menu__langs-label">{t.lang.groupAria}</p>
+              <LanguageToggle />
+            </div>
             {siteNavItems.map((item) => (
               <span key={item.to} className="floating-nav-menu__item">
                 <NavLink

@@ -132,3 +132,18 @@
   font-size: 0.82rem;
   padding: 0.45rem 0.85rem;
 }
+
+@media (max-width: 768px) {
+  .property-agent {
+    padding: 1.15rem;
+    margin-bottom: 1.35rem;
+  }
+
+  .property-agent__actions {
+    flex-direction: column;
+  }
+
+  .property-agent__cta {
+    text-align: center;
+  }
+}

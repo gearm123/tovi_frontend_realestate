@@ -6,7 +6,9 @@ export default function FloatingTopControls() {
   return (
     <div className="floating-top-controls">
       <FloatingNavMenu />
-      <LanguageToggle />
+      <div className="floating-top-controls__langs">
+        <LanguageToggle />
+      </div>
     </div>
   )
 }

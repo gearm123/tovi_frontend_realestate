@@ -135,6 +135,10 @@
 }
 
 @media (max-width: 768px) {
+  .footer {
+    padding-bottom: calc(3.6rem + env(safe-area-inset-bottom, 0px));
+  }
+
   .footer__contact-list li {
     grid-template-columns: 1fr;
     gap: 0.2rem;

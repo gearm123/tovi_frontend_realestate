@@ -54,10 +54,16 @@
 
 @media (max-width: 768px) {
   .whatsapp-button {
-    inset-block-end: max(1.15rem, env(safe-area-inset-bottom, 0px));
-    inset-inline-end: max(1.15rem, env(safe-area-inset-right, 0px));
-    padding: 0.8rem;
+    inset-block-end: max(0.75rem, env(safe-area-inset-bottom, 0px));
+    inset-inline-end: auto;
+    right: max(0.75rem, env(safe-area-inset-right, 0px));
+    left: auto;
+    width: 2.35rem;
+    height: 2.35rem;
+    padding: 0;
+    justify-content: center;
     border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   }
 
   .whatsapp-button__label {
@@ -73,8 +79,8 @@
   }
 
   .whatsapp-button__icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.2rem;
+    height: 1.2rem;
   }
 }
 

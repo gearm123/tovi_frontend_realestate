@@ -155,6 +155,28 @@
   border-block-end: none;
 }
 
+.floating-nav-menu__langs {
+  display: none;
+  padding: 0.85rem 1rem 0.95rem;
+  border-block-end: 1px solid var(--rule-light);
+  text-align: center;
+}
+
+.floating-nav-menu__langs-label {
+  font-family: var(--font-primary);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.55rem;
+}
+
+.floating-nav-menu__langs .lang-toggle__track {
+  width: 8.25rem;
+  height: 1.85rem;
+  margin-inline: auto;
+}
+
 .floating-nav-menu__panel a {
   display: block;
   padding: 0.75rem 1rem;
@@ -179,28 +201,32 @@
 
 @media (max-width: 768px) {
   .floating-nav-menu__trigger {
-    width: 2.65rem;
-    height: 2.65rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    width: 2.2rem;
+    height: 2.2rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   }
 
   .floating-nav-menu__icon {
-    width: 1.1rem;
-    height: 0.85rem;
+    width: 0.95rem;
+    height: 0.72rem;
   }
 
   .floating-nav-menu__backdrop {
     background: rgba(0, 0, 0, 0.35);
   }
 
+  .floating-nav-menu__langs {
+    display: block;
+  }
+
   .floating-nav-menu__panel {
     position: fixed;
-    top: calc(max(0.55rem, env(safe-area-inset-top, 0px)) + 2.65rem + 0.5rem);
-    right: max(0.65rem, env(safe-area-inset-right, 0px));
-    left: max(0.65rem, env(safe-area-inset-left, 0px));
+    top: calc(max(0.55rem, env(safe-area-inset-top, 0px)) + 2.2rem + 0.45rem);
+    right: max(0.55rem, env(safe-area-inset-right, 0px));
+    left: max(0.55rem, env(safe-area-inset-left, 0px));
     width: auto;
-    max-height: min(72vh, 32rem);
-    padding: 0.45rem 0;
+    max-height: min(78vh, 34rem);
+    padding: 0;
     padding-bottom: max(0.45rem, env(safe-area-inset-bottom, 0px));
     border-radius: 1rem;
     font-size: 0.84rem;
@@ -210,16 +236,11 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  .floating-nav-menu__item:first-child a {
-    border-start-start-radius: 0.85rem;
-    border-start-end-radius: 0.85rem;
-  }
-
   .floating-nav-menu__panel a {
     display: flex;
     align-items: center;
-    min-height: 2.85rem;
-    padding: 0.9rem 1.15rem;
+    min-height: 2.65rem;
+    padding: 0.8rem 1.15rem;
   }
 
   .floating-nav-menu__panel a:active {
