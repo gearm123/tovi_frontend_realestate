@@ -39,6 +39,7 @@
 
 .placeholder-map__canvas-wrap {
   position: relative;
+  isolation: isolate;
   min-width: 0;
 }
 

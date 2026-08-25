@@ -91,11 +91,10 @@ export function buildPropertyMapPins(properties: Property[]): PropertyMapPin[] {
   })
 }
 
-export function getExternalMapsUrl(lat: number, lng: number, label?: string): string {
-  const query = label?.trim()
-    ? `${lat},${lng} (${label.trim()})`
-    : `${lat},${lng}`
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
+/** Opens Google Maps with a dropped pin at the exact coordinates. */
+export function getExternalMapsUrl(lat: number, lng: number, zoom = 16): string {
+  const latLng = `${lat.toFixed(6)},${lng.toFixed(6)}`
+  return `https://www.google.com/maps/place/${latLng}/@${latLng},${zoom}z`
 }
 
 export function getActiveMapProvider(): MapProvider {

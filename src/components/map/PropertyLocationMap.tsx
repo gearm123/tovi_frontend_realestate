@@ -89,7 +89,11 @@ export default function PropertyLocationMap({ property }: PropertyLocationMapPro
 
   const neighborhoodLabel =
     (t.neighborhoods as Record<string, string>)[pin.neighborhood] ?? pin.neighborhood
-  const mapsUrl = getExternalMapsUrl(pin.lat, pin.lng, pin.address || pin.title)
+  const mapsUrl = getExternalMapsUrl(
+    pin.lat,
+    pin.lng,
+    pin.positionSource === 'coordinates' ? 17 : 15,
+  )
   const live = getActiveMapProvider() === 'google' && !googleFailed
 
   return (

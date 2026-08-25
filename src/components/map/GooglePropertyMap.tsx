@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
   APIProvider,
+  ControlPosition,
   InfoWindow,
   Map,
+  MapControl,
   Marker,
   useMap,
 } from '@vis.gl/react-google-maps'
@@ -97,6 +99,9 @@ function MapPinsLayer({
 
 function GooglePropertyMapShell(props: PropertyMapProps) {
   const { content, expanded } = props
+  const { dir } = useLanguage()
+  const searchPosition =
+    dir === 'rtl' ? ControlPosition.TOP_RIGHT : ControlPosition.TOP_LEFT
 
   return (
     <PropertyMapShell {...props}>
@@ -110,8 +115,12 @@ function GooglePropertyMapShell(props: PropertyMapProps) {
           streetViewControl={false}
           fullscreenControl={false}
           clickableIcons={false}
+          keyboardShortcuts={false}
         >
           <MapPinsLayer {...ctx} content={content} />
+          {ctx.searchBar ? (
+            <MapControl position={searchPosition}>{ctx.searchBar}</MapControl>
+          ) : null}
         </Map>
       )}
     </PropertyMapShell>

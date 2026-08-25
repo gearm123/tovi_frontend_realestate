@@ -12,7 +12,7 @@ export default function PlaceholderPropertyMap(props: PropertyMapProps) {
       {...props}
       canvasNote={<p className="placeholder-map__note">{content.placeholderNote}</p>}
     >
-      {({ pins: visiblePins, activePinId, onPinSelect, neighborhoodLabel, listingLabel }) => {
+      {({ pins: visiblePins, activePinId, onPinSelect, neighborhoodLabel, listingLabel, searchBar }) => {
         const activePin = visiblePins.find((pin) => pin.id === activePinId) ?? null
 
         return (
@@ -57,6 +57,8 @@ export default function PlaceholderPropertyMap(props: PropertyMapProps) {
                 />
               </div>
             ) : null}
+
+            {searchBar}
           </div>
         )
       }}

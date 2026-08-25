@@ -1,12 +1,15 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useLanguage } from '../../context/LanguageContext'
 import { usePropertyFilters } from '../../hooks/usePropertyFilters'
 import { useSiteContent } from '../../hooks/useSiteContent'
 import { useSiteData } from '../../hooks/useSiteData'
 import { buildPropertyMapPins } from '../../services/mapService'
-import type { ListingStatusFilter } from '../../constants/propertySearch'
+import {
+  getPriceMaxForStatus,
+  getPriceStepForStatus,
+  type ListingStatusFilter,
+} from '../../constants/propertySearch'
 import type { Property } from '../../types/property'
-import PropertyFiltersBar from '../PropertyFilters'
 import PropertyMap from './PropertyMap'
 import './PropertyMapSection.css'
 
@@ -26,9 +29,12 @@ export default function PropertyMapSection({
   const { properties: allProperties } = useSiteData()
   const { mapSection } = content
   const catalog = properties ?? allProperties
-  const { filters, setFilters, filtered, resetFilters, setListingStatus } =
-    usePropertyFilters(catalog)
-  const [expanded, setExpanded] = useState(false)
+  const { filters, setFilters, filtered, setListingStatus } = usePropertyFilters(catalog)
+  const priceLimit = getPriceMaxForStatus(filters.listingStatus)
+  const priceStep = getPriceStepForStatus(filters.listingStatus)
+
+  const neighborhoodLabel = (key: string) =>
+    (t.neighborhoods as Record<string, string>)[key] ?? key
 
   const neighborhoods = useMemo(
     () => [...new Set(catalog.map((property) => property.neighborhood))].sort(),
@@ -36,9 +42,6 @@ export default function PropertyMapSection({
   )
   const catalogPins = useMemo(() => buildPropertyMapPins(catalog), [catalog])
   const pins = useMemo(() => buildPropertyMapPins(filtered), [filtered])
-
-  const neighborhoodLabel = (key: string) =>
-    (t.neighborhoods as Record<string, string>)[key] ?? key
 
   const statusLabel = (status: ListingStatusFilter) => {
     if (status === 'sale') return mapSection.saleLabel
@@ -112,25 +115,11 @@ export default function PropertyMapSection({
         <PropertyMap
           pins={pins}
           content={mapSection}
-          expandable
-          expanded={expanded}
-          onExpand={() => setExpanded(true)}
-          onCollapse={() => setExpanded(false)}
-          expandTrigger="search"
-          filterControls={
-            expanded ? (
-              <PropertyFiltersBar
-                filters={filters}
-                onChange={setFilters}
-                onReset={resetFilters}
-                onStatusChange={setListingStatus}
-                variant="simple"
-                density="compact"
-              />
-            ) : (
-              quickFilters
-            )
-          }
+          priceMax={Math.min(filters.priceMax, priceLimit)}
+          onPriceMaxChange={(nextMax) => setFilters({ ...filters, priceMax: nextMax })}
+          priceLimit={priceLimit}
+          priceStep={priceStep}
+          filterControls={quickFilters}
         />
       </div>
     </section>

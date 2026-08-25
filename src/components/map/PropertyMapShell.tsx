@@ -4,6 +4,7 @@ import { useViewport } from '../../hooks/useViewport'
 import type { MapSectionContent } from '../../types/content'
 import type { PropertyMapPin } from '../../types/map'
 import PropertyMapList from './PropertyMapList'
+import PropertyMapPriceBar from './PropertyMapPriceBar'
 
 export interface PropertyMapCanvasContext {
   pins: PropertyMapPin[]
@@ -12,6 +13,7 @@ export interface PropertyMapCanvasContext {
   expanded: boolean
   neighborhoodLabel: (key: string) => string
   listingLabel: (pin: PropertyMapPin) => string
+  searchBar: ReactNode
 }
 
 interface PropertyMapShellProps {
@@ -24,7 +26,10 @@ interface PropertyMapShellProps {
   filterControls?: ReactNode
   canvasNote?: ReactNode
   variant?: 'section' | 'page'
-  expandTrigger?: 'button' | 'search'
+  priceMax?: number
+  onPriceMaxChange?: (priceMax: number) => void
+  priceLimit?: number
+  priceStep?: number
   children: (ctx: PropertyMapCanvasContext) => ReactNode
 }
 
@@ -38,7 +43,10 @@ export default function PropertyMapShell({
   filterControls,
   canvasNote,
   variant = 'section',
-  expandTrigger = 'button',
+  priceMax,
+  onPriceMaxChange,
+  priceLimit,
+  priceStep,
   children,
 }: PropertyMapShellProps) {
   const { t } = useLanguage()
@@ -76,6 +84,16 @@ export default function PropertyMapShell({
     }
   }, [expanded, onCollapse])
 
+  const searchBar =
+    onPriceMaxChange && priceLimit && priceStep ? (
+      <PropertyMapPriceBar
+        value={priceMax ?? priceLimit}
+        onChange={onPriceMaxChange}
+        max={priceLimit}
+        step={priceStep}
+      />
+    ) : null
+
   const canvasCtx: PropertyMapCanvasContext = {
     pins,
     activePinId,
@@ -83,11 +101,12 @@ export default function PropertyMapShell({
     expanded,
     neighborhoodLabel,
     listingLabel,
+    searchBar,
   }
 
   const filters =
     expanded && viewport === 'mobile' && filterControls ? (
-      <details className="property-map-shell__filters-panel" open={expandTrigger === 'search'}>
+      <details className="property-map-shell__filters-panel">
         <summary>{t.search.filterTitle}</summary>
         {filterControls}
       </details>
@@ -130,34 +149,15 @@ export default function PropertyMapShell({
 
       <div className="placeholder-map__layout">
         <div className="placeholder-map__canvas-wrap">
-          {!expanded && expandable ? (
-            expandTrigger === 'search' ? (
-              <button
-                type="button"
-                className="property-map-shell__search"
-                onClick={onExpand}
-                aria-label={t.map.searchAria}
-              >
-                <svg
-                  className="property-map-shell__search-icon"
-                  viewBox="0 0 16 16"
-                  aria-hidden="true"
-                >
-                  <circle cx="7" cy="7" r="4.25" fill="none" stroke="currentColor" strokeWidth="1.4" />
-                  <path d="M10.2 10.2 14 14" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-                </svg>
-                <span>{t.map.searchPlaceholder}</span>
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="property-map-shell__expand site-cta"
-                onClick={onExpand}
-                aria-label={t.map.expandAria}
-              >
-                {t.map.expand}
-              </button>
-            )
+          {!expanded && expandable && !searchBar ? (
+            <button
+              type="button"
+              className="property-map-shell__expand site-cta"
+              onClick={onExpand}
+              aria-label={t.map.expandAria}
+            >
+              {t.map.expand}
+            </button>
           ) : null}
           {children(canvasCtx)}
           {canvasNote}

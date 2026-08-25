@@ -15,7 +15,10 @@ export interface PropertyMapProps {
   onCollapse?: () => void
   filterControls?: ReactNode
   variant?: 'section' | 'page'
-  expandTrigger?: 'button' | 'search'
+  priceMax?: number
+  onPriceMaxChange?: (priceMax: number) => void
+  priceLimit?: number
+  priceStep?: number
 }
 
 export default function PropertyMap({
@@ -27,7 +30,10 @@ export default function PropertyMap({
   onCollapse,
   filterControls,
   variant,
-  expandTrigger,
+  priceMax,
+  onPriceMaxChange,
+  priceLimit,
+  priceStep,
 }: PropertyMapProps) {
   const provider = getActiveMapProvider()
   const shared = {
@@ -39,7 +45,10 @@ export default function PropertyMap({
     onCollapse,
     filterControls,
     variant,
-    expandTrigger,
+    priceMax,
+    onPriceMaxChange,
+    priceLimit,
+    priceStep,
   }
 
   if (provider === 'google') {
