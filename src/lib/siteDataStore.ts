@@ -206,6 +206,8 @@ export function createBlankProperty(listingType: ListingType = 'sale'): Property
     videoUrl: '',
     coordinates: { ...PLACEHOLDER_MAP_CENTER },
     featured: false,
+    exclusive: false,
+    isNew: false,
     features: createEmptyFeatures(),
   }
 }

@@ -1,0 +1,24 @@
+.listing-status-badge {
+  display: inline-block;
+  font-family: var(--font-subheading);
+  font-size: 0.62rem;
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink-muted);
+  padding: 0.28rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.listing-status-badge--featured {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.listing-status-badge--exclusive,
+.listing-status-badge--new {
+  color: var(--ink-soft);
+}

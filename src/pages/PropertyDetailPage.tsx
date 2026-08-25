@@ -1,11 +1,13 @@
 import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import ConversionSections from '../components/conversion/ConversionSections'
 import PageSeo from '../components/seo/PageSeo'
 import VideoEmbed from '../components/shared/VideoEmbed'
 import PropertyAgentCard from '../components/property-listings/shared/PropertyAgentCard'
+import PropertyFacts from '../components/property-listings/shared/PropertyFacts'
+import SimilarProperties from '../components/property-listings/shared/SimilarProperties'
 import { getAgentForProperty } from '../services/agentService'
 import ListingTypeBadge from '../components/property-listings/shared/ListingTypeBadge'
+import ListingStatusBadges from '../components/property-listings/shared/ListingStatusBadges'
 import PropertyImageGallery from '../components/property-listings/shared/PropertyImageGallery'
 import { useLanguage } from '../context/LanguageContext'
 import { useSiteData } from '../hooks/useSiteData'
@@ -14,19 +16,11 @@ import { getLocalizedProperty } from '../i18n/propertyTranslations'
 import { listingTextDir } from '../utils/listingCopy'
 import { getPropertyImages } from '../utils/propertyGallery'
 import { isPlayableVideoUrl } from '../utils/propertyVideo'
-import { getPropertyContactPath } from '../utils/propertyContact'
 import { getPropertyDetailPath } from '../utils/propertyPath'
+import { splitListingNarrative } from '../lib/listingNarrative'
+import { getSimilarProperties } from '../lib/similarProperties'
 import { buildRealEstateListingJsonLd } from '../seo/structuredData'
 import './PropertyDetailPage.css'
-
-const featureKeys = [
-  'balcony',
-  'parking',
-  'elevator',
-  'mamad',
-  'miklat',
-  'petsAllowed',
-] as const
 
 export default function PropertyDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -53,6 +47,16 @@ export default function PropertyDetailPage() {
     return buildRealEstateListingJsonLd(property, localizedPreview, propertyPath)
   }, [property, localizedPreview, propertyPath])
 
+  const narrative = useMemo(
+    () => splitListingNarrative(localizedPreview?.description ?? ''),
+    [localizedPreview],
+  )
+
+  const similar = useMemo(
+    () => (property ? getSimilarProperties(property, properties, 3) : []),
+    [property, properties],
+  )
+
   if (!property) {
     return (
       <>
@@ -71,52 +75,46 @@ export default function PropertyDetailPage() {
 
   const localized = localizedPreview!
   const galleryImages = getPropertyImages(property)
-
-  const typeLabel =
-    (t.propertyTypes as Record<string, string>)[property.propertyType] ??
-    property.propertyType
-
   const neighborhoodLabel =
     (t.neighborhoods as Record<string, string>)[property.neighborhood] ??
     property.neighborhood
-
-  const showVideoTour =
-    property.videoUrl && isPlayableVideoUrl(property.videoUrl)
-
+  const showVideoTour = property.videoUrl && isPlayableVideoUrl(property.videoUrl)
   const agent = getAgentForProperty(property, locale)
+  const highlights = narrative.highlights
+  const copyDir = listingTextDir(
+    `${localized.title} ${localized.address} ${localized.description}`,
+  )
 
   return (
     <>
       <PageSeo
         title={`${localized.title} | ProperTLV`}
-        description={localized.description.slice(0, 155)}
+        description={(narrative.intro || localized.description).slice(0, 155)}
         path={propertyPath}
         image={galleryImages[0]}
         jsonLd={propertyJsonLd}
       />
       <article className={`property-detail property-detail--${viewport}`}>
-        <PropertyImageGallery
-          property={property}
-          alt={localized.title}
-          label={t.property.photoGallery}
-          priority
-          badges={
-            <>
-              <ListingTypeBadge listingType={property.listingType} />
-              {property.featured && (
-                <span className="property-detail__badge">{t.property.featured}</span>
-              )}
-            </>
-          }
-        />
+        <div className="property-detail__gallery">
+          <PropertyImageGallery
+            property={property}
+            alt={localized.title}
+            label={t.property.photoGallery}
+            variant="detail"
+            priority
+            badges={
+              <>
+                <ListingStatusBadges property={property} />
+                <ListingTypeBadge listingType={property.listingType} />
+              </>
+            }
+          />
+        </div>
 
-        <div
-          className="property-detail__body"
-          dir={listingTextDir(`${localized.title} ${localized.address} ${localized.description}`)}
-        >
-          {viewport === 'desktop' && (
-            <ListingTypeBadge listingType={property.listingType} variant="inline" />
-          )}
+        <div className="property-detail__body" dir={copyDir}>
+          <p className="property-detail__price">{localized.price ?? property.price}</p>
+          <PropertyFacts property={property} floor={narrative.floor} />
+
           <p className="property-detail__neighborhood">{neighborhoodLabel}</p>
           <h1
             className="property-detail__title listing-copy"
@@ -131,29 +129,38 @@ export default function PropertyDetailPage() {
             {localized.address}
           </p>
 
-          <div className="property-detail__specs">
-            <span>
-              {property.bedrooms} {t.property.bed}
-            </span>
-            <span className="property-detail__dot" aria-hidden="true" />
-            <span>
-              {property.bathrooms} {t.property.bath}
-            </span>
-            <span className="property-detail__dot" aria-hidden="true" />
-            <span>{property.area} m²</span>
-            <span className="property-detail__dot" aria-hidden="true" />
-            <span>{typeLabel}</span>
-          </div>
+          {narrative.intro ? (
+            <p
+              className="property-detail__intro listing-copy"
+              dir={listingTextDir(narrative.intro)}
+            >
+              {narrative.intro}
+            </p>
+          ) : null}
 
-          <p className="property-detail__price">
-            {localized.price ?? property.price}
-          </p>
-          <p
-            className="property-detail__description listing-copy"
-            dir={listingTextDir(localized.description)}
-          >
-            {localized.description}
-          </p>
+          {highlights.length > 0 && (
+            <section className="property-detail__highlights" aria-labelledby="property-highlights-title">
+              <h2 id="property-highlights-title">{t.property.highlightsTitle}</h2>
+              <ul>
+                {highlights.map((item) => (
+                  <li key={item} className="listing-copy" dir={listingTextDir(item)}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {narrative.specialNotes.length > 0 && (
+            <aside className="property-detail__special" aria-labelledby="property-special-title">
+              <h2 id="property-special-title">{t.property.specialInfoTitle}</h2>
+              {narrative.specialNotes.map((note) => (
+                <p key={note} className="listing-copy" dir={listingTextDir(note)}>
+                  {note}
+                </p>
+              ))}
+            </aside>
+          )}
 
           {showVideoTour && (
             <section className="property-detail__video" aria-labelledby="property-video-title">
@@ -165,43 +172,21 @@ export default function PropertyDetailPage() {
             </section>
           )}
 
-          <div className="property-detail__features">
-            <h2>{t.property.features}</h2>
-            <ul>
-              {featureKeys.map((key) => (
-                <li
-                  key={key}
-                  className={
-                    property.features[key] ? '' : 'property-detail__feature--off'
-                  }
-                >
-                  {t.filters.features[key]}
-                  {property.features[key] ? ` ${t.property.yes}` : ` ${t.property.no}`}
-                </li>
-              ))}
-            </ul>
-          </div>
-
           <PropertyAgentCard
             agent={agent}
             property={property}
             propertyTitle={localized.title}
           />
 
-          <div className="property-detail__actions">
-            <Link to={getPropertyContactPath(property)} className="property-detail__cta">
-              {t.property.contactCta}
-            </Link>
-            <Link
-              to={property.listingType === 'sale' ? '/sales' : '/rentals'}
-              className="property-detail__back"
-            >
-              {t.property.backToListings}
-            </Link>
-          </div>
-
-          <ConversionSections variant="stacked" compact showNewsletter={false} />
+          <Link
+            to={property.listingType === 'sale' ? '/sales' : '/rentals'}
+            className="property-detail__back"
+          >
+            {t.property.backToListings}
+          </Link>
         </div>
+
+        <SimilarProperties properties={similar} />
       </article>
     </>
   )

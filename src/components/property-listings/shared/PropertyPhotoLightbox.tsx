@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import PropertyImage from './PropertyImage'
 import './PropertyPhotoLightbox.css'
@@ -26,6 +26,12 @@ export default function PropertyPhotoLightbox({
 }: PropertyPhotoLightboxProps) {
   const current = images[index]
   const hasMany = images.length > 1
+  const touchStartX = useRef<number | null>(null)
+
+  const goTo = (next: number) => {
+    if (!hasMany) return
+    onIndexChange((next + images.length) % images.length)
+  }
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow
@@ -34,12 +40,8 @@ export default function PropertyPhotoLightbox({
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose()
       if (!hasMany) return
-      if (event.key === 'ArrowRight') {
-        onIndexChange((index + 1) % images.length)
-      }
-      if (event.key === 'ArrowLeft') {
-        onIndexChange((index - 1 + images.length) % images.length)
-      }
+      if (event.key === 'ArrowRight') goTo(index + 1)
+      if (event.key === 'ArrowLeft') goTo(index - 1)
     }
 
     window.addEventListener('keydown', onKeyDown)
@@ -54,7 +56,19 @@ export default function PropertyPhotoLightbox({
   return createPortal(
     <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={alt}>
       <button type="button" className="photo-lightbox__backdrop" aria-label={closeLabel} onClick={onClose} />
-      <div className="photo-lightbox__frame">
+      <div
+        className="photo-lightbox__frame"
+        onTouchStart={(event) => {
+          touchStartX.current = event.changedTouches[0]?.clientX ?? null
+        }}
+        onTouchEnd={(event) => {
+          if (touchStartX.current == null) return
+          const delta = (event.changedTouches[0]?.clientX ?? touchStartX.current) - touchStartX.current
+          touchStartX.current = null
+          if (delta <= -40) goTo(index + 1)
+          if (delta >= 40) goTo(index - 1)
+        }}
+      >
         <button type="button" className="photo-lightbox__close" onClick={onClose}>
           {closeLabel}
         </button>
@@ -62,7 +76,7 @@ export default function PropertyPhotoLightbox({
           <button
             type="button"
             className="photo-lightbox__nav photo-lightbox__nav--prev"
-            onClick={() => onIndexChange((index - 1 + images.length) % images.length)}
+            onClick={() => goTo(index - 1)}
           >
             {previousLabel}
           </button>
@@ -77,7 +91,7 @@ export default function PropertyPhotoLightbox({
           <button
             type="button"
             className="photo-lightbox__nav photo-lightbox__nav--next"
-            onClick={() => onIndexChange((index + 1) % images.length)}
+            onClick={() => goTo(index + 1)}
           >
             {nextLabel}
           </button>

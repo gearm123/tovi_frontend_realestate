@@ -1,8 +1,11 @@
+import { Link } from 'react-router-dom'
 import type { Property } from '../../../types/property'
 import { useLanguage } from '../../../context/LanguageContext'
 import { getLocalizedProperty } from '../../../i18n/propertyTranslations'
 import { hasPropertyVideoTour } from '../../../utils/propertyVideo'
+import { getPropertyDetailPath } from '../../../utils/propertyPath'
 import ListingTypeBadge from '../shared/ListingTypeBadge'
+import ListingStatusBadges from '../shared/ListingStatusBadges'
 import PropertyCardBody from '../shared/PropertyCardBody'
 import PropertyImageGallery from '../shared/PropertyImageGallery'
 import VideoTourBadge from '../shared/VideoTourBadge'
@@ -11,15 +14,11 @@ import './MobilePropertyCard.css'
 interface MobilePropertyCardProps {
   property: Property
   index: number
-  collapseDescription?: boolean
-  hideDescription?: boolean
 }
 
 export default function MobilePropertyCard({
   property,
   index,
-  collapseDescription = false,
-  hideDescription = false,
 }: MobilePropertyCardProps) {
   const { t, locale } = useLanguage()
 
@@ -30,46 +29,43 @@ export default function MobilePropertyCard({
     price: property.price,
     neighborhood: property.neighborhood,
   })
+  const detailPath = getPropertyDetailPath(property)
 
   return (
     <article
       className="mobile-property"
       style={{ animationDelay: `${index * 0.08}s` }}
     >
-      <div className="mobile-property__image-wrap">
-        <div className="mobile-property__image-frame">
-          <PropertyImageGallery
-            property={property}
-            alt={localized.title}
-            label={t.property.photoGallery}
-            variant="card"
-            priority={index < 2}
-            badges={
-              <div className="mobile-property__badges">
-                <ListingTypeBadge listingType={property.listingType} />
-                {property.featured && (
-                  <span className="mobile-property__badge">{t.property.featured}</span>
-                )}
-              </div>
-            }
-          />
-          <span className="mobile-property__price">
-            {localized.price ?? property.price}
-          </span>
-          {hasPropertyVideoTour(property.videoUrl) && (
-            <span className="mobile-property__video-tour">
-              <VideoTourBadge label={t.property.videoTour} />
-            </span>
-          )}
+      <Link
+        to={detailPath}
+        className="mobile-property__hit"
+        aria-label={localized.title}
+      >
+        <div className="mobile-property__image-wrap">
+          <div className="mobile-property__image-frame">
+            <PropertyImageGallery
+              property={property}
+              alt={localized.title}
+              label={t.property.photoGallery}
+              variant="card"
+              priority={index < 2}
+              badges={
+                <div className="mobile-property__badges">
+                  <ListingStatusBadges property={property} />
+                  <ListingTypeBadge listingType={property.listingType} />
+                </div>
+              }
+            />
+            {hasPropertyVideoTour(property.videoUrl) && (
+              <span className="mobile-property__video-tour">
+                <VideoTourBadge label={t.property.videoTour} />
+              </span>
+            )}
+          </div>
         </div>
-      </div>
 
-      <PropertyCardBody
-        property={property}
-        classPrefix="mobile-property"
-        collapseDescription={collapseDescription}
-        hideDescription={hideDescription}
-      />
+        <PropertyCardBody property={property} classPrefix="mobile-property" />
+      </Link>
     </article>
   )
 }

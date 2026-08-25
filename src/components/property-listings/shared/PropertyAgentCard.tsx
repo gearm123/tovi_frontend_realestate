@@ -3,7 +3,6 @@ import type { ResolvedAgent } from '../../../types/agent'
 import type { Property } from '../../../types/property'
 import { useLanguage } from '../../../context/LanguageContext'
 import {
-  buildPropertyMailtoUrl,
   buildPropertyWhatsAppUrl,
   getPropertyContactPath,
 } from '../../../utils/propertyContact'
@@ -13,7 +12,6 @@ interface PropertyAgentCardProps {
   agent: ResolvedAgent
   property: Pick<Property, 'id' | 'listingType' | 'agentId' | 'title'>
   propertyTitle: string
-  variant?: 'detail' | 'compact'
 }
 
 function agentInitials(name: string): string {
@@ -28,18 +26,16 @@ export default function PropertyAgentCard({
   agent,
   property,
   propertyTitle,
-  variant = 'detail',
 }: PropertyAgentCardProps) {
   const { t } = useLanguage()
   const contactPath = getPropertyContactPath(property)
-  const mailtoUrl = buildPropertyMailtoUrl(agent.email, propertyTitle, property.id)
   const whatsappUrl = agent.phone.whatsapp
     ? buildPropertyWhatsAppUrl(agent.phone.whatsapp, propertyTitle, property.id)
     : undefined
 
   return (
     <section
-      className={`property-agent property-agent--${variant}`}
+      className="property-agent"
       aria-labelledby={`property-agent-${property.id}`}
     >
       <h2 id={`property-agent-${property.id}`} className="property-agent__heading">
@@ -70,15 +66,6 @@ export default function PropertyAgentCard({
       </div>
 
       <div className="property-agent__actions">
-        <a href={mailtoUrl} className="property-agent__cta property-agent__cta--primary">
-          {t.property.emailAgent.replace('{name}', agent.name.split(' ')[0] ?? agent.name)}
-        </a>
-        <Link to={contactPath} className="property-agent__cta">
-          {t.property.contactAgent}
-        </Link>
-        <a href={`tel:${agent.phone.tel}`} className="property-agent__cta">
-          {t.property.agentPhone}
-        </a>
         {whatsappUrl && (
           <a
             href={whatsappUrl}
@@ -86,9 +73,12 @@ export default function PropertyAgentCard({
             target="_blank"
             rel="noopener noreferrer"
           >
-            WhatsApp
+            {t.property.whatsapp}
           </a>
         )}
+        <Link to={contactPath} className="property-agent__cta property-agent__cta--primary">
+          {t.property.bookViewing}
+        </Link>
       </div>
     </section>
   )

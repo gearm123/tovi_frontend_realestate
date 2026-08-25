@@ -56,6 +56,8 @@ export interface Property {
   /** Map pin — placeholder coordinates until exact address is confirmed */
   coordinates: PropertyCoordinates
   featured?: boolean
+  exclusive?: boolean
+  isNew?: boolean
   features: PropertyFeatures
   /** Agent responsible for this listing — references `agents.ts` */
   agentId: string

@@ -288,15 +288,35 @@ export default function AdminListingFormPage() {
               </select>
             </div>
             <div className="admin-field">
-              <label className="admin-checkbox" htmlFor="listing-featured">
-                <input
-                  id="listing-featured"
-                  type="checkbox"
-                  checked={Boolean(form.featured)}
-                  onChange={(e) => setField('featured', e.target.checked)}
-                />
-                Featured on homepage
-              </label>
+              <div className="admin-checkboxes">
+                <label className="admin-checkbox" htmlFor="listing-featured">
+                  <input
+                    id="listing-featured"
+                    type="checkbox"
+                    checked={Boolean(form.featured)}
+                    onChange={(e) => setField('featured', e.target.checked)}
+                  />
+                  Featured
+                </label>
+                <label className="admin-checkbox" htmlFor="listing-exclusive">
+                  <input
+                    id="listing-exclusive"
+                    type="checkbox"
+                    checked={Boolean(form.exclusive)}
+                    onChange={(e) => setField('exclusive', e.target.checked)}
+                  />
+                  Exclusive
+                </label>
+                <label className="admin-checkbox" htmlFor="listing-new">
+                  <input
+                    id="listing-new"
+                    type="checkbox"
+                    checked={Boolean(form.isNew)}
+                    onChange={(e) => setField('isNew', e.target.checked)}
+                  />
+                  New
+                </label>
+              </div>
             </div>
           </div>
 

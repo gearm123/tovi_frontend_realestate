@@ -20,8 +20,9 @@
 .photo-lightbox__frame {
   position: relative;
   z-index: 1;
-  width: min(100%, 1120px);
-  max-height: min(88vh, 88svh);
+  width: min(100%, 1200px);
+  max-height: min(90vh, 90svh);
+  touch-action: pan-x;
 }
 
 .photo-lightbox__image,

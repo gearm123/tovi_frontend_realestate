@@ -1,7 +1,8 @@
 .property-detail {
-  max-width: var(--max-width);
+  width: 100%;
+  max-width: none;
   margin: 0 auto;
-  padding: var(--section-padding) clamp(1.25rem, 4vw, 2rem);
+  padding: 0 0 var(--section-padding);
 }
 
 .property-detail--missing {
@@ -19,110 +20,76 @@
   text-decoration: underline;
 }
 
-.property-detail__badge {
-  font-family: var(--font-subheading);
-  font-size: 0.75rem;
-  font-weight: var(--font-weight-regular);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  background: var(--white);
-  color: var(--ink);
-  padding: 0.4rem 0.85rem;
-  border-radius: 999px;
-  border: 1px solid var(--rule);
+.property-detail__gallery {
+  margin-bottom: 0.15rem;
 }
 
 .property-detail__body {
-  max-width: 720px;
-}
-
-.property-detail__neighborhood {
-  font-family: var(--font-subheading);
-  font-size: 0.9rem;
-  font-weight: var(--font-weight-regular);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-  margin-bottom: 0.5rem;
-}
-
-.property-detail__title {
-  font-family: var(--font-primary);
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.15;
-  margin-bottom: 0.5rem;
-}
-
-.property-detail__address {
-  font-family: var(--font-primary);
-  font-size: 0.9rem;
-  font-weight: var(--font-weight-regular);
-  color: var(--ink-muted);
-  margin-bottom: 1rem;
-}
-
-.property-detail__specs {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-primary);
-  font-weight: var(--font-weight-regular);
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-  margin-bottom: 1rem;
-}
-
-.property-detail__dot {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--rule);
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.25rem clamp(1.15rem, 4vw, 2rem) 0;
 }
 
 .property-detail__price {
   font-family: var(--font-primary);
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: var(--font-weight-medium);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  margin: 0 0 1rem;
+}
+
+.property-detail__neighborhood {
+  font-family: var(--font-subheading);
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.4rem;
+}
+
+.property-detail__title {
+  font-family: var(--font-primary);
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.2;
+  margin-bottom: 0.35rem;
+}
+
+.property-detail__address {
+  font-family: var(--font-primary);
+  font-size: 0.88rem;
+  font-weight: var(--font-weight-regular);
+  color: var(--ink-muted);
   margin-bottom: 1.25rem;
 }
 
 .property-detail__title,
 .property-detail__address,
-.property-detail__description,
+.property-detail__intro,
 .property-detail__price {
   unicode-bidi: isolate;
-}
-
-.property-detail__description {
-  font-family: var(--font-primary);
-  font-weight: var(--font-weight-regular);
-  font-size: 0.95rem;
-  color: var(--ink-soft);
-  line-height: 1.8;
-  margin-bottom: 2rem;
-  white-space: pre-line;
   text-align: start;
 }
 
-.property-detail__video {
-  margin-bottom: 2rem;
+.property-detail__intro {
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
 }
 
+.property-detail__highlights {
+  margin-bottom: 1.75rem;
+}
+
+.property-detail__highlights h2,
+.property-detail__special h2,
 .property-detail__video h2 {
   font-family: var(--font-subheading);
-  font-size: 0.9rem;
-  font-weight: var(--font-weight-regular);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-  margin-bottom: 0.85rem;
-}
-
-.property-detail__features h2 {
-  font-family: var(--font-subheading);
-  font-size: 0.9rem;
+  font-size: 0.78rem;
   font-weight: var(--font-weight-regular);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -130,132 +97,79 @@
   margin-bottom: 0.75rem;
 }
 
-.property-detail__features ul {
+.property-detail__highlights ul {
   list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+}
+
+.property-detail__highlights li {
+  position: relative;
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  padding-inline-start: 1rem;
+}
+
+.property-detail__highlights li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.55rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.property-detail__special {
+  margin-bottom: 1.75rem;
+  padding: 1.1rem 1.15rem 1.15rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 8px;
+}
+
+.property-detail__special p {
+  font-family: var(--font-primary);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  margin: 0 0 0.65rem;
+}
+
+.property-detail__special p:last-child {
+  margin-bottom: 0;
+}
+
+.property-detail__video {
   margin-bottom: 2rem;
 }
 
-.property-detail__features li {
-  font-family: var(--font-primary);
-  font-weight: var(--font-weight-regular);
-  font-size: 0.85rem;
-}
-
-.property-detail__feature--off {
-  color: var(--ink-muted);
-  opacity: 0.6;
-}
-
-.property-detail__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-}
-
-.property-detail__cta {
-  font-family: var(--font-button);
-  font-weight: 400;
-  font-size: 1rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--white);
-  background: var(--accent);
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  transition: opacity 0.2s ease;
-}
-
-.property-detail__cta:hover {
-  opacity: 0.9;
-}
-
 .property-detail__back {
+  display: inline-block;
   font-family: var(--font-primary);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: var(--font-weight-regular);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
-}
-
-.property-detail__back:hover {
-  border-bottom-color: var(--accent);
-}
-
-/* Desktop detail — wider hero, roomier badges (matches desktop property cards) */
-.property-detail--desktop .property-detail__image-wrap {
-  aspect-ratio: 16 / 10;
-}
-
-.property-detail--desktop .property-detail__badges {
-  top: 1rem;
-  inset-inline-start: 1rem;
-  gap: 0.4rem;
-  max-width: calc(100% - 2rem);
-}
-
-.property-detail--desktop .property-detail__badges .listing-type-badge--overlay {
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  padding: 0.4rem 0.85rem;
-}
-
-.property-detail--desktop .property-detail__badge {
-  font-size: 0.75rem;
-  padding: 0.4rem 0.85rem;
-}
-
-/* Mobile detail — tighter layout aligned with mobile property cards */
-.property-detail--mobile {
-  padding: clamp(1.5rem, 4vw, 2rem) clamp(1rem, 5vw, 1.5rem);
+  margin-bottom: 0.5rem;
 }
 
 .property-detail--mobile .property-gallery__badges {
-  max-width: min(11rem, calc(100% - 1.5rem));
-}
-
-.property-detail--mobile .property-gallery__badges .listing-type-badge--overlay {
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  padding: 0.28rem 0.58rem;
-}
-
-.property-detail--mobile .property-detail__badge {
-  font-size: 0.62rem;
-  padding: 0.28rem 0.58rem;
-  letter-spacing: 0.1em;
+  max-width: min(14rem, calc(100% - 1.5rem));
 }
 
 .property-detail--mobile .property-detail__title {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
 }
 
-.property-detail--mobile .property-detail__price {
-  font-size: 1.35rem;
-}
-
-.property-detail--mobile .property-detail__description {
-  font-size: 0.875rem;
-  line-height: 1.7;
-}
-
-.property-detail--mobile .property-detail__actions {
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.property-detail--mobile .property-detail__cta {
-  text-align: center;
-  width: 100%;
-}
-
-.property-detail--mobile .property-detail__back {
-  text-align: center;
-  width: 100%;
+.property-detail--mobile .property-detail__intro {
+  font-size: 0.92rem;
 }

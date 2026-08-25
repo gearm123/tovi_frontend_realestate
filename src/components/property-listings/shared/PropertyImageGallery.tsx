@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useState, type ReactNode, type UIEvent } from 'react'
 import PropertyImage from './PropertyImage'
 import PropertyPhotoLightbox from './PropertyPhotoLightbox'
 import { getPropertyImages } from '../../../utils/propertyGallery'
@@ -29,6 +29,25 @@ export default function PropertyImageGallery({
   const images = variant === 'card' ? allImages.slice(0, 1) : allImages
   const multi = images.length > 1
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const isCard = variant === 'card'
+
+  const updateActiveIndex = (event: UIEvent<HTMLDivElement>) => {
+    if (!multi) return
+    const root = event.currentTarget
+    const slides = root.querySelectorAll<HTMLElement>('.property-gallery__slide')
+    const origin = root.getBoundingClientRect().left
+    let best = 0
+    let bestDist = Number.POSITIVE_INFINITY
+    slides.forEach((slide, index) => {
+      const dist = Math.abs(slide.getBoundingClientRect().left - origin)
+      if (dist < bestDist) {
+        bestDist = dist
+        best = index
+      }
+    })
+    setActiveIndex(best)
+  }
 
   return (
     <div
@@ -40,34 +59,50 @@ export default function PropertyImageGallery({
     >
       <div
         className="property-gallery__scroller"
+        dir="ltr"
         role="region"
         aria-label={label}
-        tabIndex={0}
+        tabIndex={isCard ? undefined : 0}
+        onScroll={updateActiveIndex}
       >
         {images.map((src, index) => (
           <figure key={`${src}-${index}`} className="property-gallery__slide">
-            <button
-              type="button"
-              className="property-gallery__open"
-              onClick={(event) => {
-                event.preventDefault()
-                event.stopPropagation()
-                setLightboxIndex(index)
-              }}
-              aria-label={t.property.enlargePhoto}
-            >
+            {isCard ? (
               <PropertyImage
                 imagePath={src}
-                alt={images.length > 1 ? `${alt} (${index + 1})` : alt}
+                alt={alt}
                 className="property-gallery__image"
                 priority={priority && index === 0}
               />
-            </button>
+            ) : (
+              <button
+                type="button"
+                className="property-gallery__open"
+                onClick={(event) => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  setLightboxIndex(index)
+                }}
+                aria-label={t.property.enlargePhoto}
+              >
+                <PropertyImage
+                  imagePath={src}
+                  alt={images.length > 1 ? `${alt} (${index + 1})` : alt}
+                  className="property-gallery__image"
+                  priority={priority && index === 0}
+                />
+              </button>
+            )}
           </figure>
         ))}
       </div>
       {badges ? <div className="property-gallery__badges">{badges}</div> : null}
-      {lightboxIndex !== null && (
+      {!isCard && images.length > 1 && (
+        <p className="property-gallery__count">
+          {activeIndex + 1} / {images.length}
+        </p>
+      )}
+      {!isCard && lightboxIndex !== null && (
         <PropertyPhotoLightbox
           images={images}
           alt={alt}

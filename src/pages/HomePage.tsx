@@ -20,7 +20,6 @@ export default function HomePage() {
         prominence="hero"
         showListingsHeader
         listingsTitle={t.home.title}
-        hideDescription
       />
       <PropertyMapSection />
       <AboutSection compact />

@@ -20,8 +20,6 @@ interface PropertySearchSectionProps {
   listingsTitle?: string
   listingsIntro?: string
   id?: string
-  collapseDescription?: boolean
-  hideDescription?: boolean
   variant?: 'full' | 'simple'
   prominence?: 'default' | 'hero'
 }
@@ -33,8 +31,6 @@ export default function PropertySearchSection({
   listingsTitle,
   listingsIntro,
   id = 'property-search',
-  collapseDescription = false,
-  hideDescription = false,
   variant = 'full',
   prominence = 'default',
 }: PropertySearchSectionProps) {
@@ -100,8 +96,6 @@ export default function PropertySearchSection({
             title={title}
             intro={intro}
             showHeader={showListingsHeader}
-            collapseDescription={collapseDescription}
-            hideDescription={hideDescription}
           />
           {hasMore && (
             <div className="property-search-section__more">
