@@ -34,3 +34,11 @@
   color: var(--ink-soft);
   line-height: 1.65;
 }
+
+.property-map-section__filters .placeholder-map__filters {
+  margin-bottom: 0.65rem;
+}
+
+.property-map-section__filters .placeholder-map__filters:last-child {
+  margin-bottom: 0;
+}

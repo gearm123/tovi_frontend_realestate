@@ -151,6 +151,7 @@
   border: none;
   border-radius: calc(var(--property-radius) - var(--property-frame-padding));
   touch-action: pan-y;
+  cursor: zoom-in;
 }
 
 .property-gallery--card.property-gallery--multi .property-gallery__slide {
@@ -160,6 +161,11 @@
 .property-gallery--card .property-gallery__badges {
   top: 0.75rem;
   inset-inline-start: 0.75rem;
+  pointer-events: none;
+}
+
+.property-gallery--card .property-gallery__badges > * {
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {

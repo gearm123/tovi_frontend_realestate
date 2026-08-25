@@ -19,9 +19,15 @@ export interface MapViewport {
 export interface PropertyMapPin {
   id: string
   title: string
+  address: string
   neighborhood: string
   listingType: 'sale' | 'rental'
   price: string
+  area: number
+  rooms: number
+  bedrooms: number
+  bathrooms: number
+  image: string
   lat: number
   lng: number
   positionSource: MapPinPositionSource

@@ -263,3 +263,17 @@
     align-self: flex-end;
   }
 }
+
+.property-filters--compact {
+  padding: 0.75rem 0.9rem 0.9rem;
+}
+
+.property-filters--compact .property-filters__header {
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.55rem;
+  justify-content: flex-end;
+}
+
+.property-filters--compact .property-filters__status {
+  margin-bottom: 0.75rem;
+}

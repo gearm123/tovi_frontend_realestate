@@ -9,12 +9,35 @@
   width: 100%;
   aspect-ratio: 16 / 11;
   min-height: 280px;
+  border-radius: var(--property-radius);
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--white);
+}
+
+.property-map-shell--expanded .google-property-map__canvas,
+.property-map-shell--page .google-property-map__canvas {
+  aspect-ratio: auto;
+}
+
+.property-map-shell--expanded .google-property-map__canvas {
+  height: 100%;
+  min-height: 0;
 }
 
 .google-property-map__info {
   font-family: var(--font-primary);
-  max-width: 220px;
+  max-width: 240px;
   padding: 0.15rem 0.25rem 0.25rem;
+}
+
+.google-property-map__info-image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
 .google-property-map__info-type {
@@ -26,24 +49,34 @@
 }
 
 .google-property-map__info-title {
-  font-size: 0.95rem;
-  font-weight: var(--font-weight-medium);
+  font-size: 0.88rem;
+  font-weight: var(--font-weight-regular);
   line-height: 1.3;
+  margin-bottom: 0.45rem;
+  color: var(--ink-soft);
+}
+
+.google-property-map__info-neighborhood {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+
+.google-property-map__info-price {
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
   margin-bottom: 0.25rem;
   color: var(--ink);
 }
 
-.google-property-map__info-neighborhood {
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-  margin-bottom: 0.35rem;
-}
-
-.google-property-map__info-price {
-  font-size: 0.9rem;
-  font-weight: var(--font-weight-medium);
-  margin-bottom: 0.5rem;
+.google-property-map__info-specs {
+  font-size: 0.78rem;
   color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 0.45rem;
 }
 
 .google-property-map__info-note {
@@ -54,16 +87,9 @@
 }
 
 .google-property-map__info-link {
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-}
-
-.google-property-map__info-link:hover {
-  color: var(--ink);
+  width: 100%;
+  margin-top: 0.2rem;
+  text-decoration: none;
 }
 
 @media (max-width: 768px) {

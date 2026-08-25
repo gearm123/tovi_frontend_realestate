@@ -18,6 +18,8 @@ interface PropertyFiltersBarProps {
   onReset: () => void
   onStatusChange?: (status: ListingStatusFilter) => void
   variant?: 'full' | 'simple'
+  density?: 'default' | 'compact'
+  className?: string
 }
 
 const roomOptions = ['', '2', '3', '4', '5', '6'] as const
@@ -39,6 +41,8 @@ export default function PropertyFiltersBar({
   onReset,
   onStatusChange,
   variant = 'full',
+  density = 'default',
+  className,
 }: PropertyFiltersBarProps) {
   const { t, format, locale } = useLanguage()
   const viewport = useViewport()
@@ -116,14 +120,23 @@ export default function PropertyFiltersBar({
 
   return (
     <div
-      className={`property-filters${variant === 'simple' ? ' property-filters--simple' : ''}`}
+      className={[
+        'property-filters',
+        variant === 'simple' ? 'property-filters--simple' : '',
+        density === 'compact' ? 'property-filters--compact' : '',
+        className ?? '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
       role="search"
       aria-label={t.filters.aria}
     >
       <div className="property-filters__header">
-        <p className="property-filters__title">
-          {variant === 'simple' ? t.header.nav.search : t.search.filterTitle}
-        </p>
+        {density !== 'compact' ? (
+          <p className="property-filters__title">
+            {variant === 'simple' ? t.header.nav.search : t.search.filterTitle}
+          </p>
+        ) : null}
         <button type="button" className="property-filters__reset" onClick={onReset}>
           {t.filters.clear}
         </button>

@@ -211,6 +211,9 @@ export const ruPatch = {
     resultsTitle: 'Подходящие объекты',
     resultsIntro: 'Список обновляется сразу при изменении фильтров.',
     resultsCount: 'Найдено объектов: {count}',
+    showMap: 'Карта',
+    showList: 'Список',
+    viewToggleAria: 'Вид результатов',
     homeTitle: 'Найдите дом в Тель-Авиве',
     homeSubtitle: 'Поиск по покупке или аренде, району, цене, комнатам и площади.',
     demoListingsNote:
@@ -306,6 +309,13 @@ export const ruPatch = {
     showLess: 'Свернуть',
   },
   map: {
+    expand: 'Развернуть карту',
+    collapse: 'Закрыть карту',
+    expandAria: 'Открыть карту на весь экран',
+    collapseAria: 'Закрыть развёрнутую карту',
+    empty: 'Нет объектов по этим фильтрам.',
+    locationTitle: 'Расположение',
+    openInMaps: 'Открыть в Google Maps',
     loadErrorTitle: 'Не удалось загрузить Google Maps',
     loadErrorBody:
       'Сайт использует ваш API-ключ, но Google его отклонил. Проверьте консоль браузера и исправьте в Google Cloud Console:',

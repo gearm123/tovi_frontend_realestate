@@ -38,6 +38,7 @@
 }
 
 .placeholder-map__canvas-wrap {
+  position: relative;
   min-width: 0;
 }
 
@@ -97,6 +98,14 @@
   cursor: pointer;
 }
 
+.placeholder-map__pin:hover {
+  z-index: 4;
+}
+
+.placeholder-map__pin--active {
+  z-index: 5;
+}
+
 .placeholder-map__pin-dot {
   display: block;
   width: 100%;
@@ -124,7 +133,7 @@
 
 .placeholder-map__popup {
   position: absolute;
-  z-index: 3;
+  z-index: 6;
   width: min(16rem, calc(100% - 1.5rem));
   padding: 0.9rem 1rem;
   background: rgba(255, 255, 255, 0.97);
@@ -133,6 +142,15 @@
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
   transform: translate(-50%, calc(-100% - 1rem));
   pointer-events: auto;
+}
+
+.placeholder-map__popup-image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.55rem;
+  display: block;
 }
 
 .placeholder-map__popup-type {
@@ -146,23 +164,35 @@
 
 .placeholder-map__popup-title {
   font-family: var(--font-primary);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   line-height: 1.35;
-  margin-bottom: 0.25rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.45rem;
 }
 
 .placeholder-map__popup-neighborhood {
-  font-family: var(--font-primary);
-  font-size: 0.78rem;
-  color: var(--ink-muted);
-  margin-bottom: 0.35rem;
+  font-family: var(--font-subheading);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
 }
 
 .placeholder-map__popup-price {
   font-family: var(--font-primary);
-  font-size: 0.88rem;
-  font-weight: var(--font-weight-medium);
-  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.placeholder-map__popup-specs {
+  font-family: var(--font-primary);
+  font-size: 0.78rem;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 0.45rem;
 }
 
 .placeholder-map__popup-note {
@@ -174,15 +204,9 @@
 }
 
 .placeholder-map__popup-link {
-  display: inline-block;
-  font-family: var(--font-button);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--white);
-  background: var(--accent);
-  padding: 0.45rem 0.75rem;
-  border-radius: 4px;
+  width: 100%;
+  margin-top: 0.2rem;
+  text-decoration: none;
 }
 
 .placeholder-map__note {
@@ -215,6 +239,14 @@
   flex-shrink: 0;
 }
 
+.placeholder-map__list-empty {
+  font-family: var(--font-primary);
+  font-size: 0.92rem;
+  color: var(--ink-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
 .placeholder-map__list ul {
   list-style: none;
   display: flex;
@@ -233,8 +265,19 @@
   border: 1px solid var(--rule-light);
   border-radius: 6px;
   background: var(--paper);
-  cursor: pointer;
   transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.placeholder-map__list-select {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: start;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
 }
 
 .placeholder-map__list-item:hover,
@@ -257,19 +300,58 @@
   color: var(--ink-muted);
 }
 
+.placeholder-map__list-price {
+  display: block;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.2rem;
+}
+
 .placeholder-map__list-title {
   display: block;
   font-family: var(--font-primary);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   line-height: 1.35;
-  margin-bottom: 0.2rem;
+  color: var(--ink-soft);
+  margin-top: 0.2rem;
 }
 
 .placeholder-map__list-meta {
   display: block;
+  font-family: var(--font-subheading);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.15rem;
+}
+
+.placeholder-map__list-specs {
+  display: block;
   font-family: var(--font-primary);
   font-size: 0.75rem;
-  color: var(--ink-muted);
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.placeholder-map__list-link {
+  display: inline-block;
+  margin-top: 0.45rem;
+  font-family: var(--font-button);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.placeholder-map__list-link:hover,
+.placeholder-map__list-link:focus-visible {
+  color: var(--ink);
 }
 
 @media (max-width: 900px) {

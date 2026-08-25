@@ -211,6 +211,9 @@ export const frPatch = {
     resultsTitle: 'Biens correspondants',
     resultsIntro: 'Les résultats se mettent à jour instantanément.',
     resultsCount: '{count} biens trouvés',
+    showMap: 'Carte',
+    showList: 'Liste',
+    viewToggleAria: 'Affichage des résultats',
     homeTitle: 'Trouvez un logement à Tel Aviv',
     homeSubtitle: 'Recherchez à l’achat ou à la location, par quartier, prix, pièces et surface.',
     demoListingsNote:
@@ -306,6 +309,13 @@ export const frPatch = {
     showLess: 'Voir moins',
   },
   map: {
+    expand: 'Agrandir la carte',
+    collapse: 'Fermer la carte',
+    expandAria: 'Ouvrir la carte en plein écran',
+    collapseAria: 'Fermer la carte agrandie',
+    empty: 'Aucun bien ne correspond à ces filtres.',
+    locationTitle: 'Emplacement',
+    openInMaps: 'Ouvrir dans Google Maps',
     loadErrorTitle: 'Google Maps n’a pas pu se charger',
     loadErrorBody:
       'Le site utilise votre clé API, mais Google l’a rejetée. Vérifiez la console du navigateur, puis corrigez dans Google Cloud Console :',

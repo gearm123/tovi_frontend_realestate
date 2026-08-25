@@ -36,7 +36,7 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: -0.04em;
   line-height: 1.08;
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.4rem;
 }
 
 .property-detail__neighborhood {
@@ -46,7 +46,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.85rem;
 }
 
 .property-detail__title {
@@ -88,7 +88,8 @@
 
 .property-detail__highlights h2,
 .property-detail__special h2,
-.property-detail__video h2 {
+.property-detail__video h2,
+.property-detail__map h2 {
   font-family: var(--font-subheading);
   font-size: 0.78rem;
   font-weight: var(--font-weight-regular);

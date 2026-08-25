@@ -193,17 +193,13 @@ export default function PropertyImageGallery({
           <figure
             key={`${src}-${index}`}
             className="property-gallery__slide"
-            {...(isCard
-              ? {}
-              : {
-                  role: 'button',
-                  tabIndex: 0,
-                  'aria-label': t.property.enlargePhoto,
-                  onPointerDown,
-                  onPointerMove,
-                  onClick: () => openPhoto(index),
-                  onKeyDown: (event: KeyboardEvent<HTMLElement>) => onSlideKeyDown(event, index),
-                })}
+            role="button"
+            tabIndex={0}
+            aria-label={t.property.enlargePhoto}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onClick={() => openPhoto(index)}
+            onKeyDown={(event: KeyboardEvent<HTMLElement>) => onSlideKeyDown(event, index)}
           >
             <PropertyImage
               imagePath={src}
@@ -220,7 +216,7 @@ export default function PropertyImageGallery({
           {activeIndex + 1} / {images.length}
         </p>
       )}
-      {!isCard && lightboxIndex !== null && (
+      {lightboxIndex !== null && (
         <PropertyPhotoLightbox
           images={images}
           alt={alt}

@@ -216,6 +216,9 @@ const en = {
     resultsTitle: 'Matching properties',
     resultsIntro: 'Listings update instantly as you adjust the filters below.',
     resultsCount: '{count} properties found',
+    showMap: 'Map',
+    showList: 'List',
+    viewToggleAria: 'Results view',
     homeTitle: 'Find a home in Tel Aviv',
     homeSubtitle: 'Search by buy or rent, area, price, rooms, and size.',
     demoListingsNote:
@@ -321,6 +324,13 @@ const en = {
     showLess: 'Show less',
   },
   map: {
+    expand: 'Expand map',
+    collapse: 'Close map',
+    expandAria: 'Open the map full screen',
+    collapseAria: 'Close the expanded map',
+    empty: 'No listings match these filters.',
+    locationTitle: 'Location',
+    openInMaps: 'Open in Google Maps',
     loadErrorTitle: 'Google Maps could not load',
     loadErrorBody:
       'The site is using your API key, but Google rejected it. Check the browser console, then fix these in Google Cloud Console:',
@@ -543,6 +553,9 @@ const he: TranslationTree = {
     resultsTitle: 'נכסים תואמים',
     resultsIntro: 'הרשימה מתעדכנת מיד כשמשנים את המסננים.',
     resultsCount: 'נמצאו {count} נכסים',
+    showMap: 'מפה',
+    showList: 'רשימה',
+    viewToggleAria: 'תצוגת תוצאות',
     homeTitle: 'מצאו בית בתל אביב',
     homeSubtitle: 'חפשו לפי קנייה או השכרה, אזור, מחיר, חדרים וגודל.',
     demoListingsNote:
@@ -648,6 +661,13 @@ const he: TranslationTree = {
     showLess: 'הצג פחות',
   },
   map: {
+    expand: 'הרחבת המפה',
+    collapse: 'סגירת המפה',
+    expandAria: 'פתיחת המפה למסך מלא',
+    collapseAria: 'סגירת המפה המורחבת',
+    empty: 'אין נכסים שתואמים למסננים האלה.',
+    locationTitle: 'מיקום',
+    openInMaps: 'פתיחה ב-Google Maps',
     loadErrorTitle: 'לא ניתן לטעון את Google Maps',
     loadErrorBody:
       'האתר משתמש במפתח ה-API, אך Google דחה אותו. בדקו את הקונסול בדפדפן, ואז תקנו ב-Google Cloud Console:',

@@ -5,6 +5,7 @@ import VideoEmbed from '../components/shared/VideoEmbed'
 import PropertyAgentCard from '../components/property-listings/shared/PropertyAgentCard'
 import PropertyFacts from '../components/property-listings/shared/PropertyFacts'
 import SimilarProperties from '../components/property-listings/shared/SimilarProperties'
+import PropertyLocationMap from '../components/map/PropertyLocationMap'
 import { getAgentForProperty } from '../services/agentService'
 import ListingTypeBadge from '../components/property-listings/shared/ListingTypeBadge'
 import ListingStatusBadges from '../components/property-listings/shared/ListingStatusBadges'
@@ -113,9 +114,9 @@ export default function PropertyDetailPage() {
 
         <div className="property-detail__body" dir={copyDir}>
           <p className="property-detail__price">{localized.price ?? property.price}</p>
+          <p className="property-detail__neighborhood">{neighborhoodLabel}</p>
           <PropertyFacts property={property} floor={narrative.floor} />
 
-          <p className="property-detail__neighborhood">{neighborhoodLabel}</p>
           <h1
             className="property-detail__title listing-copy"
             dir={listingTextDir(localized.title)}
@@ -161,6 +162,8 @@ export default function PropertyDetailPage() {
               ))}
             </aside>
           )}
+
+          <PropertyLocationMap property={property} />
 
           {showVideoTour && (
             <section className="property-detail__video" aria-labelledby="property-video-title">

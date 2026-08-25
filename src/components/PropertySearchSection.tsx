@@ -2,10 +2,13 @@ import { useEffect, useMemo, useState } from 'react'
 import type { ListingStatusFilter } from '../constants/propertySearch'
 import { useLanguage } from '../context/LanguageContext'
 import { usePropertyFilters } from '../hooks/usePropertyFilters'
+import { useSiteContent } from '../hooks/useSiteContent'
 import { useSiteData } from '../hooks/useSiteData'
+import { buildPropertyMapPins } from '../services/mapService'
 import type { Property } from '../types/property'
 import PropertyFiltersBar from './PropertyFilters'
 import PropertyListings from './PropertyListings'
+import PropertyMap from './map/PropertyMap'
 import PropertySearchEmpty from './PropertySearchEmpty'
 import './PropertySearchSection.css'
 
@@ -34,6 +37,7 @@ export default function PropertySearchSection({
   prominence = 'default',
 }: PropertySearchSectionProps) {
   const { t, format } = useLanguage()
+  const { content } = useSiteContent()
   const { properties } = useSiteData()
   const catalog = useMemo(() => {
     const items = source ?? properties
@@ -43,6 +47,7 @@ export default function PropertySearchSection({
     usePropertyFilters(catalog, { initialStatus })
 
   const isHomeHero = prominence === 'hero'
+  const showMapToggle = !isHomeHero
   const sectionLabel = format(t.search.resultsCount, { count: filtered.length })
   const title = listingsTitle ?? t.search.resultsTitle
   const intro = listingsIntro
@@ -55,6 +60,9 @@ export default function PropertySearchSection({
 
   const listed = filtered.slice(0, visibleCount)
   const hasMore = visibleCount < filtered.length
+  const [view, setView] = useState<'list' | 'map'>('list')
+  const [mapExpanded, setMapExpanded] = useState(false)
+  const pins = useMemo(() => buildPropertyMapPins(filtered), [filtered])
 
   return (
     <section
@@ -75,7 +83,57 @@ export default function PropertySearchSection({
         variant={variant}
       />
 
-      {filtered.length === 0 ? (
+      {showMapToggle ? (
+        <div
+          className="property-search-section__views"
+          role="group"
+          aria-label={t.search.viewToggleAria}
+        >
+          <button
+            type="button"
+            className={`property-search-section__view${view === 'list' ? ' property-search-section__view--active' : ''}`}
+            aria-pressed={view === 'list'}
+            onClick={() => {
+              setView('list')
+              setMapExpanded(false)
+            }}
+          >
+            {t.search.showList}
+          </button>
+          <button
+            type="button"
+            className={`property-search-section__view${view === 'map' ? ' property-search-section__view--active' : ''}`}
+            aria-pressed={view === 'map'}
+            onClick={() => setView('map')}
+          >
+            {t.search.showMap}
+          </button>
+        </div>
+      ) : null}
+
+      {showMapToggle && view === 'map' ? (
+        <PropertyMap
+          pins={pins}
+          content={content.mapSection}
+          variant="page"
+          expandable
+          expanded={mapExpanded}
+          onExpand={() => setMapExpanded(true)}
+          onCollapse={() => setMapExpanded(false)}
+          filterControls={
+            mapExpanded ? (
+              <PropertyFiltersBar
+                filters={filters}
+                onChange={setFilters}
+                onReset={resetFilters}
+                onStatusChange={setListingStatus}
+                variant={variant}
+                density="compact"
+              />
+            ) : undefined
+          }
+        />
+      ) : filtered.length === 0 ? (
         <PropertySearchEmpty onReset={resetFilters} />
       ) : (
         <>

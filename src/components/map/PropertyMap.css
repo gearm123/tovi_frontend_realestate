@@ -1,1 +1,123 @@
-/* PropertyMap — shared shell; provider-specific styles live alongside each implementation */
+.property-map-shell__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.property-map-shell__title {
+  font-family: var(--font-primary);
+  font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.property-map-shell__control {
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.property-map-shell__expand {
+  position: absolute;
+  top: 0.75rem;
+  inset-inline-end: 0.75rem;
+  z-index: 7;
+  cursor: pointer;
+  background: var(--white);
+}
+
+.property-map-shell__filters-panel {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--property-radius);
+  padding: 0.15rem 0.85rem 0.25rem;
+  flex-shrink: 0;
+}
+
+.property-map-shell__filters-panel summary {
+  font-family: var(--font-primary);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.55rem 0;
+  list-style: none;
+}
+
+.property-map-shell__filters-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.property-map-shell__filters-panel .property-filters {
+  border: 0;
+  box-shadow: none;
+  padding: 0.25rem 0 0.75rem;
+  max-height: none;
+}
+
+.property-map-shell--expanded {
+  position: fixed;
+  inset: 0;
+  z-index: 1210;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--paper);
+  padding: max(0.85rem, env(safe-area-inset-top))
+    max(0.85rem, env(safe-area-inset-right))
+    max(0.85rem, env(safe-area-inset-bottom))
+    max(0.85rem, env(safe-area-inset-left));
+  overflow: hidden;
+}
+
+.property-map-shell--expanded .placeholder-map__layout {
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.property-map-shell--expanded .placeholder-map__canvas-wrap,
+.property-map-shell--expanded .placeholder-map__list {
+  height: 100%;
+  max-height: none;
+  min-height: 0;
+}
+
+.property-map-shell--expanded .placeholder-map__canvas,
+.property-map-shell--expanded .google-property-map__canvas {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: 0;
+}
+
+.property-map-shell--expanded .placeholder-map__note {
+  display: none;
+}
+
+.property-map-shell--expanded .property-filters {
+  max-width: none;
+  margin: 0;
+  box-shadow: none;
+  flex-shrink: 0;
+  overflow: auto;
+  max-height: min(34vh, 18rem);
+}
+
+.property-map-shell--page .placeholder-map__canvas,
+.property-map-shell--page .google-property-map__canvas {
+  aspect-ratio: auto;
+  height: min(68vh, 38rem);
+}
+
+@media (max-width: 900px) {
+  .property-map-shell--expanded .placeholder-map__layout {
+    grid-template-rows: minmax(0, 1fr) minmax(11rem, 34%);
+  }
+
+  .property-map-shell--expanded .placeholder-map__list {
+    max-height: none;
+  }
+}

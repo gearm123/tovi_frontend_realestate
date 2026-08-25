@@ -11,8 +11,8 @@
   gap: 0.65rem;
 }
 
-.property-facts__row--secondary {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+.property-facts__row--features {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .property-facts__item {
@@ -53,7 +53,7 @@
 }
 
 @media (max-width: 900px) {
-  .property-facts__row--secondary {
+  .property-facts__row--features {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
@@ -67,7 +67,7 @@
   }
 
   .property-facts__row,
-  .property-facts__row--secondary {
+  .property-facts__row--features {
     display: contents;
   }
 

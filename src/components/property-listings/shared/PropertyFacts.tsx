@@ -24,12 +24,13 @@ export default function PropertyFacts({ property, floor }: PropertyFactsProps) {
     { label: t.property.bathrooms, value: String(property.bathrooms) },
   ]
 
-  const secondary = [
-    { label: t.property.floor, value: floor || no },
+  const features = [
     { label: t.filters.features.parking, value: property.features.parking ? yes : no },
     { label: t.filters.features.elevator, value: property.features.elevator ? yes : no },
     { label: t.filters.features.balcony, value: property.features.balcony ? yes : no },
     { label: t.property.safeRoom, value: safeRoom },
+    { label: t.filters.features.petsAllowed, value: property.features.petsAllowed ? yes : no },
+    { label: t.property.floor, value: floor || no },
   ]
 
   return (
@@ -48,8 +49,8 @@ export default function PropertyFacts({ property, floor }: PropertyFactsProps) {
           </div>
         ))}
       </div>
-      <div className="property-facts__row property-facts__row--secondary">
-        {secondary.map((fact) => (
+      <div className="property-facts__row property-facts__row--features">
+        {features.map((fact) => (
           <div key={fact.label} className="property-facts__item">
             <span className="property-facts__value property-facts__value--small">{fact.value}</span>
             <span className="property-facts__label">{fact.label}</span>

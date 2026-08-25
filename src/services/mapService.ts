@@ -74,15 +74,28 @@ export function buildPropertyMapPins(properties: Property[]): PropertyMapPin[] {
     return {
       id: property.id,
       title: property.title,
+      address: property.address,
       neighborhood: property.neighborhood,
       listingType: property.listingType,
       price: property.price,
+      area: property.area,
+      rooms: property.rooms,
+      bedrooms: property.bedrooms,
+      bathrooms: property.bathrooms,
+      image: property.image,
       lat: position.lat,
       lng: position.lng,
       positionSource: position.positionSource,
       href: getPropertyDetailPath(property),
     }
   })
+}
+
+export function getExternalMapsUrl(lat: number, lng: number, label?: string): string {
+  const query = label?.trim()
+    ? `${lat},${lng} (${label.trim()})`
+    : `${lat},${lng}`
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
 }
 
 export function getActiveMapProvider(): MapProvider {
