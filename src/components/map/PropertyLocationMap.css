@@ -21,16 +21,64 @@
   margin: 0 0 0.65rem;
 }
 
+.property-location-map__preview {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: var(--property-radius);
+  background: var(--white);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.property-location-map__preview:hover,
+.property-location-map__preview:focus-visible {
+  border-color: var(--accent);
+}
+
+.property-location-map__surface,
+.property-location-map__surface * {
+  pointer-events: none;
+}
+
 .property-location-map .placeholder-map__canvas,
 .property-location-map__google,
-.property-location-map__google-wrap .google-property-map__canvas {
+.property-location-map__preview .google-property-map__canvas {
   aspect-ratio: 16 / 10;
   min-height: 220px;
   max-height: 28rem;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
-.property-location-map__pin {
+.property-location-map__marker {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 2rem;
+  height: 2.85rem;
+  transform: translate(-50%, -100%);
   pointer-events: none;
+}
+
+.property-location-map__geo-pin {
+  position: absolute;
+  z-index: 4;
+  width: 1.85rem;
+  height: 2.65rem;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+}
+
+.property-location-map__marker-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
 .property-location-map__note {
@@ -49,27 +97,10 @@
   color: var(--ink-soft);
 }
 
-.property-location-map__link {
-  display: inline-block;
-  margin-top: 0.7rem;
-  font-family: var(--font-button);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-}
-
-.property-location-map__link:hover,
-.property-location-map__link:focus-visible {
-  color: var(--ink);
-}
-
 @media (max-width: 768px) {
   .property-location-map .placeholder-map__canvas,
   .property-location-map__google,
-  .property-location-map__google-wrap .google-property-map__canvas {
+  .property-location-map__preview .google-property-map__canvas {
     aspect-ratio: 4 / 3;
     min-height: 200px;
   }

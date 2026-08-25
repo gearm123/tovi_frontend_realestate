@@ -15,6 +15,7 @@ export interface PropertyMapProps {
   onCollapse?: () => void
   filterControls?: ReactNode
   variant?: 'section' | 'page'
+  expandTrigger?: 'button' | 'search'
 }
 
 export default function PropertyMap({
@@ -26,6 +27,7 @@ export default function PropertyMap({
   onCollapse,
   filterControls,
   variant,
+  expandTrigger,
 }: PropertyMapProps) {
   const provider = getActiveMapProvider()
   const shared = {
@@ -37,6 +39,7 @@ export default function PropertyMap({
     onCollapse,
     filterControls,
     variant,
+    expandTrigger,
   }
 
   if (provider === 'google') {

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
-import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps'
+import { APIProvider, Map } from '@vis.gl/react-google-maps'
 import { useLanguage } from '../../context/LanguageContext'
 import { useSiteContent } from '../../hooks/useSiteContent'
 import { getMapCredentials } from '../../constants/mapConfig'
@@ -19,78 +19,61 @@ interface PropertyLocationMapProps {
   property: Property
 }
 
-function locationMarkerIcon(pin: PropertyMapPin): google.maps.Symbol {
-  return {
-    path: google.maps.SymbolPath.CIRCLE,
-    scale: 11,
-    fillColor: pin.listingType === 'sale' ? '#1c1c1c' : '#f05a24',
-    fillOpacity: 1,
-    strokeColor: '#ffffff',
-    strokeWeight: 2,
-  }
+function LocationPin() {
+  return (
+    <svg viewBox="0 0 24 36" className="property-location-map__marker-icon" aria-hidden="true">
+      <path
+        fill="#f05a24"
+        d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z"
+      />
+      <circle cx="12" cy="12" r="4.5" fill="#fff" />
+    </svg>
+  )
 }
 
-function PlaceholderLocationCanvas({ pin, label }: { pin: PropertyMapPin; label: string }) {
+function PlaceholderLocationCanvas({ pin }: { pin: PropertyMapPin }) {
   const point = latLngToMapPercent(pin.lat, pin.lng)
 
   return (
-    <div className="property-location-map__canvas placeholder-map__canvas" aria-label={label}>
+    <div className="property-location-map__canvas placeholder-map__canvas">
       <div className="placeholder-map__sea" aria-hidden="true" />
       <div className="placeholder-map__grid" aria-hidden="true" />
       <div className="placeholder-map__coastline" aria-hidden="true" />
       <span
-        className={`placeholder-map__pin placeholder-map__pin--${pin.listingType} placeholder-map__pin--active property-location-map__pin`}
+        className="property-location-map__geo-pin"
         style={{ left: `${point.x}%`, top: `${point.y}%` }}
-        aria-hidden="true"
       >
-        <span className="placeholder-map__pin-dot" />
+        <LocationPin />
       </span>
     </div>
   )
 }
 
-function GoogleLocationCanvas({ pin, label }: { pin: PropertyMapPin; label: string }) {
-  const { t } = useLanguage()
-  const apiKey = getMapCredentials().googleMapsApiKey ?? ''
-  const [loadFailed, setLoadFailed] = useState(false)
+function GoogleLocationCanvas({
+  pin,
+  onError,
+}: {
+  pin: PropertyMapPin
+  onError: () => void
+}) {
   const zoom = pin.positionSource === 'coordinates' ? 16 : 14
 
-  const handleApiError = useCallback((error: unknown) => {
-    console.error('Google Maps failed to load:', error)
-    setLoadFailed(true)
-  }, [])
-
-  if (!apiKey || loadFailed) {
-    return (
-      <>
-        {loadFailed ? (
-          <p className="property-location-map__fallback">{t.map.loadErrorTitle}</p>
-        ) : null}
-        <PlaceholderLocationCanvas pin={pin} label={label} />
-      </>
-    )
-  }
-
   return (
-    <APIProvider apiKey={apiKey} onError={handleApiError}>
-      <div className="property-location-map__google-wrap" aria-label={label}>
-        <Map
-          className="property-location-map__google google-property-map__canvas"
-          defaultCenter={{ lat: pin.lat, lng: pin.lng }}
-          defaultZoom={zoom}
-          gestureHandling="cooperative"
-          mapTypeControl={false}
-          streetViewControl={false}
-          fullscreenControl={false}
-          clickableIcons={false}
-        >
-          <Marker
-            position={{ lat: pin.lat, lng: pin.lng }}
-            title={pin.title}
-            icon={locationMarkerIcon(pin)}
-          />
-        </Map>
-      </div>
+    <APIProvider apiKey={getMapCredentials().googleMapsApiKey ?? ''} onError={onError}>
+      <Map
+        className="property-location-map__google google-property-map__canvas"
+        defaultCenter={{ lat: pin.lat, lng: pin.lng }}
+        defaultZoom={zoom}
+        gestureHandling="none"
+        disableDefaultUI
+        keyboardShortcuts={false}
+        draggable={false}
+        mapTypeControl={false}
+        streetViewControl={false}
+        fullscreenControl={false}
+        zoomControl={false}
+        clickableIcons={false}
+      />
     </APIProvider>
   )
 }
@@ -98,35 +81,44 @@ function GoogleLocationCanvas({ pin, label }: { pin: PropertyMapPin; label: stri
 export default function PropertyLocationMap({ property }: PropertyLocationMapProps) {
   const { t } = useLanguage()
   const { content } = useSiteContent()
+  const [googleFailed, setGoogleFailed] = useState(false)
   const pin = useMemo(() => buildPropertyMapPins([property])[0], [property])
+  const handleGoogleError = useCallback(() => setGoogleFailed(true), [])
 
   if (!pin) return null
 
   const neighborhoodLabel =
     (t.neighborhoods as Record<string, string>)[pin.neighborhood] ?? pin.neighborhood
   const mapsUrl = getExternalMapsUrl(pin.lat, pin.lng, pin.address || pin.title)
-  const live = getActiveMapProvider() === 'google'
+  const live = getActiveMapProvider() === 'google' && !googleFailed
 
   return (
     <section className="property-location-map" aria-labelledby="property-location-title">
       <h2 id="property-location-title">{t.map.locationTitle}</h2>
       <p className="property-location-map__area">{neighborhoodLabel}</p>
-      {live ? (
-        <GoogleLocationCanvas pin={pin} label={t.map.locationTitle} />
-      ) : (
-        <PlaceholderLocationCanvas pin={pin} label={t.map.locationTitle} />
-      )}
+      <a
+        className="property-location-map__preview"
+        href={mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={t.map.openInMaps}
+      >
+        <div className="property-location-map__surface">
+          {live ? (
+            <GoogleLocationCanvas pin={pin} onError={handleGoogleError} />
+          ) : (
+            <PlaceholderLocationCanvas pin={pin} />
+          )}
+        </div>
+        {live ? (
+          <span className="property-location-map__marker">
+            <LocationPin />
+          </span>
+        ) : null}
+      </a>
       {pin.positionSource === 'neighborhood' ? (
         <p className="property-location-map__note">{content.mapSection.neighborhoodFallback}</p>
       ) : null}
-      <a
-        className="property-location-map__link"
-        href={mapsUrl}
-        target="_blank"
-        rel="noreferrer"
-      >
-        {t.map.openInMaps}
-      </a>
     </section>
   )
 }

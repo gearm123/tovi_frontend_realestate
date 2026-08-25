@@ -313,6 +313,8 @@ export const frPatch = {
     collapse: 'Fermer la carte',
     expandAria: 'Ouvrir la carte en plein écran',
     collapseAria: 'Fermer la carte agrandie',
+    searchPlaceholder: 'Rechercher',
+    searchAria: 'Rechercher des biens sur la carte',
     empty: 'Aucun bien ne correspond à ces filtres.',
     locationTitle: 'Emplacement',
     openInMaps: 'Ouvrir dans Google Maps',

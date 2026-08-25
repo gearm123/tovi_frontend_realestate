@@ -116,6 +116,7 @@ export default function PropertyMapSection({
           expanded={expanded}
           onExpand={() => setExpanded(true)}
           onCollapse={() => setExpanded(false)}
+          expandTrigger="search"
           filterControls={
             expanded ? (
               <PropertyFiltersBar

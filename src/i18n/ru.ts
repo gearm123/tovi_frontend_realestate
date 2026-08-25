@@ -313,6 +313,8 @@ export const ruPatch = {
     collapse: 'Закрыть карту',
     expandAria: 'Открыть карту на весь экран',
     collapseAria: 'Закрыть развёрнутую карту',
+    searchPlaceholder: 'Поиск',
+    searchAria: 'Искать объекты на карте',
     empty: 'Нет объектов по этим фильтрам.',
     locationTitle: 'Расположение',
     openInMaps: 'Открыть в Google Maps',

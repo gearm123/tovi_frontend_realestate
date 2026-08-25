@@ -24,6 +24,7 @@ interface PropertyMapShellProps {
   filterControls?: ReactNode
   canvasNote?: ReactNode
   variant?: 'section' | 'page'
+  expandTrigger?: 'button' | 'search'
   children: (ctx: PropertyMapCanvasContext) => ReactNode
 }
 
@@ -37,6 +38,7 @@ export default function PropertyMapShell({
   filterControls,
   canvasNote,
   variant = 'section',
+  expandTrigger = 'button',
   children,
 }: PropertyMapShellProps) {
   const { t } = useLanguage()
@@ -85,7 +87,7 @@ export default function PropertyMapShell({
 
   const filters =
     expanded && viewport === 'mobile' && filterControls ? (
-      <details className="property-map-shell__filters-panel">
+      <details className="property-map-shell__filters-panel" open={expandTrigger === 'search'}>
         <summary>{t.search.filterTitle}</summary>
         {filterControls}
       </details>
@@ -129,14 +131,33 @@ export default function PropertyMapShell({
       <div className="placeholder-map__layout">
         <div className="placeholder-map__canvas-wrap">
           {!expanded && expandable ? (
-            <button
-              type="button"
-              className="property-map-shell__expand site-cta"
-              onClick={onExpand}
-              aria-label={t.map.expandAria}
-            >
-              {t.map.expand}
-            </button>
+            expandTrigger === 'search' ? (
+              <button
+                type="button"
+                className="property-map-shell__search"
+                onClick={onExpand}
+                aria-label={t.map.searchAria}
+              >
+                <svg
+                  className="property-map-shell__search-icon"
+                  viewBox="0 0 16 16"
+                  aria-hidden="true"
+                >
+                  <circle cx="7" cy="7" r="4.25" fill="none" stroke="currentColor" strokeWidth="1.4" />
+                  <path d="M10.2 10.2 14 14" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                </svg>
+                <span>{t.map.searchPlaceholder}</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="property-map-shell__expand site-cta"
+                onClick={onExpand}
+                aria-label={t.map.expandAria}
+              >
+                {t.map.expand}
+              </button>
+            )
           ) : null}
           {children(canvasCtx)}
           {canvasNote}
