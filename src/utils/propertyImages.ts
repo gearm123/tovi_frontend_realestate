@@ -35,10 +35,12 @@ export function getPropertyImageSources(imagePath: string): PropertyImageSources
   }
 }
 
+const HERO_ASSET_REV = '20260825'
+
 export const HERO_IMAGE = {
-  fallback: '/assets/properhero-poster.jpg',
+  fallback: `/assets/properhero-poster.jpg?v=${HERO_ASSET_REV}`,
   /** Secondary Tel Aviv skyline if the hero poster fails */
   fallbackAlt: '/assets/hero.jpg',
 } as const
 
-export const HERO_VIDEO = '/assets/properhero.mp4'
+export const HERO_VIDEO = `/assets/properhero.mp4?v=${HERO_ASSET_REV}`
