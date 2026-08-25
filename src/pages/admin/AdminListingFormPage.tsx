@@ -7,15 +7,18 @@ import {
   formatListingPrice,
   updateSiteData,
 } from '../../lib/siteDataStore'
+import { draftListingCopy, linesToList, listToLines } from '../../lib/listingCopyDraft'
+import { cleanListingText } from '../../utils/listingCopy'
 import type { ListingType, Property, PropertyType } from '../../types/property'
+import AdminListingGallery from './AdminListingGallery'
 import './adminShared.css'
 
 const featureKeys = [
   ['balcony', 'Balcony'],
   ['parking', 'Parking'],
   ['elevator', 'Elevator'],
-  ['mamad', 'Mamad'],
-  ['miklat', 'Miklat'],
+  ['mamad', 'Safe room (Mamad)'],
+  ['miklat', 'Building shelter (Miklat)'],
   ['petsAllowed', 'Pets allowed'],
 ] as const
 
@@ -41,6 +44,14 @@ export default function AdminListingFormPage() {
     if (existing) setForm(existing)
   }, [isNew, existing])
 
+  const areaOptions = useMemo(() => {
+    const current = form.neighborhood?.trim()
+    if (current && !(neighborhoods as readonly string[]).includes(current)) {
+      return [current, ...neighborhoods]
+    }
+    return [...neighborhoods]
+  }, [form.neighborhood])
+
   if (!isNew && !existing) {
     return <Navigate to="/admin/listings" replace />
   }
@@ -54,43 +65,30 @@ export default function AdminListingFormPage() {
           key === 'listingType' ? (value as ListingType) : next.listingType,
         )
       }
-      if (key === 'image') {
-        const cover = String(value ?? '').trim()
-        const rest = (prev.images ?? []).slice(1).filter((src) => src && src !== cover)
-        next.images = cover ? [cover, ...rest] : rest
-      }
       if (key === 'images') {
         const images = (value as string[]).map((src) => src.trim()).filter(Boolean)
         next.images = images
-        next.image = images[0] ?? prev.image
+        next.image = images[0] ?? ''
       }
       return next
     })
     setSaved(false)
   }
 
-  const handleImageFile = (file: File | undefined) => {
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        setField('image', reader.result)
-      }
+  const applyDraft = (mode: 'fill' | 'replace') => {
+    const draft = draftListingCopy(form)
+    const hasCopy = Boolean(form.description.trim() || (form.highlights ?? []).length)
+    if (mode === 'replace' && hasCopy) {
+      const ok = window.confirm('Replace the current description and highlights with a new draft?')
+      if (!ok) return
     }
-    reader.readAsDataURL(file)
-  }
-
-  const galleryText = (form.images ?? (form.image ? [form.image] : []))
-    .filter((src) => !src.startsWith('data:'))
-    .join('\n')
-
-  const setGalleryFromText = (text: string) => {
-    const urls = text
-      .split('\n')
-      .map((line) => line.trim())
-      .filter(Boolean)
-    const dataCover = (form.images ?? []).find((src) => src.startsWith('data:'))
-    setField('images', dataCover ? [dataCover, ...urls] : urls)
+    setForm((prev) => ({
+      ...prev,
+      description: mode === 'fill' && prev.description.trim() ? prev.description : draft.description,
+      highlights:
+        mode === 'fill' && (prev.highlights ?? []).length ? prev.highlights : draft.highlights,
+    }))
+    setSaved(false)
   }
 
   const handleSubmit = (event: FormEvent) => {
@@ -100,19 +98,20 @@ export default function AdminListingFormPage() {
       return
     }
 
-    const images = (form.images ?? [])
-      .map((src) => src.trim())
-      .filter(Boolean)
+    const images = (form.images ?? []).map((src) => src.trim()).filter(Boolean)
     const cover = images[0] || form.image.trim() || ''
 
     const payload: Property = {
       ...form,
-      title: form.title.trim(),
-      address: form.address.trim(),
-      description: form.description.trim(),
+      title: cleanListingText(form.title),
+      address: cleanListingText(form.address),
+      description: cleanListingText(form.description),
+      floor: form.floor?.trim() || undefined,
+      highlights: (form.highlights ?? []).map(cleanListingText).filter(Boolean),
+      specialNotes: (form.specialNotes ?? []).map(cleanListingText).filter(Boolean),
       videoUrl: form.videoUrl?.trim() || undefined,
       image: cover,
-      images: images.length > 0 ? images : cover ? [cover] : [],
+      images,
       price: formatListingPrice(form.priceNumeric, form.listingType),
     }
 
@@ -122,7 +121,7 @@ export default function AdminListingFormPage() {
       }
       return {
         ...data,
-        properties: data.properties.map((p) => (p.id === payload.id ? payload : p)),
+        properties: data.properties.map((item) => (item.id === payload.id ? payload : item)),
       }
     })
 
@@ -132,13 +131,16 @@ export default function AdminListingFormPage() {
     }
   }
 
+  const gallery = form.images?.length ? form.images : form.image ? [form.image] : []
+
   return (
     <div>
       <header className="admin-page__header">
         <div>
           <h1 className="admin-page__title">{isNew ? 'Add listing' : 'Edit listing'}</h1>
           <p className="admin-page__subtitle">
-            {isNew ? 'Create a new sale or rental listing.' : `Editing ${form.id}`}
+            Fill in the fields below. Price, facts, and listing text stay in a consistent format
+            automatically.
           </p>
         </div>
         <div className="admin-page__actions">
@@ -154,247 +156,195 @@ export default function AdminListingFormPage() {
 
       <section className="admin-card">
         <form className="admin-form" onSubmit={handleSubmit}>
-          <div className="admin-form__grid">
-            <div className="admin-field">
-              <label htmlFor="listing-title">Title</label>
-              <input
-                id="listing-title"
-                value={form.title}
-                onChange={(e) => setField('title', e.target.value)}
-                required
-              />
-            </div>
-            <div className="admin-field">
-              <label htmlFor="listing-type">Listing type</label>
-              <select
-                id="listing-type"
-                value={form.listingType}
-                onChange={(e) => setField('listingType', e.target.value as ListingType)}
-              >
-                <option value="sale">Sale</option>
-                <option value="rental">Rental</option>
-              </select>
-            </div>
-            <div className="admin-field admin-field--full">
-              <label htmlFor="listing-address">Address</label>
-              <input
-                id="listing-address"
-                value={form.address}
-                onChange={(e) => setField('address', e.target.value)}
-                required
-              />
-            </div>
-            <div className="admin-field">
-              <label htmlFor="listing-neighborhood">Neighborhood</label>
-              <input
-                id="listing-neighborhood"
-                list="neighborhood-options"
-                value={form.neighborhood}
-                onChange={(e) => setField('neighborhood', e.target.value)}
-              />
-              <datalist id="neighborhood-options">
-                {neighborhoods.map((n) => (
-                  <option key={n} value={n} />
-                ))}
-              </datalist>
-            </div>
-            <div className="admin-field">
-              <label htmlFor="listing-property-type">Property type</label>
-              <select
-                id="listing-property-type"
-                value={form.propertyType}
-                onChange={(e) => setField('propertyType', e.target.value as PropertyType)}
-              >
-                {propertyTypes.map((t) => (
-                  <option key={t.value} value={t.value}>
-                    {t.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="admin-field">
-              <label htmlFor="listing-price">Price (number)</label>
-              <input
-                id="listing-price"
-                type="number"
-                min={0}
-                step={form.listingType === 'rental' ? 100 : 1000}
-                value={form.priceNumeric}
-                onChange={(e) => setField('priceNumeric', Number(e.target.value) || 0)}
-                required
-              />
-            </div>
-            <div className="admin-field">
-              <label>Display price</label>
-              <input value={form.price} readOnly />
-            </div>
-          </div>
-
-          <div className="admin-form__grid admin-form__grid--3">
-            <div className="admin-field">
-              <label htmlFor="listing-rooms">Rooms</label>
-              <input
-                id="listing-rooms"
-                type="number"
-                min={1}
-                step={0.5}
-                value={form.rooms}
-                onChange={(e) => setField('rooms', Number(e.target.value) || 0)}
-              />
-            </div>
-            <div className="admin-field">
-              <label htmlFor="listing-bedrooms">Bedrooms</label>
-              <input
-                id="listing-bedrooms"
-                type="number"
-                min={0}
-                value={form.bedrooms}
-                onChange={(e) => setField('bedrooms', Number(e.target.value) || 0)}
-              />
-            </div>
-            <div className="admin-field">
-              <label htmlFor="listing-bathrooms">Bathrooms</label>
-              <input
-                id="listing-bathrooms"
-                type="number"
-                min={0}
-                step={0.5}
-                value={form.bathrooms}
-                onChange={(e) => setField('bathrooms', Number(e.target.value) || 0)}
-              />
-            </div>
-            <div className="admin-field">
-              <label htmlFor="listing-area">Area (m²)</label>
-              <input
-                id="listing-area"
-                type="number"
-                min={0}
-                value={form.area}
-                onChange={(e) => setField('area', Number(e.target.value) || 0)}
-              />
-            </div>
-            <div className="admin-field">
-              <label htmlFor="listing-agent">Agent</label>
-              <select
-                id="listing-agent"
-                value={form.agentId}
-                onChange={(e) => setField('agentId', e.target.value)}
-              >
-                {agents.map((agent) => (
-                  <option key={agent.id} value={agent.id}>
-                    {agent.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="admin-field">
-              <div className="admin-checkboxes">
-                <label className="admin-checkbox" htmlFor="listing-featured">
-                  <input
-                    id="listing-featured"
-                    type="checkbox"
-                    checked={Boolean(form.featured)}
-                    onChange={(e) => setField('featured', e.target.checked)}
-                  />
-                  Featured
-                </label>
-                <label className="admin-checkbox" htmlFor="listing-exclusive">
-                  <input
-                    id="listing-exclusive"
-                    type="checkbox"
-                    checked={Boolean(form.exclusive)}
-                    onChange={(e) => setField('exclusive', e.target.checked)}
-                  />
-                  Exclusive
-                </label>
-                <label className="admin-checkbox" htmlFor="listing-new">
-                  <input
-                    id="listing-new"
-                    type="checkbox"
-                    checked={Boolean(form.isNew)}
-                    onChange={(e) => setField('isNew', e.target.checked)}
-                  />
-                  New
-                </label>
+          <div className="admin-form__section">
+            <h2 className="admin-form__section-title">Listing</h2>
+            <div className="admin-form__grid">
+              <div className="admin-field">
+                <label htmlFor="listing-type">Buy / Rent</label>
+                <select
+                  id="listing-type"
+                  value={form.listingType}
+                  onChange={(e) => setField('listingType', e.target.value as ListingType)}
+                >
+                  <option value="sale">Buy (for sale)</option>
+                  <option value="rental">Rent</option>
+                </select>
+              </div>
+              <div className="admin-field">
+                <label htmlFor="listing-property-type">Property type</label>
+                <select
+                  id="listing-property-type"
+                  value={form.propertyType}
+                  onChange={(e) => setField('propertyType', e.target.value as PropertyType)}
+                >
+                  {propertyTypes.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="admin-field admin-field--full">
+                <label htmlFor="listing-title">Title</label>
+                <input
+                  id="listing-title"
+                  value={form.title}
+                  onChange={(e) => setField('title', e.target.value)}
+                  required
+                />
               </div>
             </div>
           </div>
 
-          <div className="admin-field">
-            <label htmlFor="listing-description">Description</label>
-            <textarea
-              id="listing-description"
-              value={form.description}
-              onChange={(e) => setField('description', e.target.value)}
-            />
+          <div className="admin-form__section">
+            <h2 className="admin-form__section-title">Location</h2>
+            <div className="admin-form__grid">
+              <div className="admin-field">
+                <label htmlFor="listing-neighborhood">Area</label>
+                <select
+                  id="listing-neighborhood"
+                  value={form.neighborhood}
+                  onChange={(e) => setField('neighborhood', e.target.value)}
+                >
+                  {areaOptions.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="admin-field">
+                <label htmlFor="listing-agent">Agent</label>
+                <select
+                  id="listing-agent"
+                  value={form.agentId}
+                  onChange={(e) => setField('agentId', e.target.value)}
+                >
+                  {agents.map((agent) => (
+                    <option key={agent.id} value={agent.id}>
+                      {agent.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="admin-field admin-field--full">
+                <label htmlFor="listing-address">Address</label>
+                <input
+                  id="listing-address"
+                  value={form.address}
+                  onChange={(e) => setField('address', e.target.value)}
+                  required
+                />
+              </div>
+              <div className="admin-field">
+                <label htmlFor="listing-lat">Map latitude (optional)</label>
+                <input
+                  id="listing-lat"
+                  type="number"
+                  step="0.0001"
+                  value={form.coordinates.lat}
+                  onChange={(e) =>
+                    setField('coordinates', {
+                      ...form.coordinates,
+                      lat: Number(e.target.value) || 0,
+                    })
+                  }
+                />
+              </div>
+              <div className="admin-field">
+                <label htmlFor="listing-lng">Map longitude (optional)</label>
+                <input
+                  id="listing-lng"
+                  type="number"
+                  step="0.0001"
+                  value={form.coordinates.lng}
+                  onChange={(e) =>
+                    setField('coordinates', {
+                      ...form.coordinates,
+                      lng: Number(e.target.value) || 0,
+                    })
+                  }
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="admin-form__grid">
-            <div className="admin-field admin-field--full">
-              <label htmlFor="listing-images">Gallery image URLs (one per line)</label>
-              <textarea
-                id="listing-images"
-                rows={4}
-                value={galleryText}
-                placeholder={'/assets/properties/1.jpg\n/assets/properties/2.jpg'}
-                onChange={(e) => setGalleryFromText(e.target.value)}
-              />
-              <p className="admin-field__hint">
-                First URL is the cover image used on cards and search results.
-              </p>
+          <div className="admin-form__section">
+            <h2 className="admin-form__section-title">Price and size</h2>
+            <div className="admin-form__grid">
+              <div className="admin-field">
+                <label htmlFor="listing-price">
+                  {form.listingType === 'rental' ? 'Monthly rent (number only)' : 'Price (number only)'}
+                </label>
+                <input
+                  id="listing-price"
+                  type="number"
+                  min={0}
+                  step={form.listingType === 'rental' ? 100 : 1000}
+                  value={form.priceNumeric}
+                  onChange={(e) => setField('priceNumeric', Number(e.target.value) || 0)}
+                  required
+                />
+                <p className="admin-field__hint">Shown on the site as {form.price}</p>
+              </div>
+              <div className="admin-field">
+                <label htmlFor="listing-area">Property size (m²)</label>
+                <input
+                  id="listing-area"
+                  type="number"
+                  min={0}
+                  value={form.area}
+                  onChange={(e) => setField('area', Number(e.target.value) || 0)}
+                />
+              </div>
             </div>
-            <div className="admin-field">
-              <label htmlFor="listing-image-file">Or upload cover image</label>
-              <input
-                id="listing-image-file"
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleImageFile(e.target.files?.[0])}
-              />
-            </div>
-            <div className="admin-field admin-field--full">
-              <label htmlFor="listing-video">Video tour URL (optional)</label>
-              <input
-                id="listing-video"
-                value={form.videoUrl ?? ''}
-                placeholder="https://www.youtube.com/watch?v=..."
-                onChange={(e) => setField('videoUrl', e.target.value)}
-              />
-            </div>
-            <div className="admin-field">
-              <label htmlFor="listing-lat">Latitude</label>
-              <input
-                id="listing-lat"
-                type="number"
-                step="0.0001"
-                value={form.coordinates.lat}
-                onChange={(e) =>
-                  setField('coordinates', {
-                    ...form.coordinates,
-                    lat: Number(e.target.value) || 0,
-                  })
-                }
-              />
-            </div>
-            <div className="admin-field">
-              <label htmlFor="listing-lng">Longitude</label>
-              <input
-                id="listing-lng"
-                type="number"
-                step="0.0001"
-                value={form.coordinates.lng}
-                onChange={(e) =>
-                  setField('coordinates', {
-                    ...form.coordinates,
-                    lng: Number(e.target.value) || 0,
-                  })
-                }
-              />
+            <div className="admin-form__grid admin-form__grid--3">
+              <div className="admin-field">
+                <label htmlFor="listing-rooms">Rooms</label>
+                <input
+                  id="listing-rooms"
+                  type="number"
+                  min={1}
+                  step={0.5}
+                  value={form.rooms}
+                  onChange={(e) => setField('rooms', Number(e.target.value) || 0)}
+                />
+              </div>
+              <div className="admin-field">
+                <label htmlFor="listing-bedrooms">Bedrooms</label>
+                <input
+                  id="listing-bedrooms"
+                  type="number"
+                  min={0}
+                  value={form.bedrooms}
+                  onChange={(e) => setField('bedrooms', Number(e.target.value) || 0)}
+                />
+              </div>
+              <div className="admin-field">
+                <label htmlFor="listing-bathrooms">Bathrooms</label>
+                <input
+                  id="listing-bathrooms"
+                  type="number"
+                  min={0}
+                  step={0.5}
+                  value={form.bathrooms}
+                  onChange={(e) => setField('bathrooms', Number(e.target.value) || 0)}
+                />
+              </div>
+              <div className="admin-field">
+                <label htmlFor="listing-floor">Floor</label>
+                <input
+                  id="listing-floor"
+                  value={form.floor ?? ''}
+                  placeholder="e.g. 3, Ground, or 5 of 8"
+                  onChange={(e) => setField('floor', e.target.value)}
+                />
+              </div>
             </div>
           </div>
 
-          <div className="admin-field">
-            <label>Features</label>
+          <div className="admin-form__section">
+            <h2 className="admin-form__section-title">Features</h2>
             <div className="admin-checkboxes">
               {featureKeys.map(([key, label]) => (
                 <label key={key} className="admin-checkbox" htmlFor={`feature-${key}`}>
@@ -412,27 +362,102 @@ export default function AdminListingFormPage() {
             </div>
           </div>
 
-          {(form.images?.length || form.image) ? (
-            <div className="admin-field">
-              <label>Gallery preview</label>
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                {(form.images?.length ? form.images : [form.image]).map((src) => (
-                  <img
-                    key={src}
-                    src={src}
-                    alt=""
-                    style={{
-                      width: 120,
-                      height: 80,
-                      objectFit: 'cover',
-                      borderRadius: 4,
-                      border: '1px solid #c3c4c7',
-                    }}
-                  />
-                ))}
-              </div>
+          <div className="admin-form__section">
+            <h2 className="admin-form__section-title">Status</h2>
+            <div className="admin-checkboxes">
+              <label className="admin-checkbox" htmlFor="listing-featured">
+                <input
+                  id="listing-featured"
+                  type="checkbox"
+                  checked={Boolean(form.featured)}
+                  onChange={(e) => setField('featured', e.target.checked)}
+                />
+                Featured
+              </label>
+              <label className="admin-checkbox" htmlFor="listing-exclusive">
+                <input
+                  id="listing-exclusive"
+                  type="checkbox"
+                  checked={Boolean(form.exclusive)}
+                  onChange={(e) => setField('exclusive', e.target.checked)}
+                />
+                Exclusive
+              </label>
+              <label className="admin-checkbox" htmlFor="listing-new">
+                <input
+                  id="listing-new"
+                  type="checkbox"
+                  checked={Boolean(form.isNew)}
+                  onChange={(e) => setField('isNew', e.target.checked)}
+                />
+                New
+              </label>
             </div>
-          ) : null}
+          </div>
+
+          <div className="admin-form__section">
+            <h2 className="admin-form__section-title">Listing text</h2>
+            <p className="admin-form__section-copy">
+              Write freely, or generate a draft from the details above. Highlights become bullets on
+              the listing page. You do not need headings or special formatting.
+            </p>
+            <div className="admin-copy-actions">
+              <button
+                type="button"
+                className="admin-btn admin-btn--secondary"
+                onClick={() => applyDraft('fill')}
+              >
+                Draft from details
+              </button>
+              <button
+                type="button"
+                className="admin-btn admin-btn--secondary"
+                onClick={() => applyDraft('replace')}
+              >
+                Rewrite from details
+              </button>
+            </div>
+            <div className="admin-field">
+              <label htmlFor="listing-description">Main description</label>
+              <textarea
+                id="listing-description"
+                value={form.description}
+                onChange={(e) => setField('description', e.target.value)}
+              />
+            </div>
+            <div className="admin-field">
+              <label htmlFor="listing-highlights">Special highlights (one per line)</label>
+              <textarea
+                id="listing-highlights"
+                value={listToLines(form.highlights)}
+                placeholder={'Sea view\nRenovated kitchen\nQuiet street'}
+                onChange={(e) => setField('highlights', linesToList(e.target.value))}
+              />
+            </div>
+            <div className="admin-field">
+              <label htmlFor="listing-special">Special information (optional, one per line)</label>
+              <textarea
+                id="listing-special"
+                value={listToLines(form.specialNotes)}
+                placeholder={'TAMA 38 potential\nOff-market'}
+                onChange={(e) => setField('specialNotes', linesToList(e.target.value))}
+              />
+            </div>
+          </div>
+
+          <div className="admin-form__section">
+            <h2 className="admin-form__section-title">Photos</h2>
+            <AdminListingGallery images={gallery} onChange={(images) => setField('images', images)} />
+            <div className="admin-field">
+              <label htmlFor="listing-video">Video tour URL (optional)</label>
+              <input
+                id="listing-video"
+                value={form.videoUrl ?? ''}
+                placeholder="https://www.youtube.com/watch?v=..."
+                onChange={(e) => setField('videoUrl', e.target.value)}
+              />
+            </div>
+          </div>
 
           <div className="admin-form__footer">
             <button type="submit" className="admin-btn">

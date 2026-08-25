@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import type { Property } from '../../../types/property'
 import { useLanguage } from '../../../context/LanguageContext'
 import { getLocalizedProperty } from '../../../i18n/propertyTranslations'
-import { splitListingNarrative } from '../../../lib/listingNarrative'
+import { getPropertyNarrative } from '../../../lib/listingNarrative'
 import { getActivePropertyFeatures, getPropertySpecParts } from '../../../lib/propertySummary'
 import { listingTextDir } from '../../../utils/listingCopy'
 import { getPropertyDetailPath } from '../../../utils/propertyPath'
@@ -32,7 +32,12 @@ export default function PropertyCardBody({
     property.neighborhood
   const specs = getPropertySpecParts(property, t)
   const features = getActivePropertyFeatures(property, t)
-  const excerpt = splitListingNarrative(localized.description).intro
+  const excerpt = getPropertyNarrative({
+    description: localized.description,
+    highlights: property.highlights,
+    specialNotes: property.specialNotes,
+    floor: property.floor,
+  }).intro
   const detailPath = getPropertyDetailPath(property)
 
   return (

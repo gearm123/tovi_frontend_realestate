@@ -1,3 +1,5 @@
+import type { Property } from '../types/property'
+
 export interface ListingNarrative {
   intro: string
   highlights: string[]
@@ -196,6 +198,27 @@ export function splitListingNarrative(description: string): ListingNarrative {
     intro,
     highlights: highlights.slice(0, 8),
     specialNotes: specialNotes.slice(0, 3),
+    floor,
+  }
+}
+
+function tidyList(values?: string[]): string[] {
+  return (values ?? []).map((value) => tidy(value)).filter(Boolean)
+}
+
+/** Prefer structured admin fields; fall back to parsing legacy free-text descriptions. */
+export function getPropertyNarrative(
+  property: Pick<Property, 'description' | 'highlights' | 'specialNotes' | 'floor'>,
+): ListingNarrative {
+  const parsed = splitListingNarrative(property.description ?? '')
+  const highlights = tidyList(property.highlights)
+  const specialNotes = tidyList(property.specialNotes)
+  const floor = property.floor?.trim() || parsed.floor
+
+  return {
+    intro: parsed.intro,
+    highlights: highlights.length ? highlights.slice(0, 8) : parsed.highlights,
+    specialNotes: specialNotes.length ? specialNotes.slice(0, 3) : parsed.specialNotes,
     floor,
   }
 }

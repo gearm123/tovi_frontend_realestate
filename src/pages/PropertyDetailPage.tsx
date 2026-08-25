@@ -18,7 +18,7 @@ import { listingTextDir } from '../utils/listingCopy'
 import { getPropertyImages } from '../utils/propertyGallery'
 import { isPlayableVideoUrl } from '../utils/propertyVideo'
 import { getPropertyDetailPath } from '../utils/propertyPath'
-import { splitListingNarrative } from '../lib/listingNarrative'
+import { getPropertyNarrative } from '../lib/listingNarrative'
 import { getSimilarProperties } from '../lib/similarProperties'
 import { buildRealEstateListingJsonLd } from '../seo/structuredData'
 import './PropertyDetailPage.css'
@@ -49,8 +49,14 @@ export default function PropertyDetailPage() {
   }, [property, localizedPreview, propertyPath])
 
   const narrative = useMemo(
-    () => splitListingNarrative(localizedPreview?.description ?? ''),
-    [localizedPreview],
+    () =>
+      getPropertyNarrative({
+        description: localizedPreview?.description ?? '',
+        highlights: property?.highlights,
+        specialNotes: property?.specialNotes,
+        floor: property?.floor,
+      }),
+    [localizedPreview, property],
   )
 
   const similar = useMemo(

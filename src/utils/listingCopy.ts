@@ -6,6 +6,9 @@ export function withCleanedListingCopy(property: Property): Property {
     title: cleanListingText(property.title),
     address: cleanListingText(property.address),
     description: cleanListingText(property.description),
+    floor: property.floor ? cleanListingText(property.floor) : property.floor,
+    highlights: property.highlights?.map(cleanListingText).filter(Boolean),
+    specialNotes: property.specialNotes?.map(cleanListingText).filter(Boolean),
   }
 }
 

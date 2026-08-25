@@ -73,17 +73,22 @@ export default function AdminListingsPage() {
                     </td>
                     <td>
                       <span className={`admin-badge admin-badge--${property.listingType}`}>
-                        {property.listingType}
+                        {property.listingType === 'rental' ? 'Rent' : 'Buy'}
                       </span>
                     </td>
                     <td>{property.neighborhood}</td>
                     <td>{property.price}</td>
                     <td>
-                      {property.featured ? (
-                        <span className="admin-badge admin-badge--featured">Featured</span>
-                      ) : (
-                        '—'
-                      )}
+                      <div className="admin-table__actions" style={{ gap: 4 }}>
+                        {property.featured ? (
+                          <span className="admin-badge admin-badge--featured">Featured</span>
+                        ) : null}
+                        {property.exclusive ? (
+                          <span className="admin-badge">Exclusive</span>
+                        ) : null}
+                        {property.isNew ? <span className="admin-badge">New</span> : null}
+                        {!property.featured && !property.exclusive && !property.isNew ? '—' : null}
+                      </div>
                     </td>
                     <td>
                       <div className="admin-table__actions">

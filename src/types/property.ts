@@ -55,6 +55,12 @@ export interface Property {
   videoUrl?: string
   /** Map pin — placeholder coordinates until exact address is confirmed */
   coordinates: PropertyCoordinates
+  /** Floor label, e.g. "3", "Ground", or "5 of 8" */
+  floor?: string
+  /** Bullet highlights shown on the listing page */
+  highlights?: string[]
+  /** Special notes such as TAMA, off-market, or urban renewal */
+  specialNotes?: string[]
   featured?: boolean
   exclusive?: boolean
   isNew?: boolean
