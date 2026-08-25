@@ -51,7 +51,7 @@ export default function PropertyImageGallery({
       root.classList.toggle('property-gallery__scroller--touch', coarse.matches)
     }
 
-    const slides = () => [...root.querySelectorAll<HTMLElement>('.property-gallery__slide')]
+    const slides = () => Array.from(root.querySelectorAll<HTMLElement>('.property-gallery__slide'))
 
     const closestIndex = () => {
       const origin = root.getBoundingClientRect().left
