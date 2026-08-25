@@ -8,6 +8,9 @@ interface ReviewsSectionProps {
   id?: string
   variant?: 'default' | 'embedded'
   showGoogleButton?: boolean
+  compact?: boolean
+  maxItems?: number
+  maxQuoteLength?: number
 }
 
 /** Client testimonials — PLACEHOLDER_COPY in src/data/content until real reviews are added */
@@ -15,6 +18,9 @@ export default function ReviewsSection({
   id = 'reviews-section',
   variant = 'default',
   showGoogleButton,
+  compact = false,
+  maxItems,
+  maxQuoteLength,
 }: ReviewsSectionProps) {
   const { content } = useSiteContent()
   const { reviews } = content
@@ -22,11 +28,12 @@ export default function ReviewsSection({
   const shouldShowGoogleButton =
     showGoogleButton ??
     (googleReviews.showButton && !CONTACT_PLACEHOLDERS.googleReviews)
+  const items = typeof maxItems === 'number' ? reviews.items.slice(0, maxItems) : reviews.items
 
   return (
     <section
       id={id}
-      className={`reviews-section reviews-section--${variant}`}
+      className={`reviews-section reviews-section--${variant}${compact ? ' reviews-section--compact' : ''}`}
       aria-labelledby={`${id}-title`}
     >
       <header className="reviews-section__header">
@@ -38,15 +45,18 @@ export default function ReviewsSection({
         <h2 id={`${id}-title`} className="reviews-section__title">
           {reviews.title}
         </h2>
-        {reviews.subtitle && <p className="reviews-section__subtitle">{reviews.subtitle}</p>}
+        {reviews.subtitle && !compact && (
+          <p className="reviews-section__subtitle">{reviews.subtitle}</p>
+        )}
       </header>
 
       <div className="reviews-section__grid">
-        {reviews.items.map((review) => (
+        {items.map((review) => (
           <ReviewCard
             key={review.id}
             review={review}
             placeholderLabel={reviews.placeholderLabel}
+            maxQuoteLength={maxQuoteLength}
           />
         ))}
       </div>

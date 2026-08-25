@@ -10,6 +10,8 @@ export interface PropertyFilters {
   priceMax: number
   /** Minimum total rooms (Israeli convention) */
   rooms: number | ''
+  /** Minimum interior size in square metres */
+  sizeMin: number | ''
   balcony: boolean
   parking: boolean
   elevator: boolean
@@ -28,6 +30,7 @@ export function createDefaultFilters(
     priceMin: 0,
     priceMax: getPriceMaxForStatus(listingStatus),
     rooms: '',
+    sizeMin: '',
     balcony: false,
     parking: false,
     elevator: false,

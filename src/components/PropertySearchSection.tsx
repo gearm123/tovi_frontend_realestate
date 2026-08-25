@@ -3,6 +3,7 @@ import type { ListingStatusFilter } from '../constants/propertySearch'
 import { useLanguage } from '../context/LanguageContext'
 import { usePropertyFilters } from '../hooks/usePropertyFilters'
 import { useSiteData } from '../hooks/useSiteData'
+import { countActiveFilters } from '../lib/propertySearch'
 import type { Property } from '../types/property'
 import PropertyFiltersBar from './PropertyFilters'
 import PropertyListings from './PropertyListings'
@@ -20,6 +21,9 @@ interface PropertySearchSectionProps {
   listingsIntro?: string
   id?: string
   collapseDescription?: boolean
+  hideDescription?: boolean
+  variant?: 'full' | 'simple'
+  prominence?: 'default' | 'hero'
 }
 
 export default function PropertySearchSection({
@@ -30,16 +34,28 @@ export default function PropertySearchSection({
   listingsIntro,
   id = 'property-search',
   collapseDescription = false,
+  hideDescription = false,
+  variant = 'full',
+  prominence = 'default',
 }: PropertySearchSectionProps) {
   const { t, format } = useLanguage()
   const { properties } = useSiteData()
-  const catalog = useMemo(() => source ?? properties, [source, properties])
+  const catalog = useMemo(() => {
+    const items = source ?? properties
+    return [...items].sort((a, b) => Number(!!b.featured) - Number(!!a.featured))
+  }, [source, properties])
   const { filters, setFilters, filtered, resetFilters, setListingStatus } =
     usePropertyFilters(catalog, { initialStatus })
 
+  const activeFilterCount = countActiveFilters(filters)
+  const isHomeHero = prominence === 'hero'
   const sectionLabel = format(t.search.resultsCount, { count: filtered.length })
-  const title = listingsTitle ?? t.search.resultsTitle
-  const intro = listingsIntro ?? t.search.resultsIntro
+  const title =
+    listingsTitle ??
+    (isHomeHero && activeFilterCount === 0 ? t.home.title : t.search.resultsTitle)
+  const intro =
+    listingsIntro ??
+    (isHomeHero ? undefined : t.search.resultsIntro)
   const [visibleCount, setVisibleCount] = useState(SEARCH_PAGE_SIZE)
   const filterKey = `${filtered.length}:${filtered[0]?.id ?? ''}:${filtered[filtered.length - 1]?.id ?? ''}`
 
@@ -51,13 +67,25 @@ export default function PropertySearchSection({
   const hasMore = visibleCount < filtered.length
 
   return (
-    <section id={id} className="property-search-section" aria-label={t.search.sectionAria}>
-      <p className="property-search-section__demo-note">{t.search.demoListingsNote}</p>
+    <section
+      id={id}
+      className={[
+        'property-search-section',
+        isHomeHero ? 'property-search-section--hero' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+      aria-label={t.search.sectionAria}
+    >
+      {!isHomeHero && (
+        <p className="property-search-section__demo-note">{t.search.demoListingsNote}</p>
+      )}
       <PropertyFiltersBar
         filters={filters}
         onChange={setFilters}
         onReset={resetFilters}
         onStatusChange={setListingStatus}
+        variant={variant}
       />
 
       {filtered.length === 0 ? (
@@ -66,11 +94,14 @@ export default function PropertySearchSection({
         <>
           <PropertyListings
             properties={listed}
-            sectionLabel={sectionLabel}
+            sectionLabel={
+              isHomeHero && activeFilterCount === 0 ? t.home.sectionLabel : sectionLabel
+            }
             title={title}
             intro={intro}
             showHeader={showListingsHeader}
             collapseDescription={collapseDescription}
+            hideDescription={hideDescription}
           />
           {hasMore && (
             <div className="property-search-section__more">

@@ -43,6 +43,9 @@ export function filterProperties(
     if (filters.rooms !== '' && property.rooms < filters.rooms) {
       return false
     }
+    if (filters.sizeMin !== '' && property.area < filters.sizeMin) {
+      return false
+    }
     if (!matchesFeatureFilters(property, filters)) {
       return false
     }
@@ -56,6 +59,7 @@ export function countActiveFilters(filters: PropertyFilters): number {
   if (filters.neighborhood) count += 1
   if (filters.propertyType) count += 1
   if (filters.rooms !== '') count += 1
+  if (filters.sizeMin !== '') count += 1
   if (filters.priceMin > 0) count += 1
   if (filters.balcony) count += 1
   if (filters.parking) count += 1

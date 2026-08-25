@@ -200,7 +200,7 @@ export default function PropertyDetailPage() {
             </Link>
           </div>
 
-          <ConversionSections variant="stacked" compact />
+          <ConversionSections variant="stacked" compact showNewsletter={false} />
         </div>
       </article>
     </>

@@ -10,6 +10,7 @@ interface MobileListingsProps {
   intro?: string
   showHeader: boolean
   collapseDescription?: boolean
+  hideDescription?: boolean
 }
 
 export default function MobileListings({
@@ -19,6 +20,7 @@ export default function MobileListings({
   intro,
   showHeader,
   collapseDescription = false,
+  hideDescription = false,
 }: MobileListingsProps) {
   return (
     <section id="listings" className="mobile-listings" aria-label="Property listings">
@@ -44,6 +46,7 @@ export default function MobileListings({
               property={property}
               index={index}
               collapseDescription={collapseDescription}
+              hideDescription={hideDescription}
             />
           ))}
         </div>

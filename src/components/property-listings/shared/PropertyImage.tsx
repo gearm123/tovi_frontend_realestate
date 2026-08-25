@@ -33,8 +33,8 @@ export default function PropertyImage({
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
         fetchPriority={priority ? 'high' : 'auto'}
-        width={920}
-        height={690}
+        width={1200}
+        height={750}
         onError={(event) => {
           const img = event.currentTarget
           if (img.src.includes('property-placeholder')) return

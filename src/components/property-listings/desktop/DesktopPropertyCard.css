@@ -26,7 +26,7 @@
   width: 100%;
   max-width: var(--property-image-max-width);
   margin: 0 auto;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
   padding: var(--property-frame-padding);
   border-radius: var(--property-radius);
   background: var(--white);
@@ -107,6 +107,15 @@
   padding: clamp(1.5rem, 3vw, 2.25rem) var(--property-image-gutter) 0;
   display: flex;
   flex-direction: column;
+}
+
+.desktop-property__body--visual {
+  padding-top: 1.15rem;
+}
+
+.desktop-property__body--visual .desktop-property__specs {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 .desktop-property__neighborhood {

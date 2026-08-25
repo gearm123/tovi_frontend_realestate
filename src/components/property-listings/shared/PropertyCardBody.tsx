@@ -10,12 +10,14 @@ interface PropertyCardBodyProps {
   property: Property
   classPrefix: 'desktop-property' | 'mobile-property'
   collapseDescription?: boolean
+  hideDescription?: boolean
 }
 
 export default function PropertyCardBody({
   property,
   classPrefix,
   collapseDescription = false,
+  hideDescription = false,
 }: PropertyCardBodyProps) {
   const { t, locale } = useLanguage()
   const [expanded, setExpanded] = useState(false)
@@ -40,7 +42,10 @@ export default function PropertyCardBody({
   )
 
   return (
-    <div className={`${classPrefix}__body`} dir={copyDir}>
+    <div
+      className={`${classPrefix}__body${hideDescription ? ` ${classPrefix}__body--visual` : ''}`}
+      dir={copyDir}
+    >
       <p className={`${classPrefix}__neighborhood`}>{neighborhoodLabel}</p>
       <h3
         className={`${classPrefix}__title listing-copy`}
@@ -67,13 +72,15 @@ export default function PropertyCardBody({
         <span>{property.area} m²</span>
       </div>
 
-      <p
-        className={`${classPrefix}__description ${classPrefix}__description--formatted listing-copy`}
-        dir={listingTextDir(localized.description)}
-      >
-        {description}
-      </p>
-      {collapseDescription && truncated && (
+      {!hideDescription && (
+        <p
+          className={`${classPrefix}__description ${classPrefix}__description--formatted listing-copy`}
+          dir={listingTextDir(localized.description)}
+        >
+          {description}
+        </p>
+      )}
+      {!hideDescription && collapseDescription && truncated && (
         <button
           type="button"
           className={`${classPrefix}__show-more`}

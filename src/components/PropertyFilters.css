@@ -27,6 +27,34 @@
   color: var(--ink);
 }
 
+.property-filters--simple {
+  padding: 1.1rem clamp(1.1rem, 3vw, 1.6rem) 1.25rem;
+}
+
+.property-filters--simple .property-filters__title {
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+  letter-spacing: 0.08em;
+}
+
+.property-filters--simple .property-filters__header {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.7rem;
+}
+
+.property-filters__lead {
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin: -0.35rem 0 1.15rem;
+}
+
+.property-filters--simple .property-filters__status-btn {
+  min-width: 5.5rem;
+  padding: 0.65rem 1.15rem;
+  font-size: 0.8rem;
+}
+
 .property-filters__status {
   border: none;
   padding: 0;

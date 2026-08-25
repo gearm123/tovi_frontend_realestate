@@ -34,8 +34,8 @@
   --font-weight-semibold: 400;
 
   --max-width: 1120px;
-  --property-image-max-width: min(var(--max-width), 720px);
-  --property-image-gutter: clamp(1.5rem, 9vw, 6rem);
+  --property-image-max-width: min(var(--max-width), 1040px);
+  --property-image-gutter: clamp(1rem, 5vw, 2.75rem);
   --property-radius: clamp(1rem, 2vw, 1.35rem);
   --property-frame-padding: 0.4rem;
   --property-frame-shadow: 0 10px 36px rgba(0, 0, 0, 0.08);

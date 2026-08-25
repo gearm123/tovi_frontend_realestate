@@ -10,6 +10,7 @@ interface DesktopListingsProps {
   intro?: string
   showHeader: boolean
   collapseDescription?: boolean
+  hideDescription?: boolean
 }
 
 export default function DesktopListings({
@@ -19,6 +20,7 @@ export default function DesktopListings({
   intro,
   showHeader,
   collapseDescription = false,
+  hideDescription = false,
 }: DesktopListingsProps) {
   return (
     <section id="listings" className="desktop-listings" aria-label="Property listings">
@@ -44,6 +46,7 @@ export default function DesktopListings({
               property={property}
               index={index}
               collapseDescription={collapseDescription}
+              hideDescription={hideDescription}
             />
           ))}
         </div>

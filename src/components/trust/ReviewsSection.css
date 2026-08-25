@@ -3,6 +3,14 @@
   background: var(--paper);
 }
 
+.reviews-section--compact {
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+.reviews-section--compact .reviews-section__header {
+  margin-bottom: 1.5rem;
+}
+
 .reviews-section__header {
   text-align: center;
   max-width: 36rem;

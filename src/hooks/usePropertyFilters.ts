@@ -33,6 +33,7 @@ export function usePropertyFilters(
       neighborhood: prev.neighborhood,
       propertyType: prev.propertyType,
       rooms: prev.rooms,
+      sizeMin: prev.sizeMin,
       balcony: prev.balcony,
       parking: prev.parking,
       elevator: prev.elevator,

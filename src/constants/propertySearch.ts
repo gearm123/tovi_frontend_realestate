@@ -4,6 +4,8 @@ export const RENTAL_PRICE_MAX = 25_000
 
 export type ListingStatusFilter = 'all' | 'sale' | 'rental'
 
+export const SIZE_MIN_OPTIONS = [50, 70, 90, 120, 150] as const
+
 export function getPriceMaxForStatus(status: ListingStatusFilter): number {
   if (status === 'rental') return RENTAL_PRICE_MAX
   if (status === 'sale') return SALE_PRICE_MAX

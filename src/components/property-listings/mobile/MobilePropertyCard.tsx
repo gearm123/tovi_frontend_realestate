@@ -12,12 +12,14 @@ interface MobilePropertyCardProps {
   property: Property
   index: number
   collapseDescription?: boolean
+  hideDescription?: boolean
 }
 
 export default function MobilePropertyCard({
   property,
   index,
   collapseDescription = false,
+  hideDescription = false,
 }: MobilePropertyCardProps) {
   const { t, locale } = useLanguage()
 
@@ -66,6 +68,7 @@ export default function MobilePropertyCard({
         property={property}
         classPrefix="mobile-property"
         collapseDescription={collapseDescription}
+        hideDescription={hideDescription}
       />
     </article>
   )

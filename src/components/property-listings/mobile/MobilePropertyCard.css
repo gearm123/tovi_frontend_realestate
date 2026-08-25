@@ -17,7 +17,7 @@
 
 .mobile-property__image-wrap {
   width: 100%;
-  padding: 0 clamp(1.25rem, 7vw, 2rem);
+  padding: 0 clamp(0.75rem, 4vw, 1.25rem);
   background: var(--paper);
 }
 
@@ -107,6 +107,15 @@
   padding: 1rem clamp(1rem, 5vw, 1.5rem) 0;
   display: flex;
   flex-direction: column;
+}
+
+.mobile-property__body--visual {
+  padding-top: 0.85rem;
+}
+
+.mobile-property__body--visual .mobile-property__specs {
+  margin-bottom: 0.55rem;
+  padding-bottom: 0.55rem;
 }
 
 .mobile-property__neighborhood {

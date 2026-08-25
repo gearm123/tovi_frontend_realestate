@@ -12,12 +12,14 @@ interface DesktopPropertyCardProps {
   property: Property
   index: number
   collapseDescription?: boolean
+  hideDescription?: boolean
 }
 
 export default function DesktopPropertyCard({
   property,
   index,
   collapseDescription = false,
+  hideDescription = false,
 }: DesktopPropertyCardProps) {
   const { t, locale } = useLanguage()
 
@@ -66,6 +68,7 @@ export default function DesktopPropertyCard({
         property={property}
         classPrefix="desktop-property"
         collapseDescription={collapseDescription}
+        hideDescription={hideDescription}
       />
     </article>
   )

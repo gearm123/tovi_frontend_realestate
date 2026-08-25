@@ -3,6 +3,7 @@ import {
   getPriceMaxForStatus,
   getPriceStepForStatus,
   isRentalPriceContext,
+  SIZE_MIN_OPTIONS,
   type ListingStatusFilter,
 } from '../constants/propertySearch'
 import { useLanguage } from '../context/LanguageContext'
@@ -16,6 +17,7 @@ interface PropertyFiltersBarProps {
   onChange: (filters: PropertyFilters) => void
   onReset: () => void
   onStatusChange?: (status: ListingStatusFilter) => void
+  variant?: 'full' | 'simple'
 }
 
 const roomOptions = ['', '2', '3', '4', '5', '6'] as const
@@ -36,6 +38,7 @@ export default function PropertyFiltersBar({
   onChange,
   onReset,
   onStatusChange,
+  variant = 'full',
 }: PropertyFiltersBarProps) {
   const { t, format, locale } = useLanguage()
   const viewport = useViewport()
@@ -80,6 +83,14 @@ export default function PropertyFiltersBar({
   }
 
   const statusLabel = (status: ListingStatusFilter) => {
+    if (variant === 'simple') {
+      const labels: Record<ListingStatusFilter, string> = {
+        all: t.filters.statusAll,
+        sale: t.filters.buy,
+        rental: t.filters.rent,
+      }
+      return labels[status]
+    }
     const labels: Record<ListingStatusFilter, string> = {
       all: t.filters.statusAll,
       sale: t.filters.statusSale,
@@ -104,13 +115,23 @@ export default function PropertyFiltersBar({
   )
 
   return (
-    <div className="property-filters" role="search" aria-label={t.filters.aria}>
+    <div
+      className={`property-filters${variant === 'simple' ? ' property-filters--simple' : ''}`}
+      role="search"
+      aria-label={t.filters.aria}
+    >
       <div className="property-filters__header">
-        <p className="property-filters__title">{t.search.filterTitle}</p>
+        <p className="property-filters__title">
+          {variant === 'simple' ? t.search.homeTitle : t.search.filterTitle}
+        </p>
         <button type="button" className="property-filters__reset" onClick={onReset}>
           {t.filters.clear}
         </button>
       </div>
+
+      {variant === 'simple' && (
+        <p className="property-filters__lead">{t.search.homeSubtitle}</p>
+      )}
 
       <fieldset className="property-filters__status">
         <legend className="property-filters__label">{t.filters.status}</legend>
@@ -135,7 +156,9 @@ export default function PropertyFiltersBar({
 
       <div className="property-filters__row">
         <label className="property-filters__field">
-          <span className="property-filters__label">{t.filters.neighborhood}</span>
+          <span className="property-filters__label">
+            {variant === 'simple' ? t.filters.area : t.filters.neighborhood}
+          </span>
           <select
             value={filters.neighborhood}
             onChange={(e) => update('neighborhood', e.target.value)}
@@ -149,25 +172,29 @@ export default function PropertyFiltersBar({
           </select>
         </label>
 
-        <label className="property-filters__field">
-          <span className="property-filters__label">{t.filters.propertyType}</span>
-          <select
-            value={filters.propertyType}
-            onChange={(e) =>
-              update('propertyType', e.target.value as PropertyFilters['propertyType'])
-            }
-          >
-            <option value="">{t.filters.allTypes}</option>
-            {propertyTypes.map((type) => (
-              <option key={type.value} value={type.value}>
-                {propertyTypeLabel(type.value)}
-              </option>
-            ))}
-          </select>
-        </label>
+        {variant === 'full' && (
+          <label className="property-filters__field">
+            <span className="property-filters__label">{t.filters.propertyType}</span>
+            <select
+              value={filters.propertyType}
+              onChange={(e) =>
+                update('propertyType', e.target.value as PropertyFilters['propertyType'])
+              }
+            >
+              <option value="">{t.filters.allTypes}</option>
+              {propertyTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {propertyTypeLabel(type.value)}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
 
         <label className="property-filters__field">
-          <span className="property-filters__label">{t.filters.rooms}</span>
+          <span className="property-filters__label">
+            {variant === 'simple' ? t.filters.roomsBedrooms : t.filters.rooms}
+          </span>
           <select
             value={filters.rooms === '' ? '' : String(filters.rooms)}
             onChange={(e) =>
@@ -177,6 +204,23 @@ export default function PropertyFiltersBar({
             {roomOptions.map((r) => (
               <option key={r || 'any'} value={r}>
                 {r === '' ? t.filters.any : format(t.filters.roomsPlus, { count: r })}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="property-filters__field">
+          <span className="property-filters__label">{t.filters.size}</span>
+          <select
+            value={filters.sizeMin === '' ? '' : String(filters.sizeMin)}
+            onChange={(e) =>
+              update('sizeMin', e.target.value === '' ? '' : Number(e.target.value))
+            }
+          >
+            <option value="">{t.filters.anySize}</option>
+            {SIZE_MIN_OPTIONS.map((size) => (
+              <option key={size} value={size}>
+                {format(t.filters.sizePlus, { count: size })}
               </option>
             ))}
           </select>
@@ -217,7 +261,8 @@ export default function PropertyFiltersBar({
         </div>
       </div>
 
-      {viewport === 'mobile' ? (
+      {variant === 'full' &&
+        (viewport === 'mobile' ? (
         <details className="property-filters__extras-panel">
           <summary className="property-filters__label">{t.filters.extraFilters}</summary>
           {extrasContent}
@@ -227,7 +272,7 @@ export default function PropertyFiltersBar({
           <legend className="property-filters__label">{t.filters.extraFilters}</legend>
           {extrasContent}
         </fieldset>
-      )}
+      ))}
     </div>
   )
 }

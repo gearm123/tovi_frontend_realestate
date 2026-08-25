@@ -3,7 +3,11 @@ import { HERO_IMAGE, HERO_VIDEO } from '../utils/propertyImages'
 import { useLanguage } from '../context/LanguageContext'
 import './HeroVideo.css'
 
-export default function HeroVideo() {
+interface HeroVideoProps {
+  compact?: boolean
+}
+
+export default function HeroVideo({ compact = false }: HeroVideoProps) {
   const { t } = useLanguage()
   const [imageSrc, setImageSrc] = useState<string>(HERO_IMAGE.fallback)
   const [reduceMotion, setReduceMotion] = useState(false)
@@ -20,7 +24,10 @@ export default function HeroVideo() {
   }, [])
 
   return (
-    <section className="hero" aria-label={t.hero.aria}>
+    <section
+      className={`hero${compact ? ' hero--home' : ''}`}
+      aria-label={t.hero.aria}
+    >
       <div className="hero__media">
         <img
           src={imageSrc}
@@ -53,7 +60,7 @@ export default function HeroVideo() {
         <div className="hero__shade" aria-hidden="true" />
       </div>
 
-      <a href="#listings" className="hero__scroll-hint">
+      <a href="#home-search" className="hero__scroll-hint">
         {t.hero.scrollHint}
       </a>
     </section>

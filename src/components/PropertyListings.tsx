@@ -10,6 +10,7 @@ interface PropertyListingsProps {
   intro?: string
   showHeader?: boolean
   collapseDescription?: boolean
+  hideDescription?: boolean
 }
 
 export default function PropertyListings({
@@ -19,6 +20,7 @@ export default function PropertyListings({
   intro,
   showHeader = true,
   collapseDescription = false,
+  hideDescription = false,
 }: PropertyListingsProps) {
   const viewport = useViewport()
 
@@ -31,6 +33,7 @@ export default function PropertyListings({
         intro={intro}
         showHeader={showHeader}
         collapseDescription={collapseDescription}
+        hideDescription={hideDescription}
       />
     )
   }
@@ -43,6 +46,7 @@ export default function PropertyListings({
       intro={intro}
       showHeader={showHeader}
       collapseDescription={collapseDescription}
+      hideDescription={hideDescription}
     />
   )
 }

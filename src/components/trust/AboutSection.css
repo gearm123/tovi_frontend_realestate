@@ -4,6 +4,22 @@
   border-block: 1px solid var(--rule);
 }
 
+.about-section--compact {
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+.about-section--compact .about-section__header {
+  margin-bottom: 1.15rem;
+}
+
+.about-section--compact .about-section__inner {
+  text-align: center;
+}
+
+.about-section--compact .about-section__cta {
+  display: inline-block;
+}
+
 .about-section__inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -63,6 +79,13 @@ html[dir='rtl'] .about-section__heading-copy {
   gap: clamp(1.5rem, 4vw, 2.5rem);
   align-items: start;
   margin-bottom: 2rem;
+}
+
+.about-section__body--compact {
+  grid-template-columns: 1fr;
+  max-width: 42rem;
+  margin-inline: auto;
+  text-align: center;
 }
 
 .about-section__copy p {
@@ -154,5 +177,9 @@ html[dir='rtl'] .about-section__heading-copy {
     display: block;
     text-align: center;
     width: 100%;
+  }
+
+  .about-section--compact .about-section__header {
+    text-align: center;
   }
 }
