@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { siteNavItems } from '../data/siteNav'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { isNavItemActive, siteNavItems } from '../data/siteNav'
 import { useLanguage } from '../context/LanguageContext'
 import { useSiteContent } from '../hooks/useSiteContent'
 import { scrollPageToTop } from '../utils/scrollPageToTop'
@@ -9,6 +9,7 @@ import './Header.css'
 export default function Header() {
   const { t } = useLanguage()
   const { business } = useSiteContent()
+  const { pathname } = useLocation()
 
   return (
     <header className="header">
@@ -37,12 +38,14 @@ export default function Header() {
       <nav className="header__nav" aria-label={t.header.navAria}>
         {siteNavItems.map((item, index) => (
           <span key={item.to} className="header__nav-item">
-            {index > 0 && (
-              <span className="header__nav-dot" aria-hidden="true" />
-            )}
-            <Link to={item.to} onClick={scrollPageToTop}>
+            {index > 0 && <span className="header__nav-dot" aria-hidden="true" />}
+            <NavLink
+              to={item.to}
+              className={() => (isNavItemActive(item, pathname) ? 'active' : undefined)}
+              onClick={scrollPageToTop}
+            >
               {t.header.nav[item.key]}
-            </Link>
+            </NavLink>
           </span>
         ))}
       </nav>

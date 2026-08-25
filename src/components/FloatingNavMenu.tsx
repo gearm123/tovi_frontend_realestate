@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { siteNavItems } from '../data/siteNav'
+import { NavLink, useLocation } from 'react-router-dom'
+import { isNavItemActive, siteNavItems } from '../data/siteNav'
 import { useLanguage } from '../context/LanguageContext'
 import { scrollPageToTop } from '../utils/scrollPageToTop'
 import './FloatingNavMenu.css'
@@ -76,16 +76,16 @@ export default function FloatingNavMenu() {
           >
             {siteNavItems.map((item) => (
               <span key={item.to} className="floating-nav-menu__item">
-                <Link
+                <NavLink
                   to={item.to}
-                  className={pathname === item.to ? 'active' : undefined}
+                  className={() => (isNavItemActive(item, pathname) ? 'active' : undefined)}
                   onClick={() => {
                     closeMenu()
                     scrollPageToTop()
                   }}
                 >
                   {t.header.nav[item.key]}
-                </Link>
+                </NavLink>
               </span>
             ))}
           </nav>

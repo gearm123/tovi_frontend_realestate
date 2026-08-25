@@ -128,26 +128,7 @@
   }
 
   .header__nav {
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    gap: 0.3rem 0.45rem;
-    row-gap: 0.4rem;
-    padding: 0.45rem 0.15rem 0.65rem;
-    overflow-x: visible;
-    overflow-y: visible;
-    font-size: clamp(0.68rem, 3.1vw, 0.8rem);
-    line-height: 1.35;
-    letter-spacing: 0.04em;
-  }
-
-  .header__nav-item {
-    gap: 0.4rem;
-  }
-
-  .header__nav-dot {
-    width: 2px;
-    height: 2px;
+    display: none;
   }
 }
 

@@ -171,6 +171,12 @@
   background: rgba(240, 90, 36, 0.06);
 }
 
+@media (min-width: 769px) {
+  .floating-nav-menu {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   .floating-nav-menu__trigger {
     width: 2.65rem;
