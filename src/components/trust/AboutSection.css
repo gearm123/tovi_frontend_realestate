@@ -5,7 +5,7 @@
 }
 
 .about-section--compact {
-  padding-block: clamp(2rem, 4vw, 3rem);
+  padding-block: clamp(1.35rem, 3vw, 2rem);
 }
 
 .about-section--compact .about-section__header {
@@ -28,7 +28,7 @@
 .about-section__header {
   text-align: center;
   max-width: 38rem;
-  margin: 0 auto 2rem;
+  margin: 0 auto 1.25rem;
 }
 
 .about-section__heading-lockup {
@@ -40,7 +40,7 @@
 }
 
 .about-section__logo {
-  width: clamp(5rem, 12vw, 8rem);
+  width: clamp(3.5rem, 8vw, 5.5rem);
   height: auto;
   flex: 0 0 auto;
 }
@@ -84,7 +84,7 @@ html[dir='rtl'] .about-section__heading-copy {
 .about-section__body--compact {
   grid-template-columns: 1fr;
   max-width: 42rem;
-  margin-inline: auto;
+  margin: 0 auto 1.1rem;
   text-align: center;
 }
 
@@ -132,20 +132,6 @@ html[dir='rtl'] .about-section__heading-copy {
 
 .about-section__cta {
   display: inline-block;
-  font-family: var(--font-button);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 0.6rem 1.25rem;
-  border-radius: 4px;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.about-section__cta:hover {
-  background: var(--accent);
-  color: var(--white);
 }
 
 @media (max-width: 768px) {

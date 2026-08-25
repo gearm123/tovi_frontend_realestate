@@ -3,7 +3,7 @@
   flex-direction: column;
   height: 100%;
   margin: 0;
-  padding: 1.5rem;
+  padding: 1.1rem 1.15rem 1.2rem;
   background: var(--white);
   border: 1px solid var(--rule);
   border-radius: var(--property-radius);

@@ -36,11 +36,6 @@ export default function ServiceSectionBlock({
       )}
 
       <header className="service-block__header">
-        {section.accent && (
-          <p className="service-block__accent orange-cursive-title orange-cursive-title--subtitle">
-            {section.accent}
-          </p>
-        )}
         <h2 className="service-block__title" id={id ? `${id}-title` : undefined}>
           {section.title}
         </h2>
@@ -110,7 +105,7 @@ export default function ServiceSectionBlock({
           </ul>
         )}
 
-        <Link to={ctaHref} className="service-block__cta">
+        <Link to={ctaHref} className="service-block__cta site-cta">
           {section.ctaLabel}
         </Link>
 

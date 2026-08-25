@@ -27,7 +27,7 @@ export default function AboutSection({ compact = false }: AboutSectionProps) {
               alt="ProperTLV"
             />
             <div className="about-section__heading-copy">
-              {about.accent && (
+              {about.accent && !compact && (
                 <p className="about-section__accent orange-cursive-title orange-cursive-title--subtitle">
                   {about.accent}
                 </p>
@@ -58,7 +58,7 @@ export default function AboutSection({ compact = false }: AboutSectionProps) {
           )}
         </div>
 
-        <Link to={ctaHref} className="about-section__cta">
+        <Link to={ctaHref} className="about-section__cta site-cta">
           {about.ctaLabel}
         </Link>
       </div>

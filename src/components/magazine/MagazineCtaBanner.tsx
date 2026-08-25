@@ -12,7 +12,7 @@ export default function MagazineCtaBanner({ cta }: MagazineCtaBannerProps) {
       <div className="magazine-cta__inner">
         <h2 className="magazine-cta__title">{cta.title}</h2>
         <p className="magazine-cta__text">{cta.description}</p>
-        <Link to={cta.href} className="magazine-cta__button">
+        <Link to={cta.href} className="magazine-cta__button site-cta">
           {cta.buttonLabel}
         </Link>
       </div>

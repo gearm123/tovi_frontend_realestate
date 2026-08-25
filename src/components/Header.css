@@ -25,7 +25,7 @@
 }
 
 .header__masthead {
-  padding: 0.75rem 0 1rem;
+  padding: 0.5rem 0 0.65rem;
 }
 
 .header__brand {
@@ -51,7 +51,7 @@
   width: 100%;
   max-width: 100%;
   margin-inline: 0;
-  padding: 0.85rem clamp(0.75rem, 3vw, 1.5rem);
+  padding: 0.55rem clamp(0.75rem, 3vw, 1.5rem) 0.85rem;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;

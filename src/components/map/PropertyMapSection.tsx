@@ -30,17 +30,9 @@ export default function PropertyMapSection({
     <section id={id} className="property-map-section" aria-labelledby="property-map-title">
       <div className="property-map-section__inner">
         <header className="property-map-section__header">
-          {mapSection.accent && (
-            <p className="property-map-section__accent orange-cursive-title orange-cursive-title--subtitle">
-              {mapSection.accent}
-            </p>
-          )}
           <h2 id="property-map-title" className="property-map-section__title">
             {mapSection.title}
           </h2>
-          {mapSection.subtitle && (
-            <p className="property-map-section__subtitle">{mapSection.subtitle}</p>
-          )}
         </header>
 
         <PropertyMap pins={pins} content={mapSection} />

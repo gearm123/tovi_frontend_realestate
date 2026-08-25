@@ -39,7 +39,7 @@
   --property-radius: clamp(1rem, 2vw, 1.35rem);
   --property-frame-padding: 0.4rem;
   --property-frame-shadow: 0 10px 36px rgba(0, 0, 0, 0.08);
-  --section-padding: clamp(2.5rem, 5vw, 4.5rem);
+  --section-padding: clamp(1.5rem, 3vw, 2.75rem);
   --mobile-max-width: 768px;
   --a11y-font-scale: 1;
 }
@@ -119,12 +119,12 @@ button {
 }
 
 main {
-  padding-bottom: clamp(4.5rem, 12vw, 5.5rem);
+  padding-bottom: clamp(2rem, 6vw, 3rem);
 }
 
 @media (max-width: 768px) {
   main {
-    padding-bottom: calc(3.4rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(2.4rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -185,8 +185,8 @@ html[dir='rtl'] .hero-title {
 }
 
 .orange-cursive-title--subtitle {
-  font-size: clamp(2rem, 5vw, 3.25rem);
-  line-height: 1;
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  line-height: 1.05;
 }
 
 .orange-cursive-title--tagline {
@@ -195,8 +195,52 @@ html[dir='rtl'] .hero-title {
 }
 
 .orange-cursive-title--label {
-  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
   line-height: 1.1;
+}
+
+.site-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-button);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent);
+  padding: 0.55rem 1.2rem;
+  border-radius: 4px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.site-cta:hover,
+.site-cta:focus-visible {
+  background: var(--accent);
+  color: var(--white);
+}
+
+.site-cta--solid {
+  color: var(--white);
+  background: var(--accent);
+}
+
+.site-cta--solid:hover,
+.site-cta--solid:focus-visible {
+  opacity: 0.92;
+  background: var(--accent);
+  color: var(--white);
+}
+
+.site-kicker {
+  font-family: var(--font-subheading);
+  font-size: 0.68rem;
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
 }
 
 html[dir='rtl'] .orange-cursive-title {

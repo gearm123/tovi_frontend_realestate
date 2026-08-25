@@ -122,16 +122,12 @@ export default function PropertyFiltersBar({
     >
       <div className="property-filters__header">
         <p className="property-filters__title">
-          {variant === 'simple' ? t.search.homeTitle : t.search.filterTitle}
+          {variant === 'simple' ? t.header.nav.search : t.search.filterTitle}
         </p>
         <button type="button" className="property-filters__reset" onClick={onReset}>
           {t.filters.clear}
         </button>
       </div>
-
-      {variant === 'simple' && (
-        <p className="property-filters__lead">{t.search.homeSubtitle}</p>
-      )}
 
       <fieldset className="property-filters__status">
         <legend className="property-filters__label">{t.filters.status}</legend>

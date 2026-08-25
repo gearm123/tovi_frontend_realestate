@@ -11,7 +11,6 @@ export default function SellersPackagePage() {
     <>
       <PageShell
         title={exclusivityPackage.title}
-        accent={exclusivityPackage.accent}
         subtitle={exclusivityPackage.subtitle}
         seoKey="sellersPackage"
       />

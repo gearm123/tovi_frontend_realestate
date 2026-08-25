@@ -19,11 +19,6 @@ export default function TeamSection({
       aria-labelledby={id ? `${id}-title` : undefined}
     >
       <header className="team-section__header">
-        {section.accent && (
-          <p className="team-section__accent orange-cursive-title orange-cursive-title--subtitle">
-            {section.accent}
-          </p>
-        )}
         <h2 className="team-section__title" id={id ? `${id}-title` : undefined}>
           {section.title}
         </h2>

@@ -1,6 +1,6 @@
 .desktop-listings {
   background: var(--paper);
-  padding: var(--section-padding) 0 0;
+  padding: 0.35rem 0 0;
   width: 100%;
 }
 
@@ -8,8 +8,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 1.25rem;
-  gap: 1.5rem;
+  margin-top: 0.85rem;
+  gap: 1.1rem;
 }
 
 .desktop-listings__count,

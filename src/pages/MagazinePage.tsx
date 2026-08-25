@@ -12,12 +12,7 @@ export default function MagazinePage() {
 
   return (
     <>
-      <PageShell
-        title={magazinePage.title}
-        accent={magazinePage.accent}
-        subtitle={magazinePage.subtitle}
-        seoKey="magazine"
-      />
+      <PageShell title={magazinePage.title} seoKey="magazine" />
       <div className="magazine-page">
         <div className="magazine-page__grid">
           {articles.map((article) => (

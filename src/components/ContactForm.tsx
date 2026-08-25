@@ -224,7 +224,7 @@ export default function ContactForm() {
         </label>
       </div>
 
-      <button type="submit" className="contact-form__submit" disabled={submitting}>
+      <button type="submit" className="contact-form__submit site-cta site-cta--solid" disabled={submitting}>
         {submitting ? t.contactForm.submitting : t.contactForm.submit}
       </button>
     </form>

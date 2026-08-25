@@ -1,6 +1,6 @@
 .property-agent {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
+  margin-bottom: 1.35rem;
+  padding: 1.15rem;
   border: 1px solid var(--rule);
   border-radius: var(--property-radius);
   background: var(--white);

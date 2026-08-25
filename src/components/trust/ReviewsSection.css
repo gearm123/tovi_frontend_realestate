@@ -4,17 +4,17 @@
 }
 
 .reviews-section--compact {
-  padding-block: clamp(2rem, 4vw, 3rem);
+  padding-block: clamp(1.35rem, 3vw, 2rem);
 }
 
 .reviews-section--compact .reviews-section__header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .reviews-section__header {
   text-align: center;
   max-width: 36rem;
-  margin: 0 auto 2.5rem;
+  margin: 0 auto 1.35rem;
 }
 
 .reviews-section__accent {

@@ -9,7 +9,7 @@ export default function AboutPage() {
 
   return (
     <div className="about-page">
-      <PageShell title={about.title} accent={about.accent} subtitle={about.subtitle} seoKey="about">
+      <PageShell title={about.title} subtitle={about.subtitle} seoKey="about">
         {about.paragraphs.map((paragraph) => (
           <p key={paragraph.slice(0, 48)}>{paragraph}</p>
         ))}

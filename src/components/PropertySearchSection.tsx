@@ -3,7 +3,6 @@ import type { ListingStatusFilter } from '../constants/propertySearch'
 import { useLanguage } from '../context/LanguageContext'
 import { usePropertyFilters } from '../hooks/usePropertyFilters'
 import { useSiteData } from '../hooks/useSiteData'
-import { countActiveFilters } from '../lib/propertySearch'
 import type { Property } from '../types/property'
 import PropertyFiltersBar from './PropertyFilters'
 import PropertyListings from './PropertyListings'
@@ -43,15 +42,10 @@ export default function PropertySearchSection({
   const { filters, setFilters, filtered, resetFilters, setListingStatus } =
     usePropertyFilters(catalog, { initialStatus })
 
-  const activeFilterCount = countActiveFilters(filters)
   const isHomeHero = prominence === 'hero'
   const sectionLabel = format(t.search.resultsCount, { count: filtered.length })
-  const title =
-    listingsTitle ??
-    (isHomeHero && activeFilterCount === 0 ? t.home.title : t.search.resultsTitle)
-  const intro =
-    listingsIntro ??
-    (isHomeHero ? undefined : t.search.resultsIntro)
+  const title = listingsTitle ?? t.search.resultsTitle
+  const intro = listingsIntro
   const [visibleCount, setVisibleCount] = useState(SEARCH_PAGE_SIZE)
   const filterKey = `${filtered.length}:${filtered[0]?.id ?? ''}:${filtered[filtered.length - 1]?.id ?? ''}`
 
@@ -73,9 +67,6 @@ export default function PropertySearchSection({
         .join(' ')}
       aria-label={t.search.sectionAria}
     >
-      {!isHomeHero && (
-        <p className="property-search-section__demo-note">{t.search.demoListingsNote}</p>
-      )}
       <PropertyFiltersBar
         filters={filters}
         onChange={setFilters}
@@ -90,9 +81,7 @@ export default function PropertySearchSection({
         <>
           <PropertyListings
             properties={listed}
-            sectionLabel={
-              isHomeHero && activeFilterCount === 0 ? t.home.sectionLabel : sectionLabel
-            }
+            sectionLabel={sectionLabel}
             title={title}
             intro={intro}
             showHeader={showListingsHeader}
@@ -101,7 +90,7 @@ export default function PropertySearchSection({
             <div className="property-search-section__more">
               <button
                 type="button"
-                className="property-search-section__more-button"
+                className="property-search-section__more-button site-cta"
                 onClick={() => setVisibleCount((count) => count + SEARCH_PAGE_SIZE)}
               >
                 {t.property.loadMore}

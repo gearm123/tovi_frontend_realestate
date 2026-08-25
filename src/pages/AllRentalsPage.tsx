@@ -7,17 +7,8 @@ export default function AllRentalsPage() {
 
   return (
     <>
-      <PageShell
-        title={t.rentals.title}
-        accent={t.rentals.accent}
-        subtitle={t.rentals.subtitle}
-        seoKey="rentals"
-      />
-      <PropertySearchSection
-        initialStatus="rental"
-        listingsTitle={t.rentals.listingsTitle}
-        id="rentals-search"
-      />
+      <PageShell title={t.rentals.title} seoKey="rentals" />
+      <PropertySearchSection initialStatus="rental" id="rentals-search" />
     </>
   )
 }

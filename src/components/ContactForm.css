@@ -1,7 +1,7 @@
 .contact-form {
   max-width: 640px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.35rem 1.4rem 1.5rem;
   background: var(--white);
   border: 1px solid var(--rule);
   border-radius: var(--property-radius);
@@ -175,23 +175,6 @@
 .contact-form__field textarea {
   resize: vertical;
   min-height: 120px;
-}
-
-.contact-form__submit {
-  font-family: var(--font-button);
-  font-weight: 400;
-  font-size: 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--white);
-  background: var(--accent);
-  padding: 0.75rem 2rem;
-  border-radius: 4px;
-  transition: opacity 0.2s ease;
-}
-
-.contact-form__submit:hover:not(:disabled) {
-  opacity: 0.9;
 }
 
 .contact-form__submit:disabled {

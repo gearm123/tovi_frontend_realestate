@@ -1,11 +1,11 @@
 .page-shell {
-  padding: var(--section-padding) 0;
+  padding: clamp(1.25rem, 2.5vw, 2rem) 0 1.25rem;
 }
 
 .page-shell__header {
   text-align: center;
   max-width: 720px;
-  margin: 0 auto 2.5rem;
+  margin: 0 auto 1.35rem;
   padding: 0 clamp(1.25rem, 4vw, 2rem);
 }
 
@@ -50,5 +50,5 @@
 }
 
 .page-shell__content .conversion-sections--compact {
-  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  margin-top: 1.15rem;
 }

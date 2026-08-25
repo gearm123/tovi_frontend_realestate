@@ -41,13 +41,9 @@ export default function NewsletterSignupSection({
   return (
     <section className={className} aria-labelledby="newsletter-signup-title">
       <div className="newsletter-signup__inner">
-        {content.accent && (
-          <p className="newsletter-signup__accent">{content.accent}</p>
-        )}
         <h2 id="newsletter-signup-title" className="newsletter-signup__title">
           {content.title}
         </h2>
-        <p className="newsletter-signup__description">{content.description}</p>
 
         {status === 'success' ? (
           <p className="newsletter-signup__message" role="status">
@@ -97,7 +93,7 @@ export default function NewsletterSignupSection({
 
             <button
               type="submit"
-              className="newsletter-signup__submit"
+              className="newsletter-signup__submit site-cta site-cta--solid"
               disabled={status === 'loading'}
             >
               {status === 'loading' ? '…' : content.buttonLabel}
@@ -109,10 +105,6 @@ export default function NewsletterSignupSection({
               </p>
             )}
           </form>
-        )}
-
-        {content.footnote && status !== 'success' && (
-          <p className="newsletter-signup__footnote">{content.footnote}</p>
         )}
       </div>
     </section>

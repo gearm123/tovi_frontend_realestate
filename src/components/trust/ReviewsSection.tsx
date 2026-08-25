@@ -37,7 +37,7 @@ export default function ReviewsSection({
       aria-labelledby={`${id}-title`}
     >
       <header className="reviews-section__header">
-        {reviews.accent && (
+        {reviews.accent && !compact && (
           <p className="reviews-section__accent orange-cursive-title orange-cursive-title--subtitle">
             {reviews.accent}
           </p>

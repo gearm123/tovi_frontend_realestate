@@ -10,12 +10,7 @@ export default function ServicesPage() {
 
   return (
     <>
-      <PageShell
-        title={servicesPage.title}
-        accent={servicesPage.accent}
-        subtitle={servicesPage.subtitle}
-        seoKey="services"
-      />
+      <PageShell title={servicesPage.title} subtitle={servicesPage.subtitle} seoKey="services" />
       <div className="services-page">
         {servicesPage.paragraphs.length > 0 && (
           <div className="services-page__intro">

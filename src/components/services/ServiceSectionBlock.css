@@ -1,5 +1,5 @@
 .service-block {
-  padding: clamp(2rem, 4vw, 2.75rem);
+  padding: 1.35rem 1.4rem 1.5rem;
   background: var(--white);
   border: 1px solid var(--rule);
   border-radius: var(--property-radius);
@@ -18,7 +18,7 @@
 .service-block__header {
   text-align: center;
   max-width: 40rem;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1.1rem;
 }
 
 .service-block__accent {
@@ -194,25 +194,7 @@
 }
 
 .service-block__cta {
-  display: inline-block;
-  font-family: var(--font-button);
-  font-weight: 400;
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--white);
-  background: var(--accent);
-  padding: 0.7rem 1.5rem;
-  border-radius: 4px;
-  transition: opacity 0.2s ease;
-}
-
-.service-block__cta:hover {
-  opacity: 0.92;
-}
-
-.service-block--premium .service-block__cta {
-  border: 1px solid var(--accent);
+  display: inline-flex;
 }
 
 .service-block__related {
