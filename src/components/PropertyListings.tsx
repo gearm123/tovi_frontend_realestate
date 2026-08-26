@@ -9,6 +9,7 @@ interface PropertyListingsProps {
   title?: string
   intro?: string
   showHeader?: boolean
+  sectionId?: string
 }
 
 export default function PropertyListings({
@@ -17,6 +18,7 @@ export default function PropertyListings({
   title = 'Properties for You',
   intro,
   showHeader = true,
+  sectionId = 'listings',
 }: PropertyListingsProps) {
   const viewport = useViewport()
 
@@ -28,6 +30,7 @@ export default function PropertyListings({
         title={title}
         intro={intro}
         showHeader={showHeader}
+        sectionId={sectionId}
       />
     )
   }
@@ -39,6 +42,7 @@ export default function PropertyListings({
       title={title}
       intro={intro}
       showHeader={showHeader}
+      sectionId={sectionId}
     />
   )
 }

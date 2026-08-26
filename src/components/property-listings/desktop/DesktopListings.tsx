@@ -9,6 +9,7 @@ interface DesktopListingsProps {
   title: string
   intro?: string
   showHeader: boolean
+  sectionId?: string
 }
 
 export default function DesktopListings({
@@ -17,9 +18,10 @@ export default function DesktopListings({
   title,
   intro,
   showHeader,
+  sectionId = 'listings',
 }: DesktopListingsProps) {
   return (
-    <section id="listings" className="desktop-listings" aria-label="Property listings">
+    <section id={sectionId} className="desktop-listings" aria-label="Property listings">
       {showHeader && (
         <ListingsHeader
           sectionLabel={sectionLabel}

@@ -10,12 +10,6 @@ interface PropertyFactsProps {
 export default function PropertyFacts({ property, floor }: PropertyFactsProps) {
   const { t } = useLanguage()
   const yes = t.property.yes
-  const no = t.property.no
-  const safeRoom = property.features.mamad
-    ? yes
-    : property.features.miklat
-      ? t.property.buildingShelter
-      : no
 
   const primary = [
     { label: 'm²', value: String(property.area), unit: true },
@@ -25,13 +19,15 @@ export default function PropertyFacts({ property, floor }: PropertyFactsProps) {
   ]
 
   const features = [
-    { label: t.filters.features.parking, value: property.features.parking ? yes : no },
-    { label: t.filters.features.elevator, value: property.features.elevator ? yes : no },
-    { label: t.filters.features.balcony, value: property.features.balcony ? yes : no },
-    { label: t.property.safeRoom, value: safeRoom },
-    { label: t.filters.features.petsAllowed, value: property.features.petsAllowed ? yes : no },
-    { label: t.property.floor, value: floor || no },
-  ]
+    property.features.parking && { label: t.filters.features.parking, value: yes },
+    property.features.elevator && { label: t.filters.features.elevator, value: yes },
+    property.features.balcony && { label: t.filters.features.balcony, value: yes },
+    property.features.mamad && { label: t.property.safeRoom, value: yes },
+    !property.features.mamad &&
+      property.features.miklat && { label: t.property.buildingShelter, value: yes },
+    property.features.petsAllowed && { label: t.filters.features.petsAllowed, value: yes },
+    floor ? { label: t.property.floor, value: floor } : null,
+  ].filter((fact): fact is { label: string; value: string } => Boolean(fact))
 
   return (
     <div className="property-facts">
@@ -49,14 +45,16 @@ export default function PropertyFacts({ property, floor }: PropertyFactsProps) {
           </div>
         ))}
       </div>
-      <div className="property-facts__row property-facts__row--features">
-        {features.map((fact) => (
-          <div key={fact.label} className="property-facts__item">
-            <span className="property-facts__value property-facts__value--small">{fact.value}</span>
-            <span className="property-facts__label">{fact.label}</span>
-          </div>
-        ))}
-      </div>
+      {features.length > 0 ? (
+        <div className="property-facts__row property-facts__row--features">
+          {features.map((fact) => (
+            <div key={fact.label} className="property-facts__item">
+              <span className="property-facts__value property-facts__value--small">{fact.value}</span>
+              <span className="property-facts__label">{fact.label}</span>
+            </div>
+          ))}
+        </div>
+      ) : null}
     </div>
   )
 }

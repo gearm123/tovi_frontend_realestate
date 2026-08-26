@@ -97,10 +97,12 @@
   .header {
     --header-logo-width: 3.85rem;
     --header-logo-top: max(0.45rem, env(safe-area-inset-top, 0px));
-    padding: calc(
-        var(--header-logo-top) + (var(--header-logo-width) * 903 / 650) + 0.25rem
-      )
-      3.4rem 0;
+    --header-logo-height: calc(var(--header-logo-width) * 903 / 650);
+    padding: var(--header-logo-top)
+      3.4rem
+      0
+      calc(var(--header-logo-width) + 0.95rem);
+    min-height: calc(var(--header-logo-top) + var(--header-logo-height));
     overflow-x: hidden;
   }
 
@@ -114,7 +116,11 @@
   }
 
   .header__masthead {
-    padding: 0.15rem 0 0.45rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--header-logo-height);
+    padding: 0;
   }
 
   .header__brand {
@@ -122,13 +128,13 @@
   }
 
   .header__title {
-    font-size: clamp(1.7rem, 7.4vw, 2.25rem);
+    font-size: clamp(1.87rem, 8.14vw, 2.475rem);
     line-height: 0.95;
   }
 
   .header__tagline.orange-cursive-title {
-    margin-top: 0.2rem;
-    font-size: clamp(1.05rem, 4.6vw, 1.4rem);
+    margin-top: 0.15rem;
+    font-size: clamp(1.155rem, 5.06vw, 1.54rem);
   }
 
   .header__nav {
@@ -143,6 +149,6 @@
   }
 
   .header__title {
-    font-size: clamp(1.6rem, 8vw, 2.1rem);
+    font-size: clamp(1.76rem, 8.8vw, 2.31rem);
   }
 }

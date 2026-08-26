@@ -9,6 +9,7 @@ interface MobileListingsProps {
   title: string
   intro?: string
   showHeader: boolean
+  sectionId?: string
 }
 
 export default function MobileListings({
@@ -17,9 +18,10 @@ export default function MobileListings({
   title,
   intro,
   showHeader,
+  sectionId = 'listings',
 }: MobileListingsProps) {
   return (
-    <section id="listings" className="mobile-listings" aria-label="Property listings">
+    <section id={sectionId} className="mobile-listings" aria-label="Property listings">
       {showHeader && (
         <ListingsHeader
           sectionLabel={sectionLabel}

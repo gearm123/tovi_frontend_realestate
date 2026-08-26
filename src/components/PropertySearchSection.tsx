@@ -24,6 +24,8 @@ interface PropertySearchSectionProps {
   id?: string
   variant?: 'full' | 'simple'
   prominence?: 'default' | 'hero'
+  /** Show the map between the search bar and the matching listings */
+  embedMap?: boolean
 }
 
 export default function PropertySearchSection({
@@ -35,6 +37,7 @@ export default function PropertySearchSection({
   id = 'property-search',
   variant = 'full',
   prominence = 'default',
+  embedMap = false,
 }: PropertySearchSectionProps) {
   const { t, format } = useLanguage()
   const { content } = useSiteContent()
@@ -47,7 +50,7 @@ export default function PropertySearchSection({
     usePropertyFilters(catalog, { initialStatus })
 
   const isHomeHero = prominence === 'hero'
-  const showMapToggle = !isHomeHero
+  const showMapToggle = !isHomeHero && !embedMap
   const sectionLabel = format(t.search.resultsCount, { count: filtered.length })
   const title = listingsTitle ?? t.search.resultsTitle
   const intro = listingsIntro
@@ -82,6 +85,20 @@ export default function PropertySearchSection({
         onStatusChange={setListingStatus}
         variant={variant}
       />
+
+      {embedMap ? (
+        <div className="property-search-section__map">
+          <header className="property-search-section__map-header">
+            <h2 className="property-search-section__map-title">{content.mapSection.title}</h2>
+            {content.mapSection.subtitle ? (
+              <p className="property-search-section__map-subtitle">
+                {content.mapSection.subtitle}
+              </p>
+            ) : null}
+          </header>
+          <PropertyMap pins={pins} content={content.mapSection} />
+        </div>
+      ) : null}
 
       {showMapToggle ? (
         <div

@@ -32,4 +32,11 @@
   .floating-top-controls__langs {
     display: none;
   }
+
+  .floating-top-controls {
+    top: calc(
+      max(0.45rem, env(safe-area-inset-top, 0px)) +
+        (3.85rem * 903 / 650 - 2.65rem) / 2
+    );
+  }
 }

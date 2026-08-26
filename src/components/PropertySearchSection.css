@@ -79,6 +79,41 @@
   margin: 0 auto;
 }
 
+.property-search-section__map {
+  max-width: var(--max-width);
+  margin: 0 auto clamp(1.25rem, 3vw, 2rem);
+}
+
+.property-search-section__map .placeholder-map__layout {
+  grid-template-columns: 1fr;
+}
+
+.property-search-section__map .placeholder-map__list {
+  display: none;
+}
+
+.property-search-section__map-header {
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto 1rem;
+}
+
+.property-search-section__map-title {
+  font-family: var(--font-primary);
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.property-search-section__map-subtitle {
+  font-family: var(--font-primary);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
 .property-search-section__more {
   display: flex;
   justify-content: center;
