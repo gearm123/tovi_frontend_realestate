@@ -13,7 +13,6 @@ export interface PropertyMapCanvasContext {
   expanded: boolean
   neighborhoodLabel: (key: string) => string
   listingLabel: (pin: PropertyMapPin) => string
-  searchBar: ReactNode
 }
 
 interface PropertyMapShellProps {
@@ -101,7 +100,6 @@ export default function PropertyMapShell({
     expanded,
     neighborhoodLabel,
     listingLabel,
-    searchBar,
   }
 
   const filters =
@@ -146,6 +144,7 @@ export default function PropertyMapShell({
       ) : null}
 
       {filters}
+      {searchBar}
 
       <div className="placeholder-map__layout">
         <div className="placeholder-map__canvas-wrap">

@@ -133,19 +133,6 @@
   margin: 0 0 0.55rem;
 }
 
-.desktop-property__excerpt {
-  font-family: var(--font-primary);
-  font-size: 0.92rem;
-  color: var(--ink-soft);
-  line-height: 1.5;
-  max-width: 100%;
-  min-width: 0;
-  margin: 0 0 0.75rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .desktop-property__details {
   align-self: flex-start;
 }
