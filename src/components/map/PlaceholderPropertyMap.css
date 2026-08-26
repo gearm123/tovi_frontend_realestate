@@ -383,4 +383,67 @@
     font-size: 0.68rem;
     padding: 0.4rem 0.7rem;
   }
+
+  .placeholder-map__popup {
+    position: fixed;
+    z-index: 1220;
+    left: 0.65rem !important;
+    right: 0.65rem !important;
+    bottom: max(0.65rem, env(safe-area-inset-bottom, 0px));
+    top: auto !important;
+    transform: none;
+    width: auto;
+    max-width: 30rem;
+    margin-inline: auto;
+    max-height: calc(100dvh - 1rem);
+    overflow: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 1.15rem 1.2rem 1.25rem;
+  }
+
+  .placeholder-map__popup-image {
+    min-height: 10rem;
+    margin-bottom: 0.85rem;
+    border-radius: 10px;
+  }
+
+  .placeholder-map__popup-type {
+    font-size: 1.24rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .placeholder-map__popup-title {
+    font-size: 1.76rem;
+    line-height: 1.3;
+    margin-bottom: 0.7rem;
+  }
+
+  .placeholder-map__popup-neighborhood {
+    font-size: 1.36rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .placeholder-map__popup-price {
+    font-size: 2.1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .placeholder-map__popup-specs {
+    font-size: 1.56rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  .placeholder-map__popup-note {
+    font-size: 1.44rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .placeholder-map__popup-link,
+  .placeholder-map__popup .site-cta {
+    font-size: 1.4rem;
+    padding: 0.85rem 1.35rem;
+    min-height: 3rem;
+  }
 }

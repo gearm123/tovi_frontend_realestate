@@ -94,9 +94,122 @@
   text-decoration: none;
 }
 
+.google-property-map__stage {
+  position: relative;
+  min-width: 0;
+}
+
+.property-map-shell--expanded .google-property-map__stage,
+.property-map-shell--page .google-property-map__stage {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.property-map-shell--expanded .google-property-map__stage .google-property-map__canvas,
+.property-map-shell--page .google-property-map__stage .google-property-map__canvas {
+  flex: 1;
+  min-height: 0;
+}
+
 @media (max-width: 768px) {
   .google-property-map__canvas {
     min-height: 260px;
+  }
+
+  .google-property-map__sheet {
+    position: fixed;
+    z-index: 1220;
+    inset-inline: 0.65rem;
+    bottom: max(0.65rem, env(safe-area-inset-bottom, 0px));
+    top: auto;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    max-width: 30rem;
+    max-height: calc(100dvh - 1rem);
+    margin-inline: auto;
+    padding: 0.9rem 1rem 1.05rem;
+    overflow: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    background: var(--white);
+    border: 1px solid var(--rule);
+    border-radius: var(--property-radius);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+    pointer-events: auto;
+  }
+
+  .google-property-map__sheet-close {
+    position: absolute;
+    top: 0.55rem;
+    inset-inline-end: 0.55rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--ink);
+    font-size: 1.7rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  .google-property-map__info--xl {
+    max-width: none;
+    padding: 0;
+  }
+
+  .google-property-map__info--xl .google-property-map__info-image {
+    min-height: 10rem;
+    margin-bottom: 0.85rem;
+    border-radius: 10px;
+  }
+
+  .google-property-map__info--xl .google-property-map__info-type {
+    font-size: 1.3rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .google-property-map__info--xl .google-property-map__info-title {
+    font-size: 1.76rem;
+    line-height: 1.3;
+    margin-bottom: 0.7rem;
+  }
+
+  .google-property-map__info--xl .google-property-map__info-neighborhood {
+    font-size: 1.36rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .google-property-map__info--xl .google-property-map__info-price {
+    font-size: 2.1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .google-property-map__info--xl .google-property-map__info-specs {
+    font-size: 1.56rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  .google-property-map__info--xl .google-property-map__info-note {
+    font-size: 1.44rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .google-property-map__info--xl .google-property-map__info-link,
+  .google-property-map__sheet .site-cta {
+    font-size: 1.4rem;
+    padding: 0.85rem 1.35rem;
+    min-height: 3rem;
   }
 }
 
