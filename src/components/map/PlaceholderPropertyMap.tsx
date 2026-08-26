@@ -31,7 +31,7 @@ export default function PlaceholderPropertyMap(props: PropertyMapProps) {
                   type="button"
                   className={`placeholder-map__pin placeholder-map__pin--${pin.listingType}${isActive ? ' placeholder-map__pin--active' : ''}`}
                   style={{ left: `${point.x}%`, top: `${point.y}%` }}
-                  aria-label={`${pin.title}, ${neighborhoodLabel(pin.neighborhood)}`}
+                  aria-label={`${listingLabel(pin)}, ${neighborhoodLabel(pin.neighborhood)}`}
                   aria-pressed={isActive}
                   onClick={() => onPinSelect(isActive ? null : pin.id)}
                 >

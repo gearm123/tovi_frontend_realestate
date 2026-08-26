@@ -89,6 +89,23 @@
 }
 
 @media (max-width: 768px) {
+  .photo-lightbox {
+    padding: max(0.2rem, env(safe-area-inset-top, 0px)) 0.2rem
+      max(0.2rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .photo-lightbox__frame {
+    width: 100%;
+    max-height: min(98vh, 98svh);
+  }
+
+  .photo-lightbox__image,
+  .photo-lightbox__frame .property-image,
+  .photo-lightbox__frame img {
+    max-height: min(94vh, 94svh);
+    width: 100%;
+  }
+
   .photo-lightbox__nav {
     top: auto;
     bottom: 0.75rem;

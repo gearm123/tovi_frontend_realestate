@@ -8,7 +8,11 @@ import {
 import type { Agent } from '../types/agent'
 import type { BusinessContact } from '../types/business'
 import type { ListingType, Property, PropertyFeatures } from '../types/property'
-import { PLACEHOLDER_MAP_CENTER, PLACEHOLDER_PROPERTY_IMAGE } from '../data/placeholders'
+import {
+  isDemoMapCoordinates,
+  PLACEHOLDER_MAP_CENTER,
+  PLACEHOLDER_PROPERTY_IMAGE,
+} from '../data/placeholders'
 import { withNormalizedPropertyImages } from '../utils/propertyGallery'
 import { withoutStreetNumbers } from '../utils/streetNumber'
 import { withCleanedListingCopy } from '../utils/listingCopy'
@@ -53,6 +57,26 @@ function reconcileAgents(stored: Agent[] | undefined): Agent[] {
   return [...fromSeed, ...extras]
 }
 
+function reconcileProperties(stored: Property[] | undefined, seed: Property[]): Property[] {
+  if (!stored?.length) return clone(seed)
+
+  const seedById = new Map(seed.map((item) => [item.id, item]))
+  const seen = new Set<string>()
+
+  const merged = stored.map((previous) => {
+    seen.add(previous.id)
+    const fromSeed = seedById.get(previous.id)
+    if (!fromSeed) return previous
+    if (isDemoMapCoordinates(previous.coordinates) && !isDemoMapCoordinates(fromSeed.coordinates)) {
+      return { ...previous, coordinates: clone(fromSeed.coordinates) }
+    }
+    return previous
+  })
+
+  const additions = seed.filter((item) => !seen.has(item.id)).map((item) => clone(item))
+  return [...merged, ...additions]
+}
+
 const LEGACY_POPUP_DELAY_MS = 1400
 
 function resolveLeadCapture(
@@ -89,7 +113,10 @@ function readStorage(): SiteData | null {
     const parsed = JSON.parse(raw) as Partial<SiteData>
     const seed = seedSiteData()
     return {
-      properties: (Array.isArray(parsed.properties) ? parsed.properties : seed.properties)
+      properties: reconcileProperties(
+        Array.isArray(parsed.properties) ? parsed.properties : undefined,
+        seed.properties,
+      )
         .map(withoutStreetNumbers)
         .map(withCleanedListingCopy)
         .map(withNormalizedPropertyImages),

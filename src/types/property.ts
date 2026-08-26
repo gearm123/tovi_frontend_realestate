@@ -53,7 +53,7 @@ export interface Property {
   images?: string[]
   /** Optional property tour — empty until client provides video */
   videoUrl?: string
-  /** Map pin — placeholder coordinates until exact address is confirmed */
+  /** Map pin — scraped from the listing page when available */
   coordinates: PropertyCoordinates
   /** Floor label, e.g. "3", "Ground", or "5 of 8" */
   floor?: string

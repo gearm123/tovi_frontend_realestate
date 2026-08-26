@@ -3,7 +3,6 @@ import { useLanguage } from '../../context/LanguageContext'
 import { getLocalizedProperty } from '../../i18n/propertyTranslations'
 import type { MapSectionContent } from '../../types/content'
 import type { PropertyMapPin } from '../../types/map'
-import { listingTextDir } from '../../utils/listingCopy'
 import MapPinFacts from './MapPinFacts'
 
 interface PropertyMapPinCardProps {
@@ -24,7 +23,7 @@ export default function PropertyMapPinCard({
   const { locale } = useLanguage()
   const localized = getLocalizedProperty(pin.id, locale, {
     title: pin.title,
-    address: pin.address,
+    address: pin.neighborhood,
     description: pin.title,
     price: pin.price,
     neighborhood: pin.neighborhood,
@@ -42,9 +41,6 @@ export default function PropertyMapPinCard({
         neighborhoodLabel={neighborhoodLabel}
         classPrefix={classPrefix}
       />
-      <h3 className={`${classPrefix}-title listing-copy`} dir={listingTextDir(localized.title)}>
-        {localized.title}
-      </h3>
       {pin.positionSource === 'neighborhood' ? (
         <p className={`${classPrefix}-note`}>{content.neighborhoodFallback}</p>
       ) : null}

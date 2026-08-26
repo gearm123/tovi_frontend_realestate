@@ -31,6 +31,49 @@ function pinOffset(propertyId: string): PropertyCoordinates {
   }
 }
 
+const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5))
+
+function coordinateKey(lat: number, lng: number): string {
+  return `${lat.toFixed(5)},${lng.toFixed(5)}`
+}
+
+/**
+ * Listings often share the same scraped/placeholder coordinates, which makes
+ * Google Maps draw a single pin. Fan those stacks out so every listing is visible.
+ */
+export function spreadStackedPins(pins: PropertyMapPin[]): PropertyMapPin[] {
+  if (pins.length < 2) return pins
+
+  const groups = new Map<string, number[]>()
+  pins.forEach((pin, index) => {
+    const key = coordinateKey(pin.lat, pin.lng)
+    const group = groups.get(key)
+    if (group) group.push(index)
+    else groups.set(key, [index])
+  })
+
+  const next = pins.slice()
+  groups.forEach((indices) => {
+    if (indices.length < 2) return
+
+    const spacing = indices.length > 8 ? 0.0018 : 0.00018
+    indices.forEach((pinIndex, i) => {
+      if (i === 0) return
+      const pin = next[pinIndex]
+      if (!pin) return
+      const radius = spacing * Math.sqrt(i)
+      const angle = i * GOLDEN_ANGLE
+      next[pinIndex] = {
+        ...pin,
+        lat: pin.lat + Math.sin(angle) * radius,
+        lng: pin.lng + Math.cos(angle) * radius,
+      }
+    })
+  })
+
+  return next
+}
+
 export function resolvePropertyMapPosition(
   property: Property,
 ): { lat: number; lng: number; positionSource: MapPinPositionSource } {
@@ -68,7 +111,7 @@ export function latLngToMapPercent(
 }
 
 export function buildPropertyMapPins(properties: Property[]): PropertyMapPin[] {
-  return properties.map((property) => {
+  const pins = properties.map((property) => {
     const position = resolvePropertyMapPosition(property)
 
     return {
@@ -89,6 +132,8 @@ export function buildPropertyMapPins(properties: Property[]): PropertyMapPin[] {
       href: getPropertyDetailPath(property),
     }
   })
+
+  return spreadStackedPins(pins)
 }
 
 /** Opens Google Maps with a dropped pin at the exact coordinates. */

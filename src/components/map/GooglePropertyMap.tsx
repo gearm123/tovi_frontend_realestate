@@ -72,7 +72,7 @@ function MapPinsLayer({
         <Marker
           key={pin.id}
           position={{ lat: pin.lat, lng: pin.lng }}
-          title={pin.title}
+          title={neighborhoodLabel(pin.neighborhood)}
           onClick={() => onPinSelect(pin.id === activePinId ? null : pin.id)}
           icon={markerIcon(pin, pin.id === activePinId)}
         />
@@ -127,7 +127,7 @@ function MobileMapPinSheet({
       className="google-property-map__sheet"
       role="dialog"
       aria-modal="true"
-      aria-label={pin.title}
+      aria-label={`${listingLabel(pin)}, ${neighborhoodLabel(pin.neighborhood)}`}
     >
       <button
         type="button"

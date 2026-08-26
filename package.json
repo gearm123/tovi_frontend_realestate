@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "generate:redirects": "node scripts/generate-redirects.mjs",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
-    "import:galleries": "node scripts/download-property-galleries.mjs"
+    "import:galleries": "node scripts/download-property-galleries.mjs",
+    "import:coordinates": "node scripts/import-listing-coordinates.mjs"
   },
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.9.0",

@@ -56,3 +56,25 @@ export const CONTACT_PLACEHOLDERS = {
 export function isPlaceholderUrl(url: string): boolean {
   return /placeholder/i.test(url)
 }
+
+const DEMO_MAP_EPSILON = 1e-6
+
+function demoMapPoints(): Array<{ lat: number; lng: number }> {
+  return [
+    PLACEHOLDER_MAP_CENTER,
+    ...PLACEHOLDER_COORD_OFFSETS.map((offset) => ({
+      lat: PLACEHOLDER_MAP_CENTER.lat + offset.lat,
+      lng: PLACEHOLDER_MAP_CENTER.lng + offset.lng,
+    })),
+  ]
+}
+
+/** True when coordinates are still one of the six demo Tel Aviv offsets. */
+export function isDemoMapCoordinates(coords: { lat: number; lng: number } | undefined): boolean {
+  if (!coords || !Number.isFinite(coords.lat) || !Number.isFinite(coords.lng)) return true
+  return demoMapPoints().some(
+    (point) =>
+      Math.abs(point.lat - coords.lat) < DEMO_MAP_EPSILON &&
+      Math.abs(point.lng - coords.lng) < DEMO_MAP_EPSILON,
+  )
+}
