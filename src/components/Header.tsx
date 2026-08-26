@@ -21,7 +21,7 @@ export default function Header() {
       >
         <img
           className="header__logo"
-          src="/assets/logo_shine_content.png"
+          src="/assets/logo_shine_new_content.png"
           alt={`${business.name} logo`}
         />
       </Link>

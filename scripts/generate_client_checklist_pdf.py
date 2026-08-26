@@ -190,7 +190,7 @@ def main() -> None:
     pdf.priority_box("Priority: CRITICAL")
     pdf.subsection("5.1 Logos (PNG with real transparency)")
     for item in [
-        "Main header logo (logo_shine_content.png)",
+        "Main header logo (logo_shine_new_content.png)",
         "Secondary About-section logo (logo_pat_content.png)",
         "Favicon / app icon",
     ]:
