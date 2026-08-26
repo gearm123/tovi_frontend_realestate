@@ -26,7 +26,12 @@ export default function PlaceholderPropertyMap(props: PropertyMapProps) {
             className="placeholder-map__canvas"
             aria-label={t.map.openInMaps}
             title={t.map.openInMaps}
-            onClick={() => openExternalMaps(getExternalMapsUrlForPins(visiblePins))}
+            onClick={(event) => {
+              if ((event.target as HTMLElement).closest('.placeholder-map__pin, .placeholder-map__popup')) {
+                return
+              }
+              openExternalMaps(getExternalMapsUrlForPins(visiblePins))
+            }}
           >
             <div className="placeholder-map__sea" aria-hidden="true" />
             <div className="placeholder-map__grid" aria-hidden="true" />
@@ -63,6 +68,17 @@ export default function PlaceholderPropertyMap(props: PropertyMapProps) {
                 }}
                 onClick={(event) => event.stopPropagation()}
               >
+                <button
+                  type="button"
+                  className="placeholder-map__popup-close"
+                  aria-label={t.leadCapturePopup.closeAria}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onPinSelect(null)
+                  }}
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
                 <PropertyMapPinCard
                   pin={activePin}
                   content={content}

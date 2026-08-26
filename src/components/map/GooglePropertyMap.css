@@ -119,47 +119,53 @@
   }
 
   .google-property-map__sheet {
+    --pin-card-scale: var(--mobile-type-scale, 1);
     position: fixed;
     z-index: 1220;
-    inset-inline: 0.65rem;
-    bottom: max(0.65rem, env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    right: auto;
+    inset-inline: auto;
+    bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
     top: auto;
     display: flex;
     flex-direction: column;
-    width: auto;
-    max-width: 30rem;
-    max-height: calc(100dvh - 1rem);
-    margin-inline: auto;
-    padding: 0.9rem 1rem 1.05rem;
+    box-sizing: border-box;
+    width: min(calc(15rem / var(--pin-card-scale)), calc(100vw - 1.75rem));
+    max-width: calc(15rem / var(--pin-card-scale));
+    max-height: min(46vh, calc(18.5rem / var(--pin-card-scale)));
+    margin: 0;
+    transform: translateX(-50%);
+    padding: 0.5rem 0.55rem 0.55rem;
     overflow: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     background: var(--white);
     border: 1px solid var(--rule);
     border-radius: var(--property-radius);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
     pointer-events: auto;
+    line-height: 1.3;
   }
 
   .google-property-map__sheet-close {
     position: absolute;
-    top: 0.55rem;
-    inset-inline-end: 0.55rem;
+    top: 0.35rem;
+    inset-inline-end: 0.35rem;
     z-index: 2;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: calc(1.85rem / var(--pin-card-scale));
+    height: calc(1.85rem / var(--pin-card-scale));
     padding: 0;
     border: 1px solid var(--rule);
     border-radius: 50%;
     background: var(--white);
     color: var(--ink);
-    font-size: 1.7rem;
+    font-size: 1.05rem;
     line-height: 1;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .google-property-map__info--xl {
@@ -168,48 +174,56 @@
   }
 
   .google-property-map__info--xl .google-property-map__info-image {
-    min-height: 10rem;
-    margin-bottom: 0.85rem;
-    border-radius: 10px;
+    min-height: 0;
+    height: calc(5.35rem / var(--pin-card-scale));
+    max-height: calc(5.35rem / var(--pin-card-scale));
+    aspect-ratio: auto;
+    margin-bottom: 0.35rem;
+    border-radius: 6px;
+    flex-shrink: 0;
   }
 
   .google-property-map__info--xl .google-property-map__info-type {
-    font-size: 1.3rem;
-    margin-bottom: 0.55rem;
+    font-size: 0.68rem;
+    line-height: 1.25;
+    margin-bottom: 0.18rem;
   }
 
   .google-property-map__info--xl .google-property-map__info-title {
-    font-size: 1.76rem;
+    font-size: 0.92rem;
     line-height: 1.3;
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.28rem;
   }
 
   .google-property-map__info--xl .google-property-map__info-neighborhood {
-    font-size: 1.36rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    line-height: 1.25;
+    margin-bottom: 0.16rem;
   }
 
   .google-property-map__info--xl .google-property-map__info-price {
-    font-size: 2.1rem;
-    margin-bottom: 0.4rem;
+    font-size: 1.12rem;
+    line-height: 1.2;
+    margin-bottom: 0.12rem;
   }
 
   .google-property-map__info--xl .google-property-map__info-specs {
-    font-size: 1.56rem;
-    line-height: 1.4;
-    margin-bottom: 0.75rem;
+    font-size: 0.78rem;
+    line-height: 1.3;
+    margin-bottom: 0.35rem;
   }
 
   .google-property-map__info--xl .google-property-map__info-note {
-    font-size: 1.44rem;
-    margin-bottom: 0.85rem;
+    font-size: 0.72rem;
+    line-height: 1.3;
+    margin-bottom: 0.3rem;
   }
 
   .google-property-map__info--xl .google-property-map__info-link,
   .google-property-map__sheet .site-cta {
-    font-size: 1.4rem;
-    padding: 0.85rem 1.35rem;
-    min-height: 3rem;
+    font-size: 0.82rem;
+    padding: 0.4rem 0.7rem;
+    min-height: calc(2.35rem / var(--pin-card-scale));
   }
 }
 
