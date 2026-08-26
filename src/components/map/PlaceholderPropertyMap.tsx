@@ -22,42 +22,44 @@ export default function PlaceholderPropertyMap(props: PropertyMapProps) {
         const activePin = visiblePins.find((pin) => pin.id === activePinId) ?? null
 
         return (
-          <div
-            className="placeholder-map__canvas"
-            aria-label={t.map.openInMaps}
-            title={t.map.openInMaps}
-            onClick={(event) => {
-              if ((event.target as HTMLElement).closest('.placeholder-map__pin, .placeholder-map__popup')) {
-                return
-              }
-              openExternalMaps(getExternalMapsUrlForPins(visiblePins))
-            }}
-          >
-            <div className="placeholder-map__sea" aria-hidden="true" />
-            <div className="placeholder-map__grid" aria-hidden="true" />
-            <div className="placeholder-map__coastline" aria-hidden="true" />
+          <div className={`placeholder-map__stage${activePin ? ' placeholder-map__stage--popup' : ''}`}>
+            <div
+              className="placeholder-map__canvas"
+              aria-label={t.map.openInMaps}
+              title={t.map.openInMaps}
+              onClick={(event) => {
+                if ((event.target as HTMLElement).closest('.placeholder-map__pin, .placeholder-map__popup')) {
+                  return
+                }
+                openExternalMaps(getExternalMapsUrlForPins(visiblePins))
+              }}
+            >
+              <div className="placeholder-map__sea" aria-hidden="true" />
+              <div className="placeholder-map__grid" aria-hidden="true" />
+              <div className="placeholder-map__coastline" aria-hidden="true" />
 
-            {visiblePins.map((pin) => {
-              const point = latLngToMapPercent(pin.lat, pin.lng)
-              const isActive = pin.id === activePinId
+              {visiblePins.map((pin) => {
+                const point = latLngToMapPercent(pin.lat, pin.lng)
+                const isActive = pin.id === activePinId
 
-              return (
-                <button
-                  key={pin.id}
-                  type="button"
-                  className={`placeholder-map__pin placeholder-map__pin--${pin.listingType}${isActive ? ' placeholder-map__pin--active' : ''}`}
-                  style={{ left: `${point.x}%`, top: `${point.y}%` }}
-                  aria-label={`${listingLabel(pin)}, ${neighborhoodLabel(pin.neighborhood)}`}
-                  aria-pressed={isActive}
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    onPinSelect(isActive ? null : pin.id)
-                  }}
-                >
-                  <span className="placeholder-map__pin-dot" aria-hidden="true" />
-                </button>
-              )
-            })}
+                return (
+                  <button
+                    key={pin.id}
+                    type="button"
+                    className={`placeholder-map__pin placeholder-map__pin--${pin.listingType}${isActive ? ' placeholder-map__pin--active' : ''}`}
+                    style={{ left: `${point.x}%`, top: `${point.y}%` }}
+                    aria-label={`${listingLabel(pin)}, ${neighborhoodLabel(pin.neighborhood)}`}
+                    aria-pressed={isActive}
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      onPinSelect(isActive ? null : pin.id)
+                    }}
+                  >
+                    <span className="placeholder-map__pin-dot" aria-hidden="true" />
+                  </button>
+                )
+              })}
+            </div>
 
             {activePin ? (
               <div
