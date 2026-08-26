@@ -163,7 +163,7 @@ function mapsZoomForPins(pins: PropertyCoordinates[]): number {
 /** Opens Google Maps with a dropped pin at the exact coordinates. */
 export function getExternalMapsUrl(lat: number, lng: number, zoom = 16): string {
   const latLng = `${lat.toFixed(6)},${lng.toFixed(6)}`
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(latLng)}`
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(latLng)}&zoom=${zoom}`
 }
 
 /** Google Maps URL covering one listing pin, or the area of several pins. */
