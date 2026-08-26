@@ -28,7 +28,14 @@
   border: 1px solid var(--rule);
   border-radius: var(--property-radius);
   background: var(--white);
+  cursor: pointer;
+  text-decoration: none;
   color: inherit;
+}
+
+.property-location-map__preview:hover,
+.property-location-map__preview:focus-visible {
+  border-color: var(--accent);
 }
 
 .property-location-map__surface,

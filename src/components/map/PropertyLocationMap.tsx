@@ -6,6 +6,7 @@ import { getMapCredentials } from '../../constants/mapConfig'
 import {
   buildPropertyMapPins,
   getActiveMapProvider,
+  getExternalMapsUrl,
   latLngToMapPercent,
 } from '../../services/mapService'
 import type { Property } from '../../types/property'
@@ -88,13 +89,24 @@ export default function PropertyLocationMap({ property }: PropertyLocationMapPro
 
   const neighborhoodLabel =
     (t.neighborhoods as Record<string, string>)[pin.neighborhood] ?? pin.neighborhood
+  const mapsUrl = getExternalMapsUrl(
+    pin.lat,
+    pin.lng,
+    pin.positionSource === 'coordinates' ? 17 : 15,
+  )
   const live = getActiveMapProvider() === 'google' && !googleFailed
 
   return (
     <section className="property-location-map" aria-labelledby="property-location-title">
       <h2 id="property-location-title">{t.map.locationTitle}</h2>
       <p className="property-location-map__area">{neighborhoodLabel}</p>
-      <div className="property-location-map__preview">
+      <a
+        className="property-location-map__preview"
+        href={mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={t.map.openInMaps}
+      >
         <div className="property-location-map__surface">
           {live ? (
             <GoogleLocationCanvas pin={pin} onError={handleGoogleError} />
@@ -107,7 +119,7 @@ export default function PropertyLocationMap({ property }: PropertyLocationMapPro
             <LocationPin />
           </span>
         ) : null}
-      </div>
+      </a>
       {pin.positionSource === 'neighborhood' ? (
         <p className="property-location-map__note">{content.mapSection.neighborhoodFallback}</p>
       ) : null}

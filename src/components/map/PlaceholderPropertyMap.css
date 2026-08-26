@@ -53,6 +53,7 @@
   border: 1px solid var(--rule);
   background: linear-gradient(160deg, #e8e4dc 0%, #f4f1eb 45%, #ebe6de 100%);
   box-shadow: var(--property-frame-shadow);
+  cursor: pointer;
 }
 
 .placeholder-map__sea {

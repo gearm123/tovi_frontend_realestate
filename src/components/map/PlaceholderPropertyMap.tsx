@@ -1,4 +1,9 @@
-import { latLngToMapPercent } from '../../services/mapService'
+import { useLanguage } from '../../context/LanguageContext'
+import {
+  getExternalMapsUrlForPins,
+  latLngToMapPercent,
+  openExternalMaps,
+} from '../../services/mapService'
 import type { PropertyMapProps } from './PropertyMap'
 import PropertyMapPinCard from './PropertyMapPinCard'
 import PropertyMapShell from './PropertyMapShell'
@@ -6,6 +11,7 @@ import './PlaceholderPropertyMap.css'
 
 export default function PlaceholderPropertyMap(props: PropertyMapProps) {
   const { content } = props
+  const { t } = useLanguage()
 
   return (
     <PropertyMapShell
@@ -16,7 +22,12 @@ export default function PlaceholderPropertyMap(props: PropertyMapProps) {
         const activePin = visiblePins.find((pin) => pin.id === activePinId) ?? null
 
         return (
-          <div className="placeholder-map__canvas" aria-label={content.title}>
+          <div
+            className="placeholder-map__canvas"
+            aria-label={t.map.openInMaps}
+            title={t.map.openInMaps}
+            onClick={() => openExternalMaps(getExternalMapsUrlForPins(visiblePins))}
+          >
             <div className="placeholder-map__sea" aria-hidden="true" />
             <div className="placeholder-map__grid" aria-hidden="true" />
             <div className="placeholder-map__coastline" aria-hidden="true" />
@@ -33,7 +44,10 @@ export default function PlaceholderPropertyMap(props: PropertyMapProps) {
                   style={{ left: `${point.x}%`, top: `${point.y}%` }}
                   aria-label={`${listingLabel(pin)}, ${neighborhoodLabel(pin.neighborhood)}`}
                   aria-pressed={isActive}
-                  onClick={() => onPinSelect(isActive ? null : pin.id)}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onPinSelect(isActive ? null : pin.id)
+                  }}
                 >
                   <span className="placeholder-map__pin-dot" aria-hidden="true" />
                 </button>
@@ -47,6 +61,7 @@ export default function PlaceholderPropertyMap(props: PropertyMapProps) {
                   left: `${latLngToMapPercent(activePin.lat, activePin.lng).x}%`,
                   top: `${latLngToMapPercent(activePin.lat, activePin.lng).y}%`,
                 }}
+                onClick={(event) => event.stopPropagation()}
               >
                 <PropertyMapPinCard
                   pin={activePin}

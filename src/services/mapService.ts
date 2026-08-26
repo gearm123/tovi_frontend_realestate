@@ -136,10 +136,58 @@ export function buildPropertyMapPins(properties: Property[]): PropertyMapPin[] {
   return spreadStackedPins(pins)
 }
 
+function uniquePinCoordinates(pins: Array<{ lat: number; lng: number }>): PropertyCoordinates[] {
+  const seen = new Set<string>()
+  const unique: PropertyCoordinates[] = []
+  for (const pin of pins) {
+    const key = `${pin.lat.toFixed(5)},${pin.lng.toFixed(5)}`
+    if (seen.has(key)) continue
+    seen.add(key)
+    unique.push({ lat: pin.lat, lng: pin.lng })
+  }
+  return unique
+}
+
+function mapsZoomForPins(pins: PropertyCoordinates[]): number {
+  if (pins.length <= 1) return 16
+  const lats = pins.map((pin) => pin.lat)
+  const lngs = pins.map((pin) => pin.lng)
+  const span = Math.max(Math.max(...lats) - Math.min(...lats), Math.max(...lngs) - Math.min(...lngs))
+  if (span < 0.008) return 16
+  if (span < 0.02) return 15
+  if (span < 0.05) return 14
+  if (span < 0.1) return 13
+  return 12
+}
+
 /** Opens Google Maps with a dropped pin at the exact coordinates. */
 export function getExternalMapsUrl(lat: number, lng: number, zoom = 16): string {
   const latLng = `${lat.toFixed(6)},${lng.toFixed(6)}`
-  return `https://www.google.com/maps/place/${latLng}/@${latLng},${zoom}z`
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(latLng)}`
+}
+
+/** Google Maps URL covering one listing pin, or the area of several pins. */
+export function getExternalMapsUrlForPins(pins: Array<{ lat: number; lng: number }>): string {
+  const unique = uniquePinCoordinates(pins)
+  if (unique.length === 0) {
+    return getExternalMapsUrl(PLACEHOLDER_MAP_CENTER.lat, PLACEHOLDER_MAP_CENTER.lng, 13)
+  }
+  if (unique.length === 1) {
+    return getExternalMapsUrl(unique[0].lat, unique[0].lng, 16)
+  }
+
+  const path = unique.map((pin) => `${pin.lat.toFixed(6)},${pin.lng.toFixed(6)}`)
+  const dirUrl = `https://www.google.com/maps/dir/${path.join('/')}`
+  if (dirUrl.length <= 1800) return dirUrl
+
+  const centerLat = unique.reduce((sum, pin) => sum + pin.lat, 0) / unique.length
+  const centerLng = unique.reduce((sum, pin) => sum + pin.lng, 0) / unique.length
+  const zoom = mapsZoomForPins(unique)
+  return `https://www.google.com/maps/@?api=1&map_action=map&center=${centerLat.toFixed(6)},${centerLng.toFixed(6)}&zoom=${zoom}`
+}
+
+export function openExternalMaps(url: string): void {
+  window.open(url, '_blank', 'noopener,noreferrer')
 }
 
 export function getActiveMapProvider(): MapProvider {

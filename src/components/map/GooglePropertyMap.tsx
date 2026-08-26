@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   APIProvider,
   InfoWindow,
@@ -9,6 +9,7 @@ import {
 import { useLanguage } from '../../context/LanguageContext'
 import { useViewport } from '../../hooks/useViewport'
 import { MAP_CONFIG, getMapCredentials } from '../../constants/mapConfig'
+import { getExternalMapsUrlForPins, openExternalMaps } from '../../services/mapService'
 import type { PropertyMapPin } from '../../types/map'
 import PlaceholderPropertyMap from './PlaceholderPropertyMap'
 import PropertyMapPinCard from './PropertyMapPinCard'
@@ -154,11 +155,19 @@ function GooglePropertyMapShell(props: PropertyMapProps) {
   const { content, expanded } = props
   const viewport = useViewport()
   const isMobile = viewport === 'mobile'
+  const ignoreNextMapClick = useRef(false)
 
   return (
     <PropertyMapShell {...props}>
       {(ctx) => {
         const activePin = ctx.pins.find((pin) => pin.id === ctx.activePinId) ?? null
+        const selectPin = (id: string | null) => {
+          ignoreNextMapClick.current = true
+          ctx.onPinSelect(id)
+          queueMicrotask(() => {
+            ignoreNextMapClick.current = false
+          })
+        }
 
         return (
           <div className="google-property-map__stage">
@@ -172,9 +181,14 @@ function GooglePropertyMapShell(props: PropertyMapProps) {
               fullscreenControl={false}
               clickableIcons={false}
               keyboardShortcuts={false}
+              onClick={() => {
+                if (ignoreNextMapClick.current) return
+                openExternalMaps(getExternalMapsUrlForPins(ctx.pins))
+              }}
             >
               <MapPinsLayer
                 {...ctx}
+                onPinSelect={selectPin}
                 content={content}
                 showInfoWindow={!isMobile}
               />
@@ -185,7 +199,7 @@ function GooglePropertyMapShell(props: PropertyMapProps) {
                 content={content}
                 neighborhoodLabel={ctx.neighborhoodLabel}
                 listingLabel={ctx.listingLabel}
-                onClose={() => ctx.onPinSelect(null)}
+                onClose={() => selectPin(null)}
               />
             ) : null}
           </div>
