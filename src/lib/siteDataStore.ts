@@ -17,7 +17,7 @@ import { withNormalizedPropertyImages } from '../utils/propertyGallery'
 import { withoutStreetNumbers } from '../utils/streetNumber'
 import { withCleanedListingCopy } from '../utils/listingCopy'
 
-const STORAGE_KEY = 'propertlv_site_data_v6'
+const STORAGE_KEY = 'propertlv_site_data_v7'
 const DATA_EVENT = 'propertlv-site-data-updated'
 
 export type LeadCaptureSettings = {

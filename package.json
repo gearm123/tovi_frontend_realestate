@@ -12,7 +12,8 @@
     "generate:redirects": "node scripts/generate-redirects.mjs",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "import:galleries": "node scripts/download-property-galleries.mjs",
-    "import:coordinates": "node scripts/import-listing-coordinates.mjs"
+    "import:coordinates": "node scripts/import-listing-coordinates.mjs",
+    "select:featured-images": "node scripts/select-featured-images.mjs"
   },
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.9.0",
