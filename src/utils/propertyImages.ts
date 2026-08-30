@@ -35,7 +35,7 @@ export function getPropertyImageSources(imagePath: string): PropertyImageSources
   }
 }
 
-const HERO_ASSET_REV = '20260825'
+const HERO_ASSET_REV = '20260830'
 
 export const HERO_IMAGE = {
   fallback: `/assets/properhero-poster.jpg?v=${HERO_ASSET_REV}`,
