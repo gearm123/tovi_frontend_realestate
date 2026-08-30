@@ -1,17 +1,20 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { CONTACT_PLACEHOLDERS } from '../data/placeholders'
 import { useSiteContent } from '../hooks/useSiteContent'
 import BrandTitle from './BrandTitle'
 import SocialLinks from './SocialLinks'
+import ReviewsSection from './trust/ReviewsSection'
 import './Footer.css'
 
 export default function Footer() {
   const { t } = useLanguage()
   const { business } = useSiteContent()
+  const { pathname } = useLocation()
+  const isHome = pathname === '/'
 
   return (
-    <footer className="footer">
+    <footer className={`footer${isHome ? ' footer--with-reviews' : ''}`}>
       <div className="footer__inner">
         <BrandTitle as="p" className="footer__logo" />
 
@@ -38,6 +41,17 @@ export default function Footer() {
           />
         </div>
       </div>
+
+      {isHome ? (
+        <div className="footer__reviews">
+          <ReviewsSection
+            id="footer-reviews"
+            compact
+            maxItems={3}
+            maxQuoteLength={140}
+          />
+        </div>
+      ) : null}
 
       <p className="footer__copyright">
         &copy; {new Date().getFullYear()} <BrandTitle as="span" className="footer__copyright-brand" />.{' '}

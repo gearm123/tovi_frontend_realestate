@@ -77,7 +77,7 @@ function reconcileProperties(stored: Property[] | undefined, seed: Property[]): 
   return [...merged, ...additions]
 }
 
-const LEGACY_POPUP_DELAY_MS = 1400
+const LEGACY_POPUP_DELAY_MS = new Set([1400, 10_000])
 
 function resolveLeadCapture(
   stored: LeadCaptureSettings | undefined,
@@ -85,7 +85,7 @@ function resolveLeadCapture(
 ): LeadCaptureSettings {
   if (!stored) return seed
   const merged = { ...seed, ...stored }
-  if (merged.delayMs === LEGACY_POPUP_DELAY_MS) {
+  if (LEGACY_POPUP_DELAY_MS.has(merged.delayMs)) {
     return { ...merged, delayMs: seed.delayMs }
   }
   return merged

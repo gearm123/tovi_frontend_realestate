@@ -14,7 +14,7 @@ import './LeadCapturePopup.css'
 
 const SESSION_SUBMITTED_KEY = 'propertlv-lead-capture-submitted'
 const SESSION_SEEN_KEY = 'propertlv-lead-capture-seen'
-const DEFAULT_POPUP_LOCALE: Locale = 'he'
+const DEFAULT_POPUP_LOCALE: Locale = 'en'
 
 function wasShownThisSession(): boolean {
   try {

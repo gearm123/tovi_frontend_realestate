@@ -3,7 +3,6 @@ import HomeHighlightListings from '../components/HomeHighlightListings'
 import PageSeo from '../components/seo/PageSeo'
 import PropertySearchSection from '../components/PropertySearchSection'
 import AboutSection from '../components/trust/AboutSection'
-import ReviewsSection from '../components/trust/ReviewsSection'
 
 export default function HomePage() {
   return (
@@ -18,7 +17,6 @@ export default function HomePage() {
         embedMap
       />
       <AboutSection compact />
-      <ReviewsSection compact maxItems={3} maxQuoteLength={140} />
     </>
   )
 }
