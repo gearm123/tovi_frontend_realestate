@@ -2,6 +2,7 @@ import type { Property } from '../types/property'
 
 export interface ListingNarrative {
   intro: string
+  paragraphs: string[]
   highlights: string[]
   specialNotes: string[]
   floor?: string
@@ -92,9 +93,33 @@ function collectInlineFacts(compact: string): string[] {
     )
 }
 
+function isBulletLine(value: string): boolean {
+  return /^([•\-–—*]\s+|\d+[.)]\s+)/.test(value.trim())
+}
+
+/** Every description paragraph, including ones after the opening paragraph. */
+export function listingBodyParagraphs(description: string): string[] {
+  const raw = description.replace(/\r\n/g, '\n').trim()
+  if (!raw) return []
+
+  const blocks = /\n\s*\n/.test(raw) ? raw.split(/\n\s*\n/) : raw.split('\n')
+  const paragraphs: string[] = []
+
+  for (const block of blocks) {
+    const lines = block.split('\n').map((line) => line.trim()).filter(Boolean)
+    if (lines.length > 0 && lines.every(isBulletLine)) continue
+    const compact = tidy(block.replace(/\n/g, ' '))
+    if (!compact || HEADING.test(compact) || isNoise(compact)) continue
+    paragraphs.push(compact)
+  }
+
+  return paragraphs
+}
+
 export function splitListingNarrative(description: string): ListingNarrative {
   const raw = description.trim()
-  if (!raw) return { intro: '', highlights: [], specialNotes: [] }
+  const paragraphs = listingBodyParagraphs(raw)
+  if (!raw) return { intro: '', paragraphs, highlights: [], specialNotes: [] }
 
   const floor = extractFloorLabel(raw)
   const blocks = raw.split(/\n\s*\n/).map((block) => block.trim()).filter(Boolean)
@@ -194,10 +219,17 @@ export function splitListingNarrative(description: string): ListingNarrative {
     intro = meaty ?? `${intro.slice(0, 280).replace(/\s+\S*$/, '')}…`
   }
 
+  const shown = paragraphs.length ? paragraphs : intro ? [intro] : []
+
   return {
-    intro,
-    highlights: highlights.slice(0, 8),
-    specialNotes: specialNotes.slice(0, 3),
+    intro: shown[0] ?? '',
+    paragraphs: shown,
+    highlights: highlights
+      .filter((item) => !shown.some((paragraph) => paragraph.includes(item)))
+      .slice(0, 8),
+    specialNotes: specialNotes
+      .filter((item) => !shown.some((paragraph) => paragraph.includes(item)))
+      .slice(0, 3),
     floor,
   }
 }
@@ -217,6 +249,7 @@ export function getPropertyNarrative(
 
   return {
     intro: parsed.intro,
+    paragraphs: parsed.paragraphs,
     highlights: highlights.length ? highlights.slice(0, 8) : parsed.highlights,
     specialNotes: specialNotes.length ? specialNotes.slice(0, 3) : parsed.specialNotes,
     floor,

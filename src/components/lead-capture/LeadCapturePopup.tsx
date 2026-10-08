@@ -196,6 +196,7 @@ export default function LeadCapturePopup() {
               onSubmit={handleSubmit}
             >
               <input type="hidden" name="form-name" value="lead-capture" />
+              <input type="hidden" name="subject" value="New ProperTLV lead" />
               <input
                 type="hidden"
                 name="recipientEmail"

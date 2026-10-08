@@ -5,8 +5,10 @@ import { useSiteData } from '../../hooks/useSiteData'
 import {
   createBlankProperty,
   formatListingPrice,
-  updateSiteData,
+  refreshListings,
+  upsertCachedListing,
 } from '../../lib/siteDataStore'
+import { saveListing } from '../../services/listingsApi'
 import { draftListingCopy, linesToList, listToLines } from '../../lib/listingCopyDraft'
 import { cleanListingText } from '../../utils/listingCopy'
 import type { ListingType, Property, PropertyType } from '../../types/property'
@@ -26,7 +28,7 @@ export default function AdminListingFormPage() {
   const { id } = useParams()
   const isNew = !id || id === 'new'
   const navigate = useNavigate()
-  const { properties, agents } = useSiteData()
+  const { properties, agents, listingsStatus, listingsError } = useSiteData()
 
   const existing = useMemo(
     () => (isNew ? undefined : properties.find((p) => p.id === id)),
@@ -35,6 +37,8 @@ export default function AdminListingFormPage() {
 
   const [form, setForm] = useState<Property>(() => createBlankProperty('sale'))
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
 
   useEffect(() => {
     if (isNew) {
@@ -52,8 +56,16 @@ export default function AdminListingFormPage() {
     return [...neighborhoods]
   }, [form.neighborhood])
 
+  if (!isNew && listingsStatus === 'loading') {
+    return <p className="admin-page__subtitle">Loading listing…</p>
+  }
+
   if (!isNew && !existing) {
-    return <Navigate to="/admin/listings" replace />
+    return listingsStatus === 'error' ? (
+      <p className="admin-notice admin-notice--warn">{listingsError}</p>
+    ) : (
+      <Navigate to="/admin/listings" replace />
+    )
   }
 
   const setField = <K extends keyof Property>(key: K, value: Property[K]) => {
@@ -73,6 +85,7 @@ export default function AdminListingFormPage() {
       return next
     })
     setSaved(false)
+    setSaveError('')
   }
 
   const applyDraft = (mode: 'fill' | 'replace') => {
@@ -89,14 +102,16 @@ export default function AdminListingFormPage() {
         mode === 'fill' && (prev.highlights ?? []).length ? prev.highlights : draft.highlights,
     }))
     setSaved(false)
+    setSaveError('')
   }
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     if (!form.title.trim() || !form.address.trim()) {
       window.alert('Title and address are required.')
       return
     }
+    if (saving) return
 
     const images = (form.images ?? []).map((src) => src.trim()).filter(Boolean)
     const cover = images[0] || form.image.trim() || ''
@@ -113,21 +128,22 @@ export default function AdminListingFormPage() {
       image: cover,
       images,
       price: formatListingPrice(form.priceNumeric, form.listingType),
+      he: undefined,
+      translations: undefined,
     }
 
-    updateSiteData((data) => {
-      if (isNew) {
-        return { ...data, properties: [payload, ...data.properties] }
-      }
-      return {
-        ...data,
-        properties: data.properties.map((item) => (item.id === payload.id ? payload : item)),
-      }
-    })
-
-    setSaved(true)
-    if (isNew) {
-      navigate(`/admin/listings/${payload.id}`, { replace: true })
+    setSaving(true)
+    setSaveError('')
+    try {
+      const savedListing = await saveListing(payload)
+      upsertCachedListing(savedListing)
+      await refreshListings()
+      setSaved(true)
+      if (isNew) navigate(`/admin/listings/${savedListing.id}`, { replace: true })
+    } catch (reason) {
+      setSaveError(reason instanceof Error ? reason.message : 'Could not publish this listing.')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -151,8 +167,11 @@ export default function AdminListingFormPage() {
       </header>
 
       {saved ? (
-        <p className="admin-notice admin-notice--success">Listing saved. Public site updated.</p>
+        <p className="admin-notice admin-notice--success">
+          Listing published. Every visitor can see it.
+        </p>
       ) : null}
+      {saveError ? <p className="admin-notice admin-notice--warn">{saveError}</p> : null}
 
       <section className="admin-card">
         <form className="admin-form" onSubmit={handleSubmit}>
@@ -460,8 +479,8 @@ export default function AdminListingFormPage() {
           </div>
 
           <div className="admin-form__footer">
-            <button type="submit" className="admin-btn">
-              {isNew ? 'Create listing' : 'Save changes'}
+            <button type="submit" className="admin-btn" disabled={saving}>
+              {saving ? 'Publishing…' : isNew ? 'Create listing' : 'Save changes'}
             </button>
             <Link className="admin-btn admin-btn--secondary" to="/admin/listings">
               Cancel

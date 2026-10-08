@@ -28,3 +28,6 @@ media-source/
 
 # Scrape working cache (downloaded galleries live in public/assets)
 scripts/cache/
+
+# Local Netlify folder
+.netlify

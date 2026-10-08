@@ -1,10 +1,12 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSiteData } from '../../hooks/useSiteData'
-import { updateSiteData } from '../../lib/siteDataStore'
+import { persistSiteContent } from '../../lib/siteDataStore'
 import './adminShared.css'
 
 export default function AdminAgentsPage() {
-  const { agents, properties, defaultAgentId } = useSiteData()
+  const { agents, properties, defaultAgentId, contentStatus, contentError } = useSiteData()
+  const [actionError, setActionError] = useState('')
 
   const handleDelete = (id: string, name: string) => {
     const assigned = properties.filter((p) => p.agentId === id).length
@@ -18,16 +20,22 @@ export default function AdminAgentsPage() {
       window.alert('Cannot delete the default agent. Set another default first.')
       return
     }
-    const ok = window.confirm(`Delete agent “${name}”?`)
+    const ok = window.confirm(`Delete agent “${name}”? This removes the profile for every visitor.`)
     if (!ok) return
-    updateSiteData((data) => ({
+    setActionError('')
+    persistSiteContent((data) => ({
       ...data,
       agents: data.agents.filter((a) => a.id !== id),
-    }))
+    })).catch((reason: unknown) => {
+      setActionError(reason instanceof Error ? reason.message : 'Could not delete that agent.')
+    })
   }
 
   const setDefault = (id: string) => {
-    updateSiteData((data) => ({ ...data, defaultAgentId: id }))
+    setActionError('')
+    persistSiteContent((data) => ({ ...data, defaultAgentId: id })).catch((reason: unknown) => {
+      setActionError(reason instanceof Error ? reason.message : 'Could not change the default agent.')
+    })
   }
 
   return (
@@ -46,8 +54,15 @@ export default function AdminAgentsPage() {
         </div>
       </header>
 
+      {contentStatus === 'error' ? (
+        <div className="admin-notice admin-notice--warn">{contentError}</div>
+      ) : null}
+      {actionError ? <div className="admin-notice admin-notice--warn">{actionError}</div> : null}
+
       <section className="admin-card">
-        {agents.length === 0 ? (
+        {contentStatus === 'loading' ? (
+          <p className="admin-empty">Loading agents…</p>
+        ) : agents.length === 0 ? (
           <p className="admin-empty">No agents yet.</p>
         ) : (
           <div className="admin-table-wrap">

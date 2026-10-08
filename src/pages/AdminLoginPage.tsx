@@ -1,10 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import {
-  isAdminAuthenticated,
-  setAdminSession,
-  validateAdminCredentials,
-} from '../lib/adminAuth'
+import { isAdminAuthenticated, setAdminSession } from '../lib/adminAuth'
+import { loginAdmin } from '../services/listingsApi'
 import './AdminLoginPage.css'
 
 function EyeIcon() {
@@ -41,25 +38,26 @@ export default function AdminLoginPage() {
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [rememberMe, setRememberMe] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   if (isAdminAuthenticated()) {
     return <Navigate to="/admin/dashboard" replace />
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError('')
-
-    if (!validateAdminCredentials(username.trim(), password)) {
-      setError('Invalid username or password.')
-      return
+    setSubmitting(true)
+    try {
+      const token = await loginAdmin(username.trim(), password)
+      setAdminSession(token)
+      navigate('/admin/dashboard', { replace: true })
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : 'Invalid username or password.')
+      setSubmitting(false)
     }
-
-    setAdminSession(rememberMe)
-    navigate('/admin/dashboard', { replace: true })
   }
 
   return (
@@ -127,16 +125,12 @@ export default function AdminLoginPage() {
           </p>
 
           <p className="admin-login__submit-row">
-            <span className="admin-login__remember">
-              <input
-                id="admin-remember"
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(event) => setRememberMe(event.target.checked)}
-              />
-              <label htmlFor="admin-remember">Remember Me</label>
-            </span>
-            <input type="submit" className="admin-login__submit" value="Log In" />
+            <input
+              type="submit"
+              className="admin-login__submit"
+              value={submitting ? 'Signing in…' : 'Log In'}
+              disabled={submitting}
+            />
           </p>
         </form>
 

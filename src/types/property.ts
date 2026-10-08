@@ -15,6 +15,17 @@ export interface PropertyCoordinates {
   lng: number
 }
 
+export type ListingLocale = 'en' | 'he' | 'fr' | 'ru'
+
+/** Listing text in one site language. */
+export interface ListingLocaleCopy {
+  title: string
+  address: string
+  description: string
+  highlights?: string[]
+  specialNotes?: string[]
+}
+
 export interface PropertyFeatures {
   balcony: boolean
   parking: boolean
@@ -67,4 +78,8 @@ export interface Property {
   features: PropertyFeatures
   /** Agent responsible for this listing — references `agents.ts` */
   agentId: string
+  /** Listing text translated for each site language. */
+  translations?: Partial<Record<ListingLocale, ListingLocaleCopy>>
+  /** Older Hebrew copy. Automatic translations replace this when present. */
+  he?: ListingLocaleCopy
 }

@@ -1,4 +1,4 @@
-import type { PropertyCoordinates } from './property'
+import type { ListingLocale, ListingLocaleCopy, PropertyCoordinates } from './property'
 
 export type MapProvider = 'placeholder' | 'google' | 'mapbox'
 
@@ -32,6 +32,8 @@ export interface PropertyMapPin {
   lng: number
   positionSource: MapPinPositionSource
   href: string
+  translations?: Partial<Record<ListingLocale, ListingLocaleCopy>>
+  he?: ListingLocaleCopy
 }
 
 export interface MapPointPercent {

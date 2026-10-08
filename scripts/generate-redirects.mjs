@@ -140,6 +140,9 @@ for (const [from, to] of redirects) {
 }
 
 lines.push('')
+lines.push('# API routes are Netlify Functions. Keep this above the SPA fallback.')
+lines.push('/api/*  /.netlify/functions/listings  200')
+lines.push('')
 lines.push('# SPA fallback for client-side routes')
 lines.push('/*  /index.html  200')
 lines.push('')

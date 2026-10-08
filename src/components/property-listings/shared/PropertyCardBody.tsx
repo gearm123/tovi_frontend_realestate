@@ -24,6 +24,8 @@ export default function PropertyCardBody({
     description: property.description,
     price: property.price,
     neighborhood: property.neighborhood,
+    translations: property.translations,
+    he: property.he,
   })
 
   const neighborhoodLabel =

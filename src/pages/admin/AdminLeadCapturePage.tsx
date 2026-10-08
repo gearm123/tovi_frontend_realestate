@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import type { LeadCapturePageRule } from '../../config/leadCapturePopup'
 import { useSiteData } from '../../hooks/useSiteData'
-import { updateSiteData, type LeadCaptureSettings } from '../../lib/siteDataStore'
+import { persistSiteContent, type LeadCaptureSettings } from '../../lib/siteDataStore'
 import './adminShared.css'
 
 export default function AdminLeadCapturePage() {
@@ -9,6 +9,8 @@ export default function AdminLeadCapturePage() {
   const [form, setForm] = useState<LeadCaptureSettings>(leadCapture)
   const [pathsText, setPathsText] = useState('')
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
 
   useEffect(() => {
     setForm(leadCapture)
@@ -19,7 +21,7 @@ export default function AdminLeadCapturePage() {
     }
   }, [leadCapture])
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
 
     let rule: LeadCapturePageRule
@@ -40,8 +42,16 @@ export default function AdminLeadCapturePage() {
       recipientEmail: form.recipientEmail.trim(),
     }
 
-    updateSiteData((data) => ({ ...data, leadCapture: next }))
-    setSaved(true)
+    setSaving(true)
+    setSaveError('')
+    try {
+      await persistSiteContent((data) => ({ ...data, leadCapture: next }))
+      setSaved(true)
+    } catch (reason) {
+      setSaveError(reason instanceof Error ? reason.message : 'Could not save the lead popup.')
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -50,14 +60,15 @@ export default function AdminLeadCapturePage() {
         <div>
           <h1 className="admin-page__title">Lead capture popup</h1>
           <p className="admin-page__subtitle">
-            Control the site-wide lead popup. Form submissions still go to Netlify Forms.
+            Control the site-wide lead popup. Netlify emails each submission to the office.
           </p>
         </div>
       </header>
 
       {saved ? (
-        <p className="admin-notice admin-notice--success">Lead popup settings saved.</p>
+        <p className="admin-notice admin-notice--success">Lead popup published for every visitor.</p>
       ) : null}
+      {saveError ? <p className="admin-notice admin-notice--warn">{saveError}</p> : null}
 
       <section className="admin-card">
         <form className="admin-form" onSubmit={handleSubmit}>
@@ -142,13 +153,14 @@ export default function AdminLeadCapturePage() {
           </div>
 
           <div className="admin-notice">
-            Submitted leads appear in Netlify → Forms. This panel only controls popup behavior and
-            the recipient email field on the form.
+            Netlify emails these leads to the address you add under Forms → lead-capture →
+            Form notifications. Use office@propertlv.com and confirm the link Netlify sends there.
+            This recipient field is included in the message. It does not choose the inbox by itself.
           </div>
 
           <div className="admin-form__footer">
-            <button type="submit" className="admin-btn">
-              Save lead popup settings
+            <button type="submit" className="admin-btn" disabled={saving}>
+              {saving ? 'Publishing…' : 'Save lead popup settings'}
             </button>
           </div>
         </form>

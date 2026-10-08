@@ -58,6 +58,8 @@ export default function ContactForm() {
       description: property.description,
       price: property.price,
       neighborhood: property.neighborhood,
+      translations: property.translations,
+      he: property.he,
     })
     return localized.title
   }, [property, locale])

@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useSiteData } from '../../hooks/useSiteData'
-import { updateSiteData } from '../../lib/siteDataStore'
+import { persistSiteContent } from '../../lib/siteDataStore'
 import type { BusinessContact } from '../../types/business'
 import './adminShared.css'
 
@@ -8,15 +8,25 @@ export default function AdminBusinessPage() {
   const { business } = useSiteData()
   const [form, setForm] = useState<BusinessContact>(business)
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
 
   useEffect(() => {
     setForm(business)
   }, [business])
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    updateSiteData((data) => ({ ...data, business: form }))
-    setSaved(true)
+    setSaving(true)
+    setSaveError('')
+    try {
+      await persistSiteContent((data) => ({ ...data, business: form }))
+      setSaved(true)
+    } catch (reason) {
+      setSaveError(reason instanceof Error ? reason.message : 'Could not save business settings.')
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -31,8 +41,9 @@ export default function AdminBusinessPage() {
       </header>
 
       {saved ? (
-        <p className="admin-notice admin-notice--success">Business settings saved.</p>
+        <p className="admin-notice admin-notice--success">Business settings published for every visitor.</p>
       ) : null}
+      {saveError ? <p className="admin-notice admin-notice--warn">{saveError}</p> : null}
 
       <section className="admin-card">
         <form className="admin-form" onSubmit={handleSubmit}>
@@ -228,8 +239,8 @@ export default function AdminBusinessPage() {
           </div>
 
           <div className="admin-form__footer">
-            <button type="submit" className="admin-btn">
-              Save business settings
+            <button type="submit" className="admin-btn" disabled={saving}>
+              {saving ? 'Publishing…' : 'Save business settings'}
             </button>
           </div>
         </form>

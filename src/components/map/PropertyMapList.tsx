@@ -49,6 +49,8 @@ export default function PropertyMapList({
               description: pin.title,
               price: pin.price,
               neighborhood: pin.neighborhood,
+              translations: pin.translations,
+              he: pin.he,
             })
             const isActive = pin.id === activePinId
 

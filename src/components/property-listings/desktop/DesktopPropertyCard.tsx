@@ -26,6 +26,8 @@ export default function DesktopPropertyCard({
     description: property.description,
     price: property.price,
     neighborhood: property.neighborhood,
+    translations: property.translations,
+    he: property.he,
   })
 
   return (

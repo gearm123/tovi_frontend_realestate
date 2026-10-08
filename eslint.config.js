@@ -25,4 +25,10 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    files: ['netlify/**/*.ts'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
 )

@@ -1,4 +1,19 @@
-import type { Property } from '../types/property'
+import type { ListingLocaleCopy, Property } from '../types/property'
+
+function cleanLocaleCopy(copy: ListingLocaleCopy | undefined): ListingLocaleCopy | undefined {
+  if (!copy) return undefined
+  const next: ListingLocaleCopy = {
+    title: cleanListingText(copy.title),
+    address: cleanListingText(copy.address),
+    description: cleanListingText(copy.description),
+    highlights: copy.highlights?.map(cleanListingText).filter(Boolean),
+    specialNotes: copy.specialNotes?.map(cleanListingText).filter(Boolean),
+  }
+  const hasText = Boolean(
+    next.title || next.address || next.description || next.highlights?.length || next.specialNotes?.length,
+  )
+  return hasText ? next : undefined
+}
 
 export function withCleanedListingCopy(property: Property): Property {
   return {
@@ -9,6 +24,7 @@ export function withCleanedListingCopy(property: Property): Property {
     floor: property.floor ? cleanListingText(property.floor) : property.floor,
     highlights: property.highlights?.map(cleanListingText).filter(Boolean),
     specialNotes: property.specialNotes?.map(cleanListingText).filter(Boolean),
+    he: cleanLocaleCopy(property.he),
   }
 }
 

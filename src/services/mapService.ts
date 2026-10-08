@@ -130,6 +130,8 @@ export function buildPropertyMapPins(properties: Property[]): PropertyMapPin[] {
       lng: position.lng,
       positionSource: position.positionSource,
       href: getPropertyDetailPath(property),
+      translations: property.translations,
+      he: property.he,
     }
   })
 

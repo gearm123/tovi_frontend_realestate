@@ -8,16 +8,12 @@ import {
 import type { Agent } from '../types/agent'
 import type { BusinessContact } from '../types/business'
 import type { ListingType, Property, PropertyFeatures } from '../types/property'
-import {
-  isDemoMapCoordinates,
-  PLACEHOLDER_MAP_CENTER,
-  PLACEHOLDER_PROPERTY_IMAGE,
-} from '../data/placeholders'
+import { PLACEHOLDER_MAP_CENTER, PLACEHOLDER_PROPERTY_IMAGE } from '../data/placeholders'
+import { fetchListings, fetchSiteContent, saveSiteContent, type SiteContent } from '../services/listingsApi'
 import { withNormalizedPropertyImages } from '../utils/propertyGallery'
 import { withoutStreetNumbers } from '../utils/streetNumber'
 import { withCleanedListingCopy } from '../utils/listingCopy'
 
-const STORAGE_KEY = 'propertlv_site_data_v7'
 const DATA_EVENT = 'propertlv-site-data-updated'
 
 export type LeadCaptureSettings = {
@@ -27,73 +23,26 @@ export type LeadCaptureSettings = {
   recipientEmail: string
 }
 
+export type ListingsStatus = 'loading' | 'ready' | 'error'
+
 export interface SiteData {
   properties: Property[]
   agents: Agent[]
   business: BusinessContact
   leadCapture: LeadCaptureSettings
   defaultAgentId: string
+  listingsStatus: ListingsStatus
+  listingsError: string
+  contentStatus: ListingsStatus
+  contentError: string
 }
 
 function clone<T>(value: T): T {
   return structuredClone(value)
 }
 
-function reconcileAgents(stored: Agent[] | undefined): Agent[] {
-  const storedById = new Map((stored ?? []).map((agent) => [agent.id, agent]))
-  const fromSeed = defaultAgents.map((seed) => {
-    const previous = storedById.get(seed.id)
-    if (!previous) return clone(seed)
-    return {
-      ...seed,
-      email: previous.email || seed.email,
-      phone: previous.phone ?? seed.phone,
-    }
-  })
-  const seedIds = new Set(defaultAgents.map((agent) => agent.id))
-  const extras = (stored ?? []).filter(
-    (agent) => !seedIds.has(agent.id) && agent.id !== 'dawn-schuster',
-  )
-  return [...fromSeed, ...extras]
-}
-
-function reconcileProperties(stored: Property[] | undefined, seed: Property[]): Property[] {
-  if (!stored?.length) return clone(seed)
-
-  const seedById = new Map(seed.map((item) => [item.id, item]))
-  const seen = new Set<string>()
-
-  const merged = stored.map((previous) => {
-    seen.add(previous.id)
-    const fromSeed = seedById.get(previous.id)
-    if (!fromSeed) return previous
-    if (isDemoMapCoordinates(previous.coordinates) && !isDemoMapCoordinates(fromSeed.coordinates)) {
-      return { ...previous, coordinates: clone(fromSeed.coordinates) }
-    }
-    return previous
-  })
-
-  const additions = seed.filter((item) => !seen.has(item.id)).map((item) => clone(item))
-  return [...merged, ...additions]
-}
-
-const LEGACY_POPUP_DELAY_MS = new Set([1400, 10_000])
-
-function resolveLeadCapture(
-  stored: LeadCaptureSettings | undefined,
-  seed: LeadCaptureSettings,
-): LeadCaptureSettings {
-  if (!stored) return seed
-  const merged = { ...seed, ...stored }
-  if (LEGACY_POPUP_DELAY_MS.has(merged.delayMs)) {
-    return { ...merged, delayMs: seed.delayMs }
-  }
-  return merged
-}
-
-function seedSiteData(): SiteData {
+function seedContent(): SiteContent {
   return {
-    properties: clone(defaultProperties),
     agents: clone(defaultAgents),
     business: clone(defaultBusiness),
     leadCapture: {
@@ -106,72 +55,141 @@ function seedSiteData(): SiteData {
   }
 }
 
-function readStorage(): SiteData | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return null
-    const parsed = JSON.parse(raw) as Partial<SiteData>
-    const seed = seedSiteData()
-    return {
-      properties: reconcileProperties(
-        Array.isArray(parsed.properties) ? parsed.properties : undefined,
-        seed.properties,
-      )
-        .map(withoutStreetNumbers)
-        .map(withCleanedListingCopy)
-        .map(withNormalizedPropertyImages),
-      agents: reconcileAgents(parsed.agents),
-      business: parsed.business ? { ...seed.business, ...parsed.business } : seed.business,
-      leadCapture: resolveLeadCapture(parsed.leadCapture, seed.leadCapture),
-      defaultAgentId: parsed.defaultAgentId ?? seed.defaultAgentId,
-    }
-  } catch {
-    return null
-  }
+function fallbackListings(): Property[] {
+  return clone(defaultProperties)
+    .map(withoutStreetNumbers)
+    .map(withCleanedListingCopy)
+    .map(withNormalizedPropertyImages)
 }
 
+let listingsCache: Property[] = []
+let listingsStatus: ListingsStatus = 'loading'
+let listingsError = ''
+let settings: SiteContent = seedContent()
+let contentStatus: ListingsStatus = 'loading'
+let contentError = ''
 let cache: SiteData | null = null
+let refreshGeneration = 0
+let contentGeneration = 0
 
 function notify(): void {
   window.dispatchEvent(new Event(DATA_EVENT))
 }
 
+function publish(): SiteData {
+  cache = {
+    ...settings,
+    properties: listingsCache,
+    listingsStatus,
+    listingsError,
+    contentStatus,
+    contentError,
+  }
+  return cache
+}
+
 export function getSiteData(): SiteData {
   if (cache) return cache
-  cache = readStorage() ?? seedSiteData()
-  return cache
+  return publish()
 }
 
-export function saveSiteData(next: SiteData): void {
-  const sanitized: SiteData = {
-    ...next,
-    properties: next.properties.map(withoutStreetNumbers),
-    agents: reconcileAgents(next.agents),
-  }
-  cache = sanitized
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized))
+function rememberListings(next: Property[], status: ListingsStatus, error = ''): void {
+  listingsCache = next
+  listingsStatus = status
+  listingsError = error
+  cache = null
+  publish()
   notify()
 }
 
-export function updateSiteData(updater: (current: SiteData) => SiteData): SiteData {
+export function upsertCachedListing(property: Property): void {
+  const normalized = withNormalizedPropertyImages(withoutStreetNumbers(withCleanedListingCopy(property)))
+  const exists = listingsCache.some((item) => item.id === normalized.id)
+  rememberListings(
+    exists
+      ? listingsCache.map((item) => (item.id === normalized.id ? normalized : item))
+      : [normalized, ...listingsCache],
+    'ready',
+  )
+}
+
+export function removeCachedListing(id: string): void {
+  rememberListings(
+    listingsCache.filter((item) => item.id !== id),
+    'ready',
+  )
+}
+
+export function refreshListings(): Promise<void> {
+  const generation = ++refreshGeneration
+  if (!listingsCache.length) listingsStatus = 'loading'
+  return fetchListings()
+    .then((rows) => {
+      if (generation !== refreshGeneration) return
+      listingsCache = rows
+        .map(withoutStreetNumbers)
+        .map(withCleanedListingCopy)
+        .map(withNormalizedPropertyImages)
+      listingsStatus = 'ready'
+      listingsError = ''
+    })
+    .catch((error: unknown) => {
+      if (generation !== refreshGeneration) return
+      listingsStatus = 'error'
+      listingsError = error instanceof Error ? error.message : 'Could not load listings'
+      if (!listingsCache.length) listingsCache = fallbackListings()
+    })
+    .finally(() => {
+      if (generation !== refreshGeneration) return
+      cache = null
+      publish()
+      notify()
+    })
+}
+
+export async function refreshSiteContent(): Promise<void> {
+  const generation = ++contentGeneration
+  return fetchSiteContent()
+    .then((next) => {
+      if (generation !== contentGeneration) return
+      settings = next
+      contentStatus = 'ready'
+      contentError = ''
+    })
+    .catch((error: unknown) => {
+      if (generation !== contentGeneration) return
+      contentStatus = 'error'
+      contentError = error instanceof Error ? error.message : 'Could not load site settings'
+    })
+    .finally(() => {
+      if (generation !== contentGeneration) return
+      cache = null
+      publish()
+      notify()
+    })
+}
+
+export async function persistSiteContent(updater: (current: SiteData) => SiteData): Promise<SiteData> {
   const next = updater(clone(getSiteData()))
-  saveSiteData(next)
-  return next
-}
-
-export function resetSiteData(): SiteData {
-  localStorage.removeItem(STORAGE_KEY)
-  cache = seedSiteData()
+  const saved = await saveSiteContent({
+    agents: next.agents,
+    business: next.business,
+    leadCapture: next.leadCapture,
+    defaultAgentId: next.defaultAgentId,
+  })
+  settings = saved
+  contentStatus = 'ready'
+  contentError = ''
+  cache = null
+  publish()
   notify()
-  return cache
+  return getSiteData()
 }
 
 export function subscribeSiteData(listener: () => void): () => void {
   window.addEventListener(DATA_EVENT, listener)
-  window.addEventListener('storage', listener)
   return () => {
     window.removeEventListener(DATA_EVENT, listener)
-    window.removeEventListener('storage', listener)
   }
 }
 

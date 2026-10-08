@@ -676,5 +676,8 @@
 /property/%e2%9c%a8-for-rent-beautifully-designed-apartment-in-a-conservation-building-in-the-heart-of-tel-aviv-%e2%9c%a8  /rentals  301
 /property/%e2%9c%a8-for-rent-beautifully-designed-apartment-in-a-conservation-building-in-the-heart-of-tel-aviv-%e2%9c%a8/  /rentals  301
 
+# API routes are Netlify Functions. Keep this above the SPA fallback.
+/api/*  /.netlify/functions/listings  200
+
 # SPA fallback for client-side routes
 /*  /index.html  200

@@ -2,5 +2,11 @@
   command = "npm run build"
   publish = "dist"
 
-# Redirect rules (including SPA fallback) live in public/_redirects
-# so legacy WordPress 301s are evaluated before the /* → index.html rewrite.
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Redirect rules (including SPA fallback) live in public/_redirects.
+# /api/* is rewritten to the listings function before the /* → index.html rule.

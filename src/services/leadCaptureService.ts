@@ -1,6 +1,6 @@
-import { getBusiness, getLeadCaptureSettings } from '../lib/siteDataStore'
-import { submitNetlifyForm } from './contactService'
+import { getBusiness } from '../lib/siteDataStore'
 import { buildWhatsAppUrl } from '../utils/whatsapp'
+import { submitNetlifyForm } from './contactService'
 
 export interface LeadCapturePayload {
   name: string
@@ -8,6 +8,7 @@ export interface LeadCapturePayload {
   message?: string
   sourcePage: string
   interest: string
+  recipientEmail: string
 }
 
 export function buildLeadCaptureMessage(payload: LeadCapturePayload): string {
@@ -38,17 +39,19 @@ export function getLeadCapturePayloadFromForm(form: HTMLFormElement): LeadCaptur
     message: String(formData.get('message') ?? '').trim() || undefined,
     sourcePage: String(formData.get('sourcePage') ?? '').trim(),
     interest: String(formData.get('interest') ?? '').trim(),
+    recipientEmail: String(formData.get('recipientEmail') ?? '').trim(),
   }
 }
 
 export async function submitLeadCapture(form: HTMLFormElement): Promise<boolean> {
   const formData = new FormData(form)
+  const payload = getLeadCapturePayloadFromForm(form)
   const data: Record<string, string> = {
-    recipientEmail: getLeadCaptureSettings().recipientEmail,
+    subject: `New ProperTLV lead: ${payload.name}`,
   }
 
   formData.forEach((value, key) => {
-    if (key === 'form-name' || typeof value !== 'string') return
+    if (key === 'form-name' || key === 'subject' || typeof value !== 'string') return
     data[key] = value
   })
 

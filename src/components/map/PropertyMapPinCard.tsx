@@ -27,6 +27,8 @@ export default function PropertyMapPinCard({
     description: pin.title,
     price: pin.price,
     neighborhood: pin.neighborhood,
+    translations: pin.translations,
+    he: pin.he,
   })
   const displayPin = { ...pin, price: localized.price ?? pin.price }
 

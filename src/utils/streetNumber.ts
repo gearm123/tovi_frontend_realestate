@@ -3,14 +3,19 @@ import type { Property } from '../types/property'
 /** House-number token: 67, 12A, 9, 12-14 */
 const HOUSE_NUMBER = '\\d+[A-Za-z]?(?:\\s*[-/]\\s*\\d+[A-Za-z]?)?'
 
+const ROOM_WORD = 'rooms?|bedrooms?|beds?|bathrooms?|baths?|story|stories|floors?'
+const ROOM_DASH = '[-–—‑−]'
+
 const KEEP_PATTERNS = [
   /\b(?:19|20)\d{2}s?\b/g,
   /\b\d+(?:st|nd|rd|th)\b/gi,
   /\b\d+\s*\/\s*\d+\b/g,
   /\b\d+(?:[.,]\d+)?\s*(?:sqm|m\u00B2|sq\.?\s*m)\b/gi,
-  /\b\d+(?:[.,]\d+)?-?\s*(?:rooms?|bedrooms?|beds?|bathrooms?|baths?|story|stories|floors?)\b/gi,
+  new RegExp(`\\b\\d+(?:[.,]\\d+)?\\s*${ROOM_DASH}?\\s*(?:${ROOM_WORD})\\b`, 'gi'),
+  new RegExp(`\\b(?:${ROOM_WORD})\\s*${ROOM_DASH}?\\s*\\d+\\b`, 'gi'),
   /\b\d+\s*min(?:ute)?s?\b/gi,
   new RegExp(`\\b\\d+\\s*\u05d7\u05d3\u05e8(?:\u05d9\u05dd)?\\b`, 'g'),
+  new RegExp(`\\b\u05d7\u05d3\u05e8(?:\u05d9\u05dd)?\\s*${ROOM_DASH}?\\s*\\d+\\b`, 'g'),
 ]
 
 function withPlaceholders(value: string): { text: string; restore: (input: string) => string } {
@@ -71,5 +76,12 @@ export function withoutStreetNumbers(property: Property): Property {
     ...property,
     title: stripStreetNumber(property.title),
     address: stripStreetNumber(property.address),
+    he: property.he
+      ? {
+          ...property.he,
+          title: stripStreetNumber(property.he.title),
+          address: stripStreetNumber(property.he.address),
+        }
+      : property.he,
   }
 }

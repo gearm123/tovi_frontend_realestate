@@ -1,4 +1,5 @@
 import type { Locale } from './types'
+import type { ListingLocale, ListingLocaleCopy } from '../types/property'
 import { stripStreetNumber } from '../utils/streetNumber'
 import { cleanListingText } from '../utils/listingCopy'
 
@@ -7,6 +8,8 @@ type PropertyTranslation = {
   address: string
   description: string
   price?: string
+  translations?: Partial<Record<ListingLocale, ListingLocaleCopy>>
+  he?: ListingLocaleCopy
 }
 
 const he: Record<string, PropertyTranslation> = {
@@ -81,22 +84,20 @@ export function getLocalizedProperty(
   locale: Locale,
   fallback: PropertyTranslation & { neighborhood: string },
 ) {
-  if (locale !== 'he') {
-    return {
-      title: cleanListingText(stripStreetNumber(fallback.title)),
-      address: cleanListingText(stripStreetNumber(fallback.address)),
-      description: cleanListingText(fallback.description),
-      price: fallback.price,
-      neighborhood: fallback.neighborhood,
-    }
-  }
-
-  const translated = he[id]
+  const stored = fallback.translations?.[locale]
+  const catalog = locale === 'he' ? he[id] : undefined
+  const manual = locale === 'he' ? fallback.he : undefined
   return {
-    title: cleanListingText(stripStreetNumber(translated?.title ?? fallback.title)),
-    address: cleanListingText(stripStreetNumber(translated?.address ?? fallback.address)),
-    description: cleanListingText(translated?.description ?? fallback.description),
-    price: translated?.price ?? fallback.price,
+    title: cleanListingText(stripStreetNumber(stored?.title || manual?.title || catalog?.title || fallback.title)),
+    address: cleanListingText(
+      stripStreetNumber(stored?.address || manual?.address || catalog?.address || fallback.address),
+    ),
+    description: cleanListingText(
+      stored?.description || manual?.description || catalog?.description || fallback.description,
+    ),
+    highlights: stored?.highlights?.length ? stored.highlights : manual?.highlights,
+    specialNotes: stored?.specialNotes?.length ? stored.specialNotes : manual?.specialNotes,
+    price: catalog?.price ?? fallback.price,
     neighborhood: fallback.neighborhood,
   }
 }

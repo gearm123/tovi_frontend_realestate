@@ -1,27 +1,38 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSiteData } from '../../hooks/useSiteData'
-import { updateSiteData } from '../../lib/siteDataStore'
+import { refreshListings, removeCachedListing, upsertCachedListing } from '../../lib/siteDataStore'
+import { deleteListing, saveListing } from '../../services/listingsApi'
 import './adminShared.css'
 
 export default function AdminListingsPage() {
-  const { properties } = useSiteData()
+  const { properties, listingsStatus, listingsError } = useSiteData()
+  const [actionError, setActionError] = useState('')
 
-  const handleDelete = (id: string, title: string) => {
-    const ok = window.confirm(`Delete listing “${title || id}”?`)
+  const handleDelete = async (id: string, title: string) => {
+    const ok = window.confirm(`Delete listing “${title || id}”? This removes it for every visitor.`)
     if (!ok) return
-    updateSiteData((data) => ({
-      ...data,
-      properties: data.properties.filter((p) => p.id !== id),
-    }))
+    setActionError('')
+    try {
+      await deleteListing(id)
+      removeCachedListing(id)
+      await refreshListings()
+    } catch (reason) {
+      setActionError(reason instanceof Error ? reason.message : 'Could not delete that listing.')
+    }
   }
 
-  const toggleFeatured = (id: string) => {
-    updateSiteData((data) => ({
-      ...data,
-      properties: data.properties.map((p) =>
-        p.id === id ? { ...p, featured: !p.featured } : p,
-      ),
-    }))
+  const toggleFeatured = async (id: string) => {
+    const property = properties.find((item) => item.id === id)
+    if (!property) return
+    setActionError('')
+    try {
+      const saved = await saveListing({ ...property, featured: !property.featured })
+      upsertCachedListing(saved)
+      await refreshListings()
+    } catch (reason) {
+      setActionError(reason instanceof Error ? reason.message : 'Could not update that listing.')
+    }
   }
 
   return (
@@ -40,8 +51,15 @@ export default function AdminListingsPage() {
         </div>
       </header>
 
+      {listingsStatus === 'error' ? (
+        <div className="admin-notice admin-notice--warn">{listingsError}</div>
+      ) : null}
+      {actionError ? <div className="admin-notice admin-notice--warn">{actionError}</div> : null}
+
       <section className="admin-card">
-        {properties.length === 0 ? (
+        {listingsStatus === 'loading' ? (
+          <p className="admin-empty">Loading listings…</p>
+        ) : properties.length === 0 ? (
           <p className="admin-empty">No listings yet. Add your first property.</p>
         ) : (
           <div className="admin-table-wrap">

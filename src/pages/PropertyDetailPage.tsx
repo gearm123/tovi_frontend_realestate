@@ -27,7 +27,7 @@ export default function PropertyDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { t, locale } = useLanguage()
   const viewport = useViewport()
-  const { properties } = useSiteData()
+  const { properties, listingsStatus } = useSiteData()
   const property = id ? properties.find((item) => item.id === id) : undefined
 
   const localizedPreview = useMemo(() => {
@@ -38,6 +38,8 @@ export default function PropertyDetailPage() {
       description: property.description,
       price: property.price,
       neighborhood: property.neighborhood,
+      translations: property.translations,
+      he: property.he,
     })
   }, [property, locale])
 
@@ -52,8 +54,12 @@ export default function PropertyDetailPage() {
     () =>
       getPropertyNarrative({
         description: localizedPreview?.description ?? '',
-        highlights: property?.highlights,
-        specialNotes: property?.specialNotes,
+        highlights: localizedPreview?.highlights?.length
+          ? localizedPreview.highlights
+          : property?.highlights,
+        specialNotes: localizedPreview?.specialNotes?.length
+          ? localizedPreview.specialNotes
+          : property?.specialNotes,
         floor: property?.floor,
       }),
     [localizedPreview, property],
@@ -63,6 +69,10 @@ export default function PropertyDetailPage() {
     () => (property ? getSimilarProperties(property, properties, 3) : []),
     [property, properties],
   )
+
+  if (!property && listingsStatus === 'loading') {
+    return null
+  }
 
   if (!property) {
     return (
@@ -96,7 +106,7 @@ export default function PropertyDetailPage() {
     <>
       <PageSeo
         title={`${localized.title} | ProperTLV`}
-        description={(narrative.intro || localized.description).slice(0, 155)}
+        description={(narrative.paragraphs.join(' ') || localized.description).slice(0, 155)}
         path={propertyPath}
         image={galleryImages[0]}
         jsonLd={propertyJsonLd}
@@ -136,13 +146,18 @@ export default function PropertyDetailPage() {
             {localized.address}
           </p>
 
-          {narrative.intro ? (
-            <p
-              className="property-detail__intro listing-copy"
-              dir={listingTextDir(narrative.intro)}
-            >
-              {narrative.intro}
-            </p>
+          {narrative.paragraphs.length > 0 ? (
+            <div className="property-detail__description">
+              {narrative.paragraphs.map((paragraph) => (
+                <p
+                  key={paragraph}
+                  className="property-detail__intro listing-copy"
+                  dir={listingTextDir(paragraph)}
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           ) : null}
 
           {highlights.length > 0 && (

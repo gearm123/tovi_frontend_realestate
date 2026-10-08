@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useSiteData } from '../../hooks/useSiteData'
-import { createBlankAgent, slugifyId, updateSiteData } from '../../lib/siteDataStore'
+import { createBlankAgent, persistSiteContent, slugifyId } from '../../lib/siteDataStore'
 import type { Agent } from '../../types/agent'
 import './adminShared.css'
 
@@ -9,7 +9,7 @@ export default function AdminAgentFormPage() {
   const { id } = useParams()
   const isNew = !id || id === 'new'
   const navigate = useNavigate()
-  const { agents } = useSiteData()
+  const { agents, contentStatus, contentError } = useSiteData()
 
   const existing = useMemo(
     () => (isNew ? undefined : agents.find((a) => a.id === id)),
@@ -18,6 +18,8 @@ export default function AdminAgentFormPage() {
 
   const [form, setForm] = useState<Agent>(() => createBlankAgent())
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
 
   useEffect(() => {
     if (isNew) {
@@ -27,8 +29,16 @@ export default function AdminAgentFormPage() {
     if (existing) setForm(existing)
   }, [isNew, existing])
 
+  if (!isNew && contentStatus === 'loading') {
+    return <p className="admin-page__subtitle">Loading agent…</p>
+  }
+
   if (!isNew && !existing) {
-    return <Navigate to="/admin/agents" replace />
+    return contentStatus === 'error' ? (
+      <p className="admin-notice admin-notice--warn">{contentError}</p>
+    ) : (
+      <Navigate to="/admin/agents" replace />
+    )
   }
 
   const setField = <K extends keyof Agent>(key: K, value: Agent[K]) => {
@@ -36,7 +46,7 @@ export default function AdminAgentFormPage() {
     setSaved(false)
   }
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     if (!form.name.trim() || !form.email.trim()) {
       window.alert('Name and email are required.')
@@ -65,18 +75,23 @@ export default function AdminAgentFormPage() {
       },
     }
 
-    updateSiteData((data) => {
-      if (isNew) {
-        return { ...data, agents: [...data.agents, payload] }
-      }
-      return {
-        ...data,
-        agents: data.agents.map((a) => (a.id === payload.id ? payload : a)),
-      }
-    })
-
-    setSaved(true)
-    if (isNew) navigate(`/admin/agents/${payload.id}`, { replace: true })
+    setSaving(true)
+    setSaveError('')
+    try {
+      await persistSiteContent((data) => {
+        if (isNew) return { ...data, agents: [...data.agents, payload] }
+        return {
+          ...data,
+          agents: data.agents.map((agent) => (agent.id === payload.id ? payload : agent)),
+        }
+      })
+      setSaved(true)
+      if (isNew) navigate(`/admin/agents/${payload.id}`, { replace: true })
+    } catch (reason) {
+      setSaveError(reason instanceof Error ? reason.message : 'Could not save this agent.')
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -96,8 +111,9 @@ export default function AdminAgentFormPage() {
       </header>
 
       {saved ? (
-        <p className="admin-notice admin-notice--success">Agent saved.</p>
+        <p className="admin-notice admin-notice--success">Agent published for every visitor.</p>
       ) : null}
+      {saveError ? <p className="admin-notice admin-notice--warn">{saveError}</p> : null}
 
       <section className="admin-card">
         <form className="admin-form" onSubmit={handleSubmit}>
@@ -194,8 +210,8 @@ export default function AdminAgentFormPage() {
           </div>
 
           <div className="admin-form__footer">
-            <button type="submit" className="admin-btn">
-              {isNew ? 'Create agent' : 'Save changes'}
+            <button type="submit" className="admin-btn" disabled={saving}>
+              {saving ? 'Publishing…' : isNew ? 'Create agent' : 'Save changes'}
             </button>
             <Link className="admin-btn admin-btn--secondary" to="/admin/agents">
               Cancel

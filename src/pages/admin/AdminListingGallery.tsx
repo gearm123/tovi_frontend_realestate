@@ -1,32 +1,16 @@
-import { useRef, type DragEvent } from 'react'
+import { useRef, useState, type DragEvent } from 'react'
+import { uploadListingImage } from '../../services/listingsApi'
 
 interface AdminListingGalleryProps {
   images: string[]
   onChange: (images: string[]) => void
 }
 
-function readFiles(files: FileList | File[]): Promise<string[]> {
-  return Promise.all(
-    Array.from(files)
-      .filter((file) => file.type.startsWith('image/'))
-      .map(
-        (file) =>
-          new Promise<string>((resolve, reject) => {
-            const reader = new FileReader()
-            reader.onload = () => {
-              if (typeof reader.result === 'string') resolve(reader.result)
-              else reject(new Error('Could not read image'))
-            }
-            reader.onerror = () => reject(reader.error ?? new Error('Could not read image'))
-            reader.readAsDataURL(file)
-          }),
-      ),
-  )
-}
-
 export default function AdminListingGallery({ images, onChange }: AdminListingGalleryProps) {
   const dragFrom = useRef<number | null>(null)
   const urlInput = useRef<HTMLInputElement>(null)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState('')
 
   const move = (from: number, to: number) => {
     if (to < 0 || to >= images.length) return
@@ -37,14 +21,30 @@ export default function AdminListingGallery({ images, onChange }: AdminListingGa
   }
 
   const addFiles = async (fileList: FileList | null) => {
-    if (!fileList?.length) return
-    const added = await readFiles(fileList)
-    if (added.length) onChange([...images, ...added])
+    if (!fileList?.length || uploading) return
+    const files = Array.from(fileList).filter((file) => file.type.startsWith('image/'))
+    if (!files.length) return
+    setUploading(true)
+    setUploadError('')
+    try {
+      const added: string[] = []
+      for (const file of files) added.push(await uploadListingImage(file))
+      onChange([...images, ...added])
+    } catch (reason) {
+      setUploadError(reason instanceof Error ? reason.message : 'Could not upload that photo.')
+    } finally {
+      setUploading(false)
+    }
   }
 
   const addUrl = () => {
     const value = urlInput.current?.value.trim()
     if (!value) return
+    if (value.startsWith('data:')) {
+      setUploadError('Paste a public image URL, or use Upload photos.')
+      return
+    }
+    setUploadError('')
     onChange([...images, value])
     if (urlInput.current) urlInput.current.value = ''
   }
@@ -69,9 +69,10 @@ export default function AdminListingGallery({ images, onChange }: AdminListingGa
           Upload photos
           <input
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp,image/gif"
             multiple
             hidden
+            disabled={uploading}
             onChange={(event) => {
               void addFiles(event.target.files)
               event.target.value = ''
@@ -79,9 +80,12 @@ export default function AdminListingGallery({ images, onChange }: AdminListingGa
           />
         </label>
         <p className="admin-field__hint">
-          First photo is the cover. Drag photos or use the arrows to change order.
+          {uploading
+            ? 'Uploading photos…'
+            : 'First photo is the cover. New photos are stored for every visitor.'}
         </p>
       </div>
+      {uploadError ? <p className="admin-notice admin-notice--warn">{uploadError}</p> : null}
 
       {images.length === 0 ? (
         <p className="admin-empty">No photos yet. Upload images or paste a URL below.</p>
