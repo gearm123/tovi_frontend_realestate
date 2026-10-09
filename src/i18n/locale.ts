@@ -4,13 +4,13 @@ import { SUPPORTED_LOCALES } from './locales'
 export const LOCALE_STORAGE_KEY = 'propertlv-locale'
 const LOCALE_EXPLICIT_KEY = 'propertlv-locale-explicit'
 
-const DEFAULT_LOCALE: Locale = 'he'
+const DEFAULT_LOCALE: Locale = 'en'
 
 function isLocale(value: string | null): value is Locale {
   return SUPPORTED_LOCALES.includes(value as Locale)
 }
 
-/** Resolves locale from an explicit user choice, otherwise Hebrew. */
+/** Resolves locale from an explicit user choice, otherwise English. */
 export function readInitialLocale(): Locale {
   try {
     const explicit = localStorage.getItem(LOCALE_EXPLICIT_KEY) === '1'
