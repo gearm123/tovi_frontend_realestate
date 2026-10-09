@@ -1,5 +1,8 @@
 export type ListingType = 'sale' | 'rental'
 
+/** Whether a listing is on the public site. Sold and rented stay in admin only. */
+export type ListingAvailability = 'available' | 'sold' | 'rented'
+
 /** Sale or rent — alias used in content briefs; maps to listingType in data */
 export type PropertyStatus = ListingType
 
@@ -44,6 +47,11 @@ export interface Property {
   priceNumeric: number
   /** sale | rental */
   listingType: ListingType
+  /**
+   * Public visibility. Missing means available.
+   * Sold and rented listings remain in the admin panel and leave the website.
+   */
+  availability?: ListingAvailability
   propertyType: PropertyType
   /** Total rooms (Israeli convention — includes living room) */
   rooms: number

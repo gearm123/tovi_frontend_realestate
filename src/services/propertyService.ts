@@ -1,5 +1,6 @@
 import { getSiteData } from '../lib/siteDataStore'
 import type { Property } from '../types/property'
+import { isListingAvailable } from '../utils/listingAvailability'
 
 export { neighborhoods, propertyTypes } from '../data/properties'
 
@@ -8,19 +9,19 @@ export { neighborhoods, propertyTypes } from '../data/properties'
  * Reads from the site data store (seeded from static data, editable in admin).
  */
 export function getAllProperties(): Property[] {
-  return getSiteData().properties
+  return getSiteData().properties.filter(isListingAvailable)
 }
 
 export function getPropertiesByListingType(
   listingType: Property['listingType'],
 ): Property[] {
-  return getSiteData().properties.filter((p) => p.listingType === listingType)
+  return getAllProperties().filter((p) => p.listingType === listingType)
 }
 
 export function getPropertyById(id: string): Property | undefined {
-  return getSiteData().properties.find((p) => p.id === id)
+  return getAllProperties().find((p) => p.id === id)
 }
 
 export function getFeaturedProperties(): Property[] {
-  return getSiteData().properties.filter((p) => p.featured)
+  return getAllProperties().filter((p) => p.featured)
 }

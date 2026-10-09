@@ -145,9 +145,20 @@
   color: #c2410c;
 }
 
-.admin-badge--featured {
+.admin-badge--featured,
+.admin-badge--available {
   background: #edfaef;
   color: #007017;
+}
+
+.admin-badge--sold {
+  background: #fcf0f1;
+  color: #b32d2e;
+}
+
+.admin-badge--rented {
+  background: #fef2eb;
+  color: #c2410c;
 }
 
 .admin-form {

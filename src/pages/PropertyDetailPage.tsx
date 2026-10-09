@@ -18,6 +18,7 @@ import { listingTextDir } from '../utils/listingCopy'
 import { getPropertyImages } from '../utils/propertyGallery'
 import { isPlayableVideoUrl } from '../utils/propertyVideo'
 import { getPropertyDetailPath } from '../utils/propertyPath'
+import { isListingAvailable } from '../utils/listingAvailability'
 import { getPropertyNarrative } from '../lib/listingNarrative'
 import { getSimilarProperties } from '../lib/similarProperties'
 import { buildRealEstateListingJsonLd } from '../seo/structuredData'
@@ -28,7 +29,9 @@ export default function PropertyDetailPage() {
   const { t, locale } = useLanguage()
   const viewport = useViewport()
   const { properties, listingsStatus } = useSiteData()
-  const property = id ? properties.find((item) => item.id === id) : undefined
+  const property = id
+    ? properties.find((item) => item.id === id && isListingAvailable(item))
+    : undefined
 
   const localizedPreview = useMemo(() => {
     if (!property) return null

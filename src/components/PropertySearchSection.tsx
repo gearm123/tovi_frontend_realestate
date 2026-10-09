@@ -6,6 +6,7 @@ import { useSiteContent } from '../hooks/useSiteContent'
 import { useSiteData } from '../hooks/useSiteData'
 import { buildPropertyMapPins } from '../services/mapService'
 import type { Property } from '../types/property'
+import { isListingAvailable } from '../utils/listingAvailability'
 import PropertyFiltersBar from './PropertyFilters'
 import PropertyListings from './PropertyListings'
 import PropertyMap from './map/PropertyMap'
@@ -43,7 +44,7 @@ export default function PropertySearchSection({
   const { content } = useSiteContent()
   const { properties } = useSiteData()
   const catalog = useMemo(() => {
-    const items = source ?? properties
+    const items = (source ?? properties).filter(isListingAvailable)
     return [...items].sort((a, b) => Number(!!b.featured) - Number(!!a.featured))
   }, [source, properties])
   const { filters, setFilters, filtered, resetFilters, setListingStatus } =

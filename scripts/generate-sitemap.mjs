@@ -33,11 +33,13 @@ function urlEntry(path) {
   return `  <url>\n    <loc>${SITE_URL}${path}</loc>\n    <changefreq>weekly</changefreq>\n  </url>`
 }
 
-const listingPaths = listings.map((property) =>
-  property.listingType === 'rental'
-    ? `/property/rental/${property.id}`
-    : `/property/sale/${property.id}`,
-)
+const listingPaths = listings
+  .filter((property) => property.availability !== 'sold' && property.availability !== 'rented')
+  .map((property) =>
+    property.listingType === 'rental'
+      ? `/property/rental/${property.id}`
+      : `/property/sale/${property.id}`,
+  )
 
 const paths = [
   ...STATIC_PATHS,

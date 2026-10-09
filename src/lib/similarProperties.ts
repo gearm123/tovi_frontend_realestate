@@ -1,4 +1,5 @@
 import type { Property } from '../types/property'
+import { isListingAvailable } from '../utils/listingAvailability'
 
 export function getSimilarProperties(
   property: Property,
@@ -6,7 +7,7 @@ export function getSimilarProperties(
   limit = 3,
 ): Property[] {
   const scored = catalog
-    .filter((item) => item.id !== property.id)
+    .filter((item) => item.id !== property.id && isListingAvailable(item))
     .map((item) => {
       let score = 0
       if (item.listingType === property.listingType) score += 8

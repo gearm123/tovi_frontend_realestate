@@ -10,6 +10,7 @@ import {
   type ListingStatusFilter,
 } from '../../constants/propertySearch'
 import type { Property } from '../../types/property'
+import { isListingAvailable } from '../../utils/listingAvailability'
 import PropertyMap from './PropertyMap'
 import './PropertyMapSection.css'
 
@@ -28,7 +29,7 @@ export default function PropertyMapSection({
   const { content } = useSiteContent()
   const { properties: allProperties } = useSiteData()
   const { mapSection } = content
-  const catalog = properties ?? allProperties
+  const catalog = (properties ?? allProperties).filter(isListingAvailable)
   const { filters, setFilters, filtered, setListingStatus } = usePropertyFilters(catalog)
   const priceLimit = getPriceMaxForStatus(filters.listingStatus)
   const priceStep = getPriceStepForStatus(filters.listingStatus)

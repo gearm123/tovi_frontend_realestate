@@ -64,7 +64,7 @@ function authHeaders(extra?: HeadersInit): Headers {
 }
 
 export async function fetchListings(): Promise<Property[]> {
-  const body = await request('/api/listings')
+  const body = await request('/api/listings', { headers: authHeaders() })
   return Array.isArray(body.listings) ? (body.listings as Property[]) : []
 }
 

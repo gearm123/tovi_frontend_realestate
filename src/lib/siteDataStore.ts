@@ -268,6 +268,7 @@ export function createBlankProperty(listingType: ListingType = 'sale'): Property
     featured: false,
     exclusive: false,
     isNew: false,
+    availability: 'available',
     features: createEmptyFeatures(),
   }
 }

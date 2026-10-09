@@ -3,11 +3,17 @@ import { Link } from 'react-router-dom'
 import { useSiteData } from '../../hooks/useSiteData'
 import { refreshListings, removeCachedListing, upsertCachedListing } from '../../lib/siteDataStore'
 import { deleteListing, saveListing } from '../../services/listingsApi'
+import {
+  closedListingAvailability,
+  isListingAvailable,
+  listingAvailability,
+} from '../../utils/listingAvailability'
 import './adminShared.css'
 
 export default function AdminListingsPage() {
   const { properties, listingsStatus, listingsError } = useSiteData()
   const [actionError, setActionError] = useState('')
+  const [updatingId, setUpdatingId] = useState('')
 
   const handleDelete = async (id: string, title: string) => {
     const ok = window.confirm(`Delete listing “${title || id}”? This removes it for every visitor.`)
@@ -19,6 +25,32 @@ export default function AdminListingsPage() {
       await refreshListings()
     } catch (reason) {
       setActionError(reason instanceof Error ? reason.message : 'Could not delete that listing.')
+    }
+  }
+
+  const toggleAvailability = async (id: string) => {
+    const property = properties.find((item) => item.id === id)
+    if (!property || updatingId) return
+    const next = isListingAvailable(property)
+      ? closedListingAvailability(property.listingType)
+      : 'available'
+    const label = next === 'sold' ? 'sold' : next === 'rented' ? 'rented' : 'available'
+    const effect =
+      next === 'available'
+        ? 'It will appear on the website again.'
+        : 'It will be removed from the website until you mark it available again.'
+    const ok = window.confirm(`Mark “${property.title || id}” as ${label}? ${effect}`)
+    if (!ok) return
+    setActionError('')
+    setUpdatingId(id)
+    try {
+      const saved = await saveListing({ ...property, availability: next })
+      upsertCachedListing(saved)
+      await refreshListings()
+    } catch (reason) {
+      setActionError(reason instanceof Error ? reason.message : 'Could not update that listing.')
+    } finally {
+      setUpdatingId('')
     }
   }
 
@@ -41,7 +73,8 @@ export default function AdminListingsPage() {
         <div>
           <h1 className="admin-page__title">Listings</h1>
           <p className="admin-page__subtitle">
-            Create and edit sale and rental properties shown on the public site.
+            Mark a sale as sold or a rental as rented to remove it from the website. Mark it
+            available again when it should return.
           </p>
         </div>
         <div className="admin-page__actions">
@@ -76,7 +109,9 @@ export default function AdminListingsPage() {
                 </tr>
               </thead>
               <tbody>
-                {properties.map((property) => (
+                {properties.map((property) => {
+                  const availability = listingAvailability(property)
+                  return (
                   <tr key={property.id}>
                     <td>
                       <img
@@ -98,6 +133,13 @@ export default function AdminListingsPage() {
                     <td>{property.price}</td>
                     <td>
                       <div className="admin-table__actions" style={{ gap: 4 }}>
+                        <span className={`admin-badge admin-badge--${availability}`}>
+                          {availability === 'sold'
+                            ? 'Sold'
+                            : availability === 'rented'
+                              ? 'Rented'
+                              : 'Available'}
+                        </span>
                         {property.featured ? (
                           <span className="admin-badge admin-badge--featured">Featured</span>
                         ) : null}
@@ -105,7 +147,6 @@ export default function AdminListingsPage() {
                           <span className="admin-badge">Exclusive</span>
                         ) : null}
                         {property.isNew ? <span className="admin-badge">New</span> : null}
-                        {!property.featured && !property.exclusive && !property.isNew ? '—' : null}
                       </div>
                     </td>
                     <td>
@@ -116,6 +157,20 @@ export default function AdminListingsPage() {
                         >
                           Edit
                         </Link>
+                        <button
+                          type="button"
+                          className="admin-btn admin-btn--secondary admin-btn--small"
+                          onClick={() => toggleAvailability(property.id)}
+                          disabled={updatingId === property.id}
+                        >
+                          {updatingId === property.id
+                            ? 'Saving…'
+                            : isListingAvailable(property)
+                              ? property.listingType === 'rental'
+                                ? 'Mark rented'
+                                : 'Mark sold'
+                              : 'Mark available'}
+                        </button>
                         <button
                           type="button"
                           className="admin-btn admin-btn--secondary admin-btn--small"
@@ -141,7 +196,8 @@ export default function AdminListingsPage() {
                       </div>
                     </td>
                   </tr>
-                ))}
+                  )
+                })}
               </tbody>
             </table>
           </div>

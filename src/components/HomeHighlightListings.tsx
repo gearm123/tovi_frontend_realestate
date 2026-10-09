@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { useSiteData } from '../hooks/useSiteData'
 import { pickRandomProperties } from '../lib/pickRandomProperties'
+import { isListingAvailable } from '../utils/listingAvailability'
 import PropertyListings from './PropertyListings'
 import './HomeHighlightListings.css'
 
@@ -11,7 +12,7 @@ export default function HomeHighlightListings() {
   const { t } = useLanguage()
   const { properties } = useSiteData()
   const picks = useMemo(
-    () => pickRandomProperties(properties, HIGHLIGHT_COUNT),
+    () => pickRandomProperties(properties.filter(isListingAvailable), HIGHLIGHT_COUNT),
     [properties],
   )
 

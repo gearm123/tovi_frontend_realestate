@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom'
 import { useSiteData } from '../../hooks/useSiteData'
+import { isListingAvailable } from '../../utils/listingAvailability'
 import './adminShared.css'
 
 export default function AdminDashboardPage() {
   const data = useSiteData()
-  const sales = data.properties.filter((p) => p.listingType === 'sale').length
-  const rentals = data.properties.filter((p) => p.listingType === 'rental').length
-  const featured = data.properties.filter((p) => p.featured).length
+  const visible = data.properties.filter(isListingAvailable)
+  const sales = visible.filter((p) => p.listingType === 'sale').length
+  const rentals = visible.filter((p) => p.listingType === 'rental').length
+  const hidden = data.properties.length - visible.length
+  const featured = visible.filter((p) => p.featured).length
 
   return (
     <div>
@@ -38,6 +41,10 @@ export default function AdminDashboardPage() {
         <div className="admin-stat">
           <span className="admin-stat__value">{rentals}</span>
           <span className="admin-stat__label">Rentals</span>
+        </div>
+        <div className="admin-stat">
+          <span className="admin-stat__value">{hidden}</span>
+          <span className="admin-stat__label">Sold or rented</span>
         </div>
         <div className="admin-stat">
           <span className="admin-stat__value">{data.agents.length}</span>

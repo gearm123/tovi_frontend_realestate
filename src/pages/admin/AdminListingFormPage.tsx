@@ -12,6 +12,10 @@ import { saveListing } from '../../services/listingsApi'
 import { draftListingCopy, linesToList, listToLines } from '../../lib/listingCopyDraft'
 import { cleanListingText } from '../../utils/listingCopy'
 import type { ListingType, Property, PropertyType } from '../../types/property'
+import {
+  closedListingAvailability,
+  isListingAvailable,
+} from '../../utils/listingAvailability'
 import AdminListingGallery from './AdminListingGallery'
 import './adminShared.css'
 
@@ -76,6 +80,9 @@ export default function AdminListingFormPage() {
           key === 'priceNumeric' ? (value as number) : next.priceNumeric,
           key === 'listingType' ? (value as ListingType) : next.listingType,
         )
+      }
+      if (key === 'listingType' && !isListingAvailable(next)) {
+        next.availability = closedListingAvailability(value as ListingType)
       }
       if (key === 'images') {
         const images = (value as string[]).map((src) => src.trim()).filter(Boolean)

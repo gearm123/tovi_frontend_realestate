@@ -12,6 +12,10 @@ import type { Property } from '../../src/types/property'
 import { withCleanedListingCopy } from '../../src/utils/listingCopy'
 import { withNormalizedPropertyImages } from '../../src/utils/propertyGallery'
 import { withoutStreetNumbers } from '../../src/utils/streetNumber'
+import {
+  isListingAvailable,
+  listingAvailability,
+} from '../../src/utils/listingAvailability'
 import { adminPassword, adminUsername } from './credentials'
 import {
   listingNeedsTranslation,
@@ -93,7 +97,7 @@ export default async function handler(req: Request): Promise<Response> {
 
     if (pathname === '/api/listings' && method === 'GET') {
       await ensureSeeded()
-      return await listListings()
+      return await listListings(req)
     }
 
     if (pathname === '/api/listings' && method === 'PUT') {
@@ -322,12 +326,14 @@ async function writeSettings(req: Request): Promise<Response> {
   return json(200, { settings })
 }
 
-async function listListings(): Promise<Response> {
+async function listListings(req: Request): Promise<Response> {
   const db = await database()
   const result = await db.pool.query<{ data: Property }>(
     'SELECT data FROM listings ORDER BY sort_index ASC, id ASC',
   )
-  return json(200, { listings: result.rows.map((row) => row.data) })
+  const listings = result.rows.map((row) => row.data)
+  const visible = verifyToken(readBearer(req)) ? listings : listings.filter(isListingAvailable)
+  return json(200, { listings: visible })
 }
 
 async function upsertListing(req: Request): Promise<Response> {
@@ -344,14 +350,21 @@ async function upsertListing(req: Request): Promise<Response> {
   }
 
   const prepared = await storeEmbeddedImages(normalizeListing(incoming))
-  let listing: Property
-  try {
-    listing = await withListingTranslations(prepared)
-  } catch (error) {
-    console.error(error instanceof Error ? error.message : 'Listing translation failed')
-    return json(502, { error: 'The listing could not be translated. Publish it again in a moment.' })
-  }
   const db = await database()
+  const existing = await db.pool.query<{ data: Property }>(
+    'SELECT data FROM listings WHERE id = $1',
+    [prepared.id],
+  )
+  const current = existing.rows[0]?.data
+  let listing = prepared
+  if (!current || listingCopyChanged(current, prepared)) {
+    try {
+      listing = await withListingTranslations(prepared)
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : 'Listing translation failed')
+      return json(502, { error: 'The listing could not be translated. Publish it again in a moment.' })
+    }
+  }
   await db.pool.query(
     `INSERT INTO listings (id, data, sort_index, updated_at)
      VALUES ($1, $2::jsonb, $3, now())
@@ -409,6 +422,18 @@ async function removeListing(id: string): Promise<Response> {
   return json(200, { ok: true })
 }
 
+function listingCopyChanged(current: Property, next: Property): boolean {
+  const copy = (property: Property) =>
+    JSON.stringify({
+      title: property.title,
+      address: property.address,
+      description: property.description,
+      highlights: property.highlights ?? [],
+      specialNotes: property.specialNotes ?? [],
+    })
+  return copy(current) !== copy(next)
+}
+
 function isListingId(id: string): boolean {
   return /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,180}$/.test(id)
 }
@@ -423,6 +448,7 @@ function normalizeListing(property: Property): Property {
         images,
         image: images[0] || property.image,
         videoUrl: property.videoUrl?.trim() || undefined,
+        availability: listingAvailability(property),
       }),
     ),
   )
