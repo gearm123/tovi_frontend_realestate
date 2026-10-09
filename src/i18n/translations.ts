@@ -134,7 +134,7 @@ const en = {
     propertyContext: 'Inquiry about: {title}',
     routedTo: 'Your message will be handled by {name} ({email}).',
     propertyMessageTemplate:
-      'Hi,\n\nI am interested in the following property:\n{title} (ID: {id})\n\n',
+      'Hi,\n\nI am interested in the following property:\n{title}\n{url}\n\n',
   },
   accessibility: {
     openMenu: 'Accessibility',
@@ -314,6 +314,8 @@ const en = {
     similarTitle: 'You may also like',
     bookViewing: 'Book a viewing',
     whatsapp: 'WhatsApp',
+    shareListing: 'Share link',
+    linkCopied: 'Link copied',
     yourAgent: 'Your contact',
     listedWith: 'Listed with {name}',
     emailAgent: 'Email {name}',
@@ -473,7 +475,7 @@ const he: TranslationTree = {
     propertyContext: 'פנייה לגבי: {title}',
     routedTo: 'הפנייה תטופל על ידי {name} ({email}).',
     propertyMessageTemplate:
-      'שלום,\n\nאני מתעניין/ת בנכס הבא:\n{title} (מזהה: {id})\n\n',
+      'שלום,\n\nאני מתעניין/ת בנכס הבא:\n{title}\n{url}\n\n',
   },
   accessibility: {
     openMenu: 'נגישות',
@@ -653,6 +655,8 @@ const he: TranslationTree = {
     similarTitle: 'נכסים דומים',
     bookViewing: 'קביעת ביקור',
     whatsapp: 'WhatsApp',
+    shareListing: 'שיתוף קישור',
+    linkCopied: 'הקישור הועתק',
     yourAgent: 'איש הקשר שלכם',
     listedWith: 'בטיפול {name}',
     emailAgent: 'שליחת מייל ל{name}',

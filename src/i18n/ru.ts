@@ -129,7 +129,7 @@ export const ruPatch = {
     propertyContext: 'Запрос по объекту: {title}',
     routedTo: 'Ваше сообщение будет обработано: {name} ({email}).',
     propertyMessageTemplate:
-      'Здравствуйте,\n\nМеня интересует объект:\n{title} (ID: {id})\n\n',
+      'Здравствуйте,\n\nМеня интересует объект:\n{title}\n{url}\n\n',
   },
   accessibility: {
     openMenu: 'Доступность',
@@ -299,6 +299,8 @@ export const ruPatch = {
     similarTitle: 'Вам также может понравиться',
     bookViewing: 'Записаться на просмотр',
     whatsapp: 'WhatsApp',
+    shareListing: 'Поделиться ссылкой',
+    linkCopied: 'Ссылка скопирована',
     yourAgent: 'Ваш контакт',
     listedWith: 'Объект ведёт {name}',
     emailAgent: 'Написать {name}',

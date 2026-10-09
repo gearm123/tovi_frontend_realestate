@@ -129,7 +129,7 @@ export const frPatch = {
     propertyContext: 'Demande concernant : {title}',
     routedTo: 'Votre message sera traité par {name} ({email}).',
     propertyMessageTemplate:
-      'Bonjour,\n\nJe suis intéressé(e) par le bien suivant :\n{title} (ID : {id})\n\n',
+      'Bonjour,\n\nJe suis intéressé(e) par le bien suivant :\n{title}\n{url}\n\n',
   },
   accessibility: {
     openMenu: 'Accessibilité',
@@ -299,6 +299,8 @@ export const frPatch = {
     similarTitle: 'Vous aimerez aussi',
     bookViewing: 'Réserver une visite',
     whatsapp: 'WhatsApp',
+    shareListing: 'Partager le lien',
+    linkCopied: 'Lien copié',
     yourAgent: 'Votre contact',
     listedWith: 'Présenté par {name}',
     emailAgent: 'Écrire à {name}',

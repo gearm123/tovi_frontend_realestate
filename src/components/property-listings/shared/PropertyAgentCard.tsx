@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { ResolvedAgent } from '../../../types/agent'
 import type { Property } from '../../../types/property'
@@ -5,6 +6,7 @@ import { useLanguage } from '../../../context/LanguageContext'
 import {
   buildPropertyWhatsAppUrl,
   getPropertyContactPath,
+  getPropertyListingUrl,
 } from '../../../utils/propertyContact'
 import './PropertyAgentCard.css'
 
@@ -28,10 +30,31 @@ export default function PropertyAgentCard({
   propertyTitle,
 }: PropertyAgentCardProps) {
   const { t } = useLanguage()
+  const [linkCopied, setLinkCopied] = useState(false)
   const contactPath = getPropertyContactPath(property)
+  const listingUrl = getPropertyListingUrl(property)
   const whatsappUrl = agent.phone.whatsapp
-    ? buildPropertyWhatsAppUrl(agent.phone.whatsapp, propertyTitle, property.id)
+    ? buildPropertyWhatsAppUrl(agent.phone.whatsapp, propertyTitle, property)
     : undefined
+
+  const shareListing = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: propertyTitle, url: listingUrl })
+        return
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(listingUrl)
+      setLinkCopied(true)
+      window.setTimeout(() => setLinkCopied(false), 2000)
+    } catch {
+      setLinkCopied(false)
+    }
+  }
 
   return (
     <section
@@ -76,6 +99,14 @@ export default function PropertyAgentCard({
             {t.property.whatsapp}
           </a>
         )}
+        <button
+          type="button"
+          className="property-agent__cta"
+          onClick={shareListing}
+          aria-live="polite"
+        >
+          {linkCopied ? t.property.linkCopied : t.property.shareListing}
+        </button>
         <Link to={contactPath} className="property-agent__cta property-agent__cta--primary">
           {t.property.bookViewing}
         </Link>

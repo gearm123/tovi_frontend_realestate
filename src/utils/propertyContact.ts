@@ -1,4 +1,6 @@
+import { toAbsoluteUrl } from '../constants/seoConfig'
 import type { Property } from '../types/property'
+import { getPropertyDetailPath } from './propertyPath'
 
 export function getPropertyContactPath(
   property: Pick<Property, 'id' | 'listingType' | 'agentId'>,
@@ -22,11 +24,15 @@ export function buildPropertyMailtoUrl(
   return `mailto:${agentEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
+export function getPropertyListingUrl(property: Pick<Property, 'id' | 'listingType'>): string {
+  return toAbsoluteUrl(getPropertyDetailPath(property))
+}
+
 export function buildPropertyWhatsAppUrl(
   whatsappNumber: string,
   propertyTitle: string,
-  propertyId: string,
+  property: Pick<Property, 'id' | 'listingType'>,
 ): string {
-  const text = `Hi, I'm interested in ${propertyTitle} (${propertyId})`
+  const text = `Hi, I'm interested in ${propertyTitle}\n${getPropertyListingUrl(property)}`
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`
 }

@@ -23,10 +23,7 @@ export function buildContactInquiryText(inquiry: ContactInquiry): string {
   if (inquiry.phone) lines.push(`Phone: ${inquiry.phone}`)
   lines.push(`Interest: ${inquiry.interest}`)
 
-  if (inquiry.propertyTitle) {
-    const idSuffix = inquiry.propertyId ? ` (${inquiry.propertyId})` : ''
-    lines.push(`Property: ${inquiry.propertyTitle}${idSuffix}`)
-  }
+  if (inquiry.propertyTitle) lines.push(`Property: ${inquiry.propertyTitle}`)
 
   if (inquiry.agentName) lines.push(`Assigned agent: ${inquiry.agentName}`)
 

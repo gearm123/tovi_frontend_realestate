@@ -10,6 +10,7 @@ import {
   type ContactInquiry,
 } from '../services/contactService'
 import { getPropertyById } from '../services/propertyService'
+import { getPropertyListingUrl } from '../utils/propertyContact'
 import { getLocalizedProperty } from '../i18n/propertyTranslations'
 import './ContactForm.css'
 
@@ -75,7 +76,7 @@ export default function ContactForm() {
     setMessage(
       t.contactForm.propertyMessageTemplate
         .replace('{title}', propertyTitle)
-        .replace('{id}', property.id),
+        .replace('{url}', getPropertyListingUrl(property)),
     )
   }, [property, propertyTitle, t.contactForm.propertyMessageTemplate])
 
