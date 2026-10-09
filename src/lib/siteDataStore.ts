@@ -20,6 +20,7 @@ export type LeadCaptureSettings = {
   enabled: boolean
   rule: LeadCapturePageRule
   delayMs: number
+  appearances: number
   recipientEmail: string
 }
 
@@ -41,16 +42,27 @@ function clone<T>(value: T): T {
   return structuredClone(value)
 }
 
+export function normalizeLeadCapture(
+  value: Partial<LeadCaptureSettings> | null | undefined,
+): LeadCaptureSettings {
+  const appearances = Number(value?.appearances)
+  return {
+    enabled: value?.enabled ?? defaultLeadCapture.enabled,
+    rule: value?.rule ?? clone(defaultLeadCapture.rule),
+    delayMs: Number.isFinite(Number(value?.delayMs)) ? Number(value?.delayMs) : defaultLeadCapture.delayMs,
+    recipientEmail: value?.recipientEmail?.trim() || defaultLeadCapture.recipientEmail,
+    appearances:
+      Number.isFinite(appearances) && appearances >= 1
+        ? Math.floor(appearances)
+        : defaultLeadCapture.appearances,
+  }
+}
+
 function seedContent(): SiteContent {
   return {
     agents: clone(defaultAgents),
     business: clone(defaultBusiness),
-    leadCapture: {
-      enabled: defaultLeadCapture.enabled,
-      rule: clone(defaultLeadCapture.rule),
-      delayMs: defaultLeadCapture.delayMs,
-      recipientEmail: defaultLeadCapture.recipientEmail,
-    },
+    leadCapture: normalizeLeadCapture(defaultLeadCapture),
     defaultAgentId: DEFAULT_AGENT_ID,
   }
 }
@@ -152,7 +164,7 @@ export async function refreshSiteContent(): Promise<void> {
   return fetchSiteContent()
     .then((next) => {
       if (generation !== contentGeneration) return
-      settings = next
+      settings = { ...next, leadCapture: normalizeLeadCapture(next.leadCapture) }
       contentStatus = 'ready'
       contentError = ''
     })
@@ -177,7 +189,7 @@ export async function persistSiteContent(updater: (current: SiteData) => SiteDat
     leadCapture: next.leadCapture,
     defaultAgentId: next.defaultAgentId,
   })
-  settings = saved
+  settings = { ...saved, leadCapture: normalizeLeadCapture(saved.leadCapture) }
   contentStatus = 'ready'
   contentError = ''
   cache = null

@@ -15,5 +15,7 @@ export const leadCapturePopupConfig = {
   enabled: true,
   rule: { mode: 'all' } satisfies LeadCapturePageRule,
   delayMs: 20_000,
+  /** How many times the popup may appear in one visit. A submitted lead stops it early. */
+  appearances: 2,
   recipientEmail: 'office@propertlv.com',
 } as const

@@ -39,6 +39,7 @@ interface SiteContent {
     enabled: boolean
     rule: { mode: 'all' } | { mode: 'include' | 'exclude'; paths: string[] }
     delayMs: number
+    appearances: number
     recipientEmail: string
   }
   defaultAgentId: string
@@ -51,6 +52,7 @@ const seedSettings: SiteContent = {
     enabled: leadCapturePopupConfig.enabled,
     rule: leadCapturePopupConfig.rule,
     delayMs: leadCapturePopupConfig.delayMs,
+    appearances: leadCapturePopupConfig.appearances,
     recipientEmail: leadCapturePopupConfig.recipientEmail,
   },
   defaultAgentId: DEFAULT_AGENT_ID,

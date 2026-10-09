@@ -13,26 +13,40 @@ import LeadCaptureLanguageToggle from './LeadCaptureLanguageToggle'
 import './LeadCapturePopup.css'
 
 const SESSION_SUBMITTED_KEY = 'propertlv-lead-capture-submitted'
-const SESSION_SEEN_KEY = 'propertlv-lead-capture-seen'
+const SESSION_SHOWN_COUNT_KEY = 'propertlv-lead-capture-shown-count'
 const DEFAULT_POPUP_LOCALE: Locale = 'en'
 
-function wasShownThisSession(): boolean {
+function readShownCount(): number {
   try {
-    return (
-      sessionStorage.getItem(SESSION_SEEN_KEY) === '1' ||
-      sessionStorage.getItem(SESSION_SUBMITTED_KEY) === '1'
-    )
+    return Number(sessionStorage.getItem(SESSION_SHOWN_COUNT_KEY)) || 0
+  } catch {
+    return 0
+  }
+}
+
+function markShown(): void {
+  try {
+    sessionStorage.setItem(SESSION_SHOWN_COUNT_KEY, String(readShownCount() + 1))
+  } catch {
+    /* private mode / blocked storage */
+  }
+}
+
+function hasSubmitted(): boolean {
+  try {
+    return sessionStorage.getItem(SESSION_SUBMITTED_KEY) === '1'
   } catch {
     return false
   }
 }
 
-function markShownThisSession(): void {
-  try {
-    sessionStorage.setItem(SESSION_SEEN_KEY, '1')
-  } catch {
-    /* private mode / blocked storage */
-  }
+function appearanceLimit(): number {
+  const value = getLeadCaptureSettings().appearances
+  return Number.isFinite(value) && value >= 1 ? Math.floor(value) : 1
+}
+
+function canShowAgain(): boolean {
+  return !hasSubmitted() && readShownCount() < appearanceLimit()
 }
 
 export default function LeadCapturePopup() {
@@ -42,6 +56,7 @@ export default function LeadCapturePopup() {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   const [open, setOpen] = useState(false)
+  const [cycle, setCycle] = useState(0)
   const [popupLocale, setPopupLocale] = useState<Locale>(DEFAULT_POPUP_LOCALE)
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null)
@@ -50,18 +65,18 @@ export default function LeadCapturePopup() {
   const popupDir = getDir(popupLocale)
 
   useEffect(() => {
-    if (wasShownThisSession()) return undefined
+    if (!canShowAgain()) return undefined
 
     const delayMs = getLeadCaptureSettings().delayMs
     const timer = window.setTimeout(() => {
-      if (wasShownThisSession()) return
+      if (!canShowAgain()) return
       if (!shouldShowLeadCaptureOnPage(window.location.pathname)) return
-      markShownThisSession()
+      markShown()
       setOpen(true)
     }, delayMs)
 
     return () => window.clearTimeout(timer)
-  }, [])
+  }, [cycle])
 
   useEffect(() => {
     if (!open) return undefined
@@ -85,10 +100,10 @@ export default function LeadCapturePopup() {
   }, [open])
 
   const handleDismiss = () => {
-    markShownThisSession()
     setOpen(false)
     setStatus('idle')
     setWhatsappUrl(null)
+    if (canShowAgain()) setCycle((current) => current + 1)
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {

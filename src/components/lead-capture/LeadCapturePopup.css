@@ -37,6 +37,7 @@
   box-shadow:
     0 28px 72px rgba(0, 0, 0, 0.22),
     0 0 0 1px rgba(255, 255, 255, 0.65) inset;
+  zoom: 0.9;
   animation: lead-capture-rise 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 

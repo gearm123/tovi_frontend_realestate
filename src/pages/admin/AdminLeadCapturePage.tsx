@@ -39,6 +39,7 @@ export default function AdminLeadCapturePage() {
       ...form,
       rule,
       delayMs: Math.max(0, Number(form.delayMs) || 0),
+      appearances: Math.max(1, Math.floor(Number(form.appearances) || 1)),
       recipientEmail: form.recipientEmail.trim(),
     }
 
@@ -100,6 +101,24 @@ export default function AdminLeadCapturePage() {
                   setSaved(false)
                 }}
               />
+            </div>
+            <div className="admin-field">
+              <label htmlFor="lead-appearances">Times shown per visit</label>
+              <input
+                id="lead-appearances"
+                type="number"
+                min={1}
+                step={1}
+                value={form.appearances}
+                onChange={(e) => {
+                  setForm({ ...form, appearances: Number(e.target.value) || 1 })
+                  setSaved(false)
+                }}
+              />
+              <p className="admin-field__hint">
+                After a visitor closes the popup, it returns with the same delay until it has
+                appeared this many times. Sending the form stops it.
+              </p>
             </div>
             <div className="admin-field">
               <label htmlFor="lead-email">Recipient email</label>

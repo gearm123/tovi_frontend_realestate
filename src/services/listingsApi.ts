@@ -11,6 +11,7 @@ export interface SiteContent {
     enabled: boolean
     rule: LeadCapturePageRule
     delayMs: number
+    appearances: number
     recipientEmail: string
   }
   defaultAgentId: string
