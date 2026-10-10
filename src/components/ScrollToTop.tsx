@@ -5,7 +5,7 @@ import { scrollPageTo, scrollPageToTop } from '../utils/scrollPageToTop'
 const PROPERTY_PATH = /^\/property\/(?:sale|rental)\//
 
 function revealListing(path: string) {
-  const links = [...document.querySelectorAll<HTMLAnchorElement>('a[href]')].filter(
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href]')).filter(
     (item) => item.getAttribute('href') === path,
   )
   const link =
