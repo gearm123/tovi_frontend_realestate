@@ -86,6 +86,8 @@ export interface Property {
   features: PropertyFeatures
   /** Agent responsible for this listing — references `agents.ts` */
   agentId: string
+  /** Short public id such as PT-1001. Unique across listings. */
+  propertyCode?: string
   /** Listing text translated for each site language. */
   translations?: Partial<Record<ListingLocale, ListingLocaleCopy>>
   /** Older Hebrew copy. Automatic translations replace this when present. */

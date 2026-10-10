@@ -271,6 +271,8 @@ const en = {
     minPrice: 'Minimum price',
     maxPrice: 'Maximum price',
     extraFilters: 'Extra features',
+    propertyId: 'Property ID',
+    propertyIdPlaceholder: 'PT-1001',
     clear: 'Clear filters',
     features: {
       balcony: 'Balcony',
@@ -308,6 +310,7 @@ const en = {
     safeRoom: 'Safe room',
     buildingShelter: 'Building shelter',
     viewDetails: 'View details',
+    propertyId: 'Property ID',
     forSale: 'For Sale',
     forRent: 'For Rent',
     featured: 'Featured',
@@ -629,6 +632,8 @@ const he: TranslationTree = {
     minPrice: 'מחיר מינימום',
     maxPrice: 'מחיר מקסימום',
     extraFilters: 'מאפיינים נוספים',
+    propertyId: 'מזהה נכס',
+    propertyIdPlaceholder: 'PT-1001',
     clear: 'ניקוי מסננים',
     features: {
       balcony: 'מרפסת',
@@ -666,6 +671,7 @@ const he: TranslationTree = {
     safeRoom: 'ממ״ד',
     buildingShelter: 'מקלט בבניין',
     viewDetails: 'לפרטים',
+    propertyId: 'מזהה נכס',
     forSale: 'למכירה',
     forRent: 'להשכרה',
     featured: 'נבחר',

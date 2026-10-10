@@ -18,6 +18,8 @@ export interface PropertyFilters {
   mamad: boolean
   miklat: boolean
   petsAllowed: boolean
+  /** Property ID search, such as PT-1001 or 1001. */
+  propertyCode: string
 }
 
 export function createDefaultFilters(
@@ -37,6 +39,7 @@ export function createDefaultFilters(
     mamad: false,
     miklat: false,
     petsAllowed: false,
+    propertyCode: '',
   }
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { neighborhoods, propertyTypes } from '../../services/propertyService'
 import { useSiteData } from '../../hooks/useSiteData'
@@ -16,6 +16,12 @@ import {
   closedListingAvailability,
   isListingAvailable,
 } from '../../utils/listingAvailability'
+import {
+  existingListingMessage,
+  findExistingListing,
+  nextPropertyCode,
+  normalizePropertyCode,
+} from '../../utils/propertyCode'
 import AdminListingGallery from './AdminListingGallery'
 import './adminShared.css'
 
@@ -40,6 +46,7 @@ export default function AdminListingFormPage() {
   )
 
   const [form, setForm] = useState<Property>(() => createBlankProperty('sale'))
+  const propertyCodeEdited = useRef(false)
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
@@ -51,6 +58,34 @@ export default function AdminListingFormPage() {
     }
     if (existing) setForm(existing)
   }, [isNew, existing])
+
+  useEffect(() => {
+    if (!isNew || propertyCodeEdited.current || properties.length === 0) return
+    setForm((prev) => {
+      if (normalizePropertyCode(prev.propertyCode ?? '')) return prev
+      return { ...prev, propertyCode: nextPropertyCode(properties) }
+    })
+  }, [isNew, properties])
+
+  const publishBlock = useMemo(() => {
+    const propertyCode = normalizePropertyCode(form.propertyCode ?? '')
+    if (!propertyCode) {
+      if (!isNew || properties.length > 0 || listingsStatus !== 'loading') {
+        return 'Enter a property ID such as PT-1001. Publishing stays off until it is set.'
+      }
+      return ''
+    }
+    const match = findExistingListing(
+      {
+        ...form,
+        title: cleanListingText(form.title),
+        address: cleanListingText(form.address),
+        propertyCode,
+      },
+      properties,
+    )
+    return match ? existingListingMessage(match) : ''
+  }, [form, properties, isNew, listingsStatus])
 
   const areaOptions = useMemo(() => {
     const current = form.neighborhood?.trim()
@@ -118,6 +153,10 @@ export default function AdminListingFormPage() {
       window.alert('Title and address are required.')
       return
     }
+    if (publishBlock) {
+      setSaveError(publishBlock)
+      return
+    }
     if (saving) return
 
     const images = (form.images ?? []).map((src) => src.trim()).filter(Boolean)
@@ -135,6 +174,7 @@ export default function AdminListingFormPage() {
       image: cover,
       images,
       price: formatListingPrice(form.priceNumeric, form.listingType),
+      propertyCode: normalizePropertyCode(form.propertyCode ?? ''),
       he: undefined,
       translations: undefined,
     }
@@ -178,13 +218,34 @@ export default function AdminListingFormPage() {
           Listing published. Every visitor can see it.
         </p>
       ) : null}
-      {saveError ? <p className="admin-notice admin-notice--warn">{saveError}</p> : null}
+      {publishBlock ? <p className="admin-notice admin-notice--warn">{publishBlock}</p> : null}
+      {saveError && saveError !== publishBlock ? (
+        <p className="admin-notice admin-notice--warn">{saveError}</p>
+      ) : null}
 
       <section className="admin-card">
         <form className="admin-form" onSubmit={handleSubmit}>
           <div className="admin-form__section">
             <h2 className="admin-form__section-title">Listing</h2>
             <div className="admin-form__grid">
+              <div className="admin-field">
+                <label htmlFor="listing-property-code">Property ID</label>
+                <input
+                  id="listing-property-code"
+                  value={form.propertyCode ?? ''}
+                  placeholder="PT-1001"
+                  onChange={(e) => {
+                    propertyCodeEdited.current = true
+                    setField('propertyCode', e.target.value.toUpperCase())
+                  }}
+                  onBlur={() => {
+                    const next = normalizePropertyCode(form.propertyCode ?? '')
+                    if (next) setField('propertyCode', next)
+                  }}
+                  required
+                />
+                <p className="admin-field__hint">Each listing needs its own ID, such as PT-1001.</p>
+              </div>
               <div className="admin-field">
                 <label htmlFor="listing-type">Buy / Rent</label>
                 <select
@@ -486,7 +547,7 @@ export default function AdminListingFormPage() {
           </div>
 
           <div className="admin-form__footer">
-            <button type="submit" className="admin-btn" disabled={saving}>
+            <button type="submit" className="admin-btn" disabled={saving || Boolean(publishBlock)}>
               {saving ? 'Publishing…' : isNew ? 'Create listing' : 'Save changes'}
             </button>
             <Link className="admin-btn admin-btn--secondary" to="/admin/listings">

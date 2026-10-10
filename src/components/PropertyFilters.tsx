@@ -165,6 +165,17 @@ export default function PropertyFiltersBar({
 
       <div className="property-filters__row">
         <label className="property-filters__field">
+          <span className="property-filters__label">{t.filters.propertyId}</span>
+          <input
+            value={filters.propertyCode}
+            placeholder={t.filters.propertyIdPlaceholder}
+            inputMode="text"
+            autoCapitalize="characters"
+            onChange={(e) => update('propertyCode', e.target.value)}
+          />
+        </label>
+
+        <label className="property-filters__field">
           <span className="property-filters__label">
             {variant === 'simple' ? t.filters.area : t.filters.neighborhood}
           </span>

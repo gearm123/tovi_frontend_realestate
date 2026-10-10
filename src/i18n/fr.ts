@@ -250,6 +250,8 @@ export const frPatch = {
     minPrice: 'Prix minimum',
     maxPrice: 'Prix maximum',
     extraFilters: 'Caractéristiques',
+    propertyId: 'Identifiant',
+    propertyIdPlaceholder: 'PT-1001',
     clear: 'Effacer les filtres',
     features: {
       balcony: 'Balcon',
@@ -277,6 +279,7 @@ export const frPatch = {
     safeRoom: 'Pièce sécurisée',
     buildingShelter: 'Abri de l’immeuble',
     viewDetails: 'Voir les détails',
+    propertyId: 'Identifiant',
     forSale: 'À vendre',
     forRent: 'À louer',
     featured: 'Sélection',

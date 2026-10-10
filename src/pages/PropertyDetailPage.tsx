@@ -134,6 +134,11 @@ export default function PropertyDetailPage() {
         <div className="property-detail__body" dir={copyDir}>
           <p className="property-detail__price">{localized.price ?? property.price}</p>
           <p className="property-detail__neighborhood">{neighborhoodLabel}</p>
+          {property.propertyCode ? (
+            <p className="property-detail__id">
+              {t.property.propertyId}: {property.propertyCode}
+            </p>
+          ) : null}
           <PropertyFacts property={property} floor={narrative.floor} />
 
           <h1

@@ -1,5 +1,6 @@
 import type { Property } from '../types/property'
 import type { PropertyFilters } from '../types/filters'
+import { propertyCodeMatches } from '../utils/propertyCode'
 
 function matchesFeatureFilters(
   property: Property,
@@ -49,6 +50,9 @@ export function filterProperties(
     if (!matchesFeatureFilters(property, filters)) {
       return false
     }
+    if (!propertyCodeMatches(property.propertyCode, filters.propertyCode)) {
+      return false
+    }
     return true
   })
 }
@@ -67,5 +71,6 @@ export function countActiveFilters(filters: PropertyFilters): number {
   if (filters.mamad) count += 1
   if (filters.miklat) count += 1
   if (filters.petsAllowed) count += 1
+  if (filters.propertyCode.trim()) count += 1
   return count
 }

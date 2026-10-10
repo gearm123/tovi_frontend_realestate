@@ -250,6 +250,8 @@ export const ruPatch = {
     minPrice: 'Мин. цена',
     maxPrice: 'Макс. цена',
     extraFilters: 'Доп. характеристики',
+    propertyId: 'ID объекта',
+    propertyIdPlaceholder: 'PT-1001',
     clear: 'Сбросить фильтры',
     features: {
       balcony: 'Балкон',
@@ -277,6 +279,7 @@ export const ruPatch = {
     safeRoom: 'Защищённая комната',
     buildingShelter: 'Убежище в доме',
     viewDetails: 'Подробнее',
+    propertyId: 'ID объекта',
     forSale: 'Продажа',
     forRent: 'Аренда',
     featured: 'Избранное',

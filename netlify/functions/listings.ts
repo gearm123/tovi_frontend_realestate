@@ -16,6 +16,13 @@ import {
   isListingAvailable,
   listingAvailability,
 } from '../../src/utils/listingAvailability'
+import {
+  assignPropertyCodes,
+  existingListingMessage,
+  findExistingListing,
+  nextPropertyCode,
+  normalizePropertyCode,
+} from '../../src/utils/propertyCode'
 import { adminPassword, adminUsername } from './credentials'
 import {
   listingNeedsTranslation,
@@ -232,11 +239,13 @@ async function seedIfEmpty(): Promise<void> {
       return
     }
 
-    const rows = seed.map((property, index) => ({
-      id: property.id,
-      data: normalizeListing(property),
-      sort_index: index,
-    }))
+    const rows = assignPropertyCodes(seed.map((property) => normalizeListing(property))).map(
+      (property, index) => ({
+        id: property.id,
+        data: property,
+        sort_index: index,
+      }),
+    )
     await client.query(
       `INSERT INTO listings (id, data, sort_index)
        SELECT id, data, sort_index
@@ -326,12 +335,47 @@ async function writeSettings(req: Request): Promise<Response> {
   return json(200, { settings })
 }
 
-async function listListings(req: Request): Promise<Response> {
+async function readListings(): Promise<Property[]> {
   const db = await database()
   const result = await db.pool.query<{ data: Property }>(
     'SELECT data FROM listings ORDER BY sort_index ASC, id ASC',
   )
-  const listings = result.rows.map((row) => row.data)
+  return result.rows.map((row) => row.data)
+}
+
+async function ensurePropertyCodes(): Promise<Property[]> {
+  const current = await readListings()
+  if (current.every((listing) => normalizePropertyCode(listing.propertyCode ?? ''))) return current
+
+  const db = await database()
+  const client = await db.pool.connect()
+  try {
+    await client.query('BEGIN')
+    await client.query('SELECT pg_advisory_xact_lock(742003)')
+    const locked = await client.query<{ data: Property }>(
+      'SELECT data FROM listings ORDER BY sort_index ASC, id ASC',
+    )
+    const rows = locked.rows.map((row) => row.data)
+    const assigned = assignPropertyCodes(rows)
+    for (let index = 0; index < assigned.length; index += 1) {
+      if ((rows[index]?.propertyCode ?? '') === assigned[index].propertyCode) continue
+      await client.query(
+        'UPDATE listings SET data = $2::jsonb, updated_at = now() WHERE id = $1',
+        [assigned[index].id, JSON.stringify(assigned[index])],
+      )
+    }
+    await client.query('COMMIT')
+    return assigned
+  } catch (error) {
+    await client.query('ROLLBACK')
+    throw error
+  } finally {
+    client.release()
+  }
+}
+
+async function listListings(req: Request): Promise<Response> {
+  const listings = await ensurePropertyCodes()
   const visible = verifyToken(readBearer(req)) ? listings : listings.filter(isListingAvailable)
   return json(200, { listings: visible })
 }
@@ -349,7 +393,13 @@ async function upsertListing(req: Request): Promise<Response> {
     return json(400, { error: 'Listing type must be sale or rental.' })
   }
 
-  const prepared = await storeEmbeddedImages(normalizeListing(incoming))
+  const normalized = normalizeListing(incoming)
+  const listings = await ensurePropertyCodes()
+  if (!normalized.propertyCode) normalized.propertyCode = nextPropertyCode(listings)
+  const duplicate = findExistingListing(normalized, listings)
+  if (duplicate) return json(409, { error: existingListingMessage(duplicate) })
+
+  const prepared = await storeEmbeddedImages(normalized)
   const db = await database()
   const existing = await db.pool.query<{ data: Property }>(
     'SELECT data FROM listings WHERE id = $1',
@@ -449,6 +499,7 @@ function normalizeListing(property: Property): Property {
         image: images[0] || property.image,
         videoUrl: property.videoUrl?.trim() || undefined,
         availability: listingAvailability(property),
+        propertyCode: normalizePropertyCode(property.propertyCode ?? '') || undefined,
       }),
     ),
   )

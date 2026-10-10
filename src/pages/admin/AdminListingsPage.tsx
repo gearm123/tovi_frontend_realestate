@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSiteData } from '../../hooks/useSiteData'
 import { refreshListings, removeCachedListing, upsertCachedListing } from '../../lib/siteDataStore'
@@ -8,12 +8,26 @@ import {
   isListingAvailable,
   listingAvailability,
 } from '../../utils/listingAvailability'
+import { propertyCodeMatches } from '../../utils/propertyCode'
 import './adminShared.css'
 
 export default function AdminListingsPage() {
   const { properties, listingsStatus, listingsError } = useSiteData()
   const [actionError, setActionError] = useState('')
   const [updatingId, setUpdatingId] = useState('')
+  const [query, setQuery] = useState('')
+  const visibleListings = useMemo(() => {
+    const needle = query.trim().toLowerCase()
+    if (!needle) return properties
+    return properties.filter((property) => {
+      if (/\d/.test(needle) && propertyCodeMatches(property.propertyCode, query)) return true
+      return (
+        property.title.toLowerCase().includes(needle) ||
+        property.address.toLowerCase().includes(needle) ||
+        property.neighborhood.toLowerCase().includes(needle)
+      )
+    })
+  }, [properties, query])
 
   const handleDelete = async (id: string, title: string) => {
     const ok = window.confirm(`Delete listing “${title || id}”? This removes it for every visitor.`)
@@ -95,11 +109,25 @@ export default function AdminListingsPage() {
         ) : properties.length === 0 ? (
           <p className="admin-empty">No listings yet. Add your first property.</p>
         ) : (
+          <>
+          <div className="admin-field" style={{ maxWidth: 360, marginBottom: '0.9rem' }}>
+            <label htmlFor="listing-search">Property ID or title</label>
+            <input
+              id="listing-search"
+              value={query}
+              placeholder="PT-1001"
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </div>
+          {visibleListings.length === 0 ? (
+            <p className="admin-empty">No listings match that search.</p>
+          ) : (
           <div className="admin-table-wrap">
             <table className="admin-table">
               <thead>
                 <tr>
                   <th>Photo</th>
+                  <th>Property ID</th>
                   <th>Title</th>
                   <th>Type</th>
                   <th>Neighborhood</th>
@@ -109,7 +137,7 @@ export default function AdminListingsPage() {
                 </tr>
               </thead>
               <tbody>
-                {properties.map((property) => {
+                {visibleListings.map((property) => {
                   const availability = listingAvailability(property)
                   return (
                   <tr key={property.id}>
@@ -121,8 +149,10 @@ export default function AdminListingsPage() {
                       />
                     </td>
                     <td>
+                      <strong>{property.propertyCode}</strong>
+                    </td>
+                    <td>
                       <strong>{property.title || '(Untitled)'}</strong>
-                      <div style={{ color: '#646970', fontSize: 12 }}>{property.id}</div>
                     </td>
                     <td>
                       <span className={`admin-badge admin-badge--${property.listingType}`}>
@@ -201,6 +231,8 @@ export default function AdminListingsPage() {
               </tbody>
             </table>
           </div>
+          )}
+          </>
         )}
       </section>
     </div>

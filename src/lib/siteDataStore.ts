@@ -13,6 +13,7 @@ import { fetchListings, fetchSiteContent, saveSiteContent, type SiteContent } fr
 import { withNormalizedPropertyImages } from '../utils/propertyGallery'
 import { withoutStreetNumbers } from '../utils/streetNumber'
 import { withCleanedListingCopy } from '../utils/listingCopy'
+import { assignPropertyCodes } from '../utils/propertyCode'
 
 const DATA_EVENT = 'propertlv-site-data-updated'
 
@@ -67,11 +68,14 @@ function seedContent(): SiteContent {
   }
 }
 
+function prepareListings(rows: Property[]): Property[] {
+  return assignPropertyCodes(
+    rows.map(withoutStreetNumbers).map(withCleanedListingCopy).map(withNormalizedPropertyImages),
+  )
+}
+
 function fallbackListings(): Property[] {
-  return clone(defaultProperties)
-    .map(withoutStreetNumbers)
-    .map(withCleanedListingCopy)
-    .map(withNormalizedPropertyImages)
+  return prepareListings(clone(defaultProperties))
 }
 
 let listingsCache: Property[] = []
@@ -138,10 +142,7 @@ export function refreshListings(): Promise<void> {
   return fetchListings()
     .then((rows) => {
       if (generation !== refreshGeneration) return
-      listingsCache = rows
-        .map(withoutStreetNumbers)
-        .map(withCleanedListingCopy)
-        .map(withNormalizedPropertyImages)
+      listingsCache = prepareListings(rows)
       listingsStatus = 'ready'
       listingsError = ''
     })
@@ -269,6 +270,7 @@ export function createBlankProperty(listingType: ListingType = 'sale'): Property
     exclusive: false,
     isNew: false,
     availability: 'available',
+    propertyCode: '',
     features: createEmptyFeatures(),
   }
 }

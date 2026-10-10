@@ -40,6 +40,7 @@ export function usePropertyFilters(
       mamad: prev.mamad,
       miklat: prev.miklat,
       petsAllowed: prev.petsAllowed,
+      propertyCode: prev.propertyCode,
       priceMin: prev.priceMin,
       priceMax: Math.min(prev.priceMax, getPriceMaxForStatus(listingStatus)),
     }))
