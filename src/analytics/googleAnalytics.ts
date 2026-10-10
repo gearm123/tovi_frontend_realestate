@@ -10,8 +10,8 @@ declare global {
 let analyticsInitialized = false
 
 /**
- * Loads Google Analytics 4 when VITE_GA_MEASUREMENT_ID is set at build time.
- * Leave the env var empty until the client's GA property is ready.
+ * Loads Google Analytics 4 for G-2EY65BX3R1.
+ * VITE_GA_MEASUREMENT_ID overrides that ID when set at build time.
  */
 export function initGoogleAnalytics(): void {
   const measurementId = getGoogleAnalyticsId()

@@ -4,6 +4,7 @@
  */
 
 const DEFAULT_SITE_URL = 'https://propertlv.com'
+const DEFAULT_GA_MEASUREMENT_ID = 'G-2EY65BX3R1'
 
 export function getSiteUrl(): string {
   const raw = import.meta.env.VITE_SITE_URL as string | undefined
@@ -18,7 +19,7 @@ export function getDefaultOgImageUrl(): string {
 export function getGoogleAnalyticsId(): string | undefined {
   const id = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined
   const trimmed = id?.trim()
-  return trimmed || undefined
+  return trimmed || DEFAULT_GA_MEASUREMENT_ID
 }
 
 export function toAbsoluteUrl(path: string): string {
