@@ -88,6 +88,8 @@ export interface Property {
   agentId: string
   /** Short public id such as PT-1001. Unique across listings. */
   propertyCode?: string
+  /** Owner phone for the office. Stored with the listing and omitted from the public site. */
+  ownerPhone?: string
   /** Listing text translated for each site language. */
   translations?: Partial<Record<ListingLocale, ListingLocaleCopy>>
   /** Older Hebrew copy. Automatic translations replace this when present. */

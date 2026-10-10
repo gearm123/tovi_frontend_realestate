@@ -64,6 +64,9 @@ export default function PropertyDetailPage() {
           ? localizedPreview.specialNotes
           : property?.specialNotes,
         floor: property?.floor,
+        rooms: property?.rooms ?? 0,
+        bedrooms: property?.bedrooms ?? 0,
+        bathrooms: property?.bathrooms ?? 0,
       }),
     [localizedPreview, property],
   )

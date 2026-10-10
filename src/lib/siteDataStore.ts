@@ -271,6 +271,7 @@ export function createBlankProperty(listingType: ListingType = 'sale'): Property
     isNew: false,
     availability: 'available',
     propertyCode: '',
+    ownerPhone: '',
     features: createEmptyFeatures(),
   }
 }

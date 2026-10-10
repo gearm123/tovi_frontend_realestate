@@ -9,7 +9,12 @@ import {
   upsertCachedListing,
 } from '../../lib/siteDataStore'
 import { saveListing } from '../../services/listingsApi'
-import { draftListingCopy, linesToList, listToLines } from '../../lib/listingCopyDraft'
+import {
+  applyStructuredCounts,
+  draftListingCopy,
+  linesToList,
+  listToLines,
+} from '../../lib/listingCopyDraft'
 import { cleanListingText } from '../../utils/listingCopy'
 import type { ListingType, Property, PropertyType } from '../../types/property'
 import {
@@ -33,6 +38,79 @@ const featureKeys = [
   ['miklat', 'Building shelter (Miklat)'],
   ['petsAllowed', 'Pets allowed'],
 ] as const
+
+function roomCountText(value: number): string {
+  return Number.isFinite(value) ? String(value) : ''
+}
+
+function parseRoomCount(raw: string, allowZero: boolean): number | null {
+  const trimmed = raw.trim().replace(',', '.')
+  if (!/^\d+(\.\d+)?$/.test(trimmed)) return null
+  const value = Number(trimmed)
+  if (!Number.isFinite(value) || value < 0) return null
+  if (!allowZero && value === 0) return null
+  return value
+}
+
+function CountField({
+  id,
+  label,
+  value,
+  allowZero = false,
+  hint,
+  onChange,
+}: {
+  id: string
+  label: string
+  value: number
+  allowZero?: boolean
+  hint?: string
+  onChange: (value: number) => void
+}) {
+  const [text, setText] = useState(() => roomCountText(value))
+  const lastValue = useRef(value)
+
+  useEffect(() => {
+    if (value === lastValue.current) return
+    lastValue.current = value
+    setText(roomCountText(value))
+  }, [value])
+
+  const commit = (raw: string) => {
+    const parsed = parseRoomCount(raw, allowZero)
+    if (parsed == null) return
+    lastValue.current = parsed
+    onChange(parsed)
+  }
+
+  return (
+    <div className="admin-field">
+      <label htmlFor={id}>{label}</label>
+      <input
+        id={id}
+        type="text"
+        inputMode="decimal"
+        value={text}
+        onChange={(e) => {
+          const raw = e.target.value.replace(',', '.')
+          if (raw !== '' && !/^\d*\.?\d*$/.test(raw)) return
+          setText(raw)
+          commit(raw)
+        }}
+        onBlur={() => {
+          const parsed = parseRoomCount(text, allowZero)
+          if (parsed == null) {
+            setText(roomCountText(value))
+            return
+          }
+          setText(roomCountText(parsed))
+          commit(roomCountText(parsed))
+        }}
+      />
+      {hint ? <p className="admin-field__hint">{hint}</p> : null}
+    </div>
+  )
+}
 
 export default function AdminListingFormPage() {
   const { id } = useParams()
@@ -166,15 +244,18 @@ export default function AdminListingFormPage() {
       ...form,
       title: cleanListingText(form.title),
       address: cleanListingText(form.address),
-      description: cleanListingText(form.description),
+      description: applyStructuredCounts(cleanListingText(form.description), form),
       floor: form.floor?.trim() || undefined,
-      highlights: (form.highlights ?? []).map(cleanListingText).filter(Boolean),
+      highlights: (form.highlights ?? [])
+        .map((line) => applyStructuredCounts(cleanListingText(line), form))
+        .filter(Boolean),
       specialNotes: (form.specialNotes ?? []).map(cleanListingText).filter(Boolean),
       videoUrl: form.videoUrl?.trim() || undefined,
       image: cover,
       images,
       price: formatListingPrice(form.priceNumeric, form.listingType),
       propertyCode: normalizePropertyCode(form.propertyCode ?? ''),
+      ownerPhone: form.ownerPhone?.trim() || undefined,
       he: undefined,
       translations: undefined,
     }
@@ -315,6 +396,20 @@ export default function AdminListingFormPage() {
                 </select>
               </div>
               <div className="admin-field admin-field--full">
+                <label htmlFor="listing-owner-phone">Owner phone</label>
+                <input
+                  id="listing-owner-phone"
+                  type="tel"
+                  value={form.ownerPhone ?? ''}
+                  autoComplete="off"
+                  placeholder="058-0000000"
+                  onChange={(e) => setField('ownerPhone', e.target.value)}
+                />
+                <p className="admin-field__hint">
+                  For the office only. This number is not shown on the website.
+                </p>
+              </div>
+              <div className="admin-field admin-field--full">
                 <label htmlFor="listing-address">Address</label>
                 <input
                   id="listing-address"
@@ -386,38 +481,27 @@ export default function AdminListingFormPage() {
               </div>
             </div>
             <div className="admin-form__grid admin-form__grid--3">
-              <div className="admin-field">
-                <label htmlFor="listing-rooms">Rooms</label>
-                <input
-                  id="listing-rooms"
-                  type="number"
-                  min={1}
-                  step={0.5}
-                  value={form.rooms}
-                  onChange={(e) => setField('rooms', Number(e.target.value) || 0)}
-                />
-              </div>
-              <div className="admin-field">
-                <label htmlFor="listing-bedrooms">Bedrooms</label>
-                <input
-                  id="listing-bedrooms"
-                  type="number"
-                  min={0}
-                  value={form.bedrooms}
-                  onChange={(e) => setField('bedrooms', Number(e.target.value) || 0)}
-                />
-              </div>
-              <div className="admin-field">
-                <label htmlFor="listing-bathrooms">Bathrooms</label>
-                <input
-                  id="listing-bathrooms"
-                  type="number"
-                  min={0}
-                  step={0.5}
-                  value={form.bathrooms}
-                  onChange={(e) => setField('bathrooms', Number(e.target.value) || 0)}
-                />
-              </div>
+              <CountField
+                id="listing-rooms"
+                label="Rooms"
+                value={form.rooms}
+                hint="Half rooms are allowed, such as 3.5 or 4.5."
+                onChange={(rooms) => setField('rooms', rooms)}
+              />
+              <CountField
+                id="listing-bedrooms"
+                label="Bedrooms"
+                value={form.bedrooms}
+                allowZero
+                onChange={(bedrooms) => setField('bedrooms', bedrooms)}
+              />
+              <CountField
+                id="listing-bathrooms"
+                label="Bathrooms"
+                value={form.bathrooms}
+                allowZero
+                onChange={(bathrooms) => setField('bathrooms', bathrooms)}
+              />
               <div className="admin-field">
                 <label htmlFor="listing-floor">Floor</label>
                 <input

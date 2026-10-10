@@ -91,3 +91,39 @@ export function linesToList(value: string): string[] {
 export function listToLines(values?: string[]): string {
   return (values ?? []).join('\n')
 }
+
+function formatCount(value: number): string {
+  const rounded = Math.round(value * 100) / 100
+  return String(rounded)
+}
+
+function replaceEnglishCount(text: string, count: number, singular: string, plural: string): string {
+  if (!(count > 0)) return text
+  const label = count === 1 ? singular : plural
+  const pattern = new RegExp(
+    `\\d+(?:[.,]\\d+)?\\s+${plural}\\b|\\d+(?:[.,]\\d+)?\\s+${singular}\\b`,
+    'gi',
+  )
+  return text.replace(pattern, `${formatCount(count)} ${label}`)
+}
+
+function replaceNounNumber(text: string, count: number, nouns: string): string {
+  if (!(count > 0)) return text
+  const pattern = new RegExp(`\\d+(?:[.,]\\d+)?(?=\\s+(?:${nouns}))`, 'gi')
+  return text.replace(pattern, formatCount(count))
+}
+
+/** Keeps written listing copy aligned with the room counts entered in admin. */
+export function applyStructuredCounts(
+  text: string,
+  property: Pick<Property, 'rooms' | 'bedrooms' | 'bathrooms'>,
+): string {
+  if (!text) return text
+  let next = replaceEnglishCount(text, property.bathrooms, 'bathroom', 'bathrooms')
+  next = replaceEnglishCount(next, property.bedrooms, 'bedroom', 'bedrooms')
+  next = replaceEnglishCount(next, property.rooms, 'room', 'rooms')
+  next = replaceNounNumber(next, property.bathrooms, 'חדרי רחצה|חדרי אמבטיה|salles de bain|salle de bain|ванные|ванная|ванных')
+  next = replaceNounNumber(next, property.bedrooms, 'חדרי שינה|chambres|chambre|спальни|спальня|спален')
+  next = replaceNounNumber(next, property.rooms, 'חדרים|חדר(?!י)|pièces|pièce|комнаты|комната|комнат(?!ы)|комн\\.')
+  return next
+}

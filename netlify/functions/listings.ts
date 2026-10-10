@@ -376,7 +376,9 @@ async function ensurePropertyCodes(): Promise<Property[]> {
 
 async function listListings(req: Request): Promise<Response> {
   const listings = await ensurePropertyCodes()
-  const visible = verifyToken(readBearer(req)) ? listings : listings.filter(isListingAvailable)
+  const visible = verifyToken(readBearer(req))
+    ? listings
+    : listings.filter(isListingAvailable).map(withoutOwnerPhone)
   return json(200, { listings: visible })
 }
 
@@ -455,7 +457,7 @@ async function translateMissingListings(req: Request): Promise<Response> {
   }
 
   return json(200, {
-    listings: updated,
+    listings: updated.map(withoutOwnerPhone),
     remaining: Math.max(0, missing.length - updated.length),
   })
 }
@@ -484,6 +486,13 @@ function listingCopyChanged(current: Property, next: Property): boolean {
   return copy(current) !== copy(next)
 }
 
+function withoutOwnerPhone(listing: Property): Property {
+  if (!listing.ownerPhone) return listing
+  const next = { ...listing }
+  delete next.ownerPhone
+  return next
+}
+
 function isListingId(id: string): boolean {
   return /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,180}$/.test(id)
 }
@@ -500,6 +509,7 @@ function normalizeListing(property: Property): Property {
         videoUrl: property.videoUrl?.trim() || undefined,
         availability: listingAvailability(property),
         propertyCode: normalizePropertyCode(property.propertyCode ?? '') || undefined,
+        ownerPhone: property.ownerPhone?.trim() || undefined,
       }),
     ),
   )

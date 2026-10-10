@@ -1,3 +1,4 @@
+import { applyStructuredCounts } from './listingCopyDraft'
 import type { Property } from '../types/property'
 
 export interface ListingNarrative {
@@ -240,10 +241,12 @@ function tidyList(values?: string[]): string[] {
 
 /** Prefer structured admin fields; fall back to parsing legacy free-text descriptions. */
 export function getPropertyNarrative(
-  property: Pick<Property, 'description' | 'highlights' | 'specialNotes' | 'floor'>,
+  property: Pick<Property, 'description' | 'highlights' | 'specialNotes' | 'floor' | 'rooms' | 'bedrooms' | 'bathrooms'>,
 ): ListingNarrative {
-  const parsed = splitListingNarrative(property.description ?? '')
-  const highlights = tidyList(property.highlights)
+  const parsed = splitListingNarrative(
+    applyStructuredCounts(property.description ?? '', property),
+  )
+  const highlights = tidyList(property.highlights).map((item) => applyStructuredCounts(item, property))
   const specialNotes = tidyList(property.specialNotes)
   const floor = property.floor?.trim() || parsed.floor
 
