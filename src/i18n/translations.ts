@@ -29,6 +29,7 @@ const en = {
       sellWithUs: 'Sell With Us',
       about: 'About',
       magazine: 'Magazine',
+      guides: 'Guides',
       contact: 'Contact',
       sellersPackage: 'Sellers Exclusive Package',
     },
@@ -192,6 +193,22 @@ const en = {
         date: 'January 2026',
       },
     ],
+  },
+  guides: {
+    title: 'Guides',
+    subtitle: 'Presentations for people moving to Israel and for real estate investors.',
+    open: 'Open presentation',
+    download: 'Download',
+    back: 'All guides',
+    notFound: 'Guide not found',
+    moving: {
+      title: 'Moving to Israel',
+      summary: 'A guide for people arriving in Israel, from the first steps to finding a home.',
+    },
+    investing: {
+      title: 'Investing in Israel',
+      summary: 'A guide for real estate investors looking at the Israeli market.',
+    },
   },
   sales: {
     accent: 'Discover',
@@ -371,6 +388,7 @@ const he: TranslationTree = {
       sellWithUs: 'מכרו איתנו',
       about: 'אודות',
       magazine: 'מגזין',
+      guides: 'מדריכים',
       contact: 'צור קשר',
       sellersPackage: 'חבילת מוכרים בלעדית',
     },
@@ -533,6 +551,22 @@ const he: TranslationTree = {
         date: 'ינואר 2026',
       },
     ],
+  },
+  guides: {
+    title: 'מדריכים',
+    subtitle: 'מצגות למי שעובר לישראל ולמשקיעי נדל״ן.',
+    open: 'פתיחת המצגת',
+    download: 'הורדה',
+    back: 'כל המדריכים',
+    notFound: 'המדריך לא נמצא',
+    moving: {
+      title: 'מעבר לישראל',
+      summary: 'מדריך למי שמגיע לישראל, מהצעדים הראשונים ועד מציאת בית.',
+    },
+    investing: {
+      title: 'השקעה בישראל',
+      summary: 'מדריך למשקיעי נדל״ן בשוק הישראלי.',
+    },
   },
   sales: {
     accent: 'גלו',

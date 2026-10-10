@@ -24,6 +24,7 @@ export const frPatch = {
       sellWithUs: 'Vendre avec nous',
       about: 'À propos',
       magazine: 'Magazine',
+      guides: 'Guides',
       contact: 'Contact',
       sellersPackage: 'Pack vendeur exclusif',
     },
@@ -309,6 +310,22 @@ export const frPatch = {
     loadMore: 'Voir plus',
     showMore: 'Voir plus',
     showLess: 'Voir moins',
+  },
+  guides: {
+    title: 'Guides',
+    subtitle: 'Des présentations pour les personnes qui s’installent en Israël et pour les investisseurs immobiliers.',
+    open: 'Ouvrir la présentation',
+    download: 'Télécharger',
+    back: 'Tous les guides',
+    notFound: 'Guide introuvable',
+    moving: {
+      title: 'S’installer en Israël',
+      summary: 'Un guide pour les personnes qui arrivent en Israël, des premières démarches jusqu’au logement.',
+    },
+    investing: {
+      title: 'Investir en Israël',
+      summary: 'Un guide pour les investisseurs immobiliers sur le marché israélien.',
+    },
   },
   map: {
     expand: 'Agrandir la carte',

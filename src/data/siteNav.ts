@@ -5,6 +5,7 @@ export type SiteNavKey =
   | 'sellWithUs'
   | 'about'
   | 'magazine'
+  | 'guides'
   | 'contact'
 
 export interface SiteNavItem {
@@ -19,6 +20,7 @@ export const siteNavItems: SiteNavItem[] = [
   { to: '/services', key: 'sellWithUs' },
   { to: '/about', key: 'about' },
   { to: '/magazine', key: 'magazine' },
+  { to: '/guides', key: 'guides' },
   { to: '/contact', key: 'contact' },
 ]
 

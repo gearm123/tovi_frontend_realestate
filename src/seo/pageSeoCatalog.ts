@@ -10,6 +10,7 @@ export type StaticSeoPageKey =
   | 'sellersPackage'
   | 'contact'
   | 'magazine'
+  | 'guides'
 
 export interface PageSeoEntry {
   title: string
@@ -75,6 +76,12 @@ export const pageSeoCatalog: SeoCatalog = {
         'Stories, neighbourhood guides, and market insights from Tel Aviv\'s property scene.',
       path: '/magazine',
     },
+    guides: {
+      title: 'Guides | ProperTLV',
+      description:
+        'Presentations for people moving to Israel and for real estate investors, from ProperTLV.',
+      path: '/guides',
+    },
   },
   he: {
     home: {
@@ -125,6 +132,11 @@ export const pageSeoCatalog: SeoCatalog = {
       description: 'סיפורים, מדריכי שכונות ותובנות שוק מעולם הנדל״ן בתל אביב.',
       path: '/magazine',
     },
+    guides: {
+      title: 'מדריכים | ProperTLV',
+      description: 'מצגות למי שעובר לישראל ולמשקיעי נדל״ן, מבית ProperTLV.',
+      path: '/guides',
+    },
   },
   fr: {
     home: {
@@ -172,6 +184,12 @@ export const pageSeoCatalog: SeoCatalog = {
       description: 'Guides et analyses immobilières à Tel Aviv.',
       path: '/magazine',
     },
+    guides: {
+      title: 'Guides | ProperTLV',
+      description:
+        'Présentations pour les personnes qui s’installent en Israël et pour les investisseurs immobiliers.',
+      path: '/guides',
+    },
   },
   ru: {
     home: {
@@ -218,6 +236,11 @@ export const pageSeoCatalog: SeoCatalog = {
       title: 'Журнал ProperTLV',
       description: 'Материалы о рынке недвижимости Тель-Авива.',
       path: '/magazine',
+    },
+    guides: {
+      title: 'Гиды | ProperTLV',
+      description: 'Презентации для переезжающих в Израиль и для инвесторов в недвижимость.',
+      path: '/guides',
     },
   },
 }

@@ -17,6 +17,9 @@ const STATIC_PATHS = [
   '/sellers-package',
   '/contact',
   '/magazine',
+  '/guides',
+  '/guides/moving-to-israel',
+  '/guides/investing-in-israel',
 ]
 
 const MAGAZINE_SLUGS = [
