@@ -1,3 +1,11 @@
+export function scrollPageTo(top: number) {
+  const root = document.documentElement
+  root.style.setProperty('scroll-behavior', 'auto', 'important')
+  root.scrollTop = top
+  document.body.scrollTop = top
+  root.style.removeProperty('scroll-behavior')
+}
+
 export function scrollPageToTop() {
-  window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  scrollPageTo(0)
 }

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { scrollPageToTop } from '../utils/scrollPageToTop'
 import './FloatingHomeButton.css'
@@ -16,6 +16,7 @@ function HomeIcon() {
 
 export default function FloatingHomeButton() {
   const { t } = useLanguage()
+  const { pathname } = useLocation()
 
   return (
     <Link
@@ -23,7 +24,12 @@ export default function FloatingHomeButton() {
       className="floating-home"
       aria-label={t.floatingHome.ariaLabel}
       title={t.floatingHome.ariaLabel}
-      onClick={scrollPageToTop}
+      onClick={(event) => {
+        if (pathname === '/') {
+          event.preventDefault()
+          scrollPageToTop()
+        }
+      }}
     >
       <HomeIcon />
     </Link>

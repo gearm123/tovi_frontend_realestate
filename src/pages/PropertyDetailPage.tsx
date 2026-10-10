@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import PageSeo from '../components/seo/PageSeo'
 import VideoEmbed from '../components/shared/VideoEmbed'
 import PropertyAgentCard from '../components/property-listings/shared/PropertyAgentCard'
@@ -26,6 +26,8 @@ import './PropertyDetailPage.css'
 
 export default function PropertyDetailPage() {
   const { id } = useParams<{ id: string }>()
+  const location = useLocation()
+  const navigate = useNavigate()
   const { t, locale } = useLanguage()
   const viewport = useViewport()
   const { properties, listingsStatus } = useSiteData()
@@ -216,6 +218,11 @@ export default function PropertyDetailPage() {
           <Link
             to={property.listingType === 'sale' ? '/sales' : '/rentals'}
             className="property-detail__back"
+            onClick={(event) => {
+              if (location.key === 'default') return
+              event.preventDefault()
+              navigate(-1)
+            }}
           >
             {t.property.backToListings}
           </Link>
