@@ -1,6 +1,10 @@
+import { useLocation } from 'react-router-dom'
 import { trackWhatsAppClick } from '../analytics/googleAnalytics'
-import { getBusiness } from '../lib/siteDataStore'
+import { toAbsoluteUrl } from '../constants/seoConfig'
 import { useLanguage } from '../context/LanguageContext'
+import { useSiteData } from '../hooks/useSiteData'
+import type { Property } from '../types/property'
+import { getPropertyListingUrl } from '../utils/propertyContact'
 import { buildWhatsAppUrl } from '../utils/whatsapp'
 import './WhatsAppButton.css'
 
@@ -20,10 +24,23 @@ function WhatsAppIcon() {
   )
 }
 
+function messageForPage(pathname: string, fallback: string, properties: Property[]): string {
+  const match = pathname.match(/^\/property\/(?:sale|rental)\/([^/]+)\/?$/)
+  if (!match) return fallback
+
+  const property = properties.find((item) => item.id === decodeURIComponent(match[1]))
+  const url = property ? getPropertyListingUrl(property) : toAbsoluteUrl(pathname)
+  return property?.title ? `${fallback}\n${property.title}\n${url}` : `${fallback}\n${url}`
+}
+
 export default function WhatsAppButton() {
   const { t } = useLanguage()
-  const business = getBusiness()
-  const href = buildWhatsAppUrl(business.phone.whatsapp, t.whatsapp.defaultMessage)
+  const { pathname } = useLocation()
+  const { business, properties } = useSiteData()
+  const href = buildWhatsAppUrl(
+    business.phone.whatsapp,
+    messageForPage(pathname, t.whatsapp.defaultMessage, properties),
+  )
 
   return (
     <a

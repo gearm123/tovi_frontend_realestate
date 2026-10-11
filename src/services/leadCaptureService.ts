@@ -1,3 +1,4 @@
+import { toAbsoluteUrl } from '../constants/seoConfig'
 import { getBusiness } from '../lib/siteDataStore'
 import { buildWhatsAppUrl } from '../utils/whatsapp'
 import { submitNetlifyForm } from './contactService'
@@ -16,7 +17,7 @@ export function buildLeadCaptureMessage(payload: LeadCapturePayload): string {
     `New lead from ${payload.name}`,
     `Phone: ${payload.phone}`,
     `Interest: ${payload.interest}`,
-    `Page: ${payload.sourcePage}`,
+    `Page: ${toAbsoluteUrl(payload.sourcePage)}`,
   ]
 
   if (payload.message?.trim()) {
