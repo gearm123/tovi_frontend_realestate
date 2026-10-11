@@ -408,10 +408,18 @@ async function upsertListing(req: Request): Promise<Response> {
     [prepared.id],
   )
   const current = existing.rows[0]?.data
+  const copyChanged = !current || listingCopyChanged(current, prepared)
   let listing = prepared
-  if (!current || listingCopyChanged(current, prepared)) {
+  if (current && !copyChanged) {
+    listing = {
+      ...prepared,
+      translations: prepared.translations ?? current.translations,
+      he: prepared.he ?? current.he,
+    }
+  } else {
     try {
       listing = await withListingTranslations(prepared)
+      if (current?.he && !listing.he) listing = { ...listing, he: current.he }
     } catch (error) {
       console.error(error instanceof Error ? error.message : 'Listing translation failed')
       return json(502, { error: 'The listing could not be translated. Publish it again in a moment.' })

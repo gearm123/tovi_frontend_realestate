@@ -256,8 +256,6 @@ export default function AdminListingFormPage() {
       price: formatListingPrice(form.priceNumeric, form.listingType),
       propertyCode: normalizePropertyCode(form.propertyCode ?? ''),
       ownerPhone: form.ownerPhone?.trim() || undefined,
-      he: undefined,
-      translations: undefined,
     }
 
     setSaving(true)
