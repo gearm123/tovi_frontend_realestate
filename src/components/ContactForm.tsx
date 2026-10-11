@@ -10,6 +10,7 @@ import {
   type ContactInquiry,
 } from '../services/contactService'
 import { getPropertyById } from '../services/propertyService'
+import { trackLead } from '../analytics/googleAnalytics'
 import { getPropertyListingUrl } from '../utils/propertyContact'
 import { getLocalizedProperty } from '../i18n/propertyTranslations'
 import './ContactForm.css'
@@ -104,7 +105,8 @@ export default function ContactForm() {
     const whatsappUrl = buildContactWhatsAppUrl(inquiry)
     const mailtoUrl = buildContactMailtoUrl(inquiry)
 
-    await submitContactInquiry(form)
+    const sent = await submitContactInquiry(form)
+    if (sent) trackLead()
 
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
 

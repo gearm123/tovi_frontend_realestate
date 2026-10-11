@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { ResolvedAgent } from '../../../types/agent'
 import type { Property } from '../../../types/property'
+import { trackWhatsAppClick } from '../../../analytics/googleAnalytics'
 import { useLanguage } from '../../../context/LanguageContext'
 import {
   buildPropertyWhatsAppUrl,
@@ -95,6 +96,7 @@ export default function PropertyAgentCard({
             className="property-agent__cta property-agent__cta--whatsapp"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackWhatsAppClick()}
           >
             {t.property.whatsapp}
           </a>

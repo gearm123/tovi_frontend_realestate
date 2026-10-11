@@ -1,3 +1,4 @@
+import { trackWhatsAppClick } from '../analytics/googleAnalytics'
 import { getBusiness } from '../lib/siteDataStore'
 import { useLanguage } from '../context/LanguageContext'
 import { buildWhatsAppUrl } from '../utils/whatsapp'
@@ -32,6 +33,7 @@ export default function WhatsAppButton() {
       rel="noopener noreferrer"
       aria-label={t.whatsapp.ariaLabel}
       title={t.whatsapp.ariaLabel}
+      onClick={() => trackWhatsAppClick()}
     >
       <WhatsAppIcon />
       <span className="whatsapp-button__label">{t.whatsapp.label}</span>

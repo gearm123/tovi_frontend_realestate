@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { useLocation } from 'react-router-dom'
+import { trackLead } from '../../analytics/googleAnalytics'
 import { getLeadCaptureSettings } from '../../lib/siteDataStore'
 import { getDir, translations } from '../../i18n/translations'
 import type { Locale } from '../../i18n/types'
@@ -119,6 +120,7 @@ export default function LeadCapturePopup() {
       return
     }
 
+    trackLead()
     window.open(nextWhatsappUrl, '_blank', 'noopener,noreferrer')
 
     sessionStorage.setItem(SESSION_SUBMITTED_KEY, '1')
