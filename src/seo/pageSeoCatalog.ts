@@ -141,105 +141,124 @@ export const pageSeoCatalog: SeoCatalog = {
   fr: {
     home: {
       title: 'PROPERTLV | Immobilier à Tel Aviv',
-      description: 'ProperTLV propose des appartements et maisons sélectionnés à Tel Aviv.',
+      description:
+        'ProperTLV est une agence immobilière boutique anglophone à Tel Aviv. Appartements de standing à vendre et à louer, services acheteurs et vendeurs, accompagnement personnel.',
       path: '/',
     },
     about: {
-      title: 'À propos | ProperTLV',
-      description: 'ProperTLV est une agence immobilière boutique à Tel Aviv.',
+      title: 'À propos de ProperTLV | Agence immobilière à Tel Aviv',
+      description:
+        'Découvrez ProperTLV, agence boutique à Tel Aviv qui accompagne personnellement acheteurs et vendeurs dans toute la ville.',
       path: '/about',
     },
     sales: {
-      title: 'Biens à vendre | ProperTLV',
-      description: 'Parcourez les biens en vente à Tel Aviv.',
+      title: 'Biens à vendre à Tel Aviv | ProperTLV',
+      description:
+        'Parcourez les appartements et maisons à vendre à Tel Aviv avec ProperTLV.',
       path: '/sales',
     },
     rentals: {
-      title: 'Locations | ProperTLV Tel Aviv',
-      description: 'Découvrez les appartements à louer à Tel Aviv.',
+      title: 'Appartements à louer à Tel Aviv | ProperTLV',
+      description:
+        'Découvrez les appartements et maisons disponibles à la location à Tel Aviv avec ProperTLV.',
       path: '/rentals',
     },
     search: {
-      title: 'Recherche | ProperTLV',
-      description: 'Filtrez les biens à Tel Aviv par critères.',
+      title: 'Rechercher un bien à Tel Aviv | ProperTLV',
+      description:
+        'Filtrez les logements à Tel Aviv par statut, type, pièces, prix et quartier avec ProperTLV.',
       path: '/properties',
     },
     services: {
-      title: 'Services | ProperTLV',
-      description: 'Services acheteurs et vendeurs à Tel Aviv.',
+      title: 'Services immobiliers | ProperTLV Tel Aviv',
+      description:
+        'Services pour acheteurs et vendeurs, aide à l’installation, et formule de représentation exclusive ProperTLV.',
       path: '/services',
     },
     sellersPackage: {
-      title: 'Package vendeur exclusif | ProperTLV',
-      description: 'Marketing premium et représentation exclusive à Tel Aviv.',
+      title: 'Formule exclusive vendeurs | ProperTLV',
+      description:
+        'Marketing premium, mise en valeur et représentation exclusive pour vendre votre bien à Tel Aviv avec ProperTLV.',
       path: '/sellers-package',
     },
     contact: {
-      title: 'Contact | ProperTLV',
-      description: 'Contactez ProperTLV à Tel Aviv.',
+      title: 'Contacter ProperTLV | Immobilier à Tel Aviv',
+      description:
+        'Contactez ProperTLV au 83 rue Ben Yehuda, Tel Aviv. Téléphone 058-6270099, office@propertlv.com.',
       path: '/contact',
     },
     magazine: {
-      title: 'Magazine ProperTLV',
-      description: 'Guides et analyses immobilières à Tel Aviv.',
+      title: 'Magazine ProperTLV | Le marché immobilier de Tel Aviv',
+      description:
+        'Récits, guides de quartiers et analyses du marché immobilier à Tel Aviv.',
       path: '/magazine',
     },
     guides: {
       title: 'Guides | ProperTLV',
       description:
-        'Présentations pour les personnes qui s’installent en Israël et pour les investisseurs immobiliers.',
+        'Présentations pour les personnes qui s’installent en Israël et pour les investisseurs immobiliers, par ProperTLV.',
       path: '/guides',
     },
   },
   ru: {
     home: {
       title: 'PROPERTLV | Недвижимость в Тель-Авиве',
-      description: 'ProperTLV предлагает отобранные квартиры и дома в Тель-Авиве.',
+      description:
+        'ProperTLV — бутик-агентство недвижимости в Тель-Авиве на английском языке. Квартиры на продажу и в аренду, услуги для покупателей и продавцов и личное сопровождение.',
       path: '/',
     },
     about: {
-      title: 'О нас | ProperTLV',
-      description: 'ProperTLV является бутик-агентством недвижимости в Тель-Авиве.',
+      title: 'О ProperTLV | Агентство недвижимости в Тель-Авиве',
+      description:
+        'ProperTLV — бутик-агентство в Тель-Авиве с личным сопровождением покупателей и продавцов по всему городу.',
       path: '/about',
     },
     sales: {
-      title: 'Продажа | ProperTLV',
-      description: 'Объекты на продажу в Тель-Авиве.',
+      title: 'Недвижимость на продажу в Тель-Авиве | ProperTLV',
+      description:
+        'Смотрите квартиры и дома на продажу по всему Тель-Авиву с ProperTLV.',
       path: '/sales',
     },
     rentals: {
-      title: 'Аренда | ProperTLV',
-      description: 'Квартиры в аренду в Тель-Авиве.',
+      title: 'Квартиры в аренду в Тель-Авиве | ProperTLV',
+      description:
+        'Квартиры и дома, доступные в аренду в Тель-Авиве, с ProperTLV.',
       path: '/rentals',
     },
     search: {
-      title: 'Поиск | ProperTLV',
-      description: 'Фильтр объектов в Тель-Авиве.',
+      title: 'Поиск недвижимости в Тель-Авиве | ProperTLV',
+      description:
+        'Фильтр жилья в Тель-Авиве по статусу, типу, комнатам, цене и району с ProperTLV.',
       path: '/properties',
     },
     services: {
-      title: 'Услуги | ProperTLV',
-      description: 'Услуги для покупателей и продавцов.',
+      title: 'Услуги по недвижимости | ProperTLV Тель-Авив',
+      description:
+        'Услуги для покупателей и продавцов, помощь при переезде и пакет эксклюзивного представительства ProperTLV.',
       path: '/services',
     },
     sellersPackage: {
       title: 'Эксклюзивный пакет для продавцов | ProperTLV',
-      description: 'Премиум-маркетинг и эксклюзивное представительство.',
+      description:
+        'Премиум-маркетинг, подготовка объекта и эксклюзивное представительство при продаже недвижимости в Тель-Авиве с ProperTLV.',
       path: '/sellers-package',
     },
     contact: {
-      title: 'Контакты | ProperTLV',
-      description: 'Свяжитесь с ProperTLV в Тель-Авиве.',
+      title: 'Связаться с ProperTLV | Недвижимость в Тель-Авиве',
+      description:
+        'Свяжитесь с ProperTLV: улица Бен-Йехуда 83, Тель-Авив. Телефон 058-6270099, office@propertlv.com.',
       path: '/contact',
     },
     magazine: {
-      title: 'Журнал ProperTLV',
-      description: 'Материалы о рынке недвижимости Тель-Авива.',
+      title: 'Журнал ProperTLV | Рынок недвижимости Тель-Авива',
+      description:
+        'Истории, гиды по районам и обзоры рынка недвижимости Тель-Авива.',
       path: '/magazine',
     },
     guides: {
       title: 'Гиды | ProperTLV',
-      description: 'Презентации для переезжающих в Израиль и для инвесторов в недвижимость.',
+      description:
+        'Презентации для тех, кто переезжает в Израиль, и для инвесторов в недвижимость, от ProperTLV.',
       path: '/guides',
     },
   },

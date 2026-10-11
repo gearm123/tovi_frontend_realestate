@@ -1,7 +1,19 @@
+import { officeOpeningHours } from '../data/business'
 import { getBusiness } from '../lib/siteDataStore'
 import { toAbsoluteUrl } from '../constants/seoConfig'
 import type { Property } from '../types/property'
 import { getPropertyImages } from '../utils/propertyGallery'
+
+function cleanProfileUrl(url: string): string {
+  try {
+    const parsed = new URL(url)
+    parsed.search = ''
+    parsed.hash = ''
+    return parsed.toString()
+  } catch {
+    return url
+  }
+}
 
 export function buildLocalBusinessJsonLd(): Record<string, unknown> {
   const business = getBusiness()
@@ -9,7 +21,7 @@ export function buildLocalBusinessJsonLd(): Record<string, unknown> {
 
   return {
     '@context': 'https://schema.org',
-    '@type': 'RealEstateAgent',
+    '@type': ['RealEstateAgent', 'LocalBusiness'],
     name: googleBusiness.listingName,
     alternateName: business.name,
     url: toAbsoluteUrl('/'),
@@ -22,7 +34,18 @@ export function buildLocalBusinessJsonLd(): Record<string, unknown> {
       addressLocality: address.city,
       addressCountry: 'IL',
     },
-    sameAs: [social.instagram, social.facebook, social.linkedin, googleBusiness.mapsUrl],
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: officeOpeningHours.dayOfWeek.map((day) => `https://schema.org/${day}`),
+      opens: officeOpeningHours.opens,
+      closes: officeOpeningHours.closes,
+    },
+    sameAs: [
+      googleBusiness.mapsUrl,
+      cleanProfileUrl(social.facebook),
+      cleanProfileUrl(social.instagram),
+      cleanProfileUrl(social.linkedin),
+    ].filter((url) => url.trim().length > 0),
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: googleBusiness.rating,

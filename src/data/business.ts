@@ -31,3 +31,10 @@ export const business: BusinessContact = {
     reviewCount: 38,
   },
 }
+
+/** Sunday–Thursday hours from the agency's own Yad2 listing. */
+export const officeOpeningHours = {
+  dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+  opens: '09:00',
+  closes: '19:00',
+} as const
