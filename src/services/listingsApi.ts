@@ -1,6 +1,7 @@
 import type { LeadCapturePageRule } from '../config/leadCapturePopup'
 import type { Agent } from '../types/agent'
 import type { BusinessContact } from '../types/business'
+import type { MagazineArticle } from '../types/magazine'
 import type { Property } from '../types/property'
 import { getAdminToken } from '../lib/adminAuth'
 
@@ -79,6 +80,35 @@ export async function saveListing(listing: Property): Promise<Property> {
 
 export async function deleteListing(id: string): Promise<void> {
   await request(`/api/listings/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  })
+}
+
+export async function fetchArticles(): Promise<MagazineArticle[]> {
+  const body = await request('/api/articles', { headers: authHeaders() })
+  if (!Array.isArray(body.articles)) {
+    throw new ListingsApiError('The articles server did not return articles.', 500)
+  }
+  return body.articles as MagazineArticle[]
+}
+
+export async function saveArticle(
+  article: MagazineArticle,
+): Promise<{ article: MagazineArticle; warning?: string }> {
+  const body = await request('/api/articles', {
+    method: 'PUT',
+    headers: authHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ article }),
+  })
+  return {
+    article: body.article as MagazineArticle,
+    warning: typeof body.warning === 'string' ? body.warning : undefined,
+  }
+}
+
+export async function deleteArticle(id: string): Promise<void> {
+  await request(`/api/articles/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     headers: authHeaders(),
   })

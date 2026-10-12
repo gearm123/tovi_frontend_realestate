@@ -17,6 +17,8 @@ import PropertyDetailPage from './pages/PropertyDetailPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import AdminDashboardPage from './pages/admin/AdminDashboardPage'
 import AdminListingsPage from './pages/admin/AdminListingsPage'
+import AdminArticleFormPage from './pages/admin/AdminArticleFormPage'
+import AdminArticlesPage from './pages/admin/AdminArticlesPage'
 import AdminListingFormPage from './pages/admin/AdminListingFormPage'
 import AdminAgentsPage from './pages/admin/AdminAgentsPage'
 import AdminAgentFormPage from './pages/admin/AdminAgentFormPage'
@@ -35,6 +37,9 @@ function App() {
               <Route path="listings" element={<AdminListingsPage />} />
               <Route path="listings/new" element={<AdminListingFormPage />} />
               <Route path="listings/:id" element={<AdminListingFormPage />} />
+              <Route path="magazine" element={<AdminArticlesPage />} />
+              <Route path="magazine/new" element={<AdminArticleFormPage />} />
+              <Route path="magazine/:id" element={<AdminArticleFormPage />} />
               <Route path="agents" element={<AdminAgentsPage />} />
               <Route path="agents/new" element={<AdminAgentFormPage />} />
               <Route path="agents/:id" element={<AdminAgentFormPage />} />

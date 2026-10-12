@@ -8,5 +8,8 @@
 [functions]
   node_bundler = "esbuild"
 
+[functions.listings]
+  timeout = 26
+
 # Redirect rules (including SPA fallback) live in public/_redirects.
 # /api/* is rewritten to the listings function before the /* → index.html rule.

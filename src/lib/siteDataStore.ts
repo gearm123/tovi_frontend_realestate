@@ -9,7 +9,15 @@ import type { Agent } from '../types/agent'
 import type { BusinessContact } from '../types/business'
 import type { ListingType, Property, PropertyFeatures } from '../types/property'
 import { PLACEHOLDER_MAP_CENTER, PLACEHOLDER_PROPERTY_IMAGE } from '../data/placeholders'
-import { fetchListings, fetchSiteContent, saveSiteContent, type SiteContent } from '../services/listingsApi'
+import { buildStoredMagazineArticles } from '../data/magazine/stored'
+import type { MagazineArticle } from '../types/magazine'
+import {
+  fetchArticles,
+  fetchListings,
+  fetchSiteContent,
+  saveSiteContent,
+  type SiteContent,
+} from '../services/listingsApi'
 import { withNormalizedPropertyImages } from '../utils/propertyGallery'
 import { withoutStreetNumbers } from '../utils/streetNumber'
 import { withCleanedListingCopy } from '../utils/listingCopy'
@@ -29,12 +37,15 @@ export type ListingsStatus = 'loading' | 'ready' | 'error'
 
 export interface SiteData {
   properties: Property[]
+  articles: MagazineArticle[]
   agents: Agent[]
   business: BusinessContact
   leadCapture: LeadCaptureSettings
   defaultAgentId: string
   listingsStatus: ListingsStatus
   listingsError: string
+  articlesStatus: ListingsStatus
+  articlesError: string
   contentStatus: ListingsStatus
   contentError: string
 }
@@ -81,6 +92,10 @@ function fallbackListings(): Property[] {
 let listingsCache: Property[] = []
 let listingsStatus: ListingsStatus = 'loading'
 let listingsError = ''
+let articlesCache: MagazineArticle[] = buildStoredMagazineArticles()
+let articlesStatus: ListingsStatus = 'loading'
+let articlesError = ''
+let articlesGeneration = 0
 let settings: SiteContent = seedContent()
 let contentStatus: ListingsStatus = 'loading'
 let contentError = ''
@@ -96,8 +111,11 @@ function publish(): SiteData {
   cache = {
     ...settings,
     properties: listingsCache,
+    articles: articlesCache,
     listingsStatus,
     listingsError,
+    articlesStatus,
+    articlesError,
     contentStatus,
     contentError,
   }
@@ -134,6 +152,51 @@ export function removeCachedListing(id: string): void {
     listingsCache.filter((item) => item.id !== id),
     'ready',
   )
+}
+
+export function upsertCachedArticle(article: MagazineArticle): void {
+  const exists = articlesCache.some((item) => item.id === article.id)
+  articlesCache = exists
+    ? articlesCache.map((item) => (item.id === article.id ? article : item))
+    : [article, ...articlesCache]
+  articlesStatus = 'ready'
+  articlesError = ''
+  cache = null
+  publish()
+  notify()
+}
+
+export function removeCachedArticle(id: string): void {
+  articlesCache = articlesCache.filter((item) => item.id !== id)
+  articlesStatus = 'ready'
+  articlesError = ''
+  cache = null
+  publish()
+  notify()
+}
+
+export function refreshArticles(): Promise<void> {
+  const generation = ++articlesGeneration
+  if (!articlesCache.length) articlesStatus = 'loading'
+  return fetchArticles()
+    .then((rows) => {
+      if (generation !== articlesGeneration) return
+      articlesCache = rows
+      articlesStatus = 'ready'
+      articlesError = ''
+    })
+    .catch((error: unknown) => {
+      if (generation !== articlesGeneration) return
+      articlesStatus = 'error'
+      articlesError = error instanceof Error ? error.message : 'Could not load articles'
+      if (!articlesCache.length) articlesCache = buildStoredMagazineArticles()
+    })
+    .finally(() => {
+      if (generation !== articlesGeneration) return
+      cache = null
+      publish()
+      notify()
+    })
 }
 
 export function refreshListings(): Promise<void> {

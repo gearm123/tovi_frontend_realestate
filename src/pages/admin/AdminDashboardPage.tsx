@@ -17,7 +17,7 @@ export default function AdminDashboardPage() {
         <div>
           <h1 className="admin-page__title">Dashboard</h1>
           <p className="admin-page__subtitle">
-            Listings, agents, business details, and the lead popup are saved for every visitor.
+            Listings, magazine articles, agents, business details, and the lead popup are saved for every visitor.
           </p>
         </div>
       </header>
@@ -62,6 +62,9 @@ export default function AdminDashboardPage() {
           </Link>
           <Link className="admin-btn admin-btn--secondary" to="/admin/listings">
             Manage listings
+          </Link>
+          <Link className="admin-btn admin-btn--secondary" to="/admin/magazine">
+            Manage magazine
           </Link>
           <Link className="admin-btn admin-btn--secondary" to="/admin/agents">
             Manage agents

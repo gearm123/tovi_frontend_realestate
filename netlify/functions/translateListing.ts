@@ -131,6 +131,62 @@ export async function withListingTranslations(property: Property): Promise<Prope
   return { ...property, translations: Object.fromEntries(entries) }
 }
 
+export interface MagazineTranslationFields {
+  category: string
+  title: string
+  excerpt: string
+  date: string
+  body: string[]
+  source?: { name: string; url: string; credit: string }
+}
+
+async function mapPool<T, R>(items: T[], limit: number, run: (item: T) => Promise<R>): Promise<R[]> {
+  const results = new Array<R>(items.length)
+  let next = 0
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (next < items.length) {
+      const index = next
+      next += 1
+      results[index] = await run(items[index])
+    }
+  })
+  await Promise.all(workers)
+  return results
+}
+
+/** Builds en, he, fr, and ru copies from the English article text. */
+export async function translateMagazineFields(
+  fields: MagazineTranslationFields,
+): Promise<Record<ListingLocale, MagazineTranslationFields>> {
+  const entries = await Promise.all(
+    LISTING_LOCALES.map(async (locale) => {
+      if (locale === 'en') return [locale, fields] as const
+      const [category, title, excerpt, date, body, credit] = await Promise.all([
+        translateText(fields.category, locale),
+        translateText(fields.title, locale),
+        translateText(fields.excerpt, locale),
+        translateText(fields.date, locale),
+        mapPool(fields.body, 4, (paragraph) => translateText(paragraph, locale)),
+        fields.source?.credit ? translateText(fields.source.credit, locale) : Promise.resolve(''),
+      ])
+      return [
+        locale,
+        {
+          category,
+          title,
+          excerpt,
+          date,
+          body,
+          source: fields.source
+            ? { name: fields.source.name, url: fields.source.url, credit }
+            : undefined,
+        },
+      ] as const
+    }),
+  )
+  return Object.fromEntries(entries)
+}
+
 export function listingNeedsTranslation(property: Property, locale: ListingLocale): boolean {
   const copy = property.translations?.[locale]
   if (!copy) return Boolean(property.title || property.description)

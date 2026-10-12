@@ -1,5 +1,23 @@
+import type { Locale } from '../i18n/types'
+
 /** Written article or video feature */
 export type MagazineArticleType = 'article' | 'video'
+
+export interface MagazineSource {
+  name: string
+  url: string
+  credit: string
+}
+
+/** Translated article text. English on the article itself is the copy the office edits. */
+export interface MagazineLocaleCopy {
+  category: string
+  title: string
+  excerpt: string
+  date: string
+  body: string[]
+  source?: MagazineSource
+}
 
 export interface MagazineArticle {
   id: string
@@ -17,11 +35,9 @@ export interface MagazineArticle {
   /** When true, UI may show a sample marker */
   isPlaceholder: boolean
   /** Original publication credit, e.g. TheMarker */
-  source?: {
-    name: string
-    url: string
-    credit: string
-  }
+  source?: MagazineSource
+  /** Site-language copies. The public site uses these for Hebrew, French, and Russian. */
+  translations?: Partial<Record<Locale, MagazineLocaleCopy>>
 }
 
 export interface MagazinePageContent {

@@ -5,6 +5,7 @@ import './AdminShell.css'
 const navItems = [
   { to: '/admin/dashboard', label: 'Dashboard', end: true },
   { to: '/admin/listings', label: 'Listings' },
+  { to: '/admin/magazine', label: 'Magazine' },
   { to: '/admin/agents', label: 'Agents' },
   { to: '/admin/business', label: 'Business' },
   { to: '/admin/lead-capture', label: 'Lead popup' },

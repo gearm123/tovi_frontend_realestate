@@ -4,15 +4,18 @@ import ArticleVideo from '../components/magazine/ArticleVideo'
 import MagazineCtaBanner from '../components/magazine/MagazineCtaBanner'
 import PageSeo from '../components/seo/PageSeo'
 import { useSiteContent } from '../hooks/useSiteContent'
-import { getMagazineArticleBySlug } from '../services/magazineService'
+import { useSiteData } from '../hooks/useSiteData'
+import { articleForLocale } from '../lib/magazineArticles'
 import { buildArticleJsonLd } from '../seo/structuredData'
 import './MagazineArticlePage.css'
 
 export default function MagazineArticlePage() {
   const { slug } = useParams<{ slug: string }>()
   const { content, locale } = useSiteContent()
+  const { articles } = useSiteData()
   const { magazinePage } = content
-  const article = slug ? getMagazineArticleBySlug(slug, locale) : undefined
+  const stored = slug ? articles.find((item) => item.slug === slug) : undefined
+  const article = stored ? articleForLocale(stored, locale) : undefined
   const articlePath = article ? `/magazine/${article.slug}` : '/magazine'
   const articleJsonLd = useMemo(
     () => (article ? buildArticleJsonLd(article, articlePath) : null),

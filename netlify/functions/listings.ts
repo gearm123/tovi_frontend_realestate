@@ -29,6 +29,14 @@ import {
   withListingTranslations,
   type ListingLocale,
 } from './translateListing'
+import {
+  ArticleInputError,
+  deleteArticle,
+  ensureArticlesSeeded,
+  listArticles,
+  upsertArticle,
+} from './magazineStore'
+import type { MagazineArticle } from '../../src/types/magazine'
 
 const IMAGE_STORE = 'listing-images'
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024
@@ -124,6 +132,41 @@ export default async function handler(req: Request): Promise<Response> {
       if (denied) return denied
       await ensureSeeded()
       return await removeListing(decodeURIComponent(pathname.slice('/api/listings/'.length)))
+    }
+
+    if (pathname === '/api/articles' && method === 'GET') {
+      await ensureArticlesSeeded()
+      return json(200, { articles: await listArticles() })
+    }
+
+    if (pathname === '/api/articles' && method === 'PUT') {
+      const denied = requireAdmin(req)
+      if (denied) return denied
+      await ensureArticlesSeeded()
+      const body = (await req.json().catch(() => null)) as { article?: MagazineArticle } | null
+      if (!body?.article) return json(400, { error: 'An article is required.' })
+      try {
+        const saved = await upsertArticle(body.article)
+        return json(200, saved)
+      } catch (error) {
+        if (error instanceof ArticleInputError) return json(400, { error: error.message })
+        throw error
+      }
+    }
+
+    if (pathname.startsWith('/api/articles/') && method === 'DELETE') {
+      const denied = requireAdmin(req)
+      if (denied) return denied
+      await ensureArticlesSeeded()
+      const id = decodeURIComponent(pathname.slice('/api/articles/'.length))
+      try {
+        const removed = await deleteArticle(id)
+        if (!removed) return json(404, { error: 'Article not found.' })
+      } catch (error) {
+        if (error instanceof ArticleInputError) return json(400, { error: error.message })
+        throw error
+      }
+      return json(200, { ok: true })
     }
 
     return json(404, { error: 'Not found' })

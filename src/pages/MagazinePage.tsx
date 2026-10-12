@@ -2,13 +2,15 @@ import PageShell from '../components/PageShell'
 import ArticleCard from '../components/magazine/ArticleCard'
 import MagazineCtaBanner from '../components/magazine/MagazineCtaBanner'
 import { useSiteContent } from '../hooks/useSiteContent'
-import { getMagazineArticles } from '../services/magazineService'
+import { useSiteData } from '../hooks/useSiteData'
+import { articleForLocale } from '../lib/magazineArticles'
 import './MagazinePage.css'
 
 export default function MagazinePage() {
   const { content, locale } = useSiteContent()
+  const { articles: storedArticles } = useSiteData()
   const { magazinePage } = content
-  const articles = getMagazineArticles(locale)
+  const articles = storedArticles.map((article) => articleForLocale(article, locale))
 
   return (
     <>
