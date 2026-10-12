@@ -25,7 +25,8 @@ export default function AdminListingsPage() {
         property.title.toLowerCase().includes(needle) ||
         property.address.toLowerCase().includes(needle) ||
         property.neighborhood.toLowerCase().includes(needle) ||
-        (property.ownerPhone ?? '').toLowerCase().includes(needle)
+        (property.ownerPhone ?? '').toLowerCase().includes(needle) ||
+        (property.fullAddress ?? '').toLowerCase().includes(needle)
       )
     })
   }, [properties, query])
@@ -112,7 +113,7 @@ export default function AdminListingsPage() {
         ) : (
           <>
           <div className="admin-field" style={{ maxWidth: 360, marginBottom: '0.9rem' }}>
-            <label htmlFor="listing-search">Property ID, title, or owner phone</label>
+            <label htmlFor="listing-search">Property ID, title, owner phone, or full address</label>
             <input
               id="listing-search"
               value={query}
@@ -132,6 +133,7 @@ export default function AdminListingsPage() {
                   <th>Title</th>
                   <th>Type</th>
                   <th>Neighborhood</th>
+                  <th>Full address</th>
                   <th>Owner phone</th>
                   <th>Price</th>
                   <th>Status</th>
@@ -162,6 +164,7 @@ export default function AdminListingsPage() {
                       </span>
                     </td>
                     <td>{property.neighborhood}</td>
+                    <td>{property.fullAddress || '—'}</td>
                     <td>{property.ownerPhone || '—'}</td>
                     <td>{property.price}</td>
                     <td>

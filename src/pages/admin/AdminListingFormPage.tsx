@@ -256,6 +256,7 @@ export default function AdminListingFormPage() {
       price: formatListingPrice(form.priceNumeric, form.listingType),
       propertyCode: normalizePropertyCode(form.propertyCode ?? ''),
       ownerPhone: form.ownerPhone?.trim() || undefined,
+      fullAddress: form.fullAddress?.trim() || undefined,
     }
 
     setSaving(true)
@@ -415,6 +416,20 @@ export default function AdminListingFormPage() {
                   onChange={(e) => setField('address', e.target.value)}
                   required
                 />
+                <p className="admin-field__hint">Shown on the website. Building numbers are removed.</p>
+              </div>
+              <div className="admin-field admin-field--full">
+                <label htmlFor="listing-full-address">Full address</label>
+                <input
+                  id="listing-full-address"
+                  value={form.fullAddress ?? ''}
+                  autoComplete="off"
+                  placeholder="Ben Yehuda 83, Tel Aviv"
+                  onChange={(e) => setField('fullAddress', e.target.value)}
+                />
+                <p className="admin-field__hint">
+                  For the office only. Include the building number. Visitors never see this.
+                </p>
               </div>
               <div className="admin-field">
                 <label htmlFor="listing-lat">Map latitude (optional)</label>

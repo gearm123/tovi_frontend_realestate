@@ -272,6 +272,7 @@ export function createBlankProperty(listingType: ListingType = 'sale'): Property
     availability: 'available',
     propertyCode: '',
     ownerPhone: '',
+    fullAddress: '',
     features: createEmptyFeatures(),
   }
 }
