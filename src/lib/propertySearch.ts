@@ -1,14 +1,6 @@
-import { getPriceMaxForStatus } from '../constants/propertySearch'
 import type { Property } from '../types/property'
 import type { PropertyFilters } from '../types/filters'
 import { propertyCodeMatches } from '../utils/propertyCode'
-
-function matchesPrice(property: Property, filters: PropertyFilters): boolean {
-  if (property.priceNumeric < filters.priceMin) return false
-  const ceiling = getPriceMaxForStatus(filters.listingStatus)
-  if (filters.priceMax >= ceiling) return true
-  return property.priceNumeric <= filters.priceMax
-}
 
 function matchesFeatureFilters(
   property: Property,
@@ -43,7 +35,12 @@ export function filterProperties(
     if (filters.propertyType && property.propertyType !== filters.propertyType) {
       return false
     }
-    if (!matchesPrice(property, filters)) return false
+    if (
+      property.priceNumeric < filters.priceMin ||
+      property.priceNumeric > filters.priceMax
+    ) {
+      return false
+    }
     if (filters.rooms !== '' && property.rooms < filters.rooms) {
       return false
     }

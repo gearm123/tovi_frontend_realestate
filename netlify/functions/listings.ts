@@ -44,12 +44,6 @@ import {
   listFailedLeads,
 } from './failedLeads'
 import type { FailedLead } from '../../src/types/failedLead'
-import {
-  publicCatalogHeaders,
-  purgePublicCatalog,
-  readPublicCatalog,
-  writePublicCatalog,
-} from './publicCatalogCache'
 
 const IMAGE_STORE = 'listing-images'
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024
@@ -112,6 +106,7 @@ export default async function handler(req: Request): Promise<Response> {
     }
 
     if (pathname === '/api/site' && method === 'GET') {
+      await ensureSettingsSeeded()
       return await readSettings()
     }
 
@@ -123,6 +118,7 @@ export default async function handler(req: Request): Promise<Response> {
     }
 
     if (pathname === '/api/listings' && method === 'GET') {
+      await ensureSeeded()
       return await listListings(req)
     }
 
@@ -146,7 +142,8 @@ export default async function handler(req: Request): Promise<Response> {
     }
 
     if (pathname === '/api/articles' && method === 'GET') {
-      return await listPublicArticles()
+      await ensureArticlesSeeded()
+      return json(200, { articles: await listArticles() })
     }
 
     if (pathname === '/api/articles' && method === 'PUT') {
@@ -157,7 +154,6 @@ export default async function handler(req: Request): Promise<Response> {
       if (!body?.article) return json(400, { error: 'An article is required.' })
       try {
         const saved = await upsertArticle(body.article)
-        await refreshPublicArticlesCache()
         return json(200, saved)
       } catch (error) {
         if (error instanceof ArticleInputError) return json(400, { error: error.message })
@@ -173,7 +169,6 @@ export default async function handler(req: Request): Promise<Response> {
       try {
         const removed = await deleteArticle(id)
         if (!removed) return json(404, { error: 'Article not found.' })
-        await refreshPublicArticlesCache()
       } catch (error) {
         if (error instanceof ArticleInputError) return json(400, { error: error.message })
         throw error
@@ -384,21 +379,13 @@ async function seedSettingsIfEmpty(): Promise<void> {
 }
 
 async function readSettings(): Promise<Response> {
-  const cached = await readPublicCatalog<{ settings: SiteContent }>('settings')
-  if (cached?.body.settings) {
-    return json(200, cached.body, publicCatalogHeaders('settings', cached.savedAt))
-  }
-
-  await ensureSettingsSeeded()
   const db = await database()
   const result = await db.pool.query<{ data: SiteContent }>(
     `SELECT data FROM site_content WHERE id = 'settings'`,
   )
   const settings = result.rows[0]?.data
   if (!settings) return json(404, { error: 'Site settings are not available yet.' })
-  const body = { settings }
-  const savedAt = await writePublicCatalog('settings', body)
-  return json(200, body, publicCatalogHeaders('settings', savedAt))
+  return json(200, { settings })
 }
 
 function isSiteContent(value: unknown): value is SiteContent {
@@ -427,8 +414,6 @@ async function writeSettings(req: Request): Promise<Response> {
      ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data, updated_at = now()`,
     [JSON.stringify(settings)],
   )
-  await writePublicCatalog('settings', { settings })
-  await purgePublicCatalog('settings')
   return json(200, { settings })
 }
 
@@ -472,46 +457,11 @@ async function ensurePropertyCodes(): Promise<Property[]> {
 }
 
 async function listListings(req: Request): Promise<Response> {
-  if (!verifyToken(readBearer(req))) {
-    const cached = await readPublicCatalog<{ listings: Property[] }>('listings')
-    if (cached?.body.listings) {
-      return json(200, cached.body, publicCatalogHeaders('listings', cached.savedAt))
-    }
-  }
-
-  await ensureSeeded()
   const listings = await ensurePropertyCodes()
-  if (!verifyToken(readBearer(req))) {
-    const body = { listings: listings.filter(isListingAvailable).map(forPublicListing) }
-    const savedAt = await writePublicCatalog('listings', body)
-    return json(200, body, publicCatalogHeaders('listings', savedAt))
-  }
-  return json(200, { listings })
-}
-
-async function refreshPublicListingsCache(): Promise<void> {
-  const listings = await readListings()
-  await writePublicCatalog('listings', {
-    listings: listings.filter(isListingAvailable).map(forPublicListing),
-  })
-  await purgePublicCatalog('listings')
-}
-
-async function listPublicArticles(): Promise<Response> {
-  const cached = await readPublicCatalog<{ articles: MagazineArticle[] }>('articles')
-  if (cached?.body.articles) {
-    return json(200, cached.body, publicCatalogHeaders('articles', cached.savedAt))
-  }
-
-  await ensureArticlesSeeded()
-  const body = { articles: await listArticles() }
-  const savedAt = await writePublicCatalog('articles', body)
-  return json(200, body, publicCatalogHeaders('articles', savedAt))
-}
-
-async function refreshPublicArticlesCache(): Promise<void> {
-  await writePublicCatalog('articles', { articles: await listArticles() })
-  await purgePublicCatalog('articles')
+  const visible = verifyToken(readBearer(req))
+    ? listings
+    : listings.filter(isListingAvailable).map(forPublicListing)
+  return json(200, { listings: visible })
 }
 
 async function upsertListing(req: Request): Promise<Response> {
@@ -564,7 +514,6 @@ async function upsertListing(req: Request): Promise<Response> {
        SET data = EXCLUDED.data, updated_at = now()`,
     [listing.id, JSON.stringify(listing), -Date.now()],
   )
-  await refreshPublicListingsCache()
   return json(200, { listing })
 }
 
@@ -597,7 +546,6 @@ async function translateMissingListings(req: Request): Promise<Response> {
     }
   }
 
-  if (updated.length > 0) await refreshPublicListingsCache()
   return json(200, {
     listings: updated.map(forPublicListing),
     remaining: Math.max(0, missing.length - updated.length),
@@ -613,7 +561,6 @@ async function removeListing(id: string): Promise<Response> {
   const db = await database()
   const result = await db.pool.query('DELETE FROM listings WHERE id = $1', [id])
   if ((result.rowCount ?? 0) === 0) return json(404, { error: 'Listing not found.' })
-  await refreshPublicListingsCache()
   return json(200, { ok: true })
 }
 

@@ -1,6 +1,6 @@
-/** Top of the price slider. A slider left here does not hide higher prices. */
-export const SALE_PRICE_MAX = 30_000_000
-export const RENTAL_PRICE_MAX = 80_000
+/** Client-side search limits — adjust when connecting to live CRM data */
+export const SALE_PRICE_MAX = 10_000_000
+export const RENTAL_PRICE_MAX = 25_000
 
 export type ListingStatusFilter = 'all' | 'sale' | 'rental'
 
