@@ -44,7 +44,12 @@ import {
   listFailedLeads,
 } from './failedLeads'
 import type { FailedLead } from '../../src/types/failedLead'
-import { readPublicCatalog, writePublicCatalog } from './publicCatalogCache'
+import {
+  publicCatalogHeaders,
+  purgePublicCatalog,
+  readPublicCatalog,
+  writePublicCatalog,
+} from './publicCatalogCache'
 
 const IMAGE_STORE = 'listing-images'
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024
@@ -380,7 +385,9 @@ async function seedSettingsIfEmpty(): Promise<void> {
 
 async function readSettings(): Promise<Response> {
   const cached = await readPublicCatalog<{ settings: SiteContent }>('settings')
-  if (cached?.settings) return json(200, cached)
+  if (cached?.body.settings) {
+    return json(200, cached.body, publicCatalogHeaders('settings', cached.savedAt))
+  }
 
   await ensureSettingsSeeded()
   const db = await database()
@@ -389,8 +396,9 @@ async function readSettings(): Promise<Response> {
   )
   const settings = result.rows[0]?.data
   if (!settings) return json(404, { error: 'Site settings are not available yet.' })
-  await writePublicCatalog('settings', { settings })
-  return json(200, { settings })
+  const body = { settings }
+  const savedAt = await writePublicCatalog('settings', body)
+  return json(200, body, publicCatalogHeaders('settings', savedAt))
 }
 
 function isSiteContent(value: unknown): value is SiteContent {
@@ -420,6 +428,7 @@ async function writeSettings(req: Request): Promise<Response> {
     [JSON.stringify(settings)],
   )
   await writePublicCatalog('settings', { settings })
+  await purgePublicCatalog('settings')
   return json(200, { settings })
 }
 
@@ -465,15 +474,17 @@ async function ensurePropertyCodes(): Promise<Property[]> {
 async function listListings(req: Request): Promise<Response> {
   if (!verifyToken(readBearer(req))) {
     const cached = await readPublicCatalog<{ listings: Property[] }>('listings')
-    if (cached?.listings) return json(200, cached)
+    if (cached?.body.listings) {
+      return json(200, cached.body, publicCatalogHeaders('listings', cached.savedAt))
+    }
   }
 
   await ensureSeeded()
   const listings = await ensurePropertyCodes()
   if (!verifyToken(readBearer(req))) {
     const body = { listings: listings.filter(isListingAvailable).map(forPublicListing) }
-    await writePublicCatalog('listings', body)
-    return json(200, body)
+    const savedAt = await writePublicCatalog('listings', body)
+    return json(200, body, publicCatalogHeaders('listings', savedAt))
   }
   return json(200, { listings })
 }
@@ -483,20 +494,24 @@ async function refreshPublicListingsCache(): Promise<void> {
   await writePublicCatalog('listings', {
     listings: listings.filter(isListingAvailable).map(forPublicListing),
   })
+  await purgePublicCatalog('listings')
 }
 
 async function listPublicArticles(): Promise<Response> {
   const cached = await readPublicCatalog<{ articles: MagazineArticle[] }>('articles')
-  if (cached?.articles) return json(200, cached)
+  if (cached?.body.articles) {
+    return json(200, cached.body, publicCatalogHeaders('articles', cached.savedAt))
+  }
 
   await ensureArticlesSeeded()
   const body = { articles: await listArticles() }
-  await writePublicCatalog('articles', body)
-  return json(200, body)
+  const savedAt = await writePublicCatalog('articles', body)
+  return json(200, body, publicCatalogHeaders('articles', savedAt))
 }
 
 async function refreshPublicArticlesCache(): Promise<void> {
   await writePublicCatalog('articles', { articles: await listArticles() })
+  await purgePublicCatalog('articles')
 }
 
 async function upsertListing(req: Request): Promise<Response> {
