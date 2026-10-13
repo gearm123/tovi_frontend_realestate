@@ -16,7 +16,7 @@ export default function PropertyMapPriceBar({
 }: PropertyMapPriceBarProps) {
   const { t, format, locale } = useLanguage()
   const current = Math.min(Math.max(value, 0), max)
-  const amount = current.toLocaleString(NUMBER_FORMAT_LOCALES[locale])
+  const amount = `${current.toLocaleString(NUMBER_FORMAT_LOCALES[locale])}${current >= max ? '+' : ''}`
   const label = format(t.map.priceMaxValue, { amount })
 
   return (

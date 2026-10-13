@@ -253,9 +253,9 @@ export default function PropertyFiltersBar({
             {format(t.filters.priceRange, {
               label: priceLabel,
               min: filters.priceMin.toLocaleString(NUMBER_FORMAT_LOCALES[locale]),
-              max: Math.min(filters.priceMax, priceMax).toLocaleString(
+              max: `${Math.min(filters.priceMax, priceMax).toLocaleString(
                 NUMBER_FORMAT_LOCALES[locale],
-              ),
+              )}${filters.priceMax >= priceMax ? '+' : ''}`,
             })}
           </span>
           <div className="property-filters__sliders">
