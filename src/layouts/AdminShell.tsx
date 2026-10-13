@@ -9,6 +9,7 @@ const navItems = [
   { to: '/admin/agents', label: 'Agents' },
   { to: '/admin/business', label: 'Business' },
   { to: '/admin/lead-capture', label: 'Lead popup' },
+  { to: '/admin/failed-emails', label: 'Failed emails' },
 ]
 
 export default function AdminShell() {

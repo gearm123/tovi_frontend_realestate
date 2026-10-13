@@ -37,6 +37,13 @@ import {
   upsertArticle,
 } from './magazineStore'
 import type { MagazineArticle } from '../../src/types/magazine'
+import {
+  deleteFailedLead,
+  FailedLeadInputError,
+  insertFailedLead,
+  listFailedLeads,
+} from './failedLeads'
+import type { FailedLead } from '../../src/types/failedLead'
 
 const IMAGE_STORE = 'listing-images'
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024
@@ -164,6 +171,38 @@ export default async function handler(req: Request): Promise<Response> {
         if (!removed) return json(404, { error: 'Article not found.' })
       } catch (error) {
         if (error instanceof ArticleInputError) return json(400, { error: error.message })
+        throw error
+      }
+      return json(200, { ok: true })
+    }
+
+    if (pathname === '/api/failed-leads' && method === 'GET') {
+      const denied = requireAdmin(req)
+      if (denied) return denied
+      return json(200, { leads: await listFailedLeads() })
+    }
+
+    if (pathname === '/api/failed-leads' && method === 'POST') {
+      const body = (await req.json().catch(() => null)) as { lead?: Partial<FailedLead> } | null
+      if (!body?.lead) return json(400, { error: 'A lead is required.' })
+      try {
+        const lead = await insertFailedLead(body.lead)
+        return json(200, { lead })
+      } catch (error) {
+        if (error instanceof FailedLeadInputError) return json(400, { error: error.message })
+        throw error
+      }
+    }
+
+    if (pathname.startsWith('/api/failed-leads/') && method === 'DELETE') {
+      const denied = requireAdmin(req)
+      if (denied) return denied
+      const id = decodeURIComponent(pathname.slice('/api/failed-leads/'.length))
+      try {
+        const removed = await deleteFailedLead(id)
+        if (!removed) return json(404, { error: 'Lead not found.' })
+      } catch (error) {
+        if (error instanceof FailedLeadInputError) return json(400, { error: error.message })
         throw error
       }
       return json(200, { ok: true })

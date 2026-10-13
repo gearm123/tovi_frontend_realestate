@@ -23,6 +23,7 @@ import AdminListingFormPage from './pages/admin/AdminListingFormPage'
 import AdminAgentsPage from './pages/admin/AdminAgentsPage'
 import AdminAgentFormPage from './pages/admin/AdminAgentFormPage'
 import AdminBusinessPage from './pages/admin/AdminBusinessPage'
+import AdminFailedLeadsPage from './pages/admin/AdminFailedLeadsPage'
 import AdminLeadCapturePage from './pages/admin/AdminLeadCapturePage'
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
               <Route path="agents/:id" element={<AdminAgentFormPage />} />
               <Route path="business" element={<AdminBusinessPage />} />
               <Route path="lead-capture" element={<AdminLeadCapturePage />} />
+              <Route path="failed-emails" element={<AdminFailedLeadsPage />} />
               <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
             </Route>
           </Route>

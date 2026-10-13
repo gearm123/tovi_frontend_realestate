@@ -1,6 +1,7 @@
 import type { LeadCapturePageRule } from '../config/leadCapturePopup'
 import type { Agent } from '../types/agent'
 import type { BusinessContact } from '../types/business'
+import type { FailedLead } from '../types/failedLead'
 import type { MagazineArticle } from '../types/magazine'
 import type { Property } from '../types/property'
 import { getAdminToken } from '../lib/adminAuth'
@@ -109,6 +110,36 @@ export async function saveArticle(
 
 export async function deleteArticle(id: string): Promise<void> {
   await request(`/api/articles/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  })
+}
+
+export async function fetchFailedLeads(): Promise<FailedLead[]> {
+  const body = await request('/api/failed-leads', { headers: authHeaders() })
+  if (!Array.isArray(body.leads)) {
+    throw new ListingsApiError('Could not load failed emails.', 500)
+  }
+  return body.leads as FailedLead[]
+}
+
+export async function saveFailedLead(lead: {
+  name: string
+  phone: string
+  message?: string
+  sourcePage: string
+  interest: string
+  recipientEmail: string
+}): Promise<void> {
+  await request('/api/failed-leads', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ lead }),
+  })
+}
+
+export async function deleteFailedLead(id: string): Promise<void> {
+  await request(`/api/failed-leads/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     headers: authHeaders(),
   })

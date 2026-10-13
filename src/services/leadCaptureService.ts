@@ -2,6 +2,7 @@ import { toAbsoluteUrl } from '../constants/seoConfig'
 import { getBusiness } from '../lib/siteDataStore'
 import { buildWhatsAppUrl } from '../utils/whatsapp'
 import { submitNetlifyForm } from './contactService'
+import { saveFailedLead } from './listingsApi'
 
 export interface LeadCapturePayload {
   name: string
@@ -46,6 +47,7 @@ export function getLeadCapturePayloadFromForm(form: HTMLFormElement): LeadCaptur
 
 export async function submitLeadCapture(form: HTMLFormElement): Promise<boolean> {
   const formData = new FormData(form)
+  if (String(formData.get('bot-field') ?? '').trim()) return true
   const payload = getLeadCapturePayloadFromForm(form)
   const data: Record<string, string> = {
     subject: `New ProperTLV lead: ${payload.name}`,
@@ -58,9 +60,16 @@ export async function submitLeadCapture(form: HTMLFormElement): Promise<boolean>
 
   const ok = await submitNetlifyForm('lead-capture', data)
 
-  if (!ok && import.meta.env.DEV) {
-    console.info('[Lead capture] Netlify form unavailable in dev — payload:', data)
-    return true
+  if (!ok) {
+    try {
+      await saveFailedLead(payload)
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : 'Could not store the failed lead')
+    }
+    if (import.meta.env.DEV) {
+      console.info('[Lead capture] Netlify form unavailable in dev — payload:', data)
+      return true
+    }
   }
 
   return ok
