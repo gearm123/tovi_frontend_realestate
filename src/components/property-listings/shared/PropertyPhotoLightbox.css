@@ -106,9 +106,9 @@
     width: 100%;
   }
 
-  .photo-lightbox__nav {
-    top: auto;
-    bottom: 0.75rem;
-    transform: none;
+  .photo-lightbox__close,
+  .photo-lightbox__nav,
+  .photo-lightbox__count {
+    display: none;
   }
 }
