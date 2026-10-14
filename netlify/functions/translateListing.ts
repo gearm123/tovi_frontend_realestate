@@ -97,14 +97,21 @@ async function memoryTranslate(text: string, target: ListingLocale): Promise<str
   return translated.join(' ')
 }
 
+async function translatePiece(text: string, target: ListingLocale): Promise<string> {
+  try {
+    return await googleTranslate(text, target)
+  } catch {
+    return memoryTranslate(text, target)
+  }
+}
+
 async function translateText(text: string, target: ListingLocale): Promise<string> {
   const value = text.trim()
   if (!value || alreadyInLocale(value, target)) return value
-  try {
-    return await googleTranslate(value, target)
-  } catch {
-    return memoryTranslate(value, target)
-  }
+  const pieces = chunks(value, 900)
+  const translated: string[] = []
+  for (const piece of pieces) translated.push(await translatePiece(piece, target))
+  return translated.join(' ')
 }
 
 async function translateLines(lines: string[] | undefined, target: ListingLocale): Promise<string[]> {
@@ -154,37 +161,85 @@ async function mapPool<T, R>(items: T[], limit: number, run: (item: T) => Promis
   return results
 }
 
-/** Builds en, he, fr, and ru copies from the English article text. */
+async function translateParagraphs(paragraphs: string[], locale: ListingLocale): Promise<string[]> {
+  const groups: string[][] = []
+  let current: string[] = []
+  let size = 0
+  for (const paragraph of paragraphs) {
+    const text = paragraph.trim()
+    if (!text) continue
+    if (current.length && size + text.length > 1400) {
+      groups.push(current)
+      current = []
+      size = 0
+    }
+    current.push(text)
+    size += text.length + 2
+  }
+  if (current.length) groups.push(current)
+
+  const translated = await mapPool(groups, 3, async (group) => {
+    if (group.length === 1) return [await translateText(group[0], locale)]
+    const joined = await translateText(group.join('\n\n'), locale)
+    const parts = joined.split(/\n\s*\n/).map((part) => part.trim()).filter(Boolean)
+    if (parts.length === group.length) return parts
+    const singles: string[] = []
+    for (const paragraph of group) singles.push(await translateText(paragraph, locale))
+    return singles
+  })
+  return translated.flat()
+}
+
+async function translateMagazineLocale(
+  fields: MagazineTranslationFields,
+  locale: ListingLocale,
+): Promise<MagazineTranslationFields> {
+  const [category, title, excerpt, date, body, credit] = await Promise.all([
+    translateText(fields.category, locale),
+    translateText(fields.title, locale),
+    translateText(fields.excerpt, locale),
+    translateText(fields.date, locale),
+    translateParagraphs(fields.body, locale),
+    fields.source?.credit ? translateText(fields.source.credit, locale) : Promise.resolve(''),
+  ])
+  return {
+    category,
+    title,
+    excerpt,
+    date,
+    body,
+    source: fields.source
+      ? { name: fields.source.name, url: fields.source.url, credit }
+      : undefined,
+  }
+}
+
+/**
+ * Builds copies for the requested languages from the English article text.
+ * A language that fails is omitted so the others can still be saved.
+ */
 export async function translateMagazineFields(
   fields: MagazineTranslationFields,
-): Promise<Record<ListingLocale, MagazineTranslationFields>> {
+  locales: readonly ListingLocale[] = LISTING_LOCALES,
+): Promise<Partial<Record<ListingLocale, MagazineTranslationFields>>> {
   const entries = await Promise.all(
-    LISTING_LOCALES.map(async (locale) => {
+    locales.map(async (locale) => {
       if (locale === 'en') return [locale, fields] as const
-      const [category, title, excerpt, date, body, credit] = await Promise.all([
-        translateText(fields.category, locale),
-        translateText(fields.title, locale),
-        translateText(fields.excerpt, locale),
-        translateText(fields.date, locale),
-        mapPool(fields.body, 4, (paragraph) => translateText(paragraph, locale)),
-        fields.source?.credit ? translateText(fields.source.credit, locale) : Promise.resolve(''),
-      ])
-      return [
-        locale,
-        {
-          category,
-          title,
-          excerpt,
-          date,
-          body,
-          source: fields.source
-            ? { name: fields.source.name, url: fields.source.url, credit }
-            : undefined,
-        },
-      ] as const
+      try {
+        return [locale, await translateMagazineLocale(fields, locale)] as const
+      } catch (error) {
+        console.error(
+          error instanceof Error
+            ? `Article ${locale} translation failed: ${error.message}`
+            : `Article ${locale} translation failed`,
+        )
+        return [locale, undefined] as const
+      }
     }),
   )
-  return Object.fromEntries(entries)
+  return Object.fromEntries(entries.filter((entry) => entry[1])) as Partial<
+    Record<ListingLocale, MagazineTranslationFields>
+  >
 }
 
 export function listingNeedsTranslation(property: Property, locale: ListingLocale): boolean {

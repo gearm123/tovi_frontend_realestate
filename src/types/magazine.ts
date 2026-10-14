@@ -36,7 +36,12 @@ export interface MagazineArticle {
   isPlaceholder: boolean
   /** Original publication credit, e.g. TheMarker */
   source?: MagazineSource
-  /** Site-language copies. The public site uses these for Hebrew, French, and Russian. */
+  /**
+   * Hebrew written in the admin panel.
+   * The Hebrew site uses this as entered, and saving never replaces it with an automatic translation.
+   */
+  hebrew?: MagazineLocaleCopy
+  /** Automatic site-language copies. Hebrew here is used only when `hebrew` is empty. */
   translations?: Partial<Record<Locale, MagazineLocaleCopy>>
 }
 

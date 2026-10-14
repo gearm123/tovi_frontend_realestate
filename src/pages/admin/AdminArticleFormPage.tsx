@@ -22,6 +22,9 @@ export default function AdminArticleFormPage() {
 
   const [form, setForm] = useState<MagazineArticle>(() => existing ?? createBlankArticle())
   const [bodyText, setBodyText] = useState(() => paragraphsToText((existing ?? createBlankArticle()).body))
+  const [hebrewTitle, setHebrewTitle] = useState(() => existing?.hebrew?.title ?? '')
+  const [hebrewExcerpt, setHebrewExcerpt] = useState(() => existing?.hebrew?.excerpt ?? '')
+  const [hebrewBody, setHebrewBody] = useState(() => paragraphsToText(existing?.hebrew?.body ?? []))
   const [slugEdited, setSlugEdited] = useState(Boolean(existing?.slug))
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -33,6 +36,9 @@ export default function AdminArticleFormPage() {
     if (!existing) return
     setForm(existing)
     setBodyText(paragraphsToText(existing.body))
+    setHebrewTitle(existing.hebrew?.title ?? '')
+    setHebrewExcerpt(existing.hebrew?.excerpt ?? '')
+    setHebrewBody(paragraphsToText(existing.hebrew?.body ?? []))
     setSlugEdited(true)
   }, [existing])
 
@@ -75,6 +81,9 @@ export default function AdminArticleFormPage() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
+    const hebrewParagraphs = textToParagraphs(hebrewBody)
+    const hebrewTitleText = hebrewTitle.trim()
+    const hebrewExcerptText = hebrewExcerpt.trim()
     const article: MagazineArticle = {
       ...form,
       title: form.title.trim(),
@@ -85,6 +94,15 @@ export default function AdminArticleFormPage() {
       image: form.image.trim(),
       videoUrl: form.videoUrl?.trim() || undefined,
       body: textToParagraphs(bodyText),
+      hebrew: hebrewTitleText || hebrewExcerptText || hebrewParagraphs.length
+        ? {
+            category: '',
+            title: hebrewTitleText,
+            excerpt: hebrewExcerptText,
+            date: '',
+            body: hebrewParagraphs,
+          }
+        : undefined,
       source: form.source?.name.trim() || form.source?.url.trim() || form.source?.credit.trim()
         ? {
             name: form.source?.name.trim() ?? '',
@@ -124,7 +142,8 @@ export default function AdminArticleFormPage() {
         <div>
           <h1 className="admin-page__title">{isNew ? 'New article' : 'Edit article'}</h1>
           <p className="admin-page__subtitle">
-            Write in English. Saving translates the title, summary, date, and body.
+            Write the article in English. French and Russian are filled in on save. Hebrew you type
+            below is kept as written.
           </p>
         </div>
         <div className="admin-page__actions">
@@ -307,6 +326,62 @@ export default function AdminArticleFormPage() {
               />{' '}
               Show the sample label on the site
             </label>
+          </div>
+        </div>
+      </section>
+
+      <section className="admin-card">
+        <h2 className="admin-card__title">Hebrew</h2>
+        <p className="admin-page__subtitle">
+          Enter the Hebrew title, summary, and article here when you have original Hebrew text.
+          Saving does not replace this with an automatic translation. Leave it blank to show the
+          automatic Hebrew translation instead.
+        </p>
+        <div className="admin-form__grid">
+          <div className="admin-field admin-field--full">
+            <label htmlFor="article-hebrew-title">Hebrew title</label>
+            <input
+              id="article-hebrew-title"
+              dir="rtl"
+              lang="he"
+              value={hebrewTitle}
+              onChange={(event) => {
+                setHebrewTitle(event.target.value)
+                setSaved(false)
+                setError('')
+              }}
+            />
+          </div>
+          <div className="admin-field admin-field--full">
+            <label htmlFor="article-hebrew-excerpt">Hebrew summary</label>
+            <textarea
+              id="article-hebrew-excerpt"
+              dir="rtl"
+              lang="he"
+              rows={3}
+              value={hebrewExcerpt}
+              onChange={(event) => {
+                setHebrewExcerpt(event.target.value)
+                setSaved(false)
+                setError('')
+              }}
+            />
+          </div>
+          <div className="admin-field admin-field--full">
+            <label htmlFor="article-hebrew-body">Hebrew article</label>
+            <textarea
+              id="article-hebrew-body"
+              dir="rtl"
+              lang="he"
+              rows={16}
+              value={hebrewBody}
+              onChange={(event) => {
+                setHebrewBody(event.target.value)
+                setSaved(false)
+                setError('')
+              }}
+            />
+            <p className="admin-field__hint">Separate Hebrew paragraphs with a blank line.</p>
           </div>
         </div>
       </section>

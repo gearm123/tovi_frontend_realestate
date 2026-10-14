@@ -60,8 +60,32 @@ export function normalizeArticle(input: MagazineArticle): MagazineArticle {
     body,
     isPlaceholder: Boolean(input.isPlaceholder),
     source: cleanSource(input.source),
+    hebrew: cleanCopy(input.hebrew),
     translations: Object.keys(translations).length ? translations : undefined,
   }
+}
+
+const TRANSLATED_LOCALES = ['he', 'fr', 'ru'] as const
+
+function sampleText(copy: MagazineLocaleCopy): string {
+  return [copy.title, copy.excerpt, ...copy.body.slice(0, 3)].join(' ')
+}
+
+function inScript(text: string, pattern: RegExp): number {
+  return (text.match(pattern) ?? []).length
+}
+
+/** True when a saved translation is present and actually in that language. */
+function localeReady(copy: MagazineLocaleCopy | undefined, locale: 'he' | 'fr' | 'ru'): boolean {
+  if (!copy?.title || !copy.body.length) return false
+  const sample = sampleText(copy)
+  if (locale === 'he') return inScript(sample, /[\u0590-\u05FF]/g) > inScript(sample, /[A-Za-z]/g)
+  if (locale === 'ru') return inScript(sample, /[\u0400-\u04FF]/g) > inScript(sample, /[A-Za-z]/g)
+  return true
+}
+
+function hebrewIsComplete(copy: MagazineLocaleCopy | undefined): boolean {
+  return Boolean(copy?.title && copy.excerpt && copy.body.length)
 }
 
 function copyKey(article: MagazineArticle): string {
@@ -166,23 +190,40 @@ export async function upsertArticle(
 
   const copyChanged = !current || copyKey(current) !== copyKey(article)
   let warning: string | undefined
-  if (!copyChanged) {
-    article.translations = article.translations ?? current?.translations
-  } else {
-    try {
-      article.translations = await translateMagazineFields({
+  const previous = current?.translations
+  if (!copyChanged) article.translations = previous ?? article.translations
+
+  const locales = TRANSLATED_LOCALES.filter((locale) => {
+    if (locale === 'he' && hebrewIsComplete(article.hebrew)) return false
+    return copyChanged || !localeReady(article.translations?.[locale], locale)
+  })
+  if (locales.length) {
+    const translated = await translateMagazineFields(
+      {
         category: article.category,
         title: article.title,
         excerpt: article.excerpt,
         date: article.date,
         body: article.body,
         source: article.source,
-      })
-    } catch (error) {
-      console.error(error instanceof Error ? error.message : 'Article translation failed')
-      article.translations = current?.translations ?? article.translations
-      warning =
-        'The article was saved. Hebrew, French, and Russian could not be updated, so the previous translations are still used.'
+      },
+      locales,
+    )
+    const merged: NonNullable<MagazineArticle['translations']> = { ...(article.translations ?? {}) }
+    const failed: string[] = []
+    for (const locale of locales) {
+      const copy = translated[locale]
+      if (copy && localeReady(copy, locale)) merged[locale] = copy
+      else {
+        failed.push(locale)
+        if (previous?.[locale]) merged[locale] = previous[locale]
+        else delete merged[locale]
+      }
+    }
+    article.translations = Object.keys(merged).length ? merged : undefined
+    if (failed.length) {
+      const names = failed.map((locale) => (locale === 'he' ? 'Hebrew' : locale === 'fr' ? 'French' : 'Russian'))
+      warning = `The article was saved. ${names.join(', ')} could not be translated, so ${failed.length === 1 ? 'that language still uses the previous text' : 'those languages still use the previous text'}.`
     }
   }
 

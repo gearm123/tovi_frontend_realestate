@@ -3,7 +3,30 @@ import { Link } from 'react-router-dom'
 import { useSiteData } from '../../hooks/useSiteData'
 import { refreshArticles, removeCachedArticle } from '../../lib/siteDataStore'
 import { deleteArticle } from '../../services/listingsApi'
+import type { MagazineArticle, MagazineLocaleCopy } from '../../types/magazine'
 import './adminShared.css'
+
+function inScript(text: string, pattern: RegExp): number {
+  return (text.match(pattern) ?? []).length
+}
+
+function localeReady(copy: MagazineLocaleCopy | undefined, locale: 'he' | 'fr' | 'ru'): boolean {
+  if (!copy?.title || !copy.body.length) return false
+  const sample = [copy.title, copy.excerpt, ...copy.body.slice(0, 3)].join(' ')
+  if (locale === 'he') return inScript(sample, /[\u0590-\u05FF]/g) > inScript(sample, /[A-Za-z]/g)
+  if (locale === 'ru') return inScript(sample, /[\u0400-\u04FF]/g) > inScript(sample, /[A-Za-z]/g)
+  return true
+}
+
+function languageLabel(article: MagazineArticle): string {
+  const written = Boolean(article.hebrew?.title || article.hebrew?.excerpt || article.hebrew?.body.length)
+  const french = localeReady(article.translations?.fr, 'fr')
+  const russian = localeReady(article.translations?.ru, 'ru')
+  if (written && french && russian) return 'Hebrew written'
+  if (written) return 'Hebrew written, translations missing'
+  if (localeReady(article.translations?.he, 'he') && french && russian) return 'Automatic'
+  return 'Missing'
+}
 
 export default function AdminArticlesPage() {
   const { articles, articlesStatus, articlesError } = useSiteData()
@@ -28,8 +51,8 @@ export default function AdminArticlesPage() {
         <div>
           <h1 className="admin-page__title">Magazine</h1>
           <p className="admin-page__subtitle">
-            Articles are written in English. Hebrew, French, and Russian are filled in when the
-            article is saved.
+            English is translated into French and Russian on save. Hebrew typed in the article
+            form is kept as written. Missing means a language was not stored.
           </p>
         </div>
         <div className="admin-page__actions">
@@ -59,6 +82,7 @@ export default function AdminArticlesPage() {
                   <th>Category</th>
                   <th>Date</th>
                   <th>Type</th>
+                  <th>Languages</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -78,6 +102,7 @@ export default function AdminArticlesPage() {
                     <td>{article.category || '—'}</td>
                     <td>{article.date || '—'}</td>
                     <td>{article.type === 'video' ? 'Video' : 'Article'}</td>
+                    <td>{languageLabel(article)}</td>
                     <td>
                       <div className="admin-table__actions">
                         <Link

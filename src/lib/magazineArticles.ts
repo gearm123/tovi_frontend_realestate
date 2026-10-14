@@ -1,9 +1,27 @@
 import type { Locale } from '../i18n/types'
-import type { MagazineArticle, MagazineArticleType } from '../types/magazine'
+import type { MagazineArticle, MagazineArticleType, MagazineLocaleCopy } from '../types/magazine'
+
+function overlayCopy(
+  manual: MagazineLocaleCopy | undefined,
+  automatic: MagazineLocaleCopy | undefined,
+): MagazineLocaleCopy | undefined {
+  if (!manual) return automatic
+  if (!automatic) return manual
+  return {
+    category: manual.category || automatic.category,
+    title: manual.title || automatic.title,
+    excerpt: manual.excerpt || automatic.excerpt,
+    date: manual.date || automatic.date,
+    body: manual.body.length ? manual.body : automatic.body,
+    source: manual.source ?? automatic.source,
+  }
+}
 
 export function articleForLocale(article: MagazineArticle, locale: Locale): MagazineArticle {
   if (locale === 'en') return article
-  const copy = article.translations?.[locale]
+  const copy = locale === 'he'
+    ? overlayCopy(article.hebrew, article.translations?.he)
+    : article.translations?.[locale]
   if (!copy) return article
   return {
     ...article,
