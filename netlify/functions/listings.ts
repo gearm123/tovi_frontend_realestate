@@ -545,7 +545,53 @@ async function listListings(req: Request): Promise<Response> {
   return json(200, { listings: visible })
 }
 
+function galleryTail(images: string[] | undefined): string {
+  return (images ?? []).slice(1).join('\n')
+}
+
+/** The saved catalog copy must keep each listing's original cover and gallery. */
+async function alignListingPhotosOnce(req: Request): Promise<void> {
+  const marker = await readPublicCatalog<{ done?: boolean }>('listing-photo-align-v1')
+  if (marker?.body?.done) return
+  try {
+    const snapshot = await readStaticCatalog(req, 'listings')
+    const snapshotListings = Array.isArray(snapshot?.listings) ? (snapshot.listings as Property[]) : []
+    const previousById = new Map(snapshotListings.map((listing) => [listing.id, listing]))
+    const current = await readListings()
+    const db = await database()
+    let restored = 0
+    for (const listing of current) {
+      const previous = previousById.get(listing.id)
+      const previousImages = previous?.images ?? []
+      if (!previous || previousImages.length === 0) continue
+      const currentImages = listing.images ?? []
+      const sameGallery =
+        listing.image === previous.image && JSON.stringify(currentImages) === JSON.stringify(previousImages)
+      if (sameGallery) continue
+      if (galleryTail(currentImages) !== galleryTail(previousImages)) continue
+      const next = {
+        ...listing,
+        image: previous.image || previousImages[0],
+        images: previousImages,
+      }
+      await db.pool.query('UPDATE listings SET data = $2::jsonb, updated_at = now() WHERE id = $1', [
+        listing.id,
+        JSON.stringify(next),
+      ])
+      restored += 1
+    }
+    const { listings } = await publicListingsBody()
+    await writePublicCatalog('listings', { savedAt: Date.now(), listings })
+    await purgePublicCatalog('listings')
+    await writePublicCatalog('listing-photo-align-v1', { done: true, savedAt: Date.now(), restored })
+    if (restored > 0) console.log(`Restored original photos on ${restored} listings`)
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not align the catalog photos')
+  }
+}
+
 async function readPublicListings(req: Request): Promise<Response> {
+  await alignListingPhotosOnce(req)
   return servePublishedCatalog(req, 'listings', (body) => Array.isArray(body.listings), true)
 }
 
