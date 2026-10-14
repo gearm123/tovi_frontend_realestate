@@ -17,6 +17,15 @@ export interface MagazineLocaleCopy {
   date: string
   body: string[]
   source?: MagazineSource
+  /** Captions aligned with the article photos. A blank caption keeps the English one. */
+  captions?: string[]
+}
+
+/** One photo in an article. The Hebrew caption is published as written. */
+export interface MagazineGalleryImage {
+  src: string
+  caption: string
+  hebrewCaption: string
 }
 
 export interface MagazineArticle {
@@ -28,6 +37,8 @@ export interface MagazineArticle {
   date: string
   excerpt: string
   image: string
+  /** Photos shown on the article. The first photo is the cover. */
+  images?: MagazineGalleryImage[]
   /** YouTube/Vimeo URL or direct .mp4 — optional for written articles */
   videoUrl?: string
   /** Full article body for detail page */

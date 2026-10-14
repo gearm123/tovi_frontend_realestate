@@ -5,7 +5,7 @@ import MagazineCtaBanner from '../components/magazine/MagazineCtaBanner'
 import PageSeo from '../components/seo/PageSeo'
 import { useSiteContent } from '../hooks/useSiteContent'
 import { useSiteData } from '../hooks/useSiteData'
-import { articleForLocale } from '../lib/magazineArticles'
+import { articleForLocale, captionForImage, galleryFromArticle } from '../lib/magazineArticles'
 import { buildArticleJsonLd } from '../seo/structuredData'
 import './MagazineArticlePage.css'
 
@@ -40,6 +40,7 @@ export default function MagazineArticlePage() {
   }
 
   const showVideo = article.type === 'video' && article.videoUrl
+  const photos = galleryFromArticle(article)
 
   return (
     <>
@@ -51,7 +52,7 @@ export default function MagazineArticlePage() {
         type="article"
         jsonLd={articleJsonLd ?? undefined}
       />
-    <article className="magazine-article">
+    <article className="magazine-article" dir={locale === 'he' ? 'rtl' : 'ltr'} lang={locale}>
       <header className="magazine-article__header">
         <div className="magazine-article__meta">
           <span className="magazine-article__category">{article.category}</span>
@@ -75,11 +76,23 @@ export default function MagazineArticlePage() {
           title={article.title}
           className="magazine-article__video"
         />
-      ) : (
-        <div className="magazine-article__hero">
-          <img src={article.image} alt="" className="magazine-article__hero-image" />
+      ) : null}
+
+      {photos.length ? (
+        <div className="magazine-article__gallery">
+          {photos.map((image, index) => {
+            const caption = captionForImage(article, image, index, locale)
+            return (
+              <figure className="magazine-article__figure" key={`${image.src}-${index}`}>
+                <img src={image.src} alt={caption || ''} />
+                {caption ? (
+                  <figcaption className="magazine-article__caption">{caption}</figcaption>
+                ) : null}
+              </figure>
+            )
+          })}
         </div>
-      )}
+      ) : null}
 
       <div className="magazine-article__body">
         {article.body.map((paragraph) =>

@@ -144,6 +144,7 @@ export interface MagazineTranslationFields {
   excerpt: string
   date: string
   body: string[]
+  captions?: string[]
   source?: { name: string; url: string; credit: string }
 }
 
@@ -194,12 +195,13 @@ async function translateMagazineLocale(
   fields: MagazineTranslationFields,
   locale: ListingLocale,
 ): Promise<MagazineTranslationFields> {
-  const [category, title, excerpt, date, body, credit] = await Promise.all([
+  const [category, title, excerpt, date, body, translatedCaptions, credit] = await Promise.all([
     translateText(fields.category, locale),
     translateText(fields.title, locale),
     translateText(fields.excerpt, locale),
     translateText(fields.date, locale),
     translateParagraphs(fields.body, locale),
+    Promise.all((fields.captions ?? []).map((caption) => translateText(caption, locale))),
     fields.source?.credit ? translateText(fields.source.credit, locale) : Promise.resolve(''),
   ])
   return {
@@ -208,6 +210,7 @@ async function translateMagazineLocale(
     excerpt,
     date,
     body,
+    captions: translatedCaptions.length ? translatedCaptions : undefined,
     source: fields.source
       ? { name: fields.source.name, url: fields.source.url, credit }
       : undefined,

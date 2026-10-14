@@ -15,7 +15,7 @@ export default function MagazinePage() {
   return (
     <>
       <PageShell title={magazinePage.title} seoKey="magazine" />
-      <div className="magazine-page">
+      <div className="magazine-page" dir={locale === 'he' ? 'rtl' : 'ltr'} lang={locale}>
         <div className="magazine-page__grid">
           {articles.map((article) => (
             <ArticleCard

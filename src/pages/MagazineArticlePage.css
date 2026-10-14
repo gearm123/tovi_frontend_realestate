@@ -70,6 +70,38 @@
   line-height: 1.65;
 }
 
+.magazine-article__gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.magazine-article__figure {
+  margin: 0;
+}
+
+.magazine-article__figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--property-radius);
+  border: 1px solid var(--rule);
+}
+
+.magazine-article__caption {
+  margin-top: 0.55rem;
+  font-family: var(--font-primary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+
+.magazine-article[dir='rtl'] .magazine-article__caption {
+  direction: rtl;
+  text-align: start;
+}
+
 .magazine-article__hero {
   margin-bottom: 2rem;
   border-radius: var(--property-radius);
@@ -86,6 +118,14 @@
 
 .magazine-article__video {
   margin-bottom: 2rem;
+}
+
+.magazine-article[dir='rtl'] .magazine-article__title,
+.magazine-article[dir='rtl'] .magazine-article__excerpt,
+.magazine-article[dir='rtl'] .magazine-article__body,
+.magazine-article[dir='rtl'] .magazine-article__source {
+  direction: rtl;
+  text-align: start;
 }
 
 .magazine-article__body p {

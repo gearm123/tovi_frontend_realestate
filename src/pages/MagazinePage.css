@@ -4,6 +4,14 @@
   padding: 0 clamp(1.25rem, 4vw, 2rem) var(--section-padding);
 }
 
+.magazine-page[dir='rtl'] .article-card__title,
+.magazine-page[dir='rtl'] .article-card__excerpt,
+.magazine-page[dir='rtl'] .article-card__category,
+.magazine-page[dir='rtl'] .article-card__date {
+  direction: rtl;
+  text-align: start;
+}
+
 .magazine-page__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

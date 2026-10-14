@@ -1,27 +1,30 @@
 import type { Locale } from '../i18n/types'
-import type { MagazineArticle, MagazineArticleType, MagazineLocaleCopy } from '../types/magazine'
+import type {
+  MagazineArticle,
+  MagazineArticleType,
+  MagazineGalleryImage,
+  MagazineLocaleCopy,
+} from '../types/magazine'
 
-function overlayCopy(
-  manual: MagazineLocaleCopy | undefined,
-  automatic: MagazineLocaleCopy | undefined,
-): MagazineLocaleCopy | undefined {
-  if (!manual) return automatic
-  if (!automatic) return manual
-  return {
-    category: manual.category || automatic.category,
-    title: manual.title || automatic.title,
-    excerpt: manual.excerpt || automatic.excerpt,
-    date: manual.date || automatic.date,
-    body: manual.body.length ? manual.body : automatic.body,
-    source: manual.source ?? automatic.source,
-  }
+function hasWrittenHebrew(copy: MagazineLocaleCopy | undefined): boolean {
+  return Boolean(copy && (copy.title || copy.excerpt || copy.body.length))
 }
 
 export function articleForLocale(article: MagazineArticle, locale: Locale): MagazineArticle {
   if (locale === 'en') return article
-  const copy = locale === 'he'
-    ? overlayCopy(article.hebrew, article.translations?.he)
-    : article.translations?.[locale]
+  if (locale === 'he' && hasWrittenHebrew(article.hebrew)) {
+    const manual = article.hebrew as MagazineLocaleCopy
+    return {
+      ...article,
+      category: manual.category || article.category,
+      title: manual.title || article.title,
+      excerpt: manual.excerpt || article.excerpt,
+      date: manual.date || article.date,
+      body: manual.body.length ? manual.body : article.body,
+      source: manual.source ?? article.source,
+    }
+  }
+  const copy = article.translations?.[locale]
   if (!copy) return article
   return {
     ...article,
@@ -74,4 +77,31 @@ export function createBlankArticle(): MagazineArticle {
 
 export function isArticleType(value: string): value is MagazineArticleType {
   return value === 'article' || value === 'video'
+}
+
+export function galleryFromArticle(article: MagazineArticle | undefined): MagazineGalleryImage[] {
+  const images = (article?.images ?? [])
+    .map((image) => ({
+      src: image.src.trim(),
+      caption: image.caption.trim(),
+      hebrewCaption: image.hebrewCaption.trim(),
+    }))
+    .filter((image) => image.src)
+  if (images.length) return images
+  const cover = article?.image.trim() ?? ''
+  return cover ? [{ src: cover, caption: '', hebrewCaption: '' }] : []
+}
+
+export function captionForImage(
+  article: MagazineArticle,
+  image: MagazineGalleryImage,
+  index: number,
+  locale: Locale,
+): string {
+  if (locale === 'he' && image.hebrewCaption) return image.hebrewCaption
+  if (locale !== 'en') {
+    const translated = article.translations?.[locale]?.captions?.[index]?.trim()
+    if (translated) return translated
+  }
+  return image.caption
 }

@@ -1,6 +1,11 @@
 import { getDatabase } from '@netlify/database'
 import { buildStoredMagazineArticles } from '../../src/data/magazine/stored'
-import type { MagazineArticle, MagazineLocaleCopy, MagazineSource } from '../../src/types/magazine'
+import type {
+  MagazineArticle,
+  MagazineGalleryImage,
+  MagazineLocaleCopy,
+  MagazineSource,
+} from '../../src/types/magazine'
 import { translateMagazineFields } from './translateListing'
 
 const LOCALES = ['en', 'he', 'fr', 'ru'] as const
@@ -25,6 +30,7 @@ function cleanSource(value: MagazineSource | undefined): MagazineSource | undefi
 function cleanCopy(value: MagazineLocaleCopy | undefined): MagazineLocaleCopy | undefined {
   if (!value) return undefined
   const body = (value.body ?? []).map((paragraph) => clean(paragraph)).filter(Boolean)
+  const captions = (value.captions ?? []).map((caption) => clean(caption))
   const next: MagazineLocaleCopy = {
     category: clean(value.category),
     title: clean(value.title),
@@ -32,15 +38,38 @@ function cleanCopy(value: MagazineLocaleCopy | undefined): MagazineLocaleCopy | 
     date: clean(value.date),
     body,
     source: cleanSource(value.source),
+    captions: captions.some(Boolean) ? captions : undefined,
   }
-  if (!next.category && !next.title && !next.excerpt && !next.date && !next.body.length && !next.source) {
+  if (
+    !next.category &&
+    !next.title &&
+    !next.excerpt &&
+    !next.date &&
+    !next.body.length &&
+    !next.source &&
+    !next.captions
+  ) {
     return undefined
   }
   return next
 }
 
+function cleanImages(input: MagazineArticle): MagazineGalleryImage[] {
+  const images = (input.images ?? [])
+    .map((image) => ({
+      src: clean(image?.src),
+      caption: clean(image?.caption),
+      hebrewCaption: clean(image?.hebrewCaption),
+    }))
+    .filter((image) => image.src)
+  if (images.length) return images
+  const cover = clean(input.image)
+  return cover ? [{ src: cover, caption: '', hebrewCaption: '' }] : []
+}
+
 export function normalizeArticle(input: MagazineArticle): MagazineArticle {
   const body = (input.body ?? []).map((paragraph) => clean(paragraph)).filter(Boolean)
+  const images = cleanImages(input)
   const type = input.type === 'video' ? 'video' : 'article'
   const translations: MagazineArticle['translations'] = {}
   for (const locale of LOCALES) {
@@ -55,7 +84,10 @@ export function normalizeArticle(input: MagazineArticle): MagazineArticle {
     title: clean(input.title),
     date: clean(input.date),
     excerpt: clean(input.excerpt),
-    image: clean(input.image),
+    image: images.some((item) => item.src === clean(input.image))
+      ? clean(input.image)
+      : (images[0]?.src ?? clean(input.image)),
+    images,
     videoUrl: clean(input.videoUrl) || undefined,
     body,
     isPlaceholder: Boolean(input.isPlaceholder),
@@ -84,8 +116,8 @@ function localeReady(copy: MagazineLocaleCopy | undefined, locale: 'he' | 'fr' |
   return true
 }
 
-function hebrewIsComplete(copy: MagazineLocaleCopy | undefined): boolean {
-  return Boolean(copy?.title && copy.excerpt && copy.body.length)
+function hasWrittenHebrew(copy: MagazineLocaleCopy | undefined): boolean {
+  return Boolean(copy && (copy.title || copy.excerpt || copy.body.length))
 }
 
 function copyKey(article: MagazineArticle): string {
@@ -96,6 +128,7 @@ function copyKey(article: MagazineArticle): string {
     date: article.date,
     body: article.body,
     source: article.source ?? null,
+    captions: (article.images ?? []).map((image) => image.caption).filter(Boolean),
   })
 }
 
@@ -194,7 +227,7 @@ export async function upsertArticle(
   if (!copyChanged) article.translations = previous ?? article.translations
 
   const locales = TRANSLATED_LOCALES.filter((locale) => {
-    if (locale === 'he' && hebrewIsComplete(article.hebrew)) return false
+    if (locale === 'he' && hasWrittenHebrew(article.hebrew)) return false
     return copyChanged || !localeReady(article.translations?.[locale], locale)
   })
   if (locales.length) {
@@ -205,6 +238,7 @@ export async function upsertArticle(
         excerpt: article.excerpt,
         date: article.date,
         body: article.body,
+        captions: (article.images ?? []).map((image) => image.caption),
         source: article.source,
       },
       locales,
