@@ -25,6 +25,12 @@ import {
 } from '../../src/utils/propertyCode'
 import { adminPassword, adminUsername } from './credentials'
 import {
+  publicCatalogHeaders,
+  purgePublicCatalog,
+  readPublicCatalog,
+  writePublicCatalog,
+} from './publicCatalogCache'
+import {
   listingNeedsTranslation,
   withListingTranslations,
   type ListingLocale,
@@ -105,9 +111,12 @@ export default async function handler(req: Request): Promise<Response> {
       return await readImage(pathname.slice('/api/listing-images/'.length), method === 'HEAD')
     }
 
+    if (pathname === '/api/catalog-version' && method === 'GET') {
+      return await readCatalogVersion(req)
+    }
+
     if (pathname === '/api/site' && method === 'GET') {
-      await ensureSettingsSeeded()
-      return await readSettings()
+      return await readSettings(req)
     }
 
     if (pathname === '/api/site' && method === 'PUT') {
@@ -118,8 +127,11 @@ export default async function handler(req: Request): Promise<Response> {
     }
 
     if (pathname === '/api/listings' && method === 'GET') {
-      await ensureSeeded()
-      return await listListings(req)
+      if (verifyToken(readBearer(req))) {
+        await ensureSeeded()
+        return await listListings(req)
+      }
+      return await readPublicListings(req)
     }
 
     if (pathname === '/api/listings' && method === 'PUT') {
@@ -142,8 +154,7 @@ export default async function handler(req: Request): Promise<Response> {
     }
 
     if (pathname === '/api/articles' && method === 'GET') {
-      await ensureArticlesSeeded()
-      return json(200, { articles: await listArticles() })
+      return await readPublicArticles(req)
     }
 
     if (pathname === '/api/articles' && method === 'PUT') {
@@ -154,6 +165,7 @@ export default async function handler(req: Request): Promise<Response> {
       if (!body?.article) return json(400, { error: 'An article is required.' })
       try {
         const saved = await upsertArticle(body.article)
+        await publishArticlesCatalog()
         return json(200, saved)
       } catch (error) {
         if (error instanceof ArticleInputError) return json(400, { error: error.message })
@@ -169,6 +181,7 @@ export default async function handler(req: Request): Promise<Response> {
       try {
         const removed = await deleteArticle(id)
         if (!removed) return json(404, { error: 'Article not found.' })
+        await publishArticlesCatalog()
       } catch (error) {
         if (error instanceof ArticleInputError) return json(400, { error: error.message })
         throw error
@@ -378,14 +391,79 @@ async function seedSettingsIfEmpty(): Promise<void> {
   }
 }
 
-async function readSettings(): Promise<Response> {
-  const db = await database()
-  const result = await db.pool.query<{ data: SiteContent }>(
-    `SELECT data FROM site_content WHERE id = 'settings'`,
+function publishedStamp(entry: { savedAt: number; body: unknown }): number {
+  if (entry.body && typeof entry.body === 'object' && typeof (entry.body as { savedAt?: unknown }).savedAt === 'number') {
+    return (entry.body as { savedAt: number }).savedAt
+  }
+  return entry.savedAt
+}
+
+async function staticCatalogVersion(req: Request): Promise<{ listings: number; articles: number; settings: number }> {
+  try {
+    const response = await fetch(new URL('/catalog/version.json', req.url))
+    if (!response.ok) return { listings: 0, articles: 0, settings: 0 }
+    const body = (await response.json()) as { listings?: unknown; articles?: unknown; settings?: unknown }
+    return {
+      listings: typeof body.listings === 'number' ? body.listings : 0,
+      articles: typeof body.articles === 'number' ? body.articles : 0,
+      settings: typeof body.settings === 'number' ? body.settings : 0,
+    }
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not read the published catalog version')
+    return { listings: 0, articles: 0, settings: 0 }
+  }
+}
+
+async function readCatalogVersion(req: Request): Promise<Response> {
+  const fallback = await staticCatalogVersion(req)
+  const [listingsEntry, articlesEntry, settingsEntry] = await Promise.all([
+    readPublicCatalog<{ savedAt?: number }>('listings'),
+    readPublicCatalog<{ savedAt?: number }>('articles'),
+    readPublicCatalog<{ savedAt?: number }>('settings'),
+  ])
+  const listings = listingsEntry ? publishedStamp(listingsEntry) : fallback.listings
+  const articles = articlesEntry ? publishedStamp(articlesEntry) : fallback.articles
+  const settings = settingsEntry ? publishedStamp(settingsEntry) : fallback.settings
+  return json(
+    200,
+    { listings, articles, settings },
+    publicCatalogHeaders('catalog-version', Math.max(listings, articles, settings)),
   )
-  const settings = result.rows[0]?.data
-  if (!settings) return json(404, { error: 'Site settings are not available yet.' })
-  return json(200, { settings })
+}
+
+async function readStaticCatalog(req: Request, name: string): Promise<Record<string, unknown> | null> {
+  try {
+    const response = await fetch(new URL(`/catalog/${name}.json`, req.url))
+    if (!response.ok) return null
+    const body = (await response.json()) as Record<string, unknown>
+    return body && typeof body === 'object' ? body : null
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not read the published catalog file')
+    return null
+  }
+}
+
+async function servePublishedCatalog(
+  req: Request,
+  name: string,
+  ready: (body: Record<string, unknown>) => boolean,
+  varyAuthorization = false,
+): Promise<Response> {
+  const cached = await readPublicCatalog<Record<string, unknown>>(name)
+  if (cached && ready(cached.body)) {
+    return json(200, cached.body, publicCatalogHeaders(name, publishedStamp(cached), varyAuthorization))
+  }
+  const snapshot = await readStaticCatalog(req, name)
+  if (snapshot && ready(snapshot)) {
+    await writePublicCatalog(name, snapshot)
+    const savedAt = typeof snapshot.savedAt === 'number' ? snapshot.savedAt : 0
+    return json(200, snapshot, publicCatalogHeaders(name, savedAt, varyAuthorization))
+  }
+  return json(503, { error: 'The catalog is not available yet.' })
+}
+
+async function readSettings(req: Request): Promise<Response> {
+  return servePublishedCatalog(req, 'settings', (body) => Boolean(body.settings))
 }
 
 function isSiteContent(value: unknown): value is SiteContent {
@@ -414,6 +492,9 @@ async function writeSettings(req: Request): Promise<Response> {
      ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data, updated_at = now()`,
     [JSON.stringify(settings)],
   )
+  const savedAt = Date.now()
+  await writePublicCatalog('settings', { savedAt, settings })
+  await purgePublicCatalog('settings')
   return json(200, { settings })
 }
 
@@ -462,6 +543,39 @@ async function listListings(req: Request): Promise<Response> {
     ? listings
     : listings.filter(isListingAvailable).map(forPublicListing)
   return json(200, { listings: visible })
+}
+
+async function readPublicListings(req: Request): Promise<Response> {
+  return servePublishedCatalog(req, 'listings', (body) => Array.isArray(body.listings), true)
+}
+
+async function publicListingsBody(): Promise<{ listings: Property[] }> {
+  const listings = (await ensurePropertyCodes()).filter(isListingAvailable).map(forPublicListing)
+  return { listings }
+}
+
+async function publishListingsCatalog(): Promise<void> {
+  try {
+    const { listings } = await publicListingsBody()
+    await writePublicCatalog('listings', { savedAt: Date.now(), listings })
+    await purgePublicCatalog('listings')
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not refresh the public listings')
+  }
+}
+
+async function readPublicArticles(req: Request): Promise<Response> {
+  return servePublishedCatalog(req, 'articles', (body) => Array.isArray(body.articles))
+}
+
+async function publishArticlesCatalog(): Promise<void> {
+  try {
+    const articles = await listArticles()
+    await writePublicCatalog('articles', { savedAt: Date.now(), articles })
+    await purgePublicCatalog('articles')
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not refresh the public articles')
+  }
 }
 
 async function upsertListing(req: Request): Promise<Response> {
@@ -514,6 +628,7 @@ async function upsertListing(req: Request): Promise<Response> {
        SET data = EXCLUDED.data, updated_at = now()`,
     [listing.id, JSON.stringify(listing), -Date.now()],
   )
+  await publishListingsCatalog()
   return json(200, { listing })
 }
 
@@ -546,6 +661,8 @@ async function translateMissingListings(req: Request): Promise<Response> {
     }
   }
 
+  if (updated.length > 0) await publishListingsCatalog()
+
   return json(200, {
     listings: updated.map(forPublicListing),
     remaining: Math.max(0, missing.length - updated.length),
@@ -561,6 +678,7 @@ async function removeListing(id: string): Promise<Response> {
   const db = await database()
   const result = await db.pool.query('DELETE FROM listings WHERE id = $1', [id])
   if ((result.rowCount ?? 0) === 0) return json(404, { error: 'Listing not found.' })
+  await publishListingsCatalog()
   return json(200, { ok: true })
 }
 

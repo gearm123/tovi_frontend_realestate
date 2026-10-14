@@ -60,6 +60,9 @@ async function request(path: string, init: RequestInit = {}): Promise<Record<str
 
 function authHeaders(extra?: HeadersInit): Headers {
   const headers = new Headers(extra)
+  // Public pages share one catalog. A signed-in browser still reads that copy
+  // outside the admin panel, so looking at the site does not wake the database.
+  if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/admin')) return headers
   const token = getAdminToken()
   if (token) headers.set('Authorization', `Bearer ${token}`)
   return headers
@@ -67,7 +70,10 @@ function authHeaders(extra?: HeadersInit): Headers {
 
 export async function fetchListings(): Promise<Property[]> {
   const body = await request('/api/listings', { headers: authHeaders() })
-  return Array.isArray(body.listings) ? (body.listings as Property[]) : []
+  if (!Array.isArray(body.listings)) {
+    throw new ListingsApiError('The listings server did not return listings.', 500)
+  }
+  return body.listings as Property[]
 }
 
 export async function saveListing(listing: Property): Promise<Property> {

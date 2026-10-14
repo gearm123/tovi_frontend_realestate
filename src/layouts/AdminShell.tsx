@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { clearAdminSession } from '../lib/adminAuth'
+import { refreshListings } from '../lib/siteDataStore'
 import './AdminShell.css'
 
 const navItems = [
@@ -14,6 +16,10 @@ const navItems = [
 
 export default function AdminShell() {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    void refreshListings()
+  }, [])
 
   const handleLogout = () => {
     clearAdminSession()

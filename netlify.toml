@@ -11,5 +11,10 @@
 [functions.listings]
   timeout = 26
 
+[[headers]]
+  for = "/catalog/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 # Redirect rules (including SPA fallback) live in public/_redirects.
 # /api/* is rewritten to the listings function before the /* → index.html rule.

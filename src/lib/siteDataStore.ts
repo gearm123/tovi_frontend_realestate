@@ -99,6 +99,24 @@ let articlesGeneration = 0
 let settings: SiteContent = seedContent()
 let contentStatus: ListingsStatus = 'loading'
 let contentError = ''
+
+function stableValue(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(stableValue)
+  if (value && typeof value === 'object') {
+    return Object.keys(value as Record<string, unknown>)
+      .sort()
+      .reduce<Record<string, unknown>>((copy, key) => {
+        copy[key] = stableValue((value as Record<string, unknown>)[key])
+        return copy
+      }, {})
+  }
+  return value
+}
+
+function sameJson(left: unknown, right: unknown): boolean {
+  return JSON.stringify(stableValue(left)) === JSON.stringify(stableValue(right))
+}
+
 let cache: SiteData | null = null
 let refreshGeneration = 0
 let contentGeneration = 0
@@ -181,18 +199,20 @@ export function refreshArticles(): Promise<void> {
   return fetchArticles()
     .then((rows) => {
       if (generation !== articlesGeneration) return
-      articlesCache = rows
+      const changed = articlesStatus !== 'ready' || articlesError !== '' || !sameJson(articlesCache, rows)
+      if (changed) articlesCache = rows
       articlesStatus = 'ready'
       articlesError = ''
+      if (!changed) return
+      cache = null
+      publish()
+      notify()
     })
     .catch((error: unknown) => {
       if (generation !== articlesGeneration) return
       articlesStatus = 'error'
       articlesError = error instanceof Error ? error.message : 'Could not load articles'
       if (!articlesCache.length) articlesCache = buildStoredMagazineArticles()
-    })
-    .finally(() => {
-      if (generation !== articlesGeneration) return
       cache = null
       publish()
       notify()
@@ -205,18 +225,21 @@ export function refreshListings(): Promise<void> {
   return fetchListings()
     .then((rows) => {
       if (generation !== refreshGeneration) return
-      listingsCache = prepareListings(rows)
+      const next = prepareListings(rows)
+      const changed = listingsStatus !== 'ready' || listingsError !== '' || !sameJson(listingsCache, next)
+      if (changed) listingsCache = next
       listingsStatus = 'ready'
       listingsError = ''
+      if (!changed) return
+      cache = null
+      publish()
+      notify()
     })
     .catch((error: unknown) => {
       if (generation !== refreshGeneration) return
       listingsStatus = 'error'
       listingsError = error instanceof Error ? error.message : 'Could not load listings'
       if (!listingsCache.length) listingsCache = fallbackListings()
-    })
-    .finally(() => {
-      if (generation !== refreshGeneration) return
       cache = null
       publish()
       notify()
@@ -228,17 +251,20 @@ export async function refreshSiteContent(): Promise<void> {
   return fetchSiteContent()
     .then((next) => {
       if (generation !== contentGeneration) return
-      settings = { ...next, leadCapture: normalizeLeadCapture(next.leadCapture) }
+      const prepared = { ...next, leadCapture: normalizeLeadCapture(next.leadCapture) }
+      const changed = contentStatus !== 'ready' || contentError !== '' || !sameJson(settings, prepared)
+      if (changed) settings = prepared
       contentStatus = 'ready'
       contentError = ''
+      if (!changed) return
+      cache = null
+      publish()
+      notify()
     })
     .catch((error: unknown) => {
       if (generation !== contentGeneration) return
       contentStatus = 'error'
       contentError = error instanceof Error ? error.message : 'Could not load site settings'
-    })
-    .finally(() => {
-      if (generation !== contentGeneration) return
       cache = null
       publish()
       notify()
