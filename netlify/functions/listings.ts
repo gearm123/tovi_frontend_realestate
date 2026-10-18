@@ -8,7 +8,7 @@ import seedListings from '../../src/data/importedListings.json'
 import { leadCapturePopupConfig } from '../../src/config/leadCapturePopup'
 import type { Agent } from '../../src/types/agent'
 import type { BusinessContact } from '../../src/types/business'
-import type { Property } from '../../src/types/property'
+import type { ListingLocaleCopy, Property } from '../../src/types/property'
 import { withCleanedListingCopy } from '../../src/utils/listingCopy'
 import { withNormalizedPropertyImages } from '../../src/utils/propertyGallery'
 import { withoutStreetNumbers } from '../../src/utils/streetNumber'
@@ -42,7 +42,9 @@ import {
   listArticles,
   upsertArticle,
 } from './magazineStore'
-import type { MagazineArticle } from '../../src/types/magazine'
+import type { MagazineArticle, MagazineLocaleCopy } from '../../src/types/magazine'
+import { RUSSIAN_ARTICLE_REPAIRS } from '../../src/data/magazine/russianArticleRepairs'
+import { restoreStoredProjectNames } from '../../src/utils/protectedProjectNames'
 import {
   deleteFailedLead,
   FailedLeadInputError,
@@ -592,6 +594,7 @@ async function alignListingPhotosOnce(req: Request): Promise<void> {
 
 async function readPublicListings(req: Request): Promise<Response> {
   await alignListingPhotosOnce(req)
+  await repairProjectNamesOnce()
   return servePublishedCatalog(req, 'listings', (body) => Array.isArray(body.listings), true)
 }
 
@@ -610,8 +613,144 @@ async function publishListingsCatalog(): Promise<void> {
   }
 }
 
+function russianCopyReady(copy: MagazineLocaleCopy | undefined): boolean {
+  if (!copy?.title || !copy.body?.length) return false
+  const sample = [copy.title, copy.excerpt, ...copy.body.slice(0, 3)].join(' ')
+  const cyrillic = (sample.match(/[\u0400-\u04FF]/g) ?? []).length
+  const latin = (sample.match(/[A-Za-z]/g) ?? []).length
+  return cyrillic > latin
+}
+
+/** Replace Russian copies that are still the English text. Runs once. */
+async function repairRussianArticlesOnce(): Promise<void> {
+  const marker = await readPublicCatalog<{ done?: boolean }>('article-ru-repair-v1')
+  if (marker?.body?.done) return
+  try {
+    const articles = await listArticles()
+    const db = await database()
+    let updated = 0
+    for (const article of articles) {
+      const russian = RUSSIAN_ARTICLE_REPAIRS[article.id]
+      if (!russian || russianCopyReady(article.translations?.ru)) continue
+      const next: MagazineArticle = {
+        ...article,
+        translations: { ...article.translations, ru: russian },
+      }
+      await db.pool.query('UPDATE articles SET data = $2::jsonb, updated_at = now() WHERE id = $1', [
+        article.id,
+        JSON.stringify(next),
+      ])
+      updated += 1
+    }
+    if (updated > 0) await publishArticlesCatalog()
+    await writePublicCatalog('article-ru-repair-v1', { done: true, savedAt: Date.now(), updated })
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not repair the Russian articles')
+  }
+}
+
 async function readPublicArticles(req: Request): Promise<Response> {
+  await repairRussianArticlesOnce()
+  await repairProjectNamesOnce()
   return servePublishedCatalog(req, 'articles', (body) => Array.isArray(body.articles))
+}
+
+function rewriteStoredText(text: string | undefined, locale: 'fr' | 'ru'): string {
+  return restoreStoredProjectNames(text ?? '', locale)
+}
+
+function rewriteStoredLines(lines: string[] | undefined, locale: 'fr' | 'ru'): string[] | undefined {
+  if (!lines) return lines
+  return lines.map((line) => rewriteStoredText(line, locale))
+}
+
+function rewriteMagazineCopy(copy: MagazineLocaleCopy, locale: 'fr' | 'ru'): MagazineLocaleCopy {
+  return {
+    ...copy,
+    category: rewriteStoredText(copy.category, locale),
+    title: rewriteStoredText(copy.title, locale),
+    excerpt: rewriteStoredText(copy.excerpt, locale),
+    date: rewriteStoredText(copy.date, locale),
+    body: (copy.body ?? []).map((paragraph) => rewriteStoredText(paragraph, locale)),
+    captions: rewriteStoredLines(copy.captions, locale),
+    source: copy.source
+      ? {
+          ...copy.source,
+          name: rewriteStoredText(copy.source.name, locale),
+          credit: rewriteStoredText(copy.source.credit, locale),
+        }
+      : copy.source,
+  }
+}
+
+function rewriteListingCopy(copy: ListingLocaleCopy, locale: 'fr' | 'ru'): ListingLocaleCopy {
+  return {
+    ...copy,
+    title: rewriteStoredText(copy.title, locale),
+    address: rewriteStoredText(copy.address, locale),
+    description: rewriteStoredText(copy.description, locale),
+    highlights: rewriteStoredLines(copy.highlights, locale),
+    specialNotes: rewriteStoredLines(copy.specialNotes, locale),
+  }
+}
+
+/** Puts protected project names back into French and Russian copies. Runs once. */
+async function repairProjectNamesOnce(): Promise<void> {
+  const marker = await readPublicCatalog<{ done?: boolean }>('project-name-repair-v1')
+  if (marker?.body?.done) return
+  try {
+    const db = await database()
+    let articlesUpdated = 0
+    let listingsUpdated = 0
+    for (const article of await listArticles()) {
+      const french = article.translations?.fr
+      const russian = article.translations?.ru
+      if (!french && !russian) continue
+      const next: MagazineArticle = {
+        ...article,
+        translations: {
+          ...article.translations,
+          ...(french ? { fr: rewriteMagazineCopy(french, 'fr') } : {}),
+          ...(russian ? { ru: rewriteMagazineCopy(russian, 'ru') } : {}),
+        },
+      }
+      if (JSON.stringify(next.translations) === JSON.stringify(article.translations)) continue
+      await db.pool.query('UPDATE articles SET data = $2::jsonb, updated_at = now() WHERE id = $1', [
+        article.id,
+        JSON.stringify(next),
+      ])
+      articlesUpdated += 1
+    }
+    for (const listing of await readListings()) {
+      const french = listing.translations?.fr
+      const russian = listing.translations?.ru
+      if (!french && !russian) continue
+      const next: Property = {
+        ...listing,
+        translations: {
+          ...listing.translations,
+          ...(french ? { fr: rewriteListingCopy(french, 'fr') } : {}),
+          ...(russian ? { ru: rewriteListingCopy(russian, 'ru') } : {}),
+        },
+      }
+      if (JSON.stringify(next.translations) === JSON.stringify(listing.translations)) continue
+      await db.pool.query('UPDATE listings SET data = $2::jsonb, updated_at = now() WHERE id = $1', [
+        listing.id,
+        JSON.stringify(next),
+      ])
+      listingsUpdated += 1
+    }
+    if (articlesUpdated > 0) await publishArticlesCatalog()
+    if (listingsUpdated > 0) await publishListingsCatalog()
+    await writePublicCatalog('project-name-repair-v1', {
+      done: true,
+      savedAt: Date.now(),
+      articlesUpdated,
+      listingsUpdated,
+    })
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not restore project names')
+  }
 }
 
 async function publishArticlesCatalog(): Promise<void> {

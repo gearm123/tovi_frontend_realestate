@@ -12,7 +12,7 @@ import './MagazineArticlePage.css'
 export default function MagazineArticlePage() {
   const { slug } = useParams<{ slug: string }>()
   const { content, locale } = useSiteContent()
-  const { articles } = useSiteData()
+  const { articles, articlesStatus } = useSiteData()
   const { magazinePage } = content
   const stored = slug ? articles.find((item) => item.slug === slug) : undefined
   const article = stored ? articleForLocale(stored, locale) : undefined
@@ -21,6 +21,10 @@ export default function MagazineArticlePage() {
     () => (article ? buildArticleJsonLd(article, articlePath) : null),
     [article, articlePath],
   )
+
+  if (!article && articlesStatus === 'loading') {
+    return <div className="magazine-article" aria-busy="true" />
+  }
 
   if (!article) {
     return (
@@ -84,9 +88,14 @@ export default function MagazineArticlePage() {
             const caption = captionForImage(article, image, index, locale)
             return (
               <figure className="magazine-article__figure" key={`${image.src}-${index}`}>
-                <img src={image.src} alt={caption || ''} />
-                {caption ? (
-                  <figcaption className="magazine-article__caption">{caption}</figcaption>
+                <img src={image.src} alt={caption || image.credit || ''} />
+                {caption || image.credit ? (
+                  <figcaption className="magazine-article__caption">
+                    {caption ? <span>{caption}</span> : null}
+                    {image.credit ? (
+                      <span className="magazine-article__credit">{image.credit}</span>
+                    ) : null}
+                  </figcaption>
                 ) : null}
               </figure>
             )

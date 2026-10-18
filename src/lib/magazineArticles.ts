@@ -83,13 +83,14 @@ export function galleryFromArticle(article: MagazineArticle | undefined): Magazi
   const images = (article?.images ?? [])
     .map((image) => ({
       src: image.src.trim(),
-      caption: image.caption.trim(),
-      hebrewCaption: image.hebrewCaption.trim(),
+      caption: (image.caption ?? '').trim(),
+      hebrewCaption: (image.hebrewCaption ?? '').trim(),
+      credit: (image.credit ?? '').trim(),
     }))
     .filter((image) => image.src)
   if (images.length) return images
   const cover = article?.image.trim() ?? ''
-  return cover ? [{ src: cover, caption: '', hebrewCaption: '' }] : []
+  return cover ? [{ src: cover, caption: '', hebrewCaption: '', credit: '' }] : []
 }
 
 export function captionForImage(

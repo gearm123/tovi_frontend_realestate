@@ -26,6 +26,8 @@ export interface MagazineGalleryImage {
   src: string
   caption: string
   hebrewCaption: string
+  /** Photographer or source line. Published as written in every language. */
+  credit?: string
 }
 
 export interface MagazineArticle {

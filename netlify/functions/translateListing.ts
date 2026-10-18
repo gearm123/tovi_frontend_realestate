@@ -1,4 +1,5 @@
 import type { ListingLocaleCopy, Property } from '../../src/types/property'
+import { restoreProjectNames, shieldProjectNames } from '../../src/utils/protectedProjectNames'
 
 export const LISTING_LOCALES = ['en', 'he', 'fr', 'ru'] as const
 export type ListingLocale = (typeof LISTING_LOCALES)[number]
@@ -108,10 +109,11 @@ async function translatePiece(text: string, target: ListingLocale): Promise<stri
 async function translateText(text: string, target: ListingLocale): Promise<string> {
   const value = text.trim()
   if (!value || alreadyInLocale(value, target)) return value
-  const pieces = chunks(value, 900)
+  const shielded = shieldProjectNames(value)
+  const pieces = chunks(shielded.text, 900)
   const translated: string[] = []
   for (const piece of pieces) translated.push(await translatePiece(piece, target))
-  return translated.join(' ')
+  return restoreProjectNames(translated.join(' '), shielded.tokens)
 }
 
 async function translateLines(lines: string[] | undefined, target: ListingLocale): Promise<string[]> {

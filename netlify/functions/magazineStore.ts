@@ -60,6 +60,7 @@ function cleanImages(input: MagazineArticle): MagazineGalleryImage[] {
       src: clean(image?.src),
       caption: clean(image?.caption),
       hebrewCaption: clean(image?.hebrewCaption),
+      credit: clean(image?.credit) || undefined,
     }))
     .filter((image) => image.src)
   if (images.length) return images
@@ -222,7 +223,6 @@ export async function upsertArticle(
   if (duplicate.rows[0]) throw new ArticleInputError('Another article already uses that link.')
 
   const copyChanged = !current || copyKey(current) !== copyKey(article)
-  let warning: string | undefined
   const previous = current?.translations
   if (!copyChanged) article.translations = previous ?? article.translations
 
@@ -244,21 +244,13 @@ export async function upsertArticle(
       locales,
     )
     const merged: NonNullable<MagazineArticle['translations']> = { ...(article.translations ?? {}) }
-    const failed: string[] = []
     for (const locale of locales) {
       const copy = translated[locale]
       if (copy && localeReady(copy, locale)) merged[locale] = copy
-      else {
-        failed.push(locale)
-        if (previous?.[locale]) merged[locale] = previous[locale]
-        else delete merged[locale]
-      }
+      else if (previous?.[locale]) merged[locale] = previous[locale]
+      else delete merged[locale]
     }
     article.translations = Object.keys(merged).length ? merged : undefined
-    if (failed.length) {
-      const names = failed.map((locale) => (locale === 'he' ? 'Hebrew' : locale === 'fr' ? 'French' : 'Russian'))
-      warning = `The article was saved. ${names.join(', ')} could not be translated, so ${failed.length === 1 ? 'that language still uses the previous text' : 'those languages still use the previous text'}.`
-    }
   }
 
   if (current) {
@@ -275,7 +267,7 @@ export async function upsertArticle(
       [article.id, JSON.stringify(article), first.rows[0]?.sort_index ?? 0],
     )
   }
-  return { article, warning }
+  return { article }
 }
 
 export async function deleteArticle(id: string): Promise<boolean> {

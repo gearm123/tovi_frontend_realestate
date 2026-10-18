@@ -34,7 +34,6 @@ export default function AdminArticleFormPage() {
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [saved, setSaved] = useState(false)
-  const [notice, setNotice] = useState('')
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -69,7 +68,6 @@ export default function AdminArticleFormPage() {
     })
     setSaved(false)
     setError('')
-    setNotice('')
   }
 
   const updateImages = (next: MagazineGalleryImage[], cover = coverSrc) => {
@@ -81,21 +79,18 @@ export default function AdminArticleFormPage() {
     setField('image', nextCover)
   }
 
-  const handleImage = async (file: File | undefined, index: number | null) => {
+  const handleImage = async (file: File | undefined, index: number | null, asCover = false) => {
     if (!file) return
     setUploading(true)
     setError('')
     try {
       const url = await uploadListingImage(file)
+      const blank = { src: url, caption: '', hebrewCaption: '', credit: '' }
       if (index === null) {
-        const coverIndex = images.findIndex((image) => image.src.trim() === coverSrc.trim())
         const next = images.slice()
-        next.splice(coverIndex >= 0 ? coverIndex : next.length, 0, {
-          src: url,
-          caption: '',
-          hebrewCaption: '',
-        })
-        updateImages(next)
+        const coverIndex = images.findIndex((image) => image.src.trim() === coverSrc.trim())
+        next.splice(asCover && coverIndex >= 0 ? coverIndex : next.length, 0, blank)
+        updateImages(next, asCover || !coverSrc.trim() ? url : coverSrc)
       } else {
         const wasCover = images[index]?.src.trim() === coverSrc.trim()
         updateImages(
@@ -108,6 +103,12 @@ export default function AdminArticleFormPage() {
     } finally {
       setUploading(false)
     }
+  }
+
+  const chooseCover = (src: string) => {
+    const cover = src.trim()
+    setCoverSrc(cover)
+    setField('image', cover)
   }
 
   const handleSubmit = async (event: FormEvent) => {
@@ -129,6 +130,7 @@ export default function AdminArticleFormPage() {
           src: image.src.trim(),
           caption: image.caption.trim(),
           hebrewCaption: image.hebrewCaption.trim(),
+          credit: (image.credit ?? '').trim() || undefined,
         }))
         .filter((image) => image.src),
       image: coverSrc.trim() || images.find((image) => image.src.trim())?.src.trim() || '',
@@ -159,13 +161,11 @@ export default function AdminArticleFormPage() {
     }
     setSaving(true)
     setError('')
-    setNotice('')
     try {
       const savedArticle = await saveArticle(article)
       upsertCachedArticle(savedArticle.article)
       await refreshArticles()
       setSaved(true)
-      setNotice(savedArticle.warning ?? '')
       if (isNew) navigate(`/admin/magazine/${savedArticle.article.id}`, { replace: true })
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : 'Could not save that article.')
@@ -195,8 +195,7 @@ export default function AdminArticleFormPage() {
       </header>
 
       {error ? <div className="admin-notice admin-notice--warn">{error}</div> : null}
-      {notice ? <div className="admin-notice admin-notice--warn">{notice}</div> : null}
-      {saved && !notice ? <div className="admin-notice admin-notice--success">Saved.</div> : null}
+      {saved ? <div className="admin-notice admin-notice--success">Saved.</div> : null}
 
       <section className="admin-card">
         <div className="admin-form__grid">
@@ -279,18 +278,46 @@ export default function AdminArticleFormPage() {
             <p className="admin-field__hint">Separate paragraphs with a blank line.</p>
           </div>
           <div className="admin-field admin-field--full">
-            <label>Images</label>
+            <label>Photos</label>
             <p className="admin-field__hint">
-              Add photo above cover places the new photo over the cover on the article. The cover
-              stays the photo on the magazine list.
+              Upload a cover or choose one of the photos below. The cover is the photo on the
+              magazine list. The caption and photo credit appear under the photo on the article.
             </p>
+            <div className="admin-page__actions">
+              <label className="admin-btn admin-btn--small">
+                {uploading ? 'Uploading…' : 'Upload cover'}
+                <input
+                  className="admin-article-photos__file"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  disabled={uploading}
+                  onChange={(event) => {
+                    void handleImage(event.target.files?.[0], null, true)
+                    event.target.value = ''
+                  }}
+                />
+              </label>
+              <label className="admin-btn admin-btn--secondary admin-btn--small">
+                {uploading ? 'Uploading…' : 'Add photo'}
+                <input
+                  className="admin-article-photos__file"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  disabled={uploading}
+                  onChange={(event) => {
+                    void handleImage(event.target.files?.[0], null, false)
+                    event.target.value = ''
+                  }}
+                />
+              </label>
+            </div>
             <div className="admin-article-photos">
-              {images.map((image, index) => (
+              {images.map((image, index) => {
+                const isCover = image.src.trim() === coverSrc.trim()
+                return (
                 <div className="admin-article-photos__item" key={`${image.src}-${index}`}>
                   <div className="admin-article-photos__preview">
-                    {image.src.trim() === coverSrc.trim() ? (
-                      <span className="admin-article-photos__cover">Cover</span>
-                    ) : null}
+                    {isCover ? <span className="admin-article-photos__cover">Cover</span> : null}
                     {image.src ? <img src={image.src} alt="" /> : null}
                   </div>
                   <div className="admin-article-photos__fields">
@@ -319,6 +346,18 @@ export default function AdminArticleFormPage() {
                       }
                     />
                     <input
+                      value={image.credit ?? ''}
+                      placeholder="Photo credit"
+                      aria-label={`Image ${index + 1} photo credit`}
+                      onChange={(event) =>
+                        updateImages(
+                          images.map((item, imageIndex) =>
+                            imageIndex === index ? { ...item, credit: event.target.value } : item,
+                          ),
+                        )
+                      }
+                    />
+                    <input
                       dir="rtl"
                       lang="he"
                       value={image.hebrewCaption}
@@ -333,21 +372,15 @@ export default function AdminArticleFormPage() {
                       }
                     />
                     <div className="admin-page__actions">
-                      {image.src.trim() === coverSrc.trim() ? (
-                      <label className="admin-btn admin-btn--small">
-                        {uploading ? 'Uploading…' : 'Add photo above cover'}
-                        <input
-                          className="admin-article-photos__file"
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp,image/gif"
-                          disabled={uploading}
-                          onChange={(event) => {
-                            void handleImage(event.target.files?.[0], null)
-                            event.target.value = ''
-                          }}
-                        />
-                      </label>
-                      ) : null}
+                      {isCover ? null : (
+                        <button
+                          className="admin-btn admin-btn--small"
+                          type="button"
+                          onClick={() => chooseCover(image.src)}
+                        >
+                          Set as cover
+                        </button>
+                      )}
                       <label className="admin-btn admin-btn--secondary admin-btn--small">
                         {uploading ? 'Uploading…' : 'Replace photo'}
                         <input
@@ -384,7 +417,8 @@ export default function AdminArticleFormPage() {
                     </div>
                   </div>
                 </div>
-              ))}
+                )
+              })}
             </div>
           </div>
           {form.type === 'video' ? (
