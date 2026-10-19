@@ -45,6 +45,7 @@ import {
 import type { MagazineArticle, MagazineLocaleCopy } from '../../src/types/magazine'
 import { RUSSIAN_ARTICLE_REPAIRS } from '../../src/data/magazine/russianArticleRepairs'
 import { restoreStoredProjectNames } from '../../src/utils/protectedProjectNames'
+import { applyMamadTermsAcross, type MamadLocale } from '../../src/utils/mamadTerms'
 import { articleRedirectMap } from '../../src/utils/articleRedirects'
 import {
   deleteFailedLead,
@@ -596,6 +597,8 @@ async function alignListingPhotosOnce(req: Request): Promise<void> {
 async function readPublicListings(req: Request): Promise<Response> {
   await alignListingPhotosOnce(req)
   await repairProjectNamesOnce()
+  await repairAddedProjectNamesOnce()
+  await repairMamadTermsOnce()
   return servePublishedCatalog(req, 'listings', (body) => Array.isArray(body.listings), true)
 }
 
@@ -653,20 +656,22 @@ async function repairRussianArticlesOnce(): Promise<void> {
 async function readPublicArticles(req: Request): Promise<Response> {
   await repairRussianArticlesOnce()
   await repairProjectNamesOnce()
+  await repairAddedProjectNamesOnce()
+  await repairMamadTermsOnce()
   await repairAssutaSlugOnce()
   return servePublishedCatalog(req, 'articles', (body) => Array.isArray(body.articles))
 }
 
-function rewriteStoredText(text: string | undefined, locale: 'fr' | 'ru'): string {
+function rewriteStoredText(text: string | undefined, locale: 'he' | 'fr' | 'ru'): string {
   return restoreStoredProjectNames(text ?? '', locale)
 }
 
-function rewriteStoredLines(lines: string[] | undefined, locale: 'fr' | 'ru'): string[] | undefined {
+function rewriteStoredLines(lines: string[] | undefined, locale: 'he' | 'fr' | 'ru'): string[] | undefined {
   if (!lines) return lines
   return lines.map((line) => rewriteStoredText(line, locale))
 }
 
-function rewriteMagazineCopy(copy: MagazineLocaleCopy, locale: 'fr' | 'ru'): MagazineLocaleCopy {
+function rewriteMagazineCopy(copy: MagazineLocaleCopy, locale: 'he' | 'fr' | 'ru'): MagazineLocaleCopy {
   return {
     ...copy,
     category: rewriteStoredText(copy.category, locale),
@@ -685,7 +690,7 @@ function rewriteMagazineCopy(copy: MagazineLocaleCopy, locale: 'fr' | 'ru'): Mag
   }
 }
 
-function rewriteListingCopy(copy: ListingLocaleCopy, locale: 'fr' | 'ru'): ListingLocaleCopy {
+function rewriteListingCopy(copy: ListingLocaleCopy, locale: 'he' | 'fr' | 'ru'): ListingLocaleCopy {
   return {
     ...copy,
     title: rewriteStoredText(copy.title, locale),
@@ -752,6 +757,187 @@ async function repairProjectNamesOnce(): Promise<void> {
     })
   } catch (error) {
     console.error(error instanceof Error ? error.message : 'Could not restore project names')
+  }
+}
+
+/** Restores ProperTLV, Mandarin Oriental, Gindi, Sarona, and the other protected spellings. Runs once. */
+async function repairAddedProjectNamesOnce(): Promise<void> {
+  const marker = await readPublicCatalog<{ done?: boolean }>('project-name-repair-v2')
+  if (marker?.body?.done) return
+  try {
+    const db = await database()
+    const locales = ['he', 'fr', 'ru'] as const
+    let articlesUpdated = 0
+    let listingsUpdated = 0
+    for (const article of await listArticles()) {
+      const translations = { ...article.translations }
+      let changed = false
+      for (const locale of locales) {
+        const copy = translations[locale]
+        if (!copy) continue
+        const nextCopy = rewriteMagazineCopy(copy, locale)
+        if (JSON.stringify(nextCopy) === JSON.stringify(copy)) continue
+        translations[locale] = nextCopy
+        changed = true
+      }
+      if (!changed) continue
+      const next: MagazineArticle = { ...article, translations }
+      await db.pool.query('UPDATE articles SET data = $2::jsonb, updated_at = now() WHERE id = $1', [
+        article.id,
+        JSON.stringify(next),
+      ])
+      articlesUpdated += 1
+    }
+    for (const listing of await readListings()) {
+      const translations = { ...listing.translations }
+      let changed = false
+      for (const locale of locales) {
+        const copy = translations[locale]
+        if (!copy) continue
+        const nextCopy = rewriteListingCopy(copy, locale)
+        if (JSON.stringify(nextCopy) === JSON.stringify(copy)) continue
+        translations[locale] = nextCopy
+        changed = true
+      }
+      if (!changed) continue
+      const next: Property = { ...listing, translations }
+      await db.pool.query('UPDATE listings SET data = $2::jsonb, updated_at = now() WHERE id = $1', [
+        listing.id,
+        JSON.stringify(next),
+      ])
+      listingsUpdated += 1
+    }
+    if (articlesUpdated > 0) await publishArticlesCatalog()
+    if (listingsUpdated > 0) await publishListingsCatalog()
+    await writePublicCatalog('project-name-repair-v2', {
+      done: true,
+      savedAt: Date.now(),
+      articlesUpdated,
+      listingsUpdated,
+    })
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not restore the added project names')
+  }
+}
+
+const MAMAD_LOCALES = ['en', 'he', 'fr', 'ru'] as const
+
+function rewriteListingMamadCopy(copy: ListingLocaleCopy, locale: MamadLocale): ListingLocaleCopy {
+  const highlights = copy.highlights ?? []
+  const notes = copy.specialNotes ?? []
+  const [title, address, description, ...rest] = applyMamadTermsAcross(
+    [copy.title ?? '', copy.address ?? '', copy.description ?? '', ...highlights, ...notes],
+    locale,
+  )
+  return {
+    ...copy,
+    title,
+    address,
+    description,
+    highlights: rest.slice(0, highlights.length),
+    specialNotes: rest.slice(highlights.length),
+  }
+}
+
+function rewriteArticleMamadCopy(copy: MagazineLocaleCopy, locale: MamadLocale): MagazineLocaleCopy {
+  const body = copy.body ?? []
+  const captions = copy.captions ?? []
+  const [title, excerpt, ...rest] = applyMamadTermsAcross(
+    [copy.title ?? '', copy.excerpt ?? '', ...body, ...captions],
+    locale,
+  )
+  return {
+    ...copy,
+    title,
+    excerpt,
+    body: rest.slice(0, body.length),
+    captions: captions.length ? rest.slice(body.length) : copy.captions,
+  }
+}
+
+/** Makes safe-room wording match the language rules. Runs once. */
+async function repairMamadTermsOnce(): Promise<void> {
+  const marker = await readPublicCatalog<{ done?: boolean }>('mamad-term-repair-v1')
+  if (marker?.body?.done) return
+  try {
+    const db = await database()
+    let articlesUpdated = 0
+    let listingsUpdated = 0
+    for (const article of await listArticles()) {
+      const [title, excerpt, ...body] = applyMamadTermsAcross(
+        [article.title ?? '', article.excerpt ?? '', ...(article.body ?? [])],
+        'en',
+      )
+      const translations = { ...article.translations }
+      let translationsChanged = false
+      for (const locale of MAMAD_LOCALES) {
+        const copy = translations[locale]
+        if (!copy) continue
+        const nextCopy = rewriteArticleMamadCopy(copy, locale)
+        if (JSON.stringify(nextCopy) === JSON.stringify(copy)) continue
+        translations[locale] = nextCopy
+        translationsChanged = true
+      }
+      const hebrew = article.hebrew ? rewriteArticleMamadCopy(article.hebrew, 'he') : article.hebrew
+      const next: MagazineArticle = {
+        ...article,
+        title,
+        excerpt,
+        body,
+        hebrew,
+        translations: translationsChanged ? translations : article.translations,
+      }
+      if (JSON.stringify(next) === JSON.stringify(article)) continue
+      await db.pool.query('UPDATE articles SET data = $2::jsonb, updated_at = now() WHERE id = $1', [
+        article.id,
+        JSON.stringify(next),
+      ])
+      articlesUpdated += 1
+    }
+    for (const listing of await readListings()) {
+      const highlightSource = listing.highlights ?? []
+      const noteSource = listing.specialNotes ?? []
+      const [title, description, ...rest] = applyMamadTermsAcross(
+        [listing.title ?? '', listing.description ?? '', ...highlightSource, ...noteSource],
+        'en',
+      )
+      const translations = { ...listing.translations }
+      let translationsChanged = false
+      for (const locale of MAMAD_LOCALES) {
+        const copy = translations[locale]
+        if (!copy) continue
+        const nextCopy = rewriteListingMamadCopy(copy, locale)
+        if (JSON.stringify(nextCopy) === JSON.stringify(copy)) continue
+        translations[locale] = nextCopy
+        translationsChanged = true
+      }
+      const he = listing.he ? rewriteListingMamadCopy(listing.he, 'he') : listing.he
+      const next: Property = {
+        ...listing,
+        title,
+        description,
+        highlights: listing.highlights ? rest.slice(0, highlightSource.length) : listing.highlights,
+        specialNotes: listing.specialNotes ? rest.slice(highlightSource.length) : listing.specialNotes,
+        he,
+        translations: translationsChanged ? translations : listing.translations,
+      }
+      if (JSON.stringify(next) === JSON.stringify(listing)) continue
+      await db.pool.query('UPDATE listings SET data = $2::jsonb, updated_at = now() WHERE id = $1', [
+        listing.id,
+        JSON.stringify(next),
+      ])
+      listingsUpdated += 1
+    }
+    if (articlesUpdated > 0) await publishArticlesCatalog()
+    if (listingsUpdated > 0) await publishListingsCatalog()
+    await writePublicCatalog('mamad-term-repair-v1', {
+      done: true,
+      savedAt: Date.now(),
+      articlesUpdated,
+      listingsUpdated,
+    })
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not normalize safe-room wording')
   }
 }
 

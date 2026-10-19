@@ -5,37 +5,53 @@ import type {
   MagazineGalleryImage,
   MagazineLocaleCopy,
 } from '../types/magazine'
+import { applyMamadTerms, applyMamadTermsAcross } from '../utils/mamadTerms'
 
 function hasWrittenHebrew(copy: MagazineLocaleCopy | undefined): boolean {
   return Boolean(copy && (copy.title || copy.excerpt || copy.body.length))
 }
 
+function withMamadTerms(article: MagazineArticle, locale: Locale): MagazineArticle {
+  const body = article.body ?? []
+  const [title, excerpt, ...nextBody] = applyMamadTermsAcross(
+    [article.title, article.excerpt, ...body],
+    locale,
+  )
+  return { ...article, title, excerpt, body: nextBody }
+}
+
 export function articleForLocale(article: MagazineArticle, locale: Locale): MagazineArticle {
-  if (locale === 'en') return article
+  if (locale === 'en') return withMamadTerms(article, locale)
   if (locale === 'he' && hasWrittenHebrew(article.hebrew)) {
     const manual = article.hebrew as MagazineLocaleCopy
     const automatic = article.translations?.he
-    return {
-      ...article,
-      category: manual.category || automatic?.category || article.category,
-      title: manual.title || automatic?.title || article.title,
-      excerpt: manual.excerpt || automatic?.excerpt || article.excerpt,
-      date: manual.date || automatic?.date || article.date,
-      body: manual.body.length ? manual.body : automatic?.body?.length ? automatic.body : article.body,
-      source: manual.source ?? automatic?.source ?? article.source,
-    }
+    return withMamadTerms(
+      {
+        ...article,
+        category: manual.category || automatic?.category || article.category,
+        title: manual.title || automatic?.title || article.title,
+        excerpt: manual.excerpt || automatic?.excerpt || article.excerpt,
+        date: manual.date || automatic?.date || article.date,
+        body: manual.body.length ? manual.body : automatic?.body?.length ? automatic.body : article.body,
+        source: manual.source ?? automatic?.source ?? article.source,
+      },
+      locale,
+    )
   }
   const copy = article.translations?.[locale]
-  if (!copy) return article
-  return {
-    ...article,
-    category: copy.category || article.category,
-    title: copy.title || article.title,
-    excerpt: copy.excerpt || article.excerpt,
-    date: copy.date || article.date,
-    body: copy.body.length ? copy.body : article.body,
-    source: copy.source ?? article.source,
-  }
+  if (!copy) return withMamadTerms(article, locale)
+  return withMamadTerms(
+    {
+      ...article,
+      category: copy.category || article.category,
+      title: copy.title || article.title,
+      excerpt: copy.excerpt || article.excerpt,
+      date: copy.date || article.date,
+      body: copy.body.length ? copy.body : article.body,
+      source: copy.source ?? article.source,
+    },
+    locale,
+  )
 }
 
 export function paragraphsToText(body: string[]): string {
@@ -100,12 +116,12 @@ export function captionForImage(
   index: number,
   locale: Locale,
 ): string {
-  if (locale === 'he' && image.hebrewCaption) return image.hebrewCaption
+  if (locale === 'he' && image.hebrewCaption) return applyMamadTerms(image.hebrewCaption, locale)
   if (locale !== 'en') {
     const translated = article.translations?.[locale]?.captions?.[index]?.trim()
-    if (translated) return translated
+    if (translated) return applyMamadTerms(translated, locale)
   }
-  return image.caption
+  return applyMamadTerms(image.caption, locale)
 }
 
 /** Project guides use the Buildings category. The contact note is added for that category only. */

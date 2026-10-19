@@ -196,7 +196,7 @@ const en = {
   },
   guides: {
     title: 'Guides',
-    subtitle: 'Presentations for people moving to Israel and for real estate investors.',
+    subtitle: 'Presentations for buyers, people moving to Israel, and real estate investors.',
     open: 'Open presentation',
     download: 'Download',
     back: 'All guides',
@@ -208,6 +208,11 @@ const en = {
     investing: {
       title: 'Investing in Israel',
       summary: 'A guide for real estate investors looking at the Israeli market.',
+    },
+    buyers: {
+      title: 'Buyers Guide',
+      summary:
+        'Personal support for olim, overseas buyers, and investors finding a home in Tel Aviv.',
     },
   },
   sales: {
@@ -278,7 +283,7 @@ const en = {
       balcony: 'Balcony',
       parking: 'Parking',
       elevator: 'Elevator',
-      mamad: 'Mamad',
+      mamad: 'safe room (mamad)',
       miklat: 'Miklat',
       petsAllowed: 'Pets allowed',
     },
@@ -307,7 +312,7 @@ const en = {
     bathrooms: 'Bathrooms',
     rooms: 'rooms',
     floor: 'Floor',
-    safeRoom: 'Safe room',
+    safeRoom: 'safe room (mamad)',
     buildingShelter: 'Building shelter',
     viewDetails: 'View details',
     propertyId: 'Property ID',
@@ -557,7 +562,7 @@ const he: TranslationTree = {
   },
   guides: {
     title: 'מדריכים',
-    subtitle: 'מצגות למי שעובר לישראל ולמשקיעי נדל״ן.',
+    subtitle: 'מצגות לקונים, למי שעובר לישראל ולמשקיעי נדל״ן.',
     open: 'פתיחת המצגת',
     download: 'הורדה',
     back: 'כל המדריכים',
@@ -569,6 +574,10 @@ const he: TranslationTree = {
     investing: {
       title: 'השקעה בישראל',
       summary: 'מדריך למשקיעי נדל״ן בשוק הישראלי.',
+    },
+    buyers: {
+      title: 'מדריך לקונים',
+      summary: 'ליווי אישי לעולים, לרוכשים מחו״ל ולמשקיעים בדרך לדירה בתל אביב.',
     },
   },
   sales: {
@@ -659,7 +668,7 @@ const he: TranslationTree = {
     Florentin: 'פלורנטין',
     'Ramat Aviv': 'רמת אביב',
     'Old North': 'הצפון הישן',
-    Sarona: 'שרונה',
+    Sarona: 'Sarona',
   },
   property: {
     bed: 'חדרי שינה',

@@ -34,7 +34,7 @@ const featureKeys = [
   ['balcony', 'Balcony'],
   ['parking', 'Parking'],
   ['elevator', 'Elevator'],
-  ['mamad', 'Safe room (Mamad)'],
+  ['mamad', 'safe room (mamad)'],
   ['miklat', 'Building shelter (Miklat)'],
   ['petsAllowed', 'Pets allowed'],
 ] as const

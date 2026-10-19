@@ -50,7 +50,7 @@ export function draftListingCopy(property: Property): {
   if (property.features.parking) extras.push('parking')
   if (property.features.elevator) extras.push('an elevator')
   if (property.features.balcony) extras.push('a balcony')
-  if (property.features.mamad) extras.push('a safe room')
+  if (property.features.mamad) extras.push('a safe room (mamad)')
   else if (property.features.miklat) extras.push('building shelter')
   if (property.features.petsAllowed) extras.push('pets allowed')
 
@@ -68,7 +68,7 @@ export function draftListingCopy(property: Property): {
     property.features.parking ? 'Parking' : '',
     property.features.elevator ? 'Elevator' : '',
     property.features.balcony ? 'Balcony' : '',
-    property.features.mamad ? 'Safe room (Mamad)' : '',
+    property.features.mamad ? 'safe room (mamad)' : '',
     !property.features.mamad && property.features.miklat ? 'Building shelter' : '',
     property.features.petsAllowed ? 'Pets allowed' : '',
     property.exclusive ? 'Exclusive listing' : '',

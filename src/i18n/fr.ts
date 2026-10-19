@@ -257,7 +257,7 @@ export const frPatch = {
       balcony: 'Balcon',
       parking: 'Parking',
       elevator: 'Ascenseur',
-      mamad: 'Mamad',
+      mamad: 'chambre sécurisée (mamad)',
       miklat: 'Abri',
       petsAllowed: 'Animaux acceptés',
     },
@@ -276,7 +276,7 @@ export const frPatch = {
     bathrooms: 'Salles de bain',
     rooms: 'pièces',
     floor: 'Étage',
-    safeRoom: 'Pièce sécurisée',
+    safeRoom: 'chambre sécurisée (mamad)',
     buildingShelter: 'Abri de l’immeuble',
     viewDetails: 'Voir les détails',
     propertyId: 'Identifiant',
@@ -316,7 +316,7 @@ export const frPatch = {
   },
   guides: {
     title: 'Guides',
-    subtitle: 'Des présentations pour les personnes qui s’installent en Israël et pour les investisseurs immobiliers.',
+    subtitle: 'Des présentations pour les acheteurs, les personnes qui s’installent en Israël et pour les investisseurs immobiliers.',
     open: 'Ouvrir la présentation',
     download: 'Télécharger',
     back: 'Tous les guides',
@@ -328,6 +328,11 @@ export const frPatch = {
     investing: {
       title: 'Investir en Israël',
       summary: 'Un guide pour les investisseurs immobiliers sur le marché israélien.',
+    },
+    buyers: {
+      title: 'Guide de l’acheteur',
+      summary:
+        'Un accompagnement personnel pour les olim, les acheteurs à l’étranger et les investisseurs qui cherchent un logement à Tel Aviv.',
     },
   },
   map: {

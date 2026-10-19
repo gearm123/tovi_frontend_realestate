@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import PageSeo from '../components/seo/PageSeo'
 import PageShell from '../components/PageShell'
 import { useLanguage } from '../context/LanguageContext'
+import type { Locale } from '../i18n/types'
 import './GuidesPage.css'
 
 const GUIDES = [
@@ -15,11 +16,27 @@ const GUIDES = [
     file: '/guides/investing-in-israel.pdf',
     key: 'investing',
   },
+  {
+    slug: 'buyers-guide',
+    file: {
+      en: '/guides/buyers-guide-en.pdf',
+      he: '/guides/buyers-guide-he.pdf',
+    },
+    key: 'buyers',
+  },
 ] as const
+
+function guideFile(
+  file: string | { readonly en: string; readonly he: string },
+  locale: Locale,
+) {
+  if (typeof file === 'string') return file
+  return locale === 'he' ? file.he : file.en
+}
 
 export default function GuidesPage() {
   const { slug } = useParams()
-  const { t } = useLanguage()
+  const { t, locale } = useLanguage()
   const guide = slug ? GUIDES.find((item) => item.slug === slug) : undefined
 
   if (slug && !guide) {
@@ -36,6 +53,7 @@ export default function GuidesPage() {
 
   if (guide) {
     const copy = t.guides[guide.key]
+    const file = guideFile(guide.file, locale)
     return (
       <PageShell title={copy.title} subtitle={copy.summary}>
         <PageSeo
@@ -48,11 +66,11 @@ export default function GuidesPage() {
             <Link className="site-cta" to="/guides">
               {t.guides.back}
             </Link>
-            <a className="site-cta site-cta--solid" href={guide.file} download>
+            <a className="site-cta site-cta--solid" href={file} download>
               {t.guides.download}
             </a>
           </div>
-          <iframe className="guides-page__frame" src={guide.file} title={copy.title} />
+          <iframe className="guides-page__frame" src={file} title={copy.title} />
         </div>
       </PageShell>
     )
@@ -63,6 +81,7 @@ export default function GuidesPage() {
       <ul className="guides-page__list">
         {GUIDES.map((item) => {
           const copy = t.guides[item.key]
+          const file = guideFile(item.file, locale)
           return (
             <li key={item.slug} className="guides-page__card">
               <h2 className="guides-page__card-title">{copy.title}</h2>
@@ -71,7 +90,7 @@ export default function GuidesPage() {
                 <Link className="site-cta site-cta--solid" to={`/guides/${item.slug}`}>
                   {t.guides.open}
                 </Link>
-                <a className="site-cta" href={item.file} download>
+                <a className="site-cta" href={file} download>
                   {t.guides.download}
                 </a>
               </div>

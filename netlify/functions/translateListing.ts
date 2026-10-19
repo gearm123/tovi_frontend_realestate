@@ -1,5 +1,6 @@
 import type { ListingLocaleCopy, Property } from '../../src/types/property'
 import { restoreProjectNames, shieldProjectNames } from '../../src/utils/protectedProjectNames'
+import { restoreMamadTerms, shieldMamadTerms } from '../../src/utils/mamadTerms'
 
 export const LISTING_LOCALES = ['en', 'he', 'fr', 'ru'] as const
 export type ListingLocale = (typeof LISTING_LOCALES)[number]
@@ -108,12 +109,17 @@ async function translatePiece(text: string, target: ListingLocale): Promise<stri
 
 async function translateText(text: string, target: ListingLocale): Promise<string> {
   const value = text.trim()
-  if (!value || alreadyInLocale(value, target)) return value
-  const shielded = shieldProjectNames(value)
-  const pieces = chunks(shielded.text, 900)
-  const translated: string[] = []
-  for (const piece of pieces) translated.push(await translatePiece(piece, target))
-  return restoreProjectNames(translated.join(' '), shielded.tokens)
+  if (!value) return value
+  const named = shieldProjectNames(value)
+  const mamad = shieldMamadTerms(named.text)
+  let translated = mamad.text
+  if (!alreadyInLocale(value, target)) {
+    const pieces = chunks(translated, 900)
+    const parts: string[] = []
+    for (const piece of pieces) parts.push(await translatePiece(piece, target))
+    translated = parts.join(' ')
+  }
+  return restoreMamadTerms(restoreProjectNames(translated, named.tokens), target)
 }
 
 async function translateLines(lines: string[] | undefined, target: ListingLocale): Promise<string[]> {

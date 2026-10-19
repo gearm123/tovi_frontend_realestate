@@ -9,6 +9,7 @@ const PROTECTED_PROJECT_NAMES = [
   'David Promenade Residences',
   'David Promenade',
   'Mandarin Oriental Tel Aviv',
+  'Mandarin Oriental',
   'Herbert Samuel Waterfront',
   'Assuta Village Project',
   'Assuta Village',
@@ -20,6 +21,9 @@ const PROTECTED_PROJECT_NAMES = [
   'Rainbow',
   'DUO',
   'Kempinski',
+  'ProperTLV',
+  'Gindi',
+  'Sarona',
 ]
 
 const NAME_PATTERN = new RegExp(
@@ -48,13 +52,29 @@ export function restoreProjectNames(text: string, tokens: string[]): string {
   }, text)
 }
 
-type StoredLocale = 'fr' | 'ru'
+type StoredLocale = 'he' | 'fr' | 'ru'
+
+type StoredNameFix = [RegExp, string | ((match: string, prefix: string) => string)]
+
+function keepHebrewPrefix(name: string) {
+  return (_match: string, prefix: string) => (prefix ? `${prefix}-${name}` : name)
+}
 
 /**
- * Fixes project names already stored in French or Russian.
+ * Fixes names already stored by the translator in Hebrew, French, or Russian.
  * These are the forms the translator produced for the protected brands.
  */
-const STORED_NAME_FIXES: Record<StoredLocale, Array<[RegExp, string]>> = {
+const STORED_NAME_FIXES: Record<StoredLocale, StoredNameFix[]> = {
+  he: [
+    [/(?<![א-ת])([בלהוכמש]?)מנדרין אוריינטל/g, keepHebrewPrefix('Mandarin Oriental')],
+    [/דיוויד קמפינסקי/g, 'David Kempinski'],
+    [/דוד קמפינסקי/g, 'David Kempinski'],
+    [/דיוויד טיילת מגורים/g, 'David Promenade Residences'],
+    [/טיילת דוד/g, 'David Promenade'],
+    [/(?<![א-ת])([בלהוכמש]?)קמפינסקי/g, keepHebrewPrefix('Kempinski')],
+    [/(?<![א-ת])([בלהוכמש]?)גינדי/g, keepHebrewPrefix('Gindi')],
+    [/(?<![א-ת])([בלהוכמש]?)שרונה/g, keepHebrewPrefix('Sarona')],
+  ],
   fr: [
     [/Promenade David\s*[-–—]\s*Kempinski/gi, 'David Promenade - Kempinski'],
     [/Promenade David/gi, 'David Promenade'],
@@ -66,6 +86,9 @@ const STORED_NAME_FIXES: Record<StoredLocale, Array<[RegExp, string]>> = {
   ],
   ru: [
     [/Променад Давида\s*[-–—]\s*Кемпински/gi, 'David Promenade - Kempinski'],
+    [/Кемпински/g, 'Kempinski'],
+    [/(?<![А-Яа-яЁё])[Гг]инди(?![А-Яа-яЁё])/g, 'Gindi'],
+    [/(?<![А-Яа-яЁё])[Сс]арон(?:а|ы|е|у|ой|ою)(?![А-Яа-яЁё])/g, 'Sarona'],
     [/ДУЭТ Тель-Авива/g, 'DUO Tel Aviv'],
     [/ДУЭТ/g, 'DUO'],
     [/Дуэт/g, 'DUO'],
@@ -83,6 +106,8 @@ const STORED_NAME_FIXES: Record<StoredLocale, Array<[RegExp, string]>> = {
 export function restoreStoredProjectNames(text: string, locale: StoredLocale): string {
   return STORED_NAME_FIXES[locale].reduce((value, [pattern, replacement]) => {
     pattern.lastIndex = 0
-    return value.replace(pattern, replacement)
+    return typeof replacement === 'string'
+      ? value.replace(pattern, replacement)
+      : value.replace(pattern, replacement)
   }, text)
 }

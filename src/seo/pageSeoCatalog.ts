@@ -79,7 +79,7 @@ export const pageSeoCatalog: SeoCatalog = {
     guides: {
       title: 'Guides | ProperTLV',
       description:
-        'Presentations for people moving to Israel and for real estate investors, from ProperTLV.',
+        'Presentations for buyers, people moving to Israel, and real estate investors, from ProperTLV.',
       path: '/guides',
     },
   },
@@ -134,7 +134,7 @@ export const pageSeoCatalog: SeoCatalog = {
     },
     guides: {
       title: 'מדריכים | ProperTLV',
-      description: 'מצגות למי שעובר לישראל ולמשקיעי נדל״ן, מבית ProperTLV.',
+      description: 'מצגות לקונים, למי שעובר לישראל ולמשקיעי נדל״ן, מבית ProperTLV.',
       path: '/guides',
     },
   },
@@ -196,7 +196,7 @@ export const pageSeoCatalog: SeoCatalog = {
     guides: {
       title: 'Guides | ProperTLV',
       description:
-        'Présentations pour les personnes qui s’installent en Israël et pour les investisseurs immobiliers, par ProperTLV.',
+        'Présentations pour les acheteurs, les personnes qui s’installent en Israël et pour les investisseurs immobiliers, par ProperTLV.',
       path: '/guides',
     },
   },
@@ -258,7 +258,7 @@ export const pageSeoCatalog: SeoCatalog = {
     guides: {
       title: 'Гиды | ProperTLV',
       description:
-        'Презентации для тех, кто переезжает в Израиль, и для инвесторов в недвижимость, от ProperTLV.',
+        'Презентации для покупателей, тех, кто переезжает в Израиль, и для инвесторов в недвижимость, от ProperTLV.',
       path: '/guides',
     },
   },

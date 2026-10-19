@@ -2,6 +2,7 @@ import type { Locale } from './types'
 import type { ListingLocale, ListingLocaleCopy } from '../types/property'
 import { stripStreetNumber } from '../utils/streetNumber'
 import { cleanListingText } from '../utils/listingCopy'
+import { applyMamadTermsAcross } from '../utils/mamadTerms'
 
 type PropertyTranslation = {
   title: string
@@ -57,10 +58,10 @@ const he: Record<string, PropertyTranslation> = {
     price: '₪12,500 לחודש',
   },
   r2: {
-    title: 'דירה מודרנית בשרונה',
+    title: 'דירה מודרנית ב-Sarona',
     address: 'רחוב קפלן 5, תל אביב',
     description:
-      'דירה חדשה במגדל עם נוף לגני שרונה. חלונות מהרצפה לתקרה, קונסיירז׳ וחניה תת-קרקעית.',
+      'דירה חדשה במגדל עם נוף לגני Sarona. חלונות מהרצפה לתקרה, קונסיירז׳ וחניה תת-קרקעית.',
     price: '₪18,000 לחודש',
   },
   r3: {
@@ -82,21 +83,41 @@ const he: Record<string, PropertyTranslation> = {
 export function getLocalizedProperty(
   id: string,
   locale: Locale,
-  fallback: PropertyTranslation & { neighborhood: string },
+  fallback: PropertyTranslation & {
+    neighborhood: string
+    highlights?: string[]
+    specialNotes?: string[]
+  },
 ) {
   const stored = fallback.translations?.[locale]
   const catalog = locale === 'he' ? he[id] : undefined
   const manual = locale === 'he' ? fallback.he : undefined
+  const title = cleanListingText(stripStreetNumber(stored?.title || manual?.title || catalog?.title || fallback.title))
+  const description = cleanListingText(
+    stored?.description || manual?.description || catalog?.description || fallback.description,
+  )
+  const highlights = stored?.highlights?.length
+    ? stored.highlights
+    : manual?.highlights?.length
+      ? manual.highlights
+      : fallback.highlights ?? []
+  const specialNotes = stored?.specialNotes?.length
+    ? stored.specialNotes
+    : manual?.specialNotes?.length
+      ? manual.specialNotes
+      : fallback.specialNotes ?? []
+  const [nextTitle, nextDescription, ...rest] = applyMamadTermsAcross(
+    [title, description, ...highlights, ...specialNotes],
+    locale,
+  )
   return {
-    title: cleanListingText(stripStreetNumber(stored?.title || manual?.title || catalog?.title || fallback.title)),
+    title: nextTitle,
     address: cleanListingText(
       stripStreetNumber(stored?.address || manual?.address || catalog?.address || fallback.address),
     ),
-    description: cleanListingText(
-      stored?.description || manual?.description || catalog?.description || fallback.description,
-    ),
-    highlights: stored?.highlights?.length ? stored.highlights : manual?.highlights,
-    specialNotes: stored?.specialNotes?.length ? stored.specialNotes : manual?.specialNotes,
+    description: nextDescription,
+    highlights: rest.slice(0, highlights.length),
+    specialNotes: rest.slice(highlights.length),
     price: catalog?.price ?? fallback.price,
     neighborhood: fallback.neighborhood,
   }

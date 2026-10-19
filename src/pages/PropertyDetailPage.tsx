@@ -45,6 +45,8 @@ export default function PropertyDetailPage() {
       neighborhood: property.neighborhood,
       translations: property.translations,
       he: property.he,
+      highlights: property.highlights,
+      specialNotes: property.specialNotes,
     })
   }, [property, locale])
 
