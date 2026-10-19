@@ -121,18 +121,6 @@ function hasWrittenHebrew(copy: MagazineLocaleCopy | undefined): boolean {
   return Boolean(copy && (copy.title || copy.excerpt || copy.body.length))
 }
 
-function copyKey(article: MagazineArticle): string {
-  return JSON.stringify({
-    category: article.category,
-    title: article.title,
-    excerpt: article.excerpt,
-    date: article.date,
-    body: article.body,
-    source: article.source ?? null,
-    captions: (article.images ?? []).map((image) => image.caption).filter(Boolean),
-  })
-}
-
 function isArticleId(id: string): boolean {
   return /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,180}$/.test(id)
 }
@@ -222,15 +210,24 @@ export async function upsertArticle(
   )
   if (duplicate.rows[0]) throw new ArticleInputError('Another article already uses that link.')
 
-  const copyChanged = !current || copyKey(current) !== copyKey(article)
-  const previous = current?.translations
-  if (!copyChanged) article.translations = previous ?? article.translations
+  const keptSlugs = new Set(
+    (current?.previousSlugs ?? []).map((slug) => clean(slug).toLowerCase()),
+  )
+  if (current && current.slug !== article.slug) keptSlugs.add(current.slug)
+  keptSlugs.delete(article.slug)
+  const previousSlugs = [...keptSlugs].filter((slug) => isSlug(slug))
+  article.previousSlugs = previousSlugs.length ? previousSlugs : undefined
 
-  const locales = TRANSLATED_LOCALES.filter((locale) => {
-    if (locale === 'he' && hasWrittenHebrew(article.hebrew)) return false
-    return copyChanged || !localeReady(article.translations?.[locale], locale)
-  })
-  if (locales.length) {
+  const previous = current?.translations
+  const locales = current
+    ? []
+    : TRANSLATED_LOCALES.filter((locale) => {
+        if (locale === 'he' && hasWrittenHebrew(article.hebrew)) return false
+        return true
+      })
+  if (!locales.length) {
+    article.translations = previous ?? article.translations
+  } else {
     const translated = await translateMagazineFields(
       {
         category: article.category,
@@ -243,14 +240,26 @@ export async function upsertArticle(
       },
       locales,
     )
-    const merged: NonNullable<MagazineArticle['translations']> = { ...(article.translations ?? {}) }
+    const merged: NonNullable<MagazineArticle['translations']> = { ...(previous ?? {}) }
     for (const locale of locales) {
       const copy = translated[locale]
       if (copy && localeReady(copy, locale)) merged[locale] = copy
-      else if (previous?.[locale]) merged[locale] = previous[locale]
-      else delete merged[locale]
     }
     article.translations = Object.keys(merged).length ? merged : undefined
+  }
+  if (article.translations) {
+    article.translations = {
+      ...article.translations,
+      en: {
+        category: article.category,
+        title: article.title,
+        excerpt: article.excerpt,
+        date: article.date,
+        body: article.body,
+        source: article.source,
+        captions: (article.images ?? []).map((image) => image.caption),
+      },
+    }
   }
 
   if (current) {

@@ -200,7 +200,7 @@ export default function AdminArticleFormPage() {
       <section className="admin-card">
         <div className="admin-form__grid">
           <div className="admin-field admin-field--full">
-            <label htmlFor="article-title">Title</label>
+            <label htmlFor="article-title">English title</label>
             <input
               id="article-title"
               value={form.title}
@@ -209,7 +209,7 @@ export default function AdminArticleFormPage() {
             />
           </div>
           <div className="admin-field">
-            <label htmlFor="article-slug">Link</label>
+            <label htmlFor="article-slug">URL</label>
             <input
               id="article-slug"
               value={form.slug}
@@ -218,7 +218,10 @@ export default function AdminArticleFormPage() {
                 setField('slug', event.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-'))
               }}
             />
-            <p className="admin-field__hint">The public address is /magazine/{form.slug || '…'}</p>
+            <p className="admin-field__hint">
+              The public address is /magazine/{form.slug || '…'}. Saving a new address keeps a
+              permanent redirect from the old one.
+            </p>
           </div>
           <div className="admin-field">
             <label htmlFor="article-type">Type</label>
@@ -242,6 +245,9 @@ export default function AdminArticleFormPage() {
               onChange={(event) => setField('category', event.target.value)}
               required
             />
+            <p className="admin-field__hint">
+              Use Buildings for a project article. The contact note is added at the end automatically.
+            </p>
           </div>
           <div className="admin-field">
             <label htmlFor="article-date">Date</label>
@@ -254,7 +260,7 @@ export default function AdminArticleFormPage() {
             />
           </div>
           <div className="admin-field admin-field--full">
-            <label htmlFor="article-excerpt">Summary</label>
+            <label htmlFor="article-excerpt">English summary</label>
             <textarea
               id="article-excerpt"
               rows={3}
@@ -264,7 +270,7 @@ export default function AdminArticleFormPage() {
             />
           </div>
           <div className="admin-field admin-field--full">
-            <label htmlFor="article-body">Body</label>
+            <label htmlFor="article-body">English article</label>
             <textarea
               id="article-body"
               rows={16}
@@ -275,13 +281,17 @@ export default function AdminArticleFormPage() {
                 setError('')
               }}
             />
-            <p className="admin-field__hint">Separate paragraphs with a blank line.</p>
+            <p className="admin-field__hint">
+              Separate paragraphs with a blank line. This English text is saved as written.
+              Saving it does not change the Hebrew, French, or Russian text.
+            </p>
           </div>
           <div className="admin-field admin-field--full">
             <label>Photos</label>
             <p className="admin-field__hint">
               Upload a cover or choose one of the photos below. The cover is the photo on the
-              magazine list. The caption and photo credit appear under the photo on the article.
+              magazine list. The English caption, Hebrew caption, and photo credit appear under
+              the photo. Each caption is saved as written.
             </p>
             <div className="admin-page__actions">
               <label className="admin-btn admin-btn--small">
@@ -333,10 +343,12 @@ export default function AdminArticleFormPage() {
                         )
                       }
                     />
-                    <input
+                    <label className="admin-article-photos__label">
+                      English caption
+                      <input
                       value={image.caption}
                       placeholder="Caption"
-                      aria-label={`Image ${index + 1} caption`}
+                      aria-label={`Image ${index + 1} English caption`}
                       onChange={(event) =>
                         updateImages(
                           images.map((item, imageIndex) =>
@@ -345,6 +357,7 @@ export default function AdminArticleFormPage() {
                         )
                       }
                     />
+                    </label>
                     <input
                       value={image.credit ?? ''}
                       placeholder="Photo credit"
@@ -357,7 +370,9 @@ export default function AdminArticleFormPage() {
                         )
                       }
                     />
-                    <input
+                    <label className="admin-article-photos__label">
+                      Hebrew caption
+                      <input
                       dir="rtl"
                       lang="he"
                       value={image.hebrewCaption}
@@ -371,6 +386,7 @@ export default function AdminArticleFormPage() {
                         )
                       }
                     />
+                    </label>
                     <div className="admin-page__actions">
                       {isCover ? null : (
                         <button
@@ -491,9 +507,9 @@ export default function AdminArticleFormPage() {
       <section className="admin-card">
         <h2 className="admin-card__title">Hebrew</h2>
         <p className="admin-page__subtitle">
-          Enter the Hebrew title, summary, and article here. Text in these fields is published
-          as written, from right to left, and is not translated from the English. Leave them
-          blank to keep the automatic Hebrew translation.
+          Enter the Hebrew title, summary, and article here. They are saved as written, from
+          right to left. Saving Hebrew does not change the English, French, or Russian text.
+          Leave a field blank to keep the automatic Hebrew translation for that field.
         </p>
         <div className="admin-form__grid">
           <div className="admin-field admin-field--full">

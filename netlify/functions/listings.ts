@@ -45,6 +45,7 @@ import {
 import type { MagazineArticle, MagazineLocaleCopy } from '../../src/types/magazine'
 import { RUSSIAN_ARTICLE_REPAIRS } from '../../src/data/magazine/russianArticleRepairs'
 import { restoreStoredProjectNames } from '../../src/utils/protectedProjectNames'
+import { articleRedirectMap } from '../../src/utils/articleRedirects'
 import {
   deleteFailedLead,
   FailedLeadInputError,
@@ -652,6 +653,7 @@ async function repairRussianArticlesOnce(): Promise<void> {
 async function readPublicArticles(req: Request): Promise<Response> {
   await repairRussianArticlesOnce()
   await repairProjectNamesOnce()
+  await repairAssutaSlugOnce()
   return servePublishedCatalog(req, 'articles', (body) => Array.isArray(body.articles))
 }
 
@@ -757,9 +759,40 @@ async function publishArticlesCatalog(): Promise<void> {
   try {
     const articles = await listArticles()
     await writePublicCatalog('articles', { savedAt: Date.now(), articles })
+    await writePublicCatalog('article-redirects', articleRedirectMap(articles))
     await purgePublicCatalog('articles')
   } catch (error) {
     console.error(error instanceof Error ? error.message : 'Could not refresh the public articles')
+  }
+}
+
+const ASSUTA_ARTICLE_ID = 'mag-1791920858356'
+const ASSUTA_OLD_SLUG = 'assuta-bauhaus-village-guide'
+const ASSUTA_SLUG = 'assuta-village'
+
+/** Moves the Assuta article off the bauhaus address and keeps that address as a redirect. */
+async function repairAssutaSlugOnce(): Promise<void> {
+  const marker = await readPublicCatalog<{ done?: boolean }>('article-slug-repair-v1')
+  if (marker?.body?.done) return
+  try {
+    const articles = await listArticles()
+    const article = articles.find((item) => item.id === ASSUTA_ARTICLE_ID)
+    const taken = articles.some((item) => item.id !== ASSUTA_ARTICLE_ID && item.slug === ASSUTA_SLUG)
+    if (article && article.slug === ASSUTA_OLD_SLUG && !taken) {
+      const previousSlugs = [...new Set([...(article.previousSlugs ?? []), article.slug])].filter(
+        (slug) => slug !== ASSUTA_SLUG,
+      )
+      const next: MagazineArticle = { ...article, slug: ASSUTA_SLUG, previousSlugs }
+      const db = await database()
+      await db.pool.query('UPDATE articles SET data = $2::jsonb, updated_at = now() WHERE id = $1', [
+        article.id,
+        JSON.stringify(next),
+      ])
+      await publishArticlesCatalog()
+    }
+    await writePublicCatalog('article-slug-repair-v1', { done: true, savedAt: Date.now() })
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not update the Assuta article address')
   }
 }
 
@@ -789,21 +822,38 @@ async function upsertListing(req: Request): Promise<Response> {
     [prepared.id],
   )
   const current = existing.rows[0]?.data
-  const copyChanged = !current || listingCopyChanged(current, prepared)
   let listing = prepared
-  if (current && !copyChanged) {
-    listing = {
-      ...prepared,
-      translations: prepared.translations ?? current.translations,
-      he: prepared.he ?? current.he,
-    }
-  } else {
+  if (!current) {
     try {
       listing = await withListingTranslations(prepared)
-      if (current?.he && !listing.he) listing = { ...listing, he: current.he }
     } catch (error) {
       console.error(error instanceof Error ? error.message : 'Listing translation failed')
       return json(502, { error: 'The listing could not be translated. Publish it again in a moment.' })
+    }
+  } else {
+    const missing = (['en', 'he', 'fr', 'ru'] as const).filter((locale) => !current.translations?.[locale])
+    let filled: Property['translations']
+    if (missing.length) {
+      try {
+        filled = (await withListingTranslations(prepared, missing)).translations
+      } catch (error) {
+        console.error(error instanceof Error ? error.message : 'Listing translation failed')
+      }
+    }
+    listing = {
+      ...prepared,
+      translations: {
+        ...filled,
+        ...current.translations,
+        en: {
+          title: prepared.title,
+          address: prepared.address,
+          description: prepared.description ?? '',
+          highlights: prepared.highlights,
+          specialNotes: prepared.specialNotes,
+        },
+      },
+      he: current.he ?? prepared.he,
     }
   }
   await db.pool.query(
@@ -834,7 +884,14 @@ async function translateMissingListings(req: Request): Promise<Response> {
 
   for (const current of missing.slice(0, limit)) {
     try {
-      const listing = await withListingTranslations(current)
+      const translated = await withListingTranslations(current, [locale])
+      const copy = translated.translations?.[locale]
+      if (!copy) continue
+      const listing: Property = {
+        ...current,
+        translations: { ...current.translations, [locale]: copy },
+        he: current.he,
+      }
       await db.pool.query(
         'UPDATE listings SET data = $2::jsonb, updated_at = now() WHERE id = $1',
         [listing.id, JSON.stringify(listing)],
@@ -865,18 +922,6 @@ async function removeListing(id: string): Promise<Response> {
   if ((result.rowCount ?? 0) === 0) return json(404, { error: 'Listing not found.' })
   await publishListingsCatalog()
   return json(200, { ok: true })
-}
-
-function listingCopyChanged(current: Property, next: Property): boolean {
-  const copy = (property: Property) =>
-    JSON.stringify({
-      title: property.title,
-      address: property.address,
-      description: property.description,
-      highlights: property.highlights ?? [],
-      specialNotes: property.specialNotes ?? [],
-    })
-  return copy(current) !== copy(next)
 }
 
 function forPublicListing(listing: Property): Property {

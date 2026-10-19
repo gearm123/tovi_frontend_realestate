@@ -132,12 +132,18 @@ async function translateCopy(property: Property, locale: ListingLocale): Promise
   return { title, address, description, highlights, specialNotes }
 }
 
-/** Builds en, he, fr, and ru copies once, from the text entered in the admin panel. */
-export async function withListingTranslations(property: Property): Promise<Property> {
+/** Fills the requested languages from the text entered in the admin panel. */
+export async function withListingTranslations(
+  property: Property,
+  locales: readonly ListingLocale[] = LISTING_LOCALES,
+): Promise<Property> {
   const entries = await Promise.all(
-    LISTING_LOCALES.map(async (locale) => [locale, await translateCopy(property, locale)] as const),
+    locales.map(async (locale) => [locale, await translateCopy(property, locale)] as const),
   )
-  return { ...property, translations: Object.fromEntries(entries) }
+  return {
+    ...property,
+    translations: { ...property.translations, ...Object.fromEntries(entries) },
+  }
 }
 
 export interface MagazineTranslationFields {

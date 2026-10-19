@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import ArticleVideo from '../components/magazine/ArticleVideo'
 import MagazineCtaBanner from '../components/magazine/MagazineCtaBanner'
 import PageSeo from '../components/seo/PageSeo'
 import { useSiteContent } from '../hooks/useSiteContent'
 import { useSiteData } from '../hooks/useSiteData'
-import { articleForLocale, captionForImage, galleryFromArticle } from '../lib/magazineArticles'
+import { articleForLocale, captionForImage, galleryFromArticle, isProjectArticle } from '../lib/magazineArticles'
+import ProjectArticleContact from '../components/magazine/ProjectArticleContact'
 import { buildArticleJsonLd } from '../seo/structuredData'
 import './MagazineArticlePage.css'
 
@@ -15,12 +16,18 @@ export default function MagazineArticlePage() {
   const { articles, articlesStatus } = useSiteData()
   const { magazinePage } = content
   const stored = slug ? articles.find((item) => item.slug === slug) : undefined
+  const redirected =
+    !stored && slug ? articles.find((item) => item.previousSlugs?.includes(slug)) : undefined
   const article = stored ? articleForLocale(stored, locale) : undefined
   const articlePath = article ? `/magazine/${article.slug}` : '/magazine'
   const articleJsonLd = useMemo(
     () => (article ? buildArticleJsonLd(article, articlePath) : null),
     [article, articlePath],
   )
+
+  if (redirected) {
+    return <Navigate to={`/magazine/${redirected.slug}`} replace />
+  }
 
   if (!article && articlesStatus === 'loading') {
     return <div className="magazine-article" aria-busy="true" />
@@ -114,6 +121,8 @@ export default function MagazineArticlePage() {
           ),
         )}
       </div>
+
+      {isProjectArticle(stored) ? <ProjectArticleContact locale={locale} /> : null}
 
       <footer className="magazine-article__footer">
         {article.source && (

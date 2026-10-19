@@ -33,6 +33,8 @@ export interface MagazineGalleryImage {
 export interface MagazineArticle {
   id: string
   slug: string
+  /** Earlier public addresses. Each one redirects to the current slug. */
+  previousSlugs?: string[]
   type: MagazineArticleType
   category: string
   title: string

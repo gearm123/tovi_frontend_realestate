@@ -1,0 +1,28 @@
+.project-article-contact {
+  margin-top: 2rem;
+  padding: 1.25rem 1.35rem;
+  text-align: center;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--property-radius);
+}
+
+.project-article-contact__text {
+  font-family: var(--font-primary);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0 0 1rem;
+}
+
+.project-article-contact__action {
+  display: inline-flex;
+}
+
+@media (max-width: 768px) {
+  .project-article-contact__action {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}

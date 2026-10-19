@@ -88,6 +88,15 @@
   min-width: 0;
 }
 
+.admin-article-photos__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d2327;
+}
+
 .admin-article-photos__file {
   display: none;
 }

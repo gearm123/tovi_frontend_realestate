@@ -14,14 +14,15 @@ export function articleForLocale(article: MagazineArticle, locale: Locale): Maga
   if (locale === 'en') return article
   if (locale === 'he' && hasWrittenHebrew(article.hebrew)) {
     const manual = article.hebrew as MagazineLocaleCopy
+    const automatic = article.translations?.he
     return {
       ...article,
-      category: manual.category || article.category,
-      title: manual.title || article.title,
-      excerpt: manual.excerpt || article.excerpt,
-      date: manual.date || article.date,
-      body: manual.body.length ? manual.body : article.body,
-      source: manual.source ?? article.source,
+      category: manual.category || automatic?.category || article.category,
+      title: manual.title || automatic?.title || article.title,
+      excerpt: manual.excerpt || automatic?.excerpt || article.excerpt,
+      date: manual.date || automatic?.date || article.date,
+      body: manual.body.length ? manual.body : automatic?.body?.length ? automatic.body : article.body,
+      source: manual.source ?? automatic?.source ?? article.source,
     }
   }
   const copy = article.translations?.[locale]
@@ -105,4 +106,9 @@ export function captionForImage(
     if (translated) return translated
   }
   return image.caption
+}
+
+/** Project guides use the Buildings category. The contact note is added for that category only. */
+export function isProjectArticle(article: { category?: string } | undefined): boolean {
+  return article?.category?.trim().toLowerCase() === 'buildings'
 }
