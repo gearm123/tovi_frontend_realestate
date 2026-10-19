@@ -49,7 +49,10 @@ export default function ScrollToTop() {
       }
     }
 
-    scrollPageToTop()
+    // Filter changes replace the query on the same page. Keep the viewport.
+    if (previousPath !== location.pathname) {
+      scrollPageToTop()
+    }
     return () => {
       positions.current.set(location.key, window.scrollY)
       leftPath.current = location.pathname
