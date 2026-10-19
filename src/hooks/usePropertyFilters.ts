@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import type { ListingStatusFilter } from '../constants/propertySearch'
 import { getPriceMaxForStatus } from '../constants/propertySearch'
+import { filtersFromSearchParams, filtersToSearchParams } from '../lib/propertyFilterQuery'
 import { filterProperties } from '../lib/propertySearch'
 import type { Property } from '../types/property'
 import { createDefaultFilters, type PropertyFilters } from '../types/filters'
@@ -14,8 +16,10 @@ export function usePropertyFilters(
   options: UsePropertyFiltersOptions = {},
 ) {
   const { initialStatus = 'all' } = options
-  const [filters, setFilters] = useState<PropertyFilters>(() =>
-    createDefaultFilters(initialStatus),
+  const [params, setParams] = useSearchParams()
+  const filters = useMemo(
+    () => filtersFromSearchParams(params, initialStatus),
+    [params, initialStatus],
   )
 
   const filtered = useMemo(
@@ -23,30 +27,36 @@ export function usePropertyFilters(
     [source, filters],
   )
 
+  const writeFilters = (next: PropertyFilters) => {
+    const serialized = filtersToSearchParams(next, initialStatus)
+    if (serialized.toString() === filtersToSearchParams(filters, initialStatus).toString()) return
+    setParams(serialized, { replace: true })
+  }
+
   const resetFilters = () => {
-    setFilters(createDefaultFilters(filters.listingStatus))
+    writeFilters(createDefaultFilters(filters.listingStatus))
   }
 
   const setListingStatus = (listingStatus: ListingStatusFilter) => {
-    setFilters((prev) => ({
+    writeFilters({
       ...createDefaultFilters(listingStatus),
-      neighborhood: prev.neighborhood,
-      propertyType: prev.propertyType,
-      rooms: prev.rooms,
-      sizeMin: prev.sizeMin,
-      balcony: prev.balcony,
-      parking: prev.parking,
-      elevator: prev.elevator,
-      mamad: prev.mamad,
-      miklat: prev.miklat,
-      petsAllowed: prev.petsAllowed,
-      propertyCode: prev.propertyCode,
-      priceMin: prev.priceMin,
-      priceMax: Math.min(prev.priceMax, getPriceMaxForStatus(listingStatus)),
-    }))
+      neighborhood: filters.neighborhood,
+      propertyType: filters.propertyType,
+      rooms: filters.rooms,
+      sizeMin: filters.sizeMin,
+      balcony: filters.balcony,
+      parking: filters.parking,
+      elevator: filters.elevator,
+      mamad: filters.mamad,
+      miklat: filters.miklat,
+      petsAllowed: filters.petsAllowed,
+      propertyCode: filters.propertyCode,
+      priceMin: filters.priceMin,
+      priceMax: Math.min(filters.priceMax, getPriceMaxForStatus(listingStatus)),
+    })
   }
 
-  return { filters, setFilters, filtered, resetFilters, setListingStatus }
+  return { filters, setFilters: writeFilters, filtered, resetFilters, setListingStatus }
 }
 
 export { filterProperties } from '../lib/propertySearch'

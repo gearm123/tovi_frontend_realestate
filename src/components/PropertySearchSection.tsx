@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react'
+import { useLocation } from 'react-router-dom'
 import type { ListingStatusFilter } from '../constants/propertySearch'
 import { useLanguage } from '../context/LanguageContext'
 import { usePropertyFilters } from '../hooks/usePropertyFilters'
@@ -7,6 +8,7 @@ import { useSiteData } from '../hooks/useSiteData'
 import { buildPropertyMapPins } from '../services/mapService'
 import type { Property } from '../types/property'
 import { isListingAvailable } from '../utils/listingAvailability'
+import { clearSearchReturn, readSearchReturn, rememberSearchReturn } from '../lib/searchReturn'
 import PropertyFiltersBar from './PropertyFilters'
 import PropertyListings from './PropertyListings'
 import PropertyMap from './map/PropertyMap'
@@ -41,6 +43,7 @@ export default function PropertySearchSection({
   embedMap = false,
 }: PropertySearchSectionProps) {
   const { t, format } = useLanguage()
+  const location = useLocation()
   const { content } = useSiteContent()
   const { properties } = useSiteData()
   const catalog = useMemo(() => {
@@ -50,23 +53,67 @@ export default function PropertySearchSection({
   const { filters, setFilters, filtered, resetFilters, setListingStatus } =
     usePropertyFilters(catalog, { initialStatus })
 
+  const returnPlace = useRef(
+    readSearchReturn(`${window.location.pathname}${window.location.search}`),
+  )
   const isHomeHero = prominence === 'hero'
   const showMapToggle = !isHomeHero && !embedMap
   const sectionLabel = format(t.search.resultsCount, { count: filtered.length })
   const title = listingsTitle ?? t.search.resultsTitle
   const intro = listingsIntro
-  const [visibleCount, setVisibleCount] = useState(SEARCH_PAGE_SIZE)
-  const filterKey = `${filtered.length}:${filtered[0]?.id ?? ''}:${filtered[filtered.length - 1]?.id ?? ''}`
+  const [visibleCount, setVisibleCount] = useState(
+    () => returnPlace.current?.visible ?? SEARCH_PAGE_SIZE,
+  )
+  const criteriaKey = [
+    filters.listingStatus,
+    filters.neighborhood,
+    filters.propertyType,
+    filters.rooms,
+    filters.sizeMin,
+    filters.priceMin,
+    filters.priceMax,
+    filters.balcony,
+    filters.parking,
+    filters.elevator,
+    filters.mamad,
+    filters.miklat,
+    filters.petsAllowed,
+    filters.propertyCode,
+  ].join('|')
+  const lastCriteria = useRef(criteriaKey)
 
   useEffect(() => {
+    if (lastCriteria.current === criteriaKey) return
+    lastCriteria.current = criteriaKey
     setVisibleCount(SEARCH_PAGE_SIZE)
-  }, [filterKey])
+  }, [criteriaKey])
 
   const listed = filtered.slice(0, visibleCount)
   const hasMore = visibleCount < filtered.length
-  const [view, setView] = useState<'list' | 'map'>('list')
+  const [view, setView] = useState<'list' | 'map'>(returnPlace.current?.view ?? 'list')
   const [mapExpanded, setMapExpanded] = useState(false)
   const pins = useMemo(() => buildPropertyMapPins(filtered), [filtered])
+  const scrollPending = useRef(returnPlace.current?.scroll ?? null)
+
+  useEffect(() => {
+    if (scrollPending.current == null || listed.length === 0) return
+    const top = scrollPending.current
+    scrollPending.current = null
+    clearSearchReturn()
+    requestAnimationFrame(() => window.scrollTo({ top, left: 0, behavior: 'auto' }))
+  }, [listed.length])
+
+  const rememberPlace = (event: MouseEvent<HTMLElement>) => {
+    const link = (event.target as HTMLElement).closest('a')
+    const href = link?.getAttribute('href') ?? ''
+    if (!href.startsWith('/property/')) return
+    rememberSearchReturn({
+      path: `${location.pathname}${location.search}`,
+      scroll: window.scrollY,
+      visible: visibleCount,
+      view,
+    })
+  }
 
   return (
     <section
@@ -78,6 +125,7 @@ export default function PropertySearchSection({
         .filter(Boolean)
         .join(' ')}
       aria-label={t.search.sectionAria}
+      onClickCapture={rememberPlace}
     >
       <PropertyFiltersBar
         filters={filters}

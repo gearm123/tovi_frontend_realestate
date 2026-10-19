@@ -3,6 +3,7 @@ import {
   getPriceMaxForStatus,
   getPriceStepForStatus,
   isRentalPriceContext,
+  ROOM_MIN_OPTIONS,
   SIZE_MIN_OPTIONS,
   type ListingStatusFilter,
 } from '../constants/propertySearch'
@@ -22,16 +23,9 @@ interface PropertyFiltersBarProps {
   className?: string
 }
 
-const roomOptions = ['', '2', '3', '4', '5', '6'] as const
+const featureKeys = ['balcony', 'mamad', 'miklat', 'petsAllowed'] as const
 
-const featureKeys = [
-  'balcony',
-  'parking',
-  'elevator',
-  'mamad',
-  'miklat',
-  'petsAllowed',
-] as const
+const amenityKeys = ['parking', 'elevator'] as const
 
 const statusOptions: ListingStatusFilter[] = ['all', 'sale', 'rental']
 
@@ -221,9 +215,10 @@ export default function PropertyFiltersBar({
               update('rooms', e.target.value === '' ? '' : Number(e.target.value))
             }
           >
-            {roomOptions.map((r) => (
-              <option key={r || 'any'} value={r}>
-                {r === '' ? t.filters.any : format(t.filters.roomsPlus, { count: r })}
+            <option value="">{t.filters.any}</option>
+            {ROOM_MIN_OPTIONS.map((r) => (
+              <option key={r} value={r}>
+                {format(t.filters.roomsPlus, { count: r })}
               </option>
             ))}
           </select>
@@ -245,6 +240,19 @@ export default function PropertyFiltersBar({
             ))}
           </select>
         </label>
+      </div>
+
+      <div className="property-filters__checkboxes">
+        {amenityKeys.map((key) => (
+          <label key={key} className="property-filters__checkbox">
+            <input
+              type="checkbox"
+              checked={filters[key]}
+              onChange={(e) => update(key, e.target.checked)}
+            />
+            <span>{t.filters.features[key]}</span>
+          </label>
+        ))}
       </div>
 
       <div className="property-filters__row property-filters__row--price">
