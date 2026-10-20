@@ -283,7 +283,8 @@ export default function AdminListingFormPage() {
           <h1 className="admin-page__title">{isNew ? 'Add listing' : 'Edit listing'}</h1>
           <p className="admin-page__subtitle">
             Fill in the fields below. Price, facts, and listing text stay in a consistent format
-            automatically.
+            automatically. Hebrew, French, and Russian are rewritten from the English text each
+            time that text is published.
           </p>
         </div>
         <div className="admin-page__actions">

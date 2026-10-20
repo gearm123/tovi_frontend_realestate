@@ -599,6 +599,7 @@ async function readPublicListings(req: Request): Promise<Response> {
   await repairProjectNamesOnce()
   await repairAddedProjectNamesOnce()
   await repairMamadTermsOnce()
+  await refreshWeizmannTranslationOnce()
   return servePublishedCatalog(req, 'listings', (body) => Array.isArray(body.listings), true)
 }
 
@@ -982,6 +983,77 @@ async function repairAssutaSlugOnce(): Promise<void> {
   }
 }
 
+function textLines(lines: string[] | undefined): string[] {
+  return (lines ?? []).map((line) => line.trim()).filter(Boolean)
+}
+
+function englishListingCopy(listing: Property): ListingLocaleCopy {
+  return {
+    title: listing.title,
+    address: listing.address,
+    description: listing.description ?? '',
+    highlights: listing.highlights,
+    specialNotes: listing.specialNotes,
+  }
+}
+
+function listingCopyChanged(next: Property, current: Property): boolean {
+  return (
+    (next.title ?? '').trim() !== (current.title ?? '').trim() ||
+    (next.address ?? '').trim() !== (current.address ?? '').trim() ||
+    (next.description ?? '').trim() !== (current.description ?? '').trim() ||
+    JSON.stringify(textLines(next.highlights)) !== JSON.stringify(textLines(current.highlights)) ||
+    JSON.stringify(textLines(next.specialNotes)) !== JSON.stringify(textLines(current.specialNotes))
+  )
+}
+
+/** Rewrites Hebrew, French, and Russian from the English listing text. */
+async function refreshListingLanguages(listing: Property, he?: Property['he']): Promise<Property> {
+  const translated = await withListingTranslations(listing, ['he', 'fr', 'ru'])
+  return {
+    ...listing,
+    translations: {
+      ...listing.translations,
+      ...translated.translations,
+      en: englishListingCopy(listing),
+    },
+    he: he ?? listing.he,
+  }
+}
+
+/** Retranslates Weizmann 23 once, because its older translations stayed after the English edit. */
+async function refreshWeizmannTranslationOnce(): Promise<void> {
+  const marker = await readPublicCatalog<{ done?: boolean }>('listing-translation-refresh-pt-1023')
+  if (marker?.body?.done) return
+  try {
+    const listing = (await readListings()).find(
+      (item) => normalizePropertyCode(item.propertyCode ?? '') === 'PT-1023',
+    )
+    if (!listing) {
+      await writePublicCatalog('listing-translation-refresh-pt-1023', {
+        done: true,
+        savedAt: Date.now(),
+        missing: true,
+      })
+      return
+    }
+    const next = await refreshListingLanguages(listing)
+    const db = await database()
+    await db.pool.query('UPDATE listings SET data = $2::jsonb, updated_at = now() WHERE id = $1', [
+      listing.id,
+      JSON.stringify(next),
+    ])
+    await publishListingsCatalog()
+    await writePublicCatalog('listing-translation-refresh-pt-1023', {
+      done: true,
+      savedAt: Date.now(),
+      id: listing.id,
+    })
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : 'Could not refresh the Weizmann listing')
+  }
+}
+
 async function upsertListing(req: Request): Promise<Response> {
   const body = (await req.json().catch(() => null)) as { listing?: Property } | null
   const incoming = body?.listing
@@ -1016,8 +1088,15 @@ async function upsertListing(req: Request): Promise<Response> {
       console.error(error instanceof Error ? error.message : 'Listing translation failed')
       return json(502, { error: 'The listing could not be translated. Publish it again in a moment.' })
     }
+  } else if (listingCopyChanged(prepared, current)) {
+    try {
+      listing = await refreshListingLanguages(prepared, current.he)
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : 'Listing translation failed')
+      return json(502, { error: 'The listing could not be translated. Publish it again in a moment.' })
+    }
   } else {
-    const missing = (['en', 'he', 'fr', 'ru'] as const).filter((locale) => !current.translations?.[locale])
+    const missing = (['he', 'fr', 'ru'] as const).filter((locale) => !current.translations?.[locale])
     let filled: Property['translations']
     if (missing.length) {
       try {
@@ -1031,13 +1110,7 @@ async function upsertListing(req: Request): Promise<Response> {
       translations: {
         ...filled,
         ...current.translations,
-        en: {
-          title: prepared.title,
-          address: prepared.address,
-          description: prepared.description ?? '',
-          highlights: prepared.highlights,
-          specialNotes: prepared.specialNotes,
-        },
+        en: englishListingCopy(prepared),
       },
       he: current.he ?? prepared.he,
     }
