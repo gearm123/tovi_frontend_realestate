@@ -6,8 +6,16 @@ export default defineConfig({
   plugins: [react()],
   server: {
     watch: {
-      // Large videos on OneDrive/Windows lock fs.watch and crash the dev server.
-      ignored: ['**/*.mp4', '**/*.webm', '**/*.mov', '**/media-source/**'],
+      // Large videos and font files on OneDrive/Windows lock fs.watch and crash the dev server.
+      ignored: [
+        '**/*.mp4',
+        '**/*.webm',
+        '**/*.mov',
+        '**/*.ttf',
+        '**/*.otf',
+        '**/media-source/**',
+        '**/functions/fonts/**',
+      ],
     },
   },
 })

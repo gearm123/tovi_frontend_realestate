@@ -1,0 +1,116 @@
+.sign-contract,
+.sign-contract p,
+.sign-contract button,
+.sign-contract input,
+.sign-contract label {
+  font-family: 'Noto Sans Hebrew', 'Segoe UI', Arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: #000;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
+
+.sign-contract {
+  min-height: 100vh;
+  margin: 0;
+  padding: 1.5rem 1rem 3rem;
+  background: #cfc9c0;
+  font-size: 1.05rem;
+}
+
+.sign-contract__paper {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 2rem;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
+}
+
+.sign-contract__paper p {
+  margin: 0 0 0.45rem;
+  line-height: 1.6;
+  color: #000;
+}
+
+.sign-contract p.sign-contract__heading {
+  margin-top: 0.9rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #000;
+}
+
+.sign-contract__gap {
+  height: 0.6rem;
+}
+
+.sign-contract__sign {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.sign-contract__sign label {
+  display: grid;
+  gap: 0.3rem;
+  font-weight: 600;
+}
+
+.sign-contract__sign input,
+.sign-contract__sign button {
+  font: inherit;
+}
+
+.sign-contract__sign input {
+  min-height: 40px;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #8c8f94;
+}
+
+.sign-contract__sign button {
+  min-height: 44px;
+  border: 0;
+  background: #1d2327;
+  color: #fff;
+  cursor: pointer;
+}
+
+.sign-contract__sign button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.sign-contract__pad {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.sign-contract__pad canvas {
+  width: 100%;
+  height: 160px;
+  border: 1px solid #1d2327;
+  background: #fff;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.sign-contract__clear {
+  justify-self: start;
+  background: transparent !important;
+  color: #1d2327 !important;
+  border: 1px solid #1d2327 !important;
+  min-height: 36px !important;
+  padding: 0 0.8rem;
+}
+
+.sign-contract p.sign-contract__error {
+  color: #8a2424;
+}
+
+.sign-contract__done {
+  margin-top: 1.25rem;
+  padding: 0.8rem;
+  background: #eef6ee;
+  font-weight: 600;
+}

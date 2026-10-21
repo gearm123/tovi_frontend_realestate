@@ -25,17 +25,23 @@ import AdminAgentFormPage from './pages/admin/AdminAgentFormPage'
 import AdminBusinessPage from './pages/admin/AdminBusinessPage'
 import AdminFailedLeadsPage from './pages/admin/AdminFailedLeadsPage'
 import AdminLeadCapturePage from './pages/admin/AdminLeadCapturePage'
+import AdminContractsPage from './pages/admin/AdminContractsPage'
+import AdminContractFormPage from './pages/admin/AdminContractFormPage'
+import SignContractPage from './pages/SignContractPage'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="sign/:token" element={<SignContractPage />} />
         <Route path="admin">
           <Route index element={<AdminLoginPage />} />
           <Route element={<AdminProtectedRoute />}>
             <Route element={<AdminShell />}>
               <Route path="dashboard" element={<AdminDashboardPage />} />
               <Route path="listings" element={<AdminListingsPage />} />
+              <Route path="contracts" element={<AdminContractsPage />} />
+              <Route path="contracts/new" element={<AdminContractFormPage />} />
               <Route path="listings/new" element={<AdminListingFormPage />} />
               <Route path="listings/:id" element={<AdminListingFormPage />} />
               <Route path="magazine" element={<AdminArticlesPage />} />

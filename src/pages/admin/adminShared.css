@@ -189,10 +189,18 @@
   background: #f0f0f1;
 }
 
+.admin-table__text {
+  display: block;
+  max-width: 16rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 .admin-table__actions {
   display: flex;
   gap: 0.35rem;
   flex-wrap: wrap;
+  width: 15.5rem;
 }
 
 .admin-badge {

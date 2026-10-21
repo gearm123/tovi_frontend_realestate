@@ -54,6 +54,7 @@ import {
   listFailedLeads,
 } from './failedLeads'
 import type { FailedLead } from '../../src/types/failedLead'
+import { handleContracts } from './contractsApi'
 
 const IMAGE_STORE = 'listing-images'
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024
@@ -150,6 +151,9 @@ export default async function handler(req: Request): Promise<Response> {
       return await translateMissingListings(req)
     }
 
+    const contractResponse = await handleContracts(pathname, method, req)
+    if (contractResponse) return contractResponse
+
     if (pathname.startsWith('/api/listings/') && method === 'DELETE') {
       const denied = requireAdmin(req)
       if (denied) return denied
@@ -235,6 +239,7 @@ export default async function handler(req: Request): Promise<Response> {
 
 export const config: Config = {
   path: '/api/*',
+  includedFiles: ['netlify/functions/fonts/NotoSansHebrew-Regular.ttf'],
 }
 
 function requestPath(url: URL, req: Request): string {

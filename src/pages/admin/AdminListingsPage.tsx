@@ -156,7 +156,7 @@ export default function AdminListingsPage() {
                       <strong>{property.propertyCode}</strong>
                     </td>
                     <td>
-                      <strong>{property.title || '(Untitled)'}</strong>
+                      <strong className="admin-table__text">{property.title || '(Untitled)'}</strong>
                     </td>
                     <td>
                       <span className={`admin-badge admin-badge--${property.listingType}`}>
@@ -164,7 +164,9 @@ export default function AdminListingsPage() {
                       </span>
                     </td>
                     <td>{property.neighborhood}</td>
-                    <td>{property.fullAddress || '—'}</td>
+                    <td>
+                      <span className="admin-table__text">{property.fullAddress || '—'}</span>
+                    </td>
                     <td>{property.ownerPhone || '—'}</td>
                     <td>{property.price}</td>
                     <td>

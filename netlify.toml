@@ -10,6 +10,7 @@
 
 [functions.listings]
   timeout = 26
+  included_files = ["netlify/functions/fonts/NotoSansHebrew-Regular.ttf"]
 
 [[headers]]
   for = "/catalog/*"

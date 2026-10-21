@@ -3,6 +3,7 @@ import type { Agent } from '../types/agent'
 import type { BusinessContact } from '../types/business'
 import type { FailedLead } from '../types/failedLead'
 import type { MagazineArticle } from '../types/magazine'
+import type { ContractRecord, LeaseDetails } from '../types/contract'
 import type { Property } from '../types/property'
 import { getAdminToken } from '../lib/adminAuth'
 
@@ -180,6 +181,45 @@ export async function loginAdmin(username: string, password: string): Promise<st
 export async function fetchSiteContent(): Promise<SiteContent> {
   const body = await request('/api/site')
   return body.settings as SiteContent
+}
+
+export async function fetchContracts(): Promise<ContractRecord[]> {
+  const body = await request('/api/contracts', { headers: authHeaders() })
+  return Array.isArray(body.contracts) ? (body.contracts as ContractRecord[]) : []
+}
+
+export async function createContract(details: LeaseDetails): Promise<ContractRecord> {
+  const body = await request('/api/contracts', {
+    method: 'POST',
+    headers: authHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ details }),
+  })
+  return body.contract as ContractRecord
+}
+
+export async function deleteContract(id: string): Promise<void> {
+  await request(`/api/contracts/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  })
+}
+
+export async function fetchContractForSigning(token: string): Promise<ContractRecord> {
+  const body = await request(`/api/contracts/sign/${encodeURIComponent(token)}`)
+  return body.contract as ContractRecord
+}
+
+export async function submitContractSignature(
+  token: string,
+  signerName: string,
+  signature: string,
+): Promise<ContractRecord> {
+  const body = await request(`/api/contracts/sign/${encodeURIComponent(token)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ signerName, signature }),
+  })
+  return body.contract as ContractRecord
 }
 
 export async function saveSiteContent(settings: SiteContent): Promise<SiteContent> {

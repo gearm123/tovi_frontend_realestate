@@ -31,3 +31,6 @@ scripts/cache/
 
 # Local Netlify folder
 .netlify
+
+# Unpacked Noto font downloads. The lease PDF uses NotoSansHebrew-Regular.ttf only.
+netlify/functions/fonts/noto/
