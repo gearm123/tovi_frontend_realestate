@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent, typ
 import PropertyImage from './PropertyImage'
 import PropertyPhotoLightbox from './PropertyPhotoLightbox'
 import { getPropertyImages } from '../../../utils/propertyGallery'
+import { isAutomatedClient } from '../../../utils/automatedClient'
 import { useLanguage } from '../../../context/LanguageContext'
 import type { Property } from '../../../types/property'
 import './PropertyImageGallery.css'
@@ -26,7 +27,7 @@ export default function PropertyImageGallery({
   const { t } = useLanguage()
   const allImages = getPropertyImages(property)
   // Cards keep a single cover photo. Full galleries on listing pages crashed iPhone Safari.
-  const images = variant === 'card' ? allImages.slice(0, 1) : allImages
+  const images = variant === 'card' || isAutomatedClient() ? allImages.slice(0, 1) : allImages
   const multi = images.length > 1
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { HERO_IMAGE, HERO_VIDEO } from '../utils/propertyImages'
+import { isAutomatedClient } from '../utils/automatedClient'
 import { useLanguage } from '../context/LanguageContext'
 import './HeroVideo.css'
 
@@ -13,7 +14,8 @@ export default function HeroVideo({ compact = false }: HeroVideoProps) {
   const [reduceMotion, setReduceMotion] = useState(false)
   const [videoFailed, setVideoFailed] = useState(false)
   const [videoReady, setVideoReady] = useState(false)
-  const showStill = reduceMotion || videoFailed
+  const [playVideo] = useState(() => !isAutomatedClient())
+  const showStill = reduceMotion || videoFailed || !playVideo
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
